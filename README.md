@@ -62,6 +62,34 @@ npm run build
 npm run start
 ```
 
+## CI
+
+Pull requests targeting `developer`, `staging`, or `master` run the GitHub
+Actions `CI PR` workflow.
+
+The workflow uses Node.js from `.nvmrc`, npm cache keyed by `package-lock.json`,
+and validates:
+
+- branch name and pull request target branch
+- lint
+- TypeScript typecheck
+- production build
+- dependency audit for moderate or higher vulnerabilities
+
+```bash
+npm ci
+npm run lint
+npm run typecheck
+npm run build
+npm audit --audit-level=moderate
+```
+
+Temporary branches must follow the same pattern used by the backend repository:
+
+```text
+(feature|fix|hotfix|docs|refactor|test|ci|chore|rc|codex)/KAN-123-short-description
+```
+
 ## Documentation
 
 Frontend AI routing and task workflow docs live in:

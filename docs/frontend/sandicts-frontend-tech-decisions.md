@@ -48,12 +48,12 @@ Decided:
 - use Zustand only for local UI state, not API data
 - use Playwright for E2E tests
 - use Vitest with Testing Library for components and hooks
+- use GitHub Actions for PR validation with Node.js 24 and npm 11
 
 Still open:
 
 - exact OpenAPI generator
 - deployment target
-- CI shape for frontend checks
 - final route map
 - final navigation model for player and partner areas
 
@@ -261,6 +261,33 @@ Initial E2E gates:
 - payments: update manual payment state
 - open matches: create, join, leave, and block invalid joins
 
+### CI And Validation
+
+Use:
+
+- GitHub Actions for pull request validation
+- Node.js from `.nvmrc`
+- npm dependency caching keyed by `package-lock.json`
+
+Rules:
+
+- pull requests targeting `developer`, `staging`, or `master` run validation
+  automatically
+- temporary branches must follow the backend naming pattern:
+  `(feature|fix|hotfix|docs|refactor|test|ci|chore|rc|codex)/KAN-123-short-description`
+- install dependencies with `npm ci`
+- fail the workflow on lint, typecheck, build, or dependency audit failures
+- keep the `Test` job as an explicit placeholder until Playwright and Vitest
+  tooling is configured
+
+Current jobs:
+
+- `Governance`: branch naming and pull request target validation
+- `Quality`: `npm run lint` and `npm run typecheck`
+- `Test`: placeholder until frontend test tooling is configured
+- `Build`: `npm run build`
+- `Dependency audit`: `npm audit --audit-level=moderate`
+
 ## Frontend Architecture Rules
 
 The frontend should be organized around product areas and reusable primitives.
@@ -332,8 +359,7 @@ integration:
 
 - OpenAPI generator: Orval versus openapi-typescript/openapi-fetch
 - environment variable naming
-- frontend lint/typecheck/test commands
-- CI jobs for frontend
+- frontend test commands after Playwright and Vitest are configured
 - deployment target and preview environment strategy
 
 Resolve before first integrated auth implementation:
