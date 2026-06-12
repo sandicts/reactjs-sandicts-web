@@ -64,6 +64,12 @@ npm run start
 
 ## Documentation
 
+Frontend AI routing and task workflow docs live in:
+
+```text
+docs/ai
+```
+
 Frontend planning, architecture, page, and roadmap docs live in:
 
 ```text
