@@ -62,6 +62,22 @@ npm run build
 npm run start
 ```
 
+## CI
+
+Pull requests targeting `main` and pushes to `main` run the GitHub Actions
+`CI PR` workflow.
+
+The workflow uses Node.js from `.nvmrc`, npm cache keyed by `package-lock.json`,
+and runs:
+
+```bash
+npm ci
+npm run lint
+npm run typecheck
+npm run build
+npm audit --audit-level=moderate
+```
+
 ## Documentation
 
 Frontend AI routing and task workflow docs live in:
