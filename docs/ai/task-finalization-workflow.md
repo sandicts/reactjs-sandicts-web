@@ -107,8 +107,9 @@ Examples:
 
 ## Pull Request Body Standard
 
-Until `KAN-112` adds a frontend PR template, use the Sandicts backend template
-shape:
+Always use `.github/pull_request_template.md`.
+
+Keep the template headings and order:
 
 ```md
 ## Summary
@@ -129,17 +130,31 @@ shape:
 
 ## Validation
 
-- [ ] lint
-- [ ] typecheck
-- [ ] tests
-- [ ] build
+- [ ] branch governance (CI: Governance)
+- [ ] lint (CI: Quality)
+- [ ] typecheck (CI: Quality)
+- [ ] tests (CI: Test)
+- [ ] build (CI: Build)
 - [ ] dependency audit (CI: Dependency audit)
 - [ ] manual validation completed
 
 ## Notes
+
+- Primary Jira: `KAN-123`
+- Related Jira: none
+- Jira status: move delivered issue(s) to `In Review` after opening this PR
+- Known gaps or skipped validation: none
 ```
 
-Mark validation boxes only for commands or checks that actually ran.
+Rules:
+
+- Describe only the current PR changes, not the full parent Epic.
+- Include the primary Jira key and related Jira keys under `Notes`.
+- Move the delivered Jira issue to `In Review` after opening the PR.
+- Mark validation boxes only for commands or checks that actually ran or CI
+  checks that actually passed.
+- Mention known gaps, skipped validations, or docs-only rationale explicitly.
+- Update the PR body if the scope changes after opening the PR.
 
 ## Validation Rule
 

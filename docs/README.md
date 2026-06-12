@@ -24,6 +24,11 @@ This repository is the canonical home for Sandicts frontend documentation.
 - `.codex/skills/sandicts-frontend-project-context/SKILL.md`: frontend project routing
 - `.codex/skills/jira-pr-commit-writer/SKILL.md`: Jira, PR, commit, and delivery text
 
+## GitHub Workflow
+
+- `.github/pull_request_template.md`: standard frontend pull request body
+- `.github/workflows/ci-pr.yml`: frontend pull request validation workflow
+
 ## Cross-Repo Sources
 
 The backend API repository remains the source of truth for:
