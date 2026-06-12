@@ -12,6 +12,18 @@ This repository is the canonical home for Sandicts frontend documentation.
 - `docs/frontend/sandicts-mvp-screens-spec.md`: detailed MVP screen and state notes
 - `docs/frontend/discovery/`: historical discovery input, not the current source of truth
 
+## AI And Delivery Docs
+
+- `docs/ai/index.md`: AI routing and reading paths
+- `docs/ai/project-context.md`: frontend repository setup, ownership, and boundaries
+- `docs/ai/jira-operating-workflow.md`: Jira fast path and status workflow
+- `docs/ai/task-finalization-workflow.md`: commit, PR, validation, and Jira review workflow
+
+## Codex Skills
+
+- `.codex/skills/sandicts-frontend-project-context/SKILL.md`: frontend project routing
+- `.codex/skills/jira-pr-commit-writer/SKILL.md`: Jira, PR, commit, and delivery text
+
 ## Cross-Repo Sources
 
 The backend API repository remains the source of truth for:
@@ -19,8 +31,7 @@ The backend API repository remains the source of truth for:
 - product scope and MVP boundaries
 - Sandicts business rules
 - backend architecture and API contracts
-- shared Jira planning workflow until the frontend repository owns its own AI
-  operating context
+- shared backend implementation details
 
 When frontend documentation references backend-owned rules, keep the reference
 explicit instead of duplicating the rule in this repository.
