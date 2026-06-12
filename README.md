@@ -14,7 +14,7 @@ the Nest API.
 
 ## Runtime
 
-Use Node.js 24 LTS and npm 11.
+Use npm as the package manager, with Node.js 24 LTS and npm 11.
 
 ```bash
 node -v
@@ -25,6 +25,7 @@ The expected local baseline is:
 
 - Node.js `24.x`
 - npm `11.x`
+- package manager `npm`
 
 ## Setup
 
