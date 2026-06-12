@@ -271,15 +271,20 @@ Use:
 
 Rules:
 
-- pull requests targeting `main` run validation automatically
-- pushes to `main` run validation automatically
+- pull requests targeting `developer`, `staging`, or `master` run validation
+  automatically
+- temporary branches must follow the backend naming pattern:
+  `(feature|fix|hotfix|docs|refactor|test|ci|chore|rc|codex)/KAN-123-short-description`
 - install dependencies with `npm ci`
 - fail the workflow on lint, typecheck, build, or dependency audit failures
-- keep Playwright and Vitest jobs out of CI until their tooling is configured
+- keep the `Test` job as an explicit placeholder until Playwright and Vitest
+  tooling is configured
 
 Current jobs:
 
+- `Governance`: branch naming and pull request target validation
 - `Quality`: `npm run lint` and `npm run typecheck`
+- `Test`: placeholder until frontend test tooling is configured
 - `Build`: `npm run build`
 - `Dependency audit`: `npm audit --audit-level=moderate`
 

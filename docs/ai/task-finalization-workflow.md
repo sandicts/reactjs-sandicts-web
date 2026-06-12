@@ -53,7 +53,20 @@ codex/KAN-123-short-description
 docs/KAN-123-short-description
 feature/KAN-123-short-description
 fix/KAN-123-short-description
+hotfix/KAN-123-short-description
+refactor/KAN-123-short-description
+test/KAN-123-short-description
 ci/KAN-123-short-description
+chore/KAN-123-short-description
+rc/KAN-123-short-description
+```
+
+Protected branch targets follow the backend flow:
+
+```text
+developer
+staging
+master
 ```
 
 ## Commit Message Standard
