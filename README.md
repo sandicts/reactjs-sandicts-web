@@ -62,6 +62,16 @@ npm run build
 npm run start
 ```
 
+## Documentation
+
+Frontend planning, architecture, page, and roadmap docs live in:
+
+```text
+docs/frontend
+```
+
+Start with `docs/README.md` when deciding which frontend document to read.
+
 ## Repository Decision
 
 The frontend lives in `sandicts/reactjs-sandicts-web`, separate from
