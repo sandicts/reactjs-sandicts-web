@@ -90,6 +90,12 @@ Temporary branches must follow the same pattern used by the backend repository:
 (feature|fix|hotfix|docs|refactor|test|ci|chore|rc|codex)/KAN-123-short-description
 ```
 
+Pull requests use:
+
+```text
+.github/pull_request_template.md
+```
+
 ## Documentation
 
 Frontend AI routing and task workflow docs live in:
