@@ -36,6 +36,7 @@ implementation details.
 - App: Sandicts Web
 - Framework: Next.js App Router with TypeScript
 - Runtime: Node.js 24 LTS and npm 11
+- Package manager: npm
 - Local frontend port: `3001`
 - Local API port: `3000`
 
@@ -99,9 +100,13 @@ Follow the decided frontend direction:
 - shadcn/ui as the component strategy
 - TanStack Query for server state
 - React Hook Form and Zod for forms
-- generated OpenAPI client from Nest Swagger
+- Orval as the initial MVP OpenAPI generator for the Nest Swagger contract
 - Zustand only for local UI state
 - Playwright, Vitest, and Testing Library when test tooling is configured
 
 Open stack details should be tracked in Jira or frontend docs instead of being
-assumed silently.
+assumed silently. The current known architecture decision tasks are:
+
+- `KAN-113`: API/OpenAPI integration architecture before generated client
+  implementation
+- `KAN-114`: general frontend application architecture and module boundaries
