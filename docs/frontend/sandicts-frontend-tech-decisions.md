@@ -365,6 +365,63 @@ Recommended boundaries:
 Do not finalize folder names until the frontend repository exists, but preserve
 these boundaries in the first implementation.
 
+### Type Placement
+
+Keep executable implementation and component contracts separated.
+
+Rules:
+
+- component prop types, hook contracts, view models, service option types, and
+  helper option types belong in sibling `.types.ts` files
+- import sibling `.types.ts` files with relative `import type`
+- schema files, generated contract files, and type-first files may declare and
+  export types directly
+- avoid declaring component props in the same `.tsx` file as the component
+
+### Import Aliases
+
+Use the existing `@/*` alias for stable imports from `src/*`.
+
+Rules:
+
+- prefer `@/components/...`, `@/features/...`, `@/lib/...`, and similar stable
+  source-root imports when crossing folders
+- keep sibling implementation files and `.types.ts` imports relative
+- do not introduce additional aliases until `KAN-114` finalizes frontend module
+  boundaries
+- do not use aliases to hide imports across boundaries that should not exist
+
+### Test Helpers
+
+Testing Library, Vitest, and Playwright are the decided tools, but broad test
+tooling setup is still pending.
+
+Rules:
+
+- when test tooling exists, repeated builders, fixtures, and render helpers
+  should live in a dedicated test support folder decided by `KAN-114`
+- prefer builders over exported mutable fixture objects
+- keep local setup inside a spec when it only supports that spec
+- do not add a shared helper before at least two specs need it
+
+### Semantic Constants
+
+Keep implementation values readable.
+
+Rules:
+
+- do not leave non-obvious numeric literals inline when the value represents a
+  domain rule, unit conversion, timeout, TTL, byte length, rate limit, status
+  threshold, layout implementation value, or validation boundary
+- prefer semantic constants or helpers such as `sandictsMarkSizePx`,
+  `millisecondsPerSecond`, or `minimumGoogleIdTokenLength`
+- keep Tailwind utility scale classes such as `px-4`, `gap-8`, and `text-5xl`
+  inline because they are design-system tokens
+- move repeated raw colors into CSS tokens instead of using arbitrary hex
+  classes in JSX
+- keep obvious `0` and `1` counters, package versions, generated code, and
+  literal fixture data inline when extraction would reduce readability
+
 ## Prototype Before Build Rule
 
 No MVP page should be treated as fully decided before it has a prototype or

@@ -1,12 +1,6 @@
-import { ArrowLeft, type LucideIcon } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-
-type AreaPlaceholderProps = {
-  eyebrow: string;
-  title: string;
-  description: string;
-  Icon: LucideIcon;
-};
+import type { AreaPlaceholderProps } from "./area-placeholder.types";
 
 export function AreaPlaceholder({
   eyebrow,

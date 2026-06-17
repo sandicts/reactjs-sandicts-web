@@ -36,6 +36,8 @@ const signals = [
   ["Frontend", "Next.js app running as a sibling repo"],
 ];
 
+const sandictsMarkSizePx = 44;
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -45,8 +47,8 @@ export default function Home() {
             <Image
               src="/sandicts-mark.svg"
               alt="Sandicts mark"
-              width={44}
-              height={44}
+              width={sandictsMarkSizePx}
+              height={sandictsMarkSizePx}
               priority
             />
             <span className="text-xl font-semibold">Sandicts</span>
@@ -66,7 +68,7 @@ export default function Home() {
             </Link>
             <Link
               href="/sign-in"
-              className="rounded-lg bg-sand px-4 py-2 text-sm font-semibold text-[#161108] transition hover:bg-[#f7b13a]"
+              className="rounded-lg bg-sand px-4 py-2 text-sm font-semibold text-sand-contrast transition hover:bg-sand-hover"
             >
               Sign in
             </Link>
@@ -93,7 +95,7 @@ export default function Home() {
                   href={href}
                   className="group rounded-lg border border-line bg-surface p-4 transition hover:border-sand"
                 >
-                  <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-lg bg-[#122823] text-mint">
+                  <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-lg bg-surface-raised text-mint">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </div>
                   <div className="flex items-center justify-between gap-3">
