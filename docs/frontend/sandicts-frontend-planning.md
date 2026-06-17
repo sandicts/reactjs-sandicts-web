@@ -165,7 +165,6 @@ Rules:
 Open stack details:
 
 - API/OpenAPI integration architecture before generated client implementation
-- general application architecture, module boundaries, components, and services
 - auth storage/session behavior with backend
 - deployment target
 
@@ -660,11 +659,13 @@ Decided:
 - [x] Decide package manager and Node.js version: npm, npm 11, and Node.js
   24 LTS.
 - [x] Decide exact OpenAPI generator: Orval as the initial MVP generator.
+- [x] Decide general application architecture and module boundaries:
+  feature-oriented architecture with thin Next.js routes, `components/*`
+  reusable UI boundaries, and `lib/*` frontend infrastructure.
 
 Still open:
 
 - [ ] Decide API/OpenAPI integration architecture: `KAN-113`.
-- [ ] Decide general application architecture and module boundaries: `KAN-114`.
 - [ ] Decide whether the first app is player-first, partner-first, or balanced.
 - [ ] Decide auth storage/session strategy with backend.
 - [ ] Decide route map.
