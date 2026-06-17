@@ -7,6 +7,7 @@ canonical: docs/ai/task-finalization-workflow.md
 related:
   - docs/ai/jira-operating-workflow.md
   - .codex/skills/jira-pr-commit-writer/SKILL.md
+  - .github/pull_request_template.md
 scope: git, github, jira, commits, pull-requests, validation, frontend
 read-when:
   - finishing a Jira task
@@ -40,7 +41,7 @@ Before committing:
 9. Stage only files that belong to the task.
 10. Commit with the standard commit message format.
 11. Push the branch.
-12. Open or update the pull request.
+12. Open or update the pull request and enable delete branch after merge.
 13. Watch available CI checks.
 14. Move the delivered Jira issue to `In Review`.
 
@@ -143,6 +144,7 @@ Keep the template headings and order:
 - Primary Jira: `KAN-123`
 - Related Jira: none
 - Jira status: move delivered issue(s) to `In Review` after opening this PR
+- Branch cleanup: delete branch after merge enabled
 - Known gaps or skipped validation: none
 ```
 
@@ -151,6 +153,7 @@ Rules:
 - Describe only the current PR changes, not the full parent Epic.
 - Include the primary Jira key and related Jira keys under `Notes`.
 - Move the delivered Jira issue to `In Review` after opening the PR.
+- Confirm GitHub is set to delete the source branch after the PR is merged.
 - Mark validation boxes only for commands or checks that actually ran or CI
   checks that actually passed.
 - Mention known gaps, skipped validations, or docs-only rationale explicitly.

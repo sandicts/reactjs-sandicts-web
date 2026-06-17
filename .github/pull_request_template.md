@@ -49,4 +49,5 @@ For docs-only or setup work, describe why the repository needed this change.
 - Primary Jira: `KAN-123`
 - Related Jira: none
 - Jira status: move delivered issue(s) to `In Review` after opening this PR
+- Branch cleanup: delete branch after merge enabled
 - Known gaps or skipped validation: none
