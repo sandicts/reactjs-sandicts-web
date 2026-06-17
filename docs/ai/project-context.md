@@ -105,8 +105,9 @@ Follow the decided frontend direction:
 - Playwright, Vitest, and Testing Library when test tooling is configured
 
 Open stack details should be tracked in Jira or frontend docs instead of being
-assumed silently. The current known architecture decision tasks are:
+assumed silently. Current known architecture decision status:
 
 - `KAN-113`: API/OpenAPI integration architecture before generated client
   implementation
 - `KAN-114`: general frontend application architecture and module boundaries
+  are documented in `docs/frontend/sandicts-frontend-tech-decisions.md`
