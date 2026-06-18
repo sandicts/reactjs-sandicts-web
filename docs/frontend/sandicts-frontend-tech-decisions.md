@@ -401,6 +401,8 @@ Generation workflow:
   backend Swagger tags
 - generated output should stay under the `lib/api` boundary even when multiple
   APIs are introduced
+- current generated output lives under `src/lib/api/generated/sandicts-api`
+- generated files are committed and must not be edited manually
 
 Multiple API and BFF strategy:
 

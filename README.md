@@ -60,8 +60,43 @@ npm run dev
 npm run lint
 npm run typecheck
 npm run build
+npm run api:generate
 npm run start
 ```
+
+## API Client
+
+API types and TanStack Query hooks are generated from the Nest API OpenAPI
+contract with Orval.
+
+The default local schema URL is:
+
+```text
+http://localhost:3000/docs-json
+```
+
+Generate the client with:
+
+```bash
+npm run api:generate
+```
+
+Use `OPENAPI_SCHEMA_URL` to override the schema source for CI, preview, or
+non-default local environments:
+
+```bash
+OPENAPI_SCHEMA_URL=http://localhost:3000/docs-json npm run api:generate
+```
+
+Generated files live under:
+
+```text
+src/lib/api/generated/sandicts-api
+```
+
+Do not edit generated files manually. Application code should use semantic
+feature hooks or adapters instead of importing generated operations directly
+from screens.
 
 ## CI
 
