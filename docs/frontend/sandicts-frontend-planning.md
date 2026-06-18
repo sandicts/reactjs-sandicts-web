@@ -164,8 +164,9 @@ Rules:
 
 Open stack details:
 
-- API/OpenAPI integration architecture before generated client implementation
-- auth storage/session behavior with backend
+- implement the documented API/OpenAPI integration architecture in `KAN-73`
+- CORS, session hydration, and auth UX details for the first integrated auth
+  flow
 - deployment target
 
 For the full technical decision record, read
@@ -662,12 +663,17 @@ Decided:
 - [x] Decide general application architecture and module boundaries:
   feature-oriented architecture with thin Next.js routes, `components/*`
   reusable UI boundaries, and `lib/*` frontend infrastructure.
+- [x] Decide API/OpenAPI integration architecture: generated code is a
+  contract adapter under `lib/api`, with semantic feature hooks, a Sandicts API
+  runtime, in-memory access token storage, refresh cookies owned by the
+  backend, normalized errors, and TanStack Query server-state ownership.
 
 Still open:
 
-- [ ] Decide API/OpenAPI integration architecture: `KAN-113`.
 - [ ] Decide whether the first app is player-first, partner-first, or balanced.
-- [ ] Decide auth storage/session strategy with backend.
+- [ ] Decide remaining auth integration UX: CORS readiness, session hydration
+  endpoint usage, expired session behavior, sign-out behavior, and post-login
+  routing.
 - [ ] Decide route map.
 - [ ] Decide mobile-first breakpoints.
 - [ ] Decide whether public discovery exists before sign-in.
