@@ -586,10 +586,15 @@ Resolved foundation decisions:
 - local frontend path: `apps/reactjs-sandicts-web`
 - frontend runtime: Node.js 24 LTS with npm 11
 - local ports: API on `3000`, frontend on `3001`
+- OpenAPI generator: Orval as the initial MVP generator
+- API/OpenAPI integration architecture: generated OpenAPI code is a contract
+  adapter under `lib/api`, with a semantic Sandicts API runtime, feature hooks,
+  in-memory access token storage, backend-owned refresh cookies, normalized
+  backend errors, and TanStack Query server-state ownership
 
 Frontend foundation:
 
-- OpenAPI generator
+- generated API client implementation from the documented architecture
 - deployment target
 - CI checks and commands
 
