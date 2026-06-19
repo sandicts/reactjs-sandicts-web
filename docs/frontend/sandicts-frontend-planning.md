@@ -89,7 +89,7 @@ Allowed now:
 
 - define the page inventory and page behavior
 - define product navigation
-- define player and partner app areas
+- define player, organization, academy, and admin app areas
 - define frontend stack rules
 - define design tokens and visual direction
 - define routing conventions
@@ -176,23 +176,46 @@ For the full technical decision record, read
 
 Separate navigation and permissions early.
 
+KAN-65 navigation decision:
+
+- Sandicts uses one login and one user identity.
+- The account is not locked to a single type.
+- A signed-in user may have a player profile, one or more organizations, one or
+  more academies, and a Sandicts admin context when authorized.
+- Initial sign-up/onboarding lets the user start as Player, Organization, or
+  Academy, but that choice only creates or opens the first active context.
+- The app shell must include a context switcher when the user can access more
+  than one context.
+- Slugs are part of the route model from the start for organizations,
+  academies, units, courts, classes, and public player profiles.
+- `Organization` is the internal product/code name for a court or venue
+  operator.
+- `Academy` is the internal product/code name for training, classes, coaches,
+  and student workflows.
+- Organizations and Academies are independent top-level contexts. One account
+  can own or work in both without one owning the other.
+
 ### Public Area
 
 Purpose:
 
 - allow unauthenticated users to understand and enter the app
+- allow public discovery and public profile pages when visibility rules allow
 
 Likely screens:
 
 - sign-in
 - Google One Tap entry
 - public discovery landing if product chooses to expose it before auth
+- public court and academy details
+- public player profile when the player chooses public visibility
 
 ### Player Area
 
 Purpose:
 
 - help players find places, reserve courts, and join games
+- let a player manage their own profile and public visibility
 
 MVP screens:
 
@@ -209,22 +232,25 @@ MVP screens:
 Later screens:
 
 - public player profile
+- friends-only player profile visibility
 - player card
 - progression/evolution
 - tournaments
 - rankings
 - achievements
 
-### Partner Area
+### Organization Area
 
 Purpose:
 
-- help partners operate courts, availability, reservations, and payment state
+- help organizations operate units, courts, availability, reservations, and
+  payment state
 
 MVP screens:
 
-- partner dashboard
-- partner profile
+- organization dashboard
+- organization profile
+- unit management when one organization has multiple locations
 - court management
 - availability calendar
 - agenda day view
@@ -235,12 +261,62 @@ MVP screens:
 
 Later screens:
 
-- students
 - memberships
 - delinquency reports
-- teachers/classes
 - tournament management
 - richer financial reports
+
+Access model:
+
+- organization owners/admins can see all organization units and courts
+- staff can see or manage only assigned units and courts
+- cross-organization access is forbidden
+
+### Academy Area
+
+Purpose:
+
+- help academies manage training, classes, coaches, students, requests, and
+  payment/plan state
+
+Initial screens to reserve in the route model:
+
+- academy dashboard
+- academy profile
+- class list and detail
+- coach management
+- student requests
+- student list
+- academy payments
+
+MVP status:
+
+- full academy/class operations remain V2 unless scope changes
+- the navigation and account model reserve Academy as a first-class context now
+
+Access model:
+
+- academy owners/admins can see and manage all academy classes
+- coaches can view academy classes but manage only classes assigned to them
+- coaches can accept students only for assigned classes and only when the
+  academy rule allows it
+- cross-academy access is forbidden
+
+### Sandicts Admin Area
+
+Purpose:
+
+- let internal Sandicts operators manage global setup, metrics, supply-side
+  accounts, billing state, and support/audit workflows
+
+MVP candidate screens:
+
+- admin dashboard and metrics
+- sports catalog
+- organizations
+- academies
+- billing or subscription status
+- audit/support context
 
 ## UX Rules To Define
 
@@ -269,14 +345,34 @@ Current direction from `sandicts-frontend-context.md`:
 
 ### Navigation
 
+Resolved direction:
+
+- use one login and route users by active context after authentication
+- restore `returnTo` when the user is authorized for the attempted route
+- restore the last active context when there is no `returnTo`
+- if the user has only one context, enter that context directly
+- if the user has multiple contexts, show the context switcher/picker
+- use slug routes for public and operational entity pages from the beginning
+- keep player, organization, academy, and admin as separate app areas with
+  shared auth/session foundations
+
 Needed decisions:
 
-- player navigation model
-- partner navigation model
-- whether player and partner are separate apps, layouts, or role-aware areas
-- mobile bottom navigation vs sidebar
-- route naming
-- protected route behavior
+- mobile bottom navigation vs sidebar per context
+- exact empty states for missing profile, missing organization, missing academy,
+  forbidden context, and suspended billing
+- exact labels for public-facing Organization and Academy concepts in Brazilian
+  Portuguese
+
+Route direction:
+
+- public courts use `/courts/:courtSlug`
+- public academies use `/academies/:academySlug`
+- public player profiles use `/players/:playerSlug` with visibility rules
+- player app routes live under `/app`
+- organization management routes live under `/organizations/:organizationSlug`
+- academy management routes live under `/academies/:academySlug/manage`
+- internal admin routes live under `/admin`
 
 ### Auth UX
 
@@ -287,7 +383,7 @@ Needed decisions:
 - sign-out behavior
 - expired session behavior
 - refresh failure behavior
-- whether unauthenticated users can browse public discovery
+- exact public discovery depth before sign-in
 
 ### Forms
 
@@ -322,7 +418,7 @@ Needed decisions:
 - timezone handling
 - court slot display
 - date picker behavior
-- calendar density for partner agenda
+- calendar density for organization agenda
 
 ### Testing
 
@@ -355,7 +451,7 @@ Suggested Jira issues:
 - `[Frontend] Define frontend architecture and app shell rules`
 - `[UX] Define Sandicts MVP navigation model`
 - `[UX] Define auth and role switching experience`
-- `[UX] Prototype public, player, and partner app shells`
+- `[UX] Prototype public, player, organization, academy, and admin app shells`
 - `[Design] Define MVP visual tokens and component direction`
 
 Exit criteria:
@@ -430,30 +526,30 @@ Exit criteria:
 - profile validation errors are visible
 - player state is available to later reservation and open match screens
 
-### F4: Partner Foundation
+### F4: Organization Foundation
 
 Purpose:
 
-- create partner-facing navigation and onboarding
+- create organization-facing navigation and onboarding
 
 Suggested Jira issues:
 
-- `[Frontend] Build partner dashboard shell`
-- `[Frontend] Build partner profile form`
-- `[Frontend] Add partner access boundary states`
-- `[E2E] Validate partner profile setup`
+- `[Frontend] Build organization dashboard shell`
+- `[Frontend] Build organization profile form`
+- `[Frontend] Add organization access boundary states`
+- `[E2E] Validate organization profile setup`
 
 Exit criteria:
 
-- partner area has a stable layout
-- partner profile can be created or edited
-- unauthorized or missing partner states are clear
+- organization area has a stable layout
+- organization profile can be created or edited
+- unauthorized, missing organization, and wrong-context states are clear
 
 ### F5: Court Management
 
 Purpose:
 
-- let partners manage the supply side of the marketplace
+- let organizations manage the supply side of the marketplace
 
 Suggested Jira issues:
 
@@ -462,11 +558,11 @@ Suggested Jira issues:
 - `[Frontend] Build supported sports selector`
 - `[Frontend] Build court pricing and rules form`
 - `[Frontend] Build court activation controls`
-- `[E2E] Validate partner court setup`
+- `[E2E] Validate organization court setup`
 
 Exit criteria:
 
-- partner can create and manage courts through the UI
+- organization operator can create and manage courts through the UI
 - validation errors map to backend responses
 - inactive court state is visible
 
@@ -478,7 +574,7 @@ Purpose:
 
 Suggested Jira issues:
 
-- `[Frontend] Build partner availability calendar`
+- `[Frontend] Build organization availability calendar`
 - `[Frontend] Build availability slot editor`
 - `[Frontend] Build agenda day view`
 - `[Frontend] Build agenda week view`
@@ -486,7 +582,7 @@ Suggested Jira issues:
 
 Exit criteria:
 
-- partner can publish available slots
+- organization operator can publish available slots
 - overlapping or invalid slots are handled clearly
 - agenda views are usable on target devices
 
@@ -502,7 +598,7 @@ Suggested Jira issues:
 - `[Frontend] Build sport filter`
 - `[Frontend] Build availability filter`
 - `[Frontend] Build price filter`
-- `[Frontend] Build court and partner result cards`
+- `[Frontend] Build court and organization result cards`
 - `[E2E] Validate court discovery filters`
 
 Exit criteria:
@@ -515,14 +611,14 @@ Exit criteria:
 
 Purpose:
 
-- let players request reservations and partners manage them
+- let players request reservations and organizations manage them
 
 Suggested Jira issues:
 
 - `[Frontend] Build reservation request flow`
 - `[Frontend] Build player reservation history`
-- `[Frontend] Build partner reservation detail`
-- `[Frontend] Build partner reservation confirmation flow`
+- `[Frontend] Build organization reservation detail`
+- `[Frontend] Build organization reservation confirmation flow`
 - `[Frontend] Build reservation cancellation flow`
 - `[E2E] Validate reservation happy path`
 - `[E2E] Validate duplicate reservation prevention`
@@ -530,7 +626,7 @@ Suggested Jira issues:
 Exit criteria:
 
 - player can request a reservation from discovery
-- partner can confirm or cancel a reservation
+- organization operator can confirm or cancel a reservation
 - player can cancel when allowed
 - duplicate slot errors are understandable
 
@@ -549,8 +645,8 @@ Suggested Jira issues:
 
 Exit criteria:
 
-- partner can see pending or overdue payments
-- partner can update payment status when allowed
+- organization operator can see pending or overdue payments
+- organization operator can update payment status when allowed
 - reservation views reflect payment state
 
 ### F10: Open Matches
@@ -578,7 +674,8 @@ Exit criteria:
 
 Use this rhythm for each module:
 
-1. Product rule is confirmed in `sandicts/nodejs-sandicts-api:docs/ai/product` or `sandicts/nodejs-sandicts-api:docs/ai/business`
+1. Product rule is confirmed in `sandicts/nodejs-sandicts-api:docs/ai/product`
+   or `sandicts/nodejs-sandicts-api:docs/ai/business`
 2. Backend drafts the API contract and business-rule behavior
 3. Frontend drafts the user flow and required states
 4. Backend implements the first usable endpoint set
@@ -633,8 +730,8 @@ Examples:
 
 - Auth gate: sign in, refresh or preserve session, sign out
 - Player gate: create or update profile, choose sport, choose level
-- Partner gate: create partner profile and load partner dashboard
-- Court gate: create court and see it in partner court list
+- Organization gate: create organization profile and load organization dashboard
+- Court gate: create court and see it in organization court list
 - Availability gate: publish slot and see it in discovery candidate data
 - Discovery gate: filter courts by sport, availability, and price
 - Reservation gate: request, confirm, cancel, and block duplicate reservation
@@ -667,16 +764,28 @@ Decided:
   contract adapter under `lib/api`, with semantic feature hooks, a Sandicts API
   runtime, in-memory access token storage, refresh cookies owned by the
   backend, normalized errors, and TanStack Query server-state ownership.
+- [x] Decide player, organization, academy, and admin navigation model: one
+  login, one user identity, multiple accessible contexts, context switcher when
+  needed, and slug-based routes from the start.
+- [x] Decide account context model: a user can have a player profile, multiple
+  organizations, multiple academies, and an internal admin context when
+  authorized; the initial onboarding choice does not lock the account type.
+- [x] Decide organization and academy relationship: Organization and Academy
+  are independent top-level contexts, not parent/child entities.
+- [x] Decide public profile direction: public court, academy, and player pages
+  use slugs; player profile visibility supports public now in the route model
+  and can expand to friends-only/private rules later.
 
 Still open:
 
-- [ ] Decide whether the first app is player-first, partner-first, or balanced.
 - [ ] Decide remaining auth integration UX: CORS readiness, session hydration
-  endpoint usage, expired session behavior, sign-out behavior, and post-login
-  routing.
-- [ ] Decide route map.
+  endpoint usage, expired session behavior, and sign-out behavior.
 - [ ] Decide mobile-first breakpoints.
-- [ ] Decide whether public discovery exists before sign-in.
+- [ ] Decide exact public discovery depth before sign-in.
+- [ ] Decide exact public-facing labels for Organization and Academy in
+  Brazilian Portuguese.
+- [ ] Decide billing model for organizations and academies: fixed subscription,
+  commission/percentage, or hybrid.
 - [ ] Decide deployment target.
 - [ ] Decide first app-shell prototype.
 - [ ] Decide which uncommitted docs are ready to commit as MVP source docs.
