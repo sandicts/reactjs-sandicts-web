@@ -59,7 +59,7 @@ Use when the product, UX, architecture, or API shape is not decided.
 Title examples:
 
 - `[Spike] Decide frontend repository location`
-- `[UX] Decide player and partner navigation model`
+- `[UX] Decide player, organization, academy, and admin navigation model`
 - `[Spike] Decide reservation cancellation window`
 - `[Frontend] Decide OpenAPI client generator`
 
@@ -76,7 +76,7 @@ Title examples:
 
 - `[UX] Prototype player profile onboarding`
 - `[UX] Prototype court discovery mobile flow`
-- `[UX] Prototype partner agenda day and week views`
+- `[UX] Prototype organization agenda day and week views`
 - `[UX] Prototype reservation request and status flow`
 
 Output:
@@ -129,7 +129,7 @@ Use when the issue delivers visible user value.
 Title examples:
 
 - `[Players] Player manages a basic profile`
-- `[Courts] Partner creates a court`
+- `[Courts] Organization creates a court`
 - `[Reservations] Player requests a court reservation`
 - `[Open Matches] Player joins an open match`
 
@@ -161,12 +161,12 @@ This rule applies to:
 - reservation request
 - reservation history/detail
 - open match list/detail/create
-- partner setup
-- partner dashboard
+- organization setup
+- organization dashboard
 - court management
 - availability calendar
 - agenda day/week
-- partner reservation detail
+- organization reservation detail
 - manual payments
 
 ## Phase 0: Documentation And Roadmap Foundation
@@ -204,12 +204,12 @@ Decision tasks:
 - `[Frontend] Decide package manager and Node.js version`
 - `[Frontend] Decide OpenAPI client generator`
 - `[DevOps] Decide frontend deployment target`
-- `[UX] Decide player and partner navigation model`
+- `[UX] Decide player, organization, academy, and admin navigation model`
 - `[UX] Decide mobile navigation model`
 
 Prototype tasks:
 
-- `[UX] Prototype public, player, and partner app shells`
+- `[UX] Prototype public, player, organization, academy, and admin app shells`
 - `[Design] Prototype Sandicts visual tokens and base components`
 - `[UX] Prototype global loading, empty, error, forbidden, and not-found states`
 
@@ -225,7 +225,7 @@ Implementation tasks:
 - `[Frontend] Configure Zustand local UI state boundary`
 - `[Frontend] Configure Playwright`
 - `[Frontend] Configure Vitest and Testing Library`
-- `[Frontend] Build public, player, and partner layout shells`
+- `[Frontend] Build public, player, organization, academy, and admin layout shells`
 - `[Frontend] Build reusable base states and status badges`
 
 Exit criteria:
@@ -307,42 +307,44 @@ Exit criteria:
 - main sport and simple level are saved and reloaded
 - incomplete profile behavior is clear
 
-## Phase 4: Partner Foundation
+## Phase 4: Organization Foundation
 
 Purpose:
 
-- let the supply side create a partner profile and enter the operational area
+- let the supply side create an organization profile and enter the operational
+  area
 
 Decision tasks:
 
-- `[Partners] Decide exact MVP partner profile fields`
-- `[UX] Decide partner setup and dashboard first-run flow`
-- `[API] Decide partner profile contract`
+- `[Organizations] Decide exact MVP organization profile fields`
+- `[UX] Decide organization setup and dashboard first-run flow`
+- `[API] Decide organization profile contract`
 
 Prototype tasks:
 
-- `[UX] Prototype partner setup`
-- `[UX] Prototype partner dashboard shell`
+- `[UX] Prototype organization setup`
+- `[UX] Prototype organization dashboard shell`
 - `[Design] Prototype operational dashboard density`
 
 Implementation tasks:
 
-- `[Backend] Expose partner profile contract`
-- `[Frontend] Build partner setup flow`
-- `[Frontend] Build partner dashboard shell`
-- `[Frontend] Build partner access boundary states`
-- `[E2E] Validate partner profile setup`
+- `[Backend] Expose organization profile contract`
+- `[Frontend] Build organization setup flow`
+- `[Frontend] Build organization dashboard shell`
+- `[Frontend] Build organization access boundary states`
+- `[E2E] Validate organization profile setup`
 
 Exit criteria:
 
-- authenticated user can create or update partner profile
-- partner area handles missing profile, forbidden, loading, and error states
+- authenticated user can create or update organization profile
+- organization area handles missing profile, forbidden, loading, and error
+  states
 
 ## Phase 5: Court Management
 
 Purpose:
 
-- let partners create and manage reservable courts
+- let organizations create and manage reservable courts
 
 Decision tasks:
 
@@ -363,18 +365,18 @@ Implementation tasks:
 - `[Frontend] Build court list`
 - `[Frontend] Build create and edit court flow`
 - `[Frontend] Build active/inactive controls`
-- `[E2E] Validate partner court setup`
+- `[E2E] Validate organization court setup`
 
 Exit criteria:
 
-- partner can create, edit, activate, and deactivate courts
+- organization operator can create, edit, activate, and deactivate courts
 - inactive court state is visible and blocks reservation paths
 
 ## Phase 6: Availability And Agenda
 
 Purpose:
 
-- let partners publish availability and operate the daily/weekly schedule
+- let organizations publish availability and operate the daily/weekly schedule
 
 Decision tasks:
 
@@ -388,8 +390,8 @@ Prototype tasks:
 
 - `[UX] Prototype availability calendar`
 - `[UX] Prototype slot editor`
-- `[UX] Prototype partner agenda day view`
-- `[UX] Prototype partner agenda week view`
+- `[UX] Prototype organization agenda day view`
+- `[UX] Prototype organization agenda week view`
 
 Implementation tasks:
 
@@ -402,7 +404,7 @@ Implementation tasks:
 
 Exit criteria:
 
-- partner can publish available slots
+- organization operator can publish available slots
 - invalid or overlapping slots are handled clearly
 - agenda views are usable on target devices
 
@@ -451,7 +453,7 @@ Decision tasks:
 
 - `[Reservations] Decide cancellation window`
 - `[Reservations] Decide initial reservation status`
-- `[Reservations] Decide partner confirmation behavior`
+- `[Reservations] Decide organization confirmation behavior`
 - `[UX] Decide reservation request review flow`
 - `[API] Decide reservation contracts`
 
@@ -460,7 +462,7 @@ Prototype tasks:
 - `[UX] Prototype reservation request flow`
 - `[UX] Prototype player reservation history`
 - `[UX] Prototype player reservation detail`
-- `[UX] Prototype partner reservation detail`
+- `[UX] Prototype organization reservation detail`
 - `[Design] Prototype reservation status badges and blocked actions`
 
 Implementation tasks:
@@ -469,7 +471,7 @@ Implementation tasks:
 - `[Frontend] Build reservation request flow`
 - `[Frontend] Build player reservation history`
 - `[Frontend] Build player reservation detail`
-- `[Frontend] Build partner reservation detail`
+- `[Frontend] Build organization reservation detail`
 - `[Frontend] Build confirm and cancel actions`
 - `[E2E] Validate reservation happy path`
 - `[E2E] Validate duplicate reservation prevention`
@@ -477,7 +479,7 @@ Implementation tasks:
 Exit criteria:
 
 - player can request a reservation
-- partner can confirm or cancel
+- organization operator can confirm or cancel
 - player can cancel when allowed
 - duplicate confirmed reservations are blocked and understandable
 
@@ -509,8 +511,8 @@ Implementation tasks:
 
 Exit criteria:
 
-- partner can see pending, failed, paid, and overdue payments
-- partner can update payment status when allowed
+- organization operator can see pending, failed, paid, and overdue payments
+- organization operator can update payment status when allowed
 - reservation views reflect payment state
 
 ## Phase 10: Open Matches
@@ -563,7 +565,7 @@ Decision tasks:
 
 Implementation and validation tasks:
 
-- `[Security] Review cross-partner access boundaries`
+- `[Security] Review cross-organization and cross-academy access boundaries`
 - `[Frontend] Review responsive behavior for MVP flows`
 - `[API] Review Swagger contracts for MVP flows`
 - `[E2E] Run MVP critical path smoke suite`
@@ -591,6 +593,12 @@ Resolved foundation decisions:
   adapter under `lib/api`, with a semantic Sandicts API runtime, feature hooks,
   in-memory access token storage, backend-owned refresh cookies, normalized
   backend errors, and TanStack Query server-state ownership
+- KAN-65 navigation model: single login, one user identity, multiple contexts,
+  context switcher, first-class Player/Organization/Academy/Admin app areas,
+  and slug-based routes from the start
+- Organization and Academy model: Organization owns venue/unit/court operations;
+  Academy owns training/class/coach/student operations; they are independent
+  contexts that can belong to the same signed-in user
 
 Frontend foundation:
 
@@ -600,10 +608,8 @@ Frontend foundation:
 
 UX and app shell:
 
-- player-first, partner-first, or balanced first experience
-- player and partner navigation model
 - mobile navigation model
-- route map
+- exact context switcher mobile shape
 - breakpoint strategy
 - global state templates
 
@@ -613,19 +619,21 @@ Auth:
 - session hydration endpoint
 - expired session UX
 - sign-out behavior
-- post-login routing
 
 Product and page decisions:
 
-- public discovery before login
+- exact public discovery depth before login
 - visitor visibility for exact available slots
 - exact MVP profile fields
-- exact MVP partner profile fields
+- exact MVP organization profile fields
+- exact Academy V2 scope and sequencing
+- public-facing Portuguese labels for Organization and Academy
+- billing model for organizations and academies
 - pricing model for court/availability
 - availability by court or by court and sport
 - slot duration rules
 - reservation cancellation window
-- initial reservation status and partner confirmation flow
+- initial reservation status and organization confirmation flow
 - open match place representation
 - whether creator joins an open match automatically
 - minimal admin need before launch
@@ -662,9 +670,9 @@ Recommended first batch:
 - `[Spike] Decide frontend repository location`
 - `[Frontend] Decide package manager and Node.js version`
 - `[Frontend] Decide OpenAPI client generator`
-- `[UX] Decide player and partner navigation model`
+- `[UX] Decide player, organization, academy, and admin navigation model`
 - `[Design] Define MVP visual tokens and component direction`
-- `[UX] Prototype public, player, and partner app shells`
+- `[UX] Prototype public, player, organization, academy, and admin app shells`
 - `[Frontend] Create Next.js app foundation`
 - `[Frontend] Configure shadcn/ui, Tailwind CSS, and lucide-react`
 - `[Frontend] Configure TanStack Query and API client foundation`
