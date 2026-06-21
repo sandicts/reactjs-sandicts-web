@@ -26,9 +26,11 @@ do-not-read-when:
 This repository owns the Sandicts frontend application and its frontend
 documentation.
 
-The backend API repository remains the source of truth for product scope,
-business rules, backend architecture, API contracts, and shared backend
-implementation details.
+The shared documentation repository is the source of truth for product scope,
+entity names, MVP boundaries, business rules, and shared Jira planning.
+
+The backend API repository remains the source of truth for backend
+architecture, API contracts, validation, errors, and implementation details.
 
 ## Repository Role
 
@@ -49,19 +51,25 @@ This repository owns:
 - frontend-specific Codex skills in `.codex/skills`
 - frontend README setup and run instructions
 
-The backend repository owns:
+The shared documentation repository owns:
 
 - product and MVP scope
 - Sandicts business rules
-- backend/API architecture and contracts
+- entity glossary and naming
 - shared Jira planning workflow details that are not frontend-specific
 
-Use explicit cross-repo references instead of duplicating backend-owned rules.
+The backend repository owns:
+
+- backend/API architecture and contracts
+- backend implementation details
+
+Use explicit cross-repo references instead of duplicating shared product or
+backend-owned API rules.
 
 Example:
 
 ```text
-sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-mvp-scope.md
+sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
 ```
 
 ## Local Commands
@@ -85,7 +93,7 @@ http://localhost:3001
 
 - Do not store secrets, credentials, tokens, private config, or local absolute
   machine paths in repository docs.
-- Do not duplicate backend-owned product or business rules in frontend docs.
+- Do not duplicate shared product or business rules in frontend docs.
 - Keep API data in server-state tooling, not local UI state.
 - Keep generated artifacts, build output, and local dev logs out of Git.
 - Add frontend docs when setup, commands, architecture, routes, validation, or

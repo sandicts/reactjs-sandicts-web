@@ -20,7 +20,8 @@ first.
 
 For Jira roadmap, backlog, Epic, Story, Task, Subtask, Bug, or issue-planning
 requests, read `docs/ai/jira-operating-workflow.md` first. When product scope,
-business rules, or API contracts matter, read the referenced backend docs from
+entity names, business rules, or shared Jira planning matter, read
+`sandicts/sandicts-docs`; when API contracts matter, read
 `sandicts/nodejs-sandicts-api`.
 
 ## Output Contract

@@ -9,8 +9,8 @@ related:
   - docs/frontend/sandicts-frontend-planning.md
   - docs/frontend/sandicts-page-functional-spec.md
   - docs/frontend/sandicts-mvp-screens-spec.md
-  - sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-mvp-functional-spec.md
-  - sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-jira-planning-workflow.md
+  - sandicts/sandicts-docs:docs/product/sandicts-mvp-functional-spec.md
+  - sandicts/sandicts-docs:docs/product/sandicts-jira-planning-workflow.md
 scope: roadmap, frontend, fullstack, docs, ux, figma, mvp, jira
 read-when:
   - planning the final Sandicts MVP delivery roadmap
@@ -59,7 +59,7 @@ Use when the product, UX, architecture, or API shape is not decided.
 Title examples:
 
 - `[Spike] Decide frontend repository location`
-- `[UX] Decide player, organization, academy, and admin navigation model`
+- `[UX] Decide player, organization, academy, and Admin App navigation model`
 - `[Spike] Decide reservation cancellation window`
 - `[Frontend] Decide OpenAPI client generator`
 
@@ -204,12 +204,12 @@ Decision tasks:
 - `[Frontend] Decide package manager and Node.js version`
 - `[Frontend] Decide OpenAPI client generator`
 - `[DevOps] Decide frontend deployment target`
-- `[UX] Decide player, organization, academy, and admin navigation model`
+- `[UX] Decide player, organization, academy, and Admin App navigation model`
 - `[UX] Decide mobile navigation model`
 
 Prototype tasks:
 
-- `[UX] Prototype public, player, organization, academy, and admin app shells`
+- `[UX] Prototype public, player, organization, academy, and Admin App shells`
 - `[Design] Prototype Sandicts visual tokens and base components`
 - `[UX] Prototype global loading, empty, error, forbidden, and not-found states`
 
@@ -225,7 +225,7 @@ Implementation tasks:
 - `[Frontend] Configure Zustand local UI state boundary`
 - `[Frontend] Configure Playwright`
 - `[Frontend] Configure Vitest and Testing Library`
-- `[Frontend] Build public, player, organization, academy, and admin layout shells`
+- `[Frontend] Build public, player, organization, academy, and Admin App layout shells`
 - `[Frontend] Build reusable base states and status badges`
 
 Exit criteria:
@@ -594,7 +594,7 @@ Resolved foundation decisions:
   in-memory access token storage, backend-owned refresh cookies, normalized
   backend errors, and TanStack Query server-state ownership
 - KAN-65 navigation model: single login, one user identity, multiple contexts,
-  context switcher, first-class Player/Organization/Academy/Admin app areas,
+  context switcher, first-class Player/Organization/Academy/Admin App areas,
   and slug-based routes from the start
 - Organization and Academy model: Organization owns venue/unit/court operations;
   Academy owns training/class/coach/student operations; they are independent
@@ -670,9 +670,9 @@ Recommended first batch:
 - `[Spike] Decide frontend repository location`
 - `[Frontend] Decide package manager and Node.js version`
 - `[Frontend] Decide OpenAPI client generator`
-- `[UX] Decide player, organization, academy, and admin navigation model`
+- `[UX] Decide player, organization, academy, and Admin App navigation model`
 - `[Design] Define MVP visual tokens and component direction`
-- `[UX] Prototype public, player, organization, academy, and admin app shells`
+- `[UX] Prototype public, player, organization, academy, and Admin App shells`
 - `[Frontend] Create Next.js app foundation`
 - `[Frontend] Configure shadcn/ui, Tailwind CSS, and lucide-react`
 - `[Frontend] Configure TanStack Query and API client foundation`

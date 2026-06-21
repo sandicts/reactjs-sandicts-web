@@ -25,11 +25,13 @@ documents linked from it.
 4. Treat `docs/ai/` documents as the frontend repository operating baseline.
 5. Treat `docs/frontend/` documents as the frontend planning and implementation
    baseline.
-6. When product scope, business rules, backend contracts, or API behavior are
+6. When product scope, entity names, business rules, or shared Jira planning are
+   needed, read the referenced docs in `sandicts/sandicts-docs`.
+7. When backend contracts, API behavior, validation, or backend architecture are
    needed, read the referenced docs in `sandicts/nodejs-sandicts-api`.
-7. Keep `.codex/skills/` for Codex operating instructions and `docs/ai/` for
+8. Keep `.codex/skills/` for Codex operating instructions and `docs/ai/` for
    durable frontend project context.
-8. When changing repository skills, validate the edited skill folder with a
+9. When changing repository skills, validate the edited skill folder with a
    skill validation script when available.
 
 ## Jira Fast Path
@@ -53,7 +55,7 @@ issue, page, or JQL filter is not already known.
 
 - Do not store tokens, credentials, secrets, private config, local absolute
   paths, or personal preferences in this repository.
-- Do not duplicate backend-owned product or business rules in frontend docs.
+- Do not duplicate shared product or business rules in frontend docs.
 - Keep generated artifacts, build output, local env files, and dev logs out of
   Git.
 - Prefer small, task-focused project skills over broad generic instructions.
@@ -70,5 +72,7 @@ Main roots:
   task-finalization workflow.
 - `docs/frontend/`: frontend planning, stack, page, screen, delivery, and
   discovery docs.
-- `sandicts/nodejs-sandicts-api:docs/ai/`: backend-owned product, business
-  rule, API, and shared planning docs.
+- `sandicts/sandicts-docs:docs/`: shared product, entity, business-rule,
+  scope, and Jira planning docs.
+- `sandicts/nodejs-sandicts-api:docs/ai/`: backend API, architecture,
+  validation, error, and implementation docs.

@@ -94,16 +94,16 @@ Not MVP:
 - achievements
 - rankings
 
-### Partner Area
+### Organization Area
 
 Purpose:
 
-- help partners publish court supply and operate reservations
+- help Organizations publish court supply and operate reservations
 
 Initial screens:
 
-- partner dashboard
-- partner profile
+- Organization dashboard
+- Organization profile
 - court list
 - court create/edit
 - availability calendar
@@ -113,8 +113,8 @@ Initial screens:
 
 Not MVP:
 
-- school ERP
-- teacher/class management
+- Academy ERP
+- coach/class management
 - memberships
 - rich financial reports
 - tournament operations
@@ -133,7 +133,7 @@ Deliverables:
 - Node.js version decision
 - styling/component strategy decision
 - app route map
-- player vs partner navigation model
+- player vs Organization navigation model
 - auth/session frontend strategy
 - API client strategy
 - base error/loading/empty-state rules
@@ -141,7 +141,7 @@ Deliverables:
 Suggested Jira issues:
 
 - `[Frontend] Define web app architecture and route map`
-- `[UX] Define player and partner navigation model`
+- `[UX] Define player and Organization navigation model`
 - `[Design] Define MVP visual tokens and component strategy`
 - `[Frontend] Define auth session integration strategy`
 
@@ -165,7 +165,7 @@ Deliverables:
 - route groups/layouts
 - provider setup
 - base UI primitives
-- app shell for public, player, and partner areas
+- app shell for public, player, and Organization areas
 
 Suggested Jira issues:
 
@@ -248,41 +248,41 @@ Exit gate:
 - authenticated player can complete the minimum profile required for discovery,
   reservations, and open matches
 
-### F4: Partner Foundation
+### F4: Organization Foundation
 
 Goal:
 
-- create partner-facing entry and role boundary
+- create Organization-facing entry and role boundary
 
 Deliverables:
 
-- partner dashboard shell
-- partner profile form
-- partner access boundary states
-- missing-partner setup state
+- Organization dashboard shell
+- Organization profile form
+- Organization access boundary states
+- missing-Organization setup state
 
 Backend dependencies:
 
-- partner profile create/read/update
-- authenticated account role or partner membership model
-- forbidden state for cross-partner access
+- Organization profile create/read/update
+- authenticated account role or Organization membership model
+- forbidden state for cross-Organization access
 
 Suggested Jira issues:
 
-- `[Frontend] Build partner dashboard shell`
-- `[Frontend] Build partner profile form`
-- `[Frontend] Add partner access boundary states`
-- `[E2E] Validate partner profile setup`
+- `[Frontend] Build Organization dashboard shell`
+- `[Frontend] Build Organization profile form`
+- `[Frontend] Add Organization access boundary states`
+- `[E2E] Validate Organization profile setup`
 
 Exit gate:
 
-- partner can set up a profile and land in a usable partner dashboard
+- Organization can set up a profile and land in a usable Organization dashboard
 
 ### F5: Court Management
 
 Goal:
 
-- let partners create and manage marketplace supply
+- let Organizations create and manage marketplace supply
 
 Deliverables:
 
@@ -298,7 +298,7 @@ Backend dependencies:
 - court create/read/update
 - court activation rules
 - supported sports model
-- partner-scoped authorization
+- Organization-scoped authorization
 
 Suggested Jira issues:
 
@@ -307,17 +307,17 @@ Suggested Jira issues:
 - `[Frontend] Build supported sports selector`
 - `[Frontend] Build court pricing and rules form`
 - `[Frontend] Build court activation controls`
-- `[E2E] Validate partner court setup`
+- `[E2E] Validate Organization court setup`
 
 Exit gate:
 
-- partner can create a court and see it listed in the partner area
+- Organization can create a court and see it listed in the Organization area
 
 ### F6: Availability Calendar
 
 Goal:
 
-- let partners publish available court slots
+- let Organizations publish available court slots
 
 Deliverables:
 
@@ -335,7 +335,7 @@ Backend dependencies:
 
 Suggested Jira issues:
 
-- `[Frontend] Build partner availability calendar`
+- `[Frontend] Build Organization availability calendar`
 - `[Frontend] Build availability slot editor`
 - `[Frontend] Build agenda day view`
 - `[Frontend] Build agenda week view`
@@ -343,7 +343,7 @@ Suggested Jira issues:
 
 Exit gate:
 
-- partner can publish a slot and see it reflected in operational views
+- Organization can publish a slot and see it reflected in operational views
 
 ### F7: Discovery
 
@@ -364,7 +364,7 @@ Deliverables:
 Backend dependencies:
 
 - discovery query by sport, availability, and price
-- partner/court listing DTOs
+- Organization/court listing DTOs
 - available slot summary
 
 Suggested Jira issues:
@@ -373,7 +373,7 @@ Suggested Jira issues:
 - `[Frontend] Build sport filter`
 - `[Frontend] Build availability filter`
 - `[Frontend] Build price filter`
-- `[Frontend] Build court and partner result cards`
+- `[Frontend] Build court and Organization result cards`
 - `[E2E] Validate court discovery filters`
 
 Exit gate:
@@ -384,14 +384,14 @@ Exit gate:
 
 Goal:
 
-- let players request reservations and partners manage decisions
+- let players request reservations and Organizations manage decisions
 
 Deliverables:
 
 - reservation request flow
 - player reservation history
-- partner reservation detail
-- partner confirm/cancel actions
+- Organization reservation detail
+- Organization confirm/cancel actions
 - player cancel action
 - status badges and business-rule errors
 
@@ -399,7 +399,7 @@ Backend dependencies:
 
 - reservation request endpoint
 - reservation status model
-- partner confirmation/cancellation endpoints
+- Organization confirmation/cancellation endpoints
 - player cancellation endpoint
 - duplicate slot prevention
 
@@ -407,15 +407,15 @@ Suggested Jira issues:
 
 - `[Frontend] Build reservation request flow`
 - `[Frontend] Build player reservation history`
-- `[Frontend] Build partner reservation detail`
-- `[Frontend] Build partner reservation confirmation flow`
+- `[Frontend] Build Organization reservation detail`
+- `[Frontend] Build Organization reservation confirmation flow`
 - `[Frontend] Build reservation cancellation flow`
 - `[E2E] Validate reservation happy path`
 - `[E2E] Validate duplicate reservation prevention`
 
 Exit gate:
 
-- player can request a slot, partner can confirm it, and duplicate confirmed
+- player can request a slot, Organization can confirm it, and duplicate confirmed
   reservations are blocked
 
 ### F9: Manual Payments
@@ -446,7 +446,7 @@ Suggested Jira issues:
 
 Exit gate:
 
-- partner can mark a reservation payment state and the reservation reflects it
+- Organization can mark a reservation payment state and the reservation reflects it
 
 ### F10: Open Matches
 
@@ -491,7 +491,7 @@ Create roadmap anchors now:
 
 - `[MVP] Authentication and Account Access`
 - `[MVP] Player Profile`
-- `[MVP] Partner Onboarding`
+- `[MVP] Organization Onboarding`
 - `[MVP] Court Management`
 - `[MVP] Availability`
 - `[MVP] Discovery`
@@ -518,7 +518,7 @@ backend contracts are close enough.
 - package manager
 - styling/component library
 - route map
-- player/partner navigation split
+- player/organizations/:organizationSlug navigation split
 - auth session source of truth
 - public discovery before sign-in
 - first design token set

@@ -9,7 +9,7 @@ related:
   - docs/frontend/sandicts-frontend-planning.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-page-functional-spec.md
-  - sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-mvp-scope.md
+  - sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
 scope: frontend, architecture, stack, mvp, delivery
 read-when:
   - creating the Sandicts frontend app
@@ -60,7 +60,8 @@ Still open:
 
 - deployment target
 - final route map
-- final navigation model for player and partner areas
+- final navigation details for Player, Organization, Academy, and Admin App
+  areas
 
 ## Core Stack
 
@@ -135,8 +136,9 @@ Use:
 
 Rules:
 
-- use App Router layouts for public, player, partner, and future admin areas
-- keep product and business rules in the Nest API
+- use App Router layouts for public, Player, Organization, Academy, and Admin App
+  areas
+- keep product and business rules in `sandicts/sandicts-docs`
 - do not treat Next.js as a second business backend
 - use server-side capabilities only when they improve routing, auth, metadata,
   initial reads, or user experience
@@ -145,12 +147,12 @@ Rules:
 
 Reason:
 
-- Sandicts has public discovery, authenticated player flows, partner operations,
+- Sandicts has public discovery, authenticated player flows, Organization operations,
   role-based shells, and future public pages
 - Next.js gives better room for route structure, metadata, images, and public
   acquisition surfaces than a pure SPA foundation
-- the Nest backend remains the system of record for rules, persistence, auth,
-  and API contracts
+- the Nest backend remains the system of record for persistence, auth, and API
+  contracts; shared docs remain the system of record for product rules
 
 ### UI And Styling
 
@@ -168,7 +170,7 @@ Rules:
 - use lucide-react for icons where an existing icon fits the control
 - define Sandicts tokens early: color, radius, typography, spacing, status
   colors, focus rings, and surface styles
-- keep partner screens denser and more operational than player screens
+- keep Organization screens denser and more operational than player screens
 
 Reason:
 
@@ -194,7 +196,7 @@ Examples of server state:
 
 - current auth session
 - player profile
-- partner profile
+- Organization profile
 - court list
 - availability slots
 - discovery results
@@ -241,7 +243,7 @@ Primary form areas:
 
 - sign-in states
 - player profile onboarding
-- partner profile setup
+- Organization profile setup
 - court creation/editing
 - availability editor
 - reservation request confirmation
@@ -435,8 +437,8 @@ Initial E2E gates:
 
 - auth: sign in, preserve or refresh session, sign out
 - profile: create/update player profile
-- partner: create/update partner profile
-- courts: create and see court in partner list
+- Organization: create/update Organization profile
+- courts: create and see court in Organization list
 - availability: publish slot and expose it to discovery
 - discovery: filter courts by sport, availability, and price
 - reservations: request, confirm, cancel, and block duplicates
@@ -483,7 +485,7 @@ Decision:
 
 Reason:
 
-- Sandicts has separate public, player, and partner product areas, but MVP work
+- Sandicts has separate public, player, and Organization product areas, but MVP work
   should still ship in thin vertical slices
 - feature modules make the user workflow easy to find without turning shared
   UI or API infrastructure into feature-specific code
@@ -495,7 +497,7 @@ Recommended app areas:
 
 - public
 - player
-- partner
+- Organization
 - admin later only if needed
 
 Recommended boundaries:
@@ -529,7 +531,7 @@ src/
 ├── features/
 │   ├── auth/
 │   ├── player-profile/
-│   ├── partner-profile/
+│   ├── Organization-profile/
 │   ├── courts/
 │   ├── availability/
 │   ├── discovery/
@@ -726,8 +728,9 @@ Required defense pattern:
 - the component or form should avoid building invalid request variables
 - the feature hook should avoid firing a request when required identifiers or
   filters are missing
-- the backend remains the final source of truth for validation and business
-  rules
+- shared docs remain the final source of truth for product and business rules
+- the backend remains the final source of truth for validation behavior exposed
+  through API contracts
 
 ### Server And Client Component Boundaries
 
@@ -790,7 +793,7 @@ Rules:
 - generated API names follow the generator output and should not be manually
   renamed unless wrapped by a feature-level helper
 - route groups should describe app areas, such as `(public)`, `(player)`, and
-  `(partner)`, when the route map is finalized
+  `(Organization)`, when the route map is finalized
 
 ### Type Placement
 
@@ -939,4 +942,4 @@ This document does not decide:
 - exact route map
 - deployment provider
 - final API endpoint names
-- business rules already owned by backend/product docs
+- business rules already owned by `sandicts/sandicts-docs`
