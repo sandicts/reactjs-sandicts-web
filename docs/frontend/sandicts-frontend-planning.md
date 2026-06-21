@@ -9,9 +9,9 @@ related:
   - docs/frontend/sandicts-frontend-tech-decisions.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-page-functional-spec.md
-  - sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-product-context.md
-  - sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-mvp-scope.md
-  - sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-jira-planning-workflow.md
+  - sandicts/sandicts-docs:docs/product/sandicts-product-context.md
+  - sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
+  - sandicts/sandicts-docs:docs/product/sandicts-jira-planning-workflow.md
 scope: frontend, ux, fullstack, mvp, jira, integration
 read-when:
   - planning the Sandicts frontend
@@ -35,8 +35,8 @@ It complements:
 - `docs/frontend/sandicts-frontend-tech-decisions.md`
 - `docs/frontend/sandicts-mvp-delivery-roadmap.md`
 - `docs/frontend/sandicts-page-functional-spec.md`
-- `sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-mvp-scope.md`
-- `sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-jira-planning-workflow.md`
+- `sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md`
+- `sandicts/sandicts-docs:docs/product/sandicts-jira-planning-workflow.md`
 
 The frontend should not wait until the entire backend MVP is done. It should
 start early enough to validate real flows, but late enough that it is not built
@@ -89,7 +89,7 @@ Allowed now:
 
 - define the page inventory and page behavior
 - define product navigation
-- define player, organization, academy, and admin app areas
+- define player, organization, academy, and Admin App areas
 - define frontend stack rules
 - define design tokens and visual direction
 - define routing conventions
@@ -156,7 +156,8 @@ Decided stack:
 
 Rules:
 
-- keep the Nest backend as the API and business-rule owner
+- keep `sandicts/sandicts-docs` as the product and business-rule owner
+- keep the Nest backend as the API contract and implementation owner
 - do not store API data in Zustand
 - use TanStack Query for server state and cache behavior
 - generate frontend API types from backend contracts when practical
@@ -181,7 +182,7 @@ KAN-65 navigation decision:
 - Sandicts uses one login and one user identity.
 - The account is not locked to a single type.
 - A signed-in user may have a player profile, one or more organizations, one or
-  more academies, and a Sandicts admin context when authorized.
+  more academies, and an Admin App context when authorized.
 - Initial sign-up/onboarding lets the user start as Player, Organization, or
   Academy, but that choice only creates or opens the first active context.
 - The app shell must include a context switcher when the user can access more
@@ -302,7 +303,7 @@ Access model:
   academy rule allows it
 - cross-academy access is forbidden
 
-### Sandicts Admin Area
+### Admin App Area
 
 Purpose:
 
@@ -353,7 +354,7 @@ Resolved direction:
 - if the user has only one context, enter that context directly
 - if the user has multiple contexts, show the context switcher/picker
 - use slug routes for public and operational entity pages from the beginning
-- keep player, organization, academy, and admin as separate app areas with
+- keep player, organization, academy, and Admin App as separate app areas with
   shared auth/session foundations
 
 Needed decisions:
@@ -451,7 +452,7 @@ Suggested Jira issues:
 - `[Frontend] Define frontend architecture and app shell rules`
 - `[UX] Define Sandicts MVP navigation model`
 - `[UX] Define auth and role switching experience`
-- `[UX] Prototype public, player, organization, academy, and admin app shells`
+- `[UX] Prototype public, player, organization, academy, and Admin App shells`
 - `[Design] Define MVP visual tokens and component direction`
 
 Exit criteria:
@@ -674,8 +675,8 @@ Exit criteria:
 
 Use this rhythm for each module:
 
-1. Product rule is confirmed in `sandicts/nodejs-sandicts-api:docs/ai/product`
-   or `sandicts/nodejs-sandicts-api:docs/ai/business`
+1. Product rule is confirmed in `sandicts/sandicts-docs:docs/product`
+   or `sandicts/sandicts-docs:docs/business-rules`
 2. Backend drafts the API contract and business-rule behavior
 3. Frontend drafts the user flow and required states
 4. Backend implements the first usable endpoint set
@@ -764,11 +765,11 @@ Decided:
   contract adapter under `lib/api`, with semantic feature hooks, a Sandicts API
   runtime, in-memory access token storage, refresh cookies owned by the
   backend, normalized errors, and TanStack Query server-state ownership.
-- [x] Decide player, organization, academy, and admin navigation model: one
+- [x] Decide player, organization, academy, and Admin App navigation model: one
   login, one user identity, multiple accessible contexts, context switcher when
   needed, and slug-based routes from the start.
 - [x] Decide account context model: a user can have a player profile, multiple
-  organizations, multiple academies, and an internal admin context when
+  organizations, multiple academies, and an internal Admin App context when
   authorized; the initial onboarding choice does not lock the account type.
 - [x] Decide organization and academy relationship: Organization and Academy
   are independent top-level contexts, not parent/child entities.

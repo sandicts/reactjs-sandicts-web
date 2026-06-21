@@ -9,10 +9,10 @@ related:
   - docs/frontend/sandicts-frontend-tech-decisions.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-frontend-planning.md
-  - sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-product-context.md
-  - sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-mvp-scope.md
-  - sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-v2-backlog.md
-  - sandicts/nodejs-sandicts-api:docs/ai/business/sandicts-business-rules.md
+  - sandicts/sandicts-docs:docs/product/sandicts-product-context.md
+  - sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
+  - sandicts/sandicts-docs:docs/product/sandicts-v2-backlog.md
+  - sandicts/sandicts-docs:docs/business-rules/sandicts-business-rules.md
 scope: frontend, pages, product-rules, user-flows, mvp, v2, backlog
 read-when:
   - defining Sandicts pages or routes
@@ -65,7 +65,7 @@ Planning order:
 6. create Jira issues only after the user approves the batch
 
 This document is a working draft. When a rule becomes a backend invariant, copy
-or reconcile it into `sandicts/nodejs-sandicts-api:docs/ai/business/sandicts-business-rules.md` or the MVP
+or reconcile it into `sandicts/sandicts-docs:docs/business-rules/sandicts-business-rules.md` or the MVP
 scope docs as appropriate.
 
 ## Scope Classification
@@ -150,7 +150,7 @@ Can:
 - complete or use a player profile
 - create or access one or more organizations when authorized
 - create or access one or more academies when authorized
-- access Sandicts admin only when the internal admin permission exists
+- access Admin App only when the internal admin permission exists
 - switch between accessible contexts through the app shell
 
 Rules:
@@ -159,7 +159,7 @@ Rules:
   by user type.
 - Account type is not permanent. The onboarding choice only creates or opens
   the first context.
-- A user may have Player, Organization, Academy, and Sandicts Admin contexts at
+- A user may have Player, Organization, Academy, and Admin App contexts at
   the same time.
 - After authentication, the app should use `returnTo` when authorized, then the
   last active context, then the only available context, then a context picker.
@@ -171,7 +171,7 @@ Context switcher:
 - Player
 - each Organization by display name and slug
 - each Academy by display name and slug
-- Sandicts Admin when authorized
+- Admin App when authorized
 - create Organization or create Academy entry points when allowed
 
 Open decisions:
@@ -217,7 +217,6 @@ MVP profile fields:
 
 Candidate or V2 profile fields:
 
-- academy where the player trains
 - academy where the player trains
 - preferred court side: left, right, both
 - dominant foot: right, left, both
@@ -433,7 +432,7 @@ Open decisions:
 - whether coaches can see all student details or only class-level details
 - whether coach-facing screens are V2 or later
 
-### Sandicts Admin
+### Admin App
 
 Phase:
 
@@ -1956,7 +1955,7 @@ Rules:
 - Academy payment control is manual.
 - Academy may prevent scheduling if student has not paid.
 
-## Sandicts Admin Pages
+## Admin App Pages
 
 ### Admin Dashboard
 
@@ -2134,7 +2133,7 @@ Academy:
 - `/academies/:academySlug/manage/plans`
 - `/academies/:academySlug/manage/payments`
 
-Sandicts Admin:
+Admin App:
 
 - `/admin`
 - `/admin/metrics`
@@ -2174,10 +2173,10 @@ Confirmed or likely MVP pages:
 | Organization | Reservation detail | MVP |
 | Organization | Manual payments | MVP |
 | Organization | Amenities | MVP candidate |
-| Admin | Sports catalog | MVP candidate |
-| Admin | Audit records | MVP candidate backend, UI later |
-| Admin | Organizations and academies | MVP candidate |
-| Admin | Billing status | MVP candidate |
+| Admin App | Sports catalog | MVP candidate |
+| Admin App | Audit records | MVP candidate backend, UI later |
+| Admin App | Organizations and academies | MVP candidate |
+| Admin App | Billing status | MVP candidate |
 
 V2 or later pages:
 
@@ -2195,7 +2194,7 @@ V2 or later pages:
 | Academy | Plans | V2 |
 | Academy | Extra classes | V2 or future |
 | Academy | Academy payments | V2 |
-| Admin | Full admin dashboard | MVP candidate or future |
+| Admin App | Full admin dashboard | MVP candidate or future |
 
 ## Business Rules Extracted From Page Descriptions
 
@@ -2204,7 +2203,7 @@ Authentication and access:
 - Public discovery is allowed.
 - Practical actions require login.
 - After login, the app should resume the attempted action when possible.
-- A single account may have Player, Organization, Academy, and Sandicts Admin
+- A single account may have Player, Organization, Academy, and Admin App
   contexts.
 - Context switching is required when the user has more than one accessible
   context.
@@ -2267,7 +2266,7 @@ Academy and classes:
   allow it.
 - Academy module is V2 unless product scope changes.
 
-Admin and audit:
+Admin App and audit:
 
 - Sensitive administrative and operational actions should be auditable.
 - Cross-organization and cross-academy access is forbidden.

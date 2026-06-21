@@ -5,8 +5,8 @@ role: working-draft
 priority: high
 canonical: docs/frontend/sandicts-mvp-screens-spec.md
 related:
-  - sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-mvp-functional-spec.md
-  - sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-mvp-scope.md
+  - sandicts/sandicts-docs:docs/product/sandicts-mvp-functional-spec.md
+  - sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
   - docs/frontend/sandicts-frontend-context.md
   - docs/frontend/sandicts-frontend-planning.md
 scope: frontend, figma, ux, mvp, screens, flows
@@ -32,7 +32,7 @@ Este documento descreve as telas do MVP Sandicts em portugues para orientar:
 - validacao das dependencias com backend
 - conversa de produto antes da implementacao
 
-Ele se baseia em `sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-mvp-functional-spec.md`.
+Ele se baseia em `sandicts/sandicts-docs:docs/product/sandicts-mvp-functional-spec.md`.
 
 ## Como Usar Este Documento
 
@@ -58,14 +58,14 @@ forem sendo desenhadas no Figma.
   pessoas.
 - Progressao esportiva e identidade visual de atleta podem inspirar a UI, mas
   nao devem virar fluxo complexo no MVP.
-- Parceiros precisam de uma experiencia operacional clara, simples e rapida.
+- A Organization precisa de uma experiencia operacional clara, simples e rapida.
 
 ### Interface
 
 - Estados de disponibilidade, reserva, pagamento e partida devem ser visiveis.
 - O usuario deve entender o proximo passo sem depender de texto longo.
 - Fluxos de reserva e entrada em partida devem ser curtos.
-- Telas de parceiro devem ser mais densas e operacionais.
+- Telas da Organization devem ser mais densas e operacionais.
 - Telas de jogador podem ter mais energia de marca, mas sem atrapalhar a tarefa.
 
 ### Erros E Estados
@@ -120,18 +120,18 @@ Telas:
 - Detalhe da partida aberta
 - Criar partida aberta
 
-### Area Do Parceiro
+### Area Da Organization
 
 Objetivo:
 
-- ajudar o parceiro a cadastrar oferta
+- ajudar a Organization a cadastrar oferta
 - gerenciar quadras e disponibilidade
 - acompanhar reservas e pagamentos
 
 Telas:
 
-- Setup de parceiro
-- Dashboard do parceiro
+- Setup da Organization
+- Dashboard da Organization
 - Lista de quadras
 - Criar/editar quadra
 - Calendario de disponibilidade
@@ -162,17 +162,17 @@ Rotas do jogador:
 - `/app/open-matches/[matchId]`
 - `/app/open-matches/new`
 
-Rotas do parceiro:
+Rotas da Organization:
 
-- `/partner`
-- `/partner/profile`
-- `/partner/courts`
-- `/partner/courts/new`
-- `/partner/courts/[courtId]`
-- `/partner/availability`
-- `/partner/agenda`
-- `/partner/reservations/[reservationId]`
-- `/partner/payments`
+- `/organizations/:organizationSlug`
+- `/organizations/:organizationSlug/profile`
+- `/organizations/:organizationSlug/courts`
+- `/organizations/:organizationSlug/courts/new`
+- `/organizations/:organizationSlug/courts/[courtId]`
+- `/organizations/:organizationSlug/calendar/configuration`
+- `/organizations/:organizationSlug/calendar`
+- `/organizations/:organizationSlug/reservations/[reservationId]`
+- `/organizations/:organizationSlug/payments`
 
 ## Telas Publicas
 
@@ -490,7 +490,7 @@ Conteudo principal:
 - filtro de data/horario
 - filtro de preco
 - lista de resultados
-- cards de quadra/parceiro
+- cards de quadra/Organization
 
 Acoes:
 
@@ -520,7 +520,7 @@ Notas para Figma:
 
 - mobile deve ser prioridade
 - filtros precisam ser rapidos e visiveis
-- card deve mostrar esporte, preco, disponibilidade e parceiro
+- card deve mostrar esporte, preco, disponibilidade e Organization
 
 ### Tela: Detalhe Da Quadra
 
@@ -540,7 +540,7 @@ Objetivo:
 Conteudo principal:
 
 - nome da quadra
-- parceiro
+- Organization
 - esportes suportados
 - preco
 - regras simples
@@ -592,7 +592,7 @@ Objetivo:
 
 Conteudo principal:
 
-- parceiro
+- Organization
 - quadra
 - esporte
 - data
@@ -628,7 +628,7 @@ Dependencias de backend:
 Notas para Figma:
 
 - desenhar confirmacao clara antes do submit
-- o jogador precisa entender que parceiro ainda pode confirmar
+- o jogador precisa entender que Organization ainda pode confirmar
 
 ### Tela: Status / Detalhe Da Reserva Do Jogador
 
@@ -875,27 +875,27 @@ Dependencias de backend:
 
 Notas para Figma:
 
-- local da partida esta em decisao aberta: quadra/parceiro, texto livre ou ambos
+- local da partida esta em decisao aberta: quadra/Organization, texto livre ou ambos
 
-## Telas Do Parceiro
+## Telas da Organization
 
-### Tela: Setup De Parceiro
+### Tela: Setup da Organization
 
 Rota sugerida:
 
-- `/partner/profile`
+- `/organizations/:organizationSlug/profile`
 
 Usuarios:
 
-- usuario autenticado sem perfil de parceiro
+- usuario autenticado sem perfil de Organization
 
 Objetivo:
 
-- criar perfil minimo de parceiro para comecar a cadastrar quadras
+- criar perfil minimo de Organization para comecar a cadastrar quadras
 
 Conteudo principal:
 
-- nome do parceiro
+- nome da Organization
 - tipo/categoria, se aprovado
 - informacoes de listagem
 - contato operacional
@@ -916,32 +916,32 @@ Estados:
 
 Regras:
 
-- perfil de parceiro deve existir antes de criar quadras
-- dados do parceiro pertencem ao usuario/parceiro autenticado
+- perfil de Organization deve existir antes de criar quadras
+- dados da Organization pertencem ao usuario/Organization autenticado
 
 Dependencias de backend:
 
-- `GET /partners/me`
-- `POST /partners`
-- `PATCH /partners/me`
+- `GET /Organizations/me`
+- `POST /Organizations`
+- `PATCH /Organizations/me`
 
 Notas para Figma:
 
-- precisa ser simples o bastante para parceiro nao abandonar o setup
+- precisa ser simples o bastante para Organization nao abandonar o setup
 
-### Tela: Dashboard Do Parceiro
+### Tela: Dashboard da Organization
 
 Rota sugerida:
 
-- `/partner`
+- `/organizations/:organizationSlug`
 
 Usuarios:
 
-- parceiro autenticado com perfil criado
+- Organization autenticado com perfil criado
 
 Objetivo:
 
-- dar visao operacional inicial do parceiro
+- dar visao operacional inicial da Organization
 
 Conteudo principal:
 
@@ -968,7 +968,7 @@ Estados:
 
 Dependencias de backend:
 
-- perfil do parceiro
+- perfil da Organization
 - resumo de quadras
 - resumo de agenda
 - resumo de pagamentos
@@ -982,15 +982,15 @@ Notas para Figma:
 
 Rota sugerida:
 
-- `/partner/courts`
+- `/organizations/:organizationSlug/courts`
 
 Usuarios:
 
-- parceiro autenticado
+- Organization autenticado
 
 Objetivo:
 
-- gerenciar quadras do parceiro
+- gerenciar quadras da Organization
 
 Conteudo principal:
 
@@ -1014,7 +1014,7 @@ Estados:
 
 Dependencias de backend:
 
-- `GET /partner/courts`
+- `GET /organizations/:organizationSlug/courts`
 - endpoint de status da quadra
 
 Notas para Figma:
@@ -1025,12 +1025,12 @@ Notas para Figma:
 
 Rota sugerida:
 
-- `/partner/courts/new`
-- `/partner/courts/[courtId]`
+- `/organizations/:organizationSlug/courts/new`
+- `/organizations/:organizationSlug/courts/[courtId]`
 
 Usuarios:
 
-- parceiro autenticado
+- Organization autenticado
 
 Objetivo:
 
@@ -1062,14 +1062,14 @@ Estados:
 Regras:
 
 - quadra deve ter ao menos um esporte do MVP
-- parceiro nao edita quadra de outro parceiro
+- Organization nao edita quadra de outra Organization
 - quadra inativa nao pode ser reservada
 
 Dependencias de backend:
 
-- `POST /partner/courts`
-- `PATCH /partner/courts/:courtId`
-- `PATCH /partner/courts/:courtId/status`
+- `POST /organizations/:organizationSlug/courts`
+- `PATCH /organizations/:organizationSlug/courts/:courtId`
+- `PATCH /organizations/:organizationSlug/courts/:courtId/status`
 - `GET /sports`
 
 Notas para Figma:
@@ -1080,11 +1080,11 @@ Notas para Figma:
 
 Rota sugerida:
 
-- `/partner/availability`
+- `/organizations/:organizationSlug/calendar/configuration`
 
 Usuarios:
 
-- parceiro autenticado
+- Organization autenticado
 
 Objetivo:
 
@@ -1117,16 +1117,16 @@ Estados:
 
 Regras:
 
-- disponibilidade referencia quadra do parceiro
+- disponibilidade referencia quadra da Organization
 - horarios invalidos sao bloqueados
 - disponibilidade deve refletir reservas confirmadas
 
 Dependencias de backend:
 
-- `GET /partner/availability`
-- `POST /partner/availability`
-- `PATCH /partner/availability/:slotId`
-- `DELETE /partner/availability/:slotId`
+- `GET /organizations/:organizationSlug/calendar/configuration`
+- `POST /organizations/:organizationSlug/calendar/configuration`
+- `PATCH /organizations/:organizationSlug/calendar/configuration/:slotId`
+- `DELETE /organizations/:organizationSlug/calendar/configuration/:slotId`
 
 Notas para Figma:
 
@@ -1136,11 +1136,11 @@ Notas para Figma:
 
 Rota sugerida:
 
-- `/partner/agenda`
+- `/organizations/:organizationSlug/calendar`
 
 Usuarios:
 
-- parceiro autenticado
+- Organization autenticado
 
 Objetivo:
 
@@ -1168,7 +1168,7 @@ Estados:
 
 Dependencias de backend:
 
-- `GET /partner/agenda`
+- `GET /organizations/:organizationSlug/calendar`
 
 Notas para Figma:
 
@@ -1178,11 +1178,11 @@ Notas para Figma:
 
 Rota sugerida:
 
-- pode compartilhar `/partner/agenda` com tab/segmento semana
+- pode compartilhar `/organizations/:organizationSlug/calendar` com tab/segmento semana
 
 Usuarios:
 
-- parceiro autenticado
+- Organization autenticado
 
 Objetivo:
 
@@ -1210,21 +1210,21 @@ Estados:
 
 Dependencias de backend:
 
-- `GET /partner/agenda`
+- `GET /organizations/:organizationSlug/calendar`
 
 Notas para Figma:
 
 - desenhar responsividade com cuidado; semana pode ficar densa no mobile
 
-### Tela: Detalhe Da Reserva Do Parceiro
+### Tela: Detalhe da reserva da Organization
 
 Rota sugerida:
 
-- `/partner/reservations/[reservationId]`
+- `/organizations/:organizationSlug/reservations/[reservationId]`
 
 Usuarios:
 
-- parceiro dono da reserva
+- Organization dono da reserva
 
 Objetivo:
 
@@ -1261,15 +1261,15 @@ Estados:
 
 Regras:
 
-- parceiro so acessa reservas do proprio parceiro
+- Organization so acessa reservas do propria Organization
 - confirmacao deve respeitar estado de pagamento se a regra exigir
 - reserva confirmada bloqueia horario
 
 Dependencias de backend:
 
-- `GET /partner/reservations/:reservationId`
-- `PATCH /partner/reservations/:reservationId/confirm`
-- `PATCH /partner/reservations/:reservationId/cancel`
+- `GET /organizations/:organizationSlug/reservations/:reservationId`
+- `PATCH /organizations/:organizationSlug/reservations/:reservationId/confirm`
+- `PATCH /organizations/:organizationSlug/reservations/:reservationId/cancel`
 
 Notas para Figma:
 
@@ -1279,11 +1279,11 @@ Notas para Figma:
 
 Rota sugerida:
 
-- `/partner/payments`
+- `/organizations/:organizationSlug/payments`
 
 Usuarios:
 
-- parceiro autenticado
+- Organization autenticado
 
 Objetivo:
 
@@ -1312,7 +1312,7 @@ Estados:
 
 Dependencias de backend:
 
-- `GET /partner/payments`
+- `GET /organizations/:organizationSlug/payments`
 
 Notas para Figma:
 
@@ -1322,11 +1322,11 @@ Notas para Figma:
 
 Rota sugerida:
 
-- pode ser modal dentro de `/partner/payments` ou detalhe de reserva
+- pode ser modal dentro de `/organizations/:organizationSlug/payments` ou detalhe de reserva
 
 Usuarios:
 
-- parceiro autenticado
+- Organization autenticado
 
 Objetivo:
 
@@ -1357,13 +1357,13 @@ Estados:
 
 Regras:
 
-- parceiro nao atualiza pagamento de outro parceiro
+- Organization nao atualiza pagamento de outra Organization
 - gateway nao e necessario no MVP
 - `refunded` nao deve aparecer sem fluxo de reembolso
 
 Dependencias de backend:
 
-- `PATCH /partner/payments/:paymentId/status`
+- `PATCH /organizations/:organizationSlug/payments/:paymentId/status`
 
 Notas para Figma:
 
@@ -1398,8 +1398,8 @@ Objetivo:
 Exemplos:
 
 - jogador sem reservas
-- parceiro sem quadras
-- parceiro sem disponibilidade
+- Organization sem quadras
+- Organization sem disponibilidade
 - descoberta sem resultados
 - lista de partidas aberta vazia
 
@@ -1415,8 +1415,8 @@ Objetivo:
 
 Uso:
 
-- jogador tentando acessar dado de parceiro sem permissao
-- parceiro tentando acessar dado de outro parceiro
+- jogador tentando acessar dado da Organization sem permissao
+- Organization tentando acessar dado de outra Organization
 
 Notas para Figma:
 
@@ -1437,7 +1437,7 @@ Uso:
 
 Notas para Figma:
 
-- nao expor informacao privada sobre existencia de dados de outro parceiro
+- nao expor informacao privada sobre existencia de dados de outra Organization
 
 ### Estado: Erro De Regra De Negocio
 
@@ -1464,9 +1464,9 @@ Notas para Figma:
 2. Auth: entrada, erro, sessao expirada
 3. Jogador: onboarding de perfil e home
 4. Jogador: descoberta, detalhe da quadra e solicitar reserva
-5. Parceiro: setup, dashboard e quadras
-6. Parceiro: disponibilidade e agenda
-7. Reservas: detalhe do jogador e detalhe do parceiro
+5. Organization: setup, dashboard e quadras
+6. Organization: disponibilidade e agenda
+7. Reservas: detalhe do jogador e detalhe da Organization
 8. Pagamentos manuais
 9. Partidas abertas
 10. Revisao mobile de todos os fluxos principais
@@ -1476,15 +1476,15 @@ Notas para Figma:
 Estas decisoes devem ser preenchidas conforme o Figma evoluir:
 
 - descoberta publica existe antes do login?
-- jogador e parceiro ficam no mesmo app shell ou em areas bem separadas?
+- jogador e Organization ficam no mesmo app shell ou em areas bem separadas?
 - qual e a navegacao mobile principal?
-- quais campos exatos do perfil de parceiro entram no MVP?
+- quais campos exatos do perfil de Organization entram no MVP?
 - quais campos exatos de localizacao aparecem sem geolocalizacao?
 - slot de disponibilidade e por quadra ou por esporte?
 - preco e por quadra, por horario ou por regra simples?
 - qual e a duracao padrao de uma reserva?
 - qual e a janela de cancelamento?
-- partida aberta usa quadra/parceiro, texto livre ou ambos como local?
+- partida aberta usa quadra/Organization, texto livre ou ambos como local?
 - quais empty states precisam de ilustracao ou podem ser apenas texto/icone?
 
 ## Proximo Passo
@@ -1497,8 +1497,8 @@ Usar este documento para desenhar primeiro:
 4. descoberta de quadras
 5. detalhe da quadra
 6. solicitacao de reserva
-7. setup de parceiro
-8. dashboard do parceiro
+7. Setup da Organization
+8. Dashboard da Organization
 9. lista/criacao de quadras
 
 Depois disso, revisar as decisoes abertas e transformar os fluxos aprovados em

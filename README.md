@@ -154,5 +154,6 @@ The frontend lives in `sandicts/reactjs-sandicts-web`, separate from
 `sandicts/nodejs-sandicts-api`.
 
 This keeps frontend CI, deployment, package management, and preview environments
-independent while the backend remains the source of truth for business rules and
-OpenAPI contracts.
+independent. Shared product and business rules live in
+`sandicts/sandicts-docs`; backend API contracts live in
+`sandicts/nodejs-sandicts-api`.

@@ -23,7 +23,7 @@ const actions = [
     Icon: UsersRound,
   },
   {
-    href: "/partner",
+    href: "/organizations/sandicts-demo",
     label: "Run the agenda",
     detail: "Slots, reservations, and payments.",
     Icon: CalendarDays,
@@ -61,10 +61,10 @@ export default function Home() {
               Player
             </Link>
             <Link
-              href="/partner"
+              href="/organizations/sandicts-demo"
               className="rounded-lg px-3 py-2 text-sm text-muted transition hover:bg-surface hover:text-foreground"
             >
-              Partner
+              Organization
             </Link>
             <Link
               href="/sign-in"
@@ -86,7 +86,7 @@ export default function Home() {
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-muted">
               The first Sandicts web app starts with player discovery, open
-              matches, and partner operations connected to the Nest API.
+              matches, and Organization operations connected to the Nest API.
             </p>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
               {actions.map(({ href, label, detail, Icon }) => (

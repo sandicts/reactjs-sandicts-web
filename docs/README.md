@@ -31,15 +31,22 @@ This repository is the canonical home for Sandicts frontend documentation.
 
 ## Cross-Repo Sources
 
-The backend API repository remains the source of truth for:
+The shared documentation repository `sandicts/sandicts-docs` is the source of
+truth for:
 
 - product scope and MVP boundaries
 - Sandicts business rules
+- entity glossary and naming
+- shared Jira planning workflow details
+
+The backend API repository remains the source of truth for:
+
 - backend architecture and API contracts
 - shared backend implementation details
 
-When frontend documentation references backend-owned rules, keep the reference
-explicit instead of duplicating the rule in this repository.
+When frontend documentation references shared product rules or backend-owned API
+rules, keep the reference explicit instead of duplicating the rule in this
+repository.
 
 Cross-repository references use this notation:
 
@@ -50,5 +57,5 @@ repository:path/to/file.md
 Example:
 
 ```text
-sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-mvp-scope.md
+sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
 ```

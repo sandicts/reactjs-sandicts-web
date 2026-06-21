@@ -23,7 +23,9 @@ repository.
 - Start here or with `.codex/skills/sandicts-frontend-project-context/SKILL.md`.
 - Prefer focused docs before long page, screen, or roadmap specs.
 - Treat `docs/frontend/discovery/` as historical input only.
-- Keep backend-owned product, business-rule, and API details in
+- Keep shared product scope, entity glossary, business rules, and Jira planning
+  in `sandicts/sandicts-docs`.
+- Keep backend API contracts and backend architecture in
   `sandicts/nodejs-sandicts-api`.
 - Use cross-repo references in `repository:path/to/file.md` format.
 
@@ -53,16 +55,18 @@ repository.
 | `docs/frontend/sandicts-page-functional-spec.md` | Page inventory, routes, permissions, and flow behavior |
 | `docs/frontend/sandicts-mvp-screens-spec.md` | Detailed MVP screen and state notes |
 
-## Backend-Owned References
+## Shared And Backend References
 
-Read backend docs from `sandicts/nodejs-sandicts-api` when a frontend task
-depends on product scope, business rules, API contracts, or shared Jira
-planning:
+Read shared docs from `sandicts/sandicts-docs` when a frontend task depends on
+product scope, business rules, entity names, or shared Jira planning:
 
-1. `sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-product-context.md`
-2. `sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-mvp-scope.md`
-3. `sandicts/nodejs-sandicts-api:docs/ai/business/sandicts-business-rules.md`
-4. `sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-jira-planning-workflow.md`
+1. `sandicts/sandicts-docs:docs/product/sandicts-product-context.md`
+2. `sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md`
+3. `sandicts/sandicts-docs:docs/business-rules/sandicts-business-rules.md`
+4. `sandicts/sandicts-docs:docs/product/sandicts-jira-planning-workflow.md`
+
+Read backend docs from `sandicts/nodejs-sandicts-api` only when API contracts,
+backend architecture, validation, errors, or implementation behavior matter.
 
 ## Common Reading Paths
 
