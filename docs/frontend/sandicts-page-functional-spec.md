@@ -588,6 +588,16 @@ Rules:
 - The sign-in page is shared by Player, Organization, Academy, and Sandicts
   Admin users.
 
+Implementation ownership:
+
+- session hydration uses the frontend auth decision: browser bootstrap attempts
+  `POST /auth/refresh`, current-session reads use `GET /auth/me`, and access
+  tokens stay in memory
+- exact expired-session copy, state shape, and redirect behavior belong to the
+  expired session UX decision
+- exact post-login destination and `returnTo` priority belong to the post-login
+  routing decision
+
 ## Player Pages
 
 ### Player Home

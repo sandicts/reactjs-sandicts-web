@@ -55,6 +55,8 @@ Decided:
   boundaries
 - use a semantic API integration architecture where generated OpenAPI code is a
   contract adapter under `lib/api`, not the frontend application API
+- hydrate auth sessions on the client through the backend refresh cookie,
+  in-memory access token storage, `GET /auth/me`, and TanStack Query
 
 Still open:
 
@@ -335,6 +337,8 @@ Rules:
   `401`
 - `src/lib/auth/auth-session-store.ts` stores the current access token and
   authenticated account summary in memory only
+- `src/lib/auth` owns browser auth bootstrap, refresh coordination, and session
+  clearing helpers
 - refresh tokens remain backend-owned `HttpOnly` cookies and must not be stored
   in `localStorage`, `sessionStorage`, Zustand, or React Query
 - API requests use `credentials: 'include'` so the browser can send and receive
@@ -349,6 +353,77 @@ Rules:
   approved expired-session or sign-in state
 - CORS must allow the frontend origin and credentials before real browser
   integration can pass locally or in deployed environments
+
+### Auth Session Hydration
+
+Decision:
+
+- use a client-first auth session hydration flow for the MVP
+- keep the access token only in browser memory
+- keep the refresh token backend-owned in an `HttpOnly` cookie
+- use TanStack Query as the source of server-state truth for the current public
+  session projection
+
+Initial browser bootstrap:
+
+1. When the app starts in the browser, the auth bootstrap should call
+   `POST /auth/refresh` with `credentials: 'include'`.
+2. If refresh succeeds, persist `{ account, session, accessToken,
+   accessTokenExpiresAt }` in the in-memory auth session store.
+3. After a successful refresh or sign-in, seed or invalidate
+   `queryKeys.auth.session()` so the current-session query can load the public
+   session projection.
+4. If refresh fails because there is no valid refresh cookie, clear the
+   in-memory auth session and let protected-route boundaries decide whether to
+   render unauthenticated or expired-session UX.
+
+Current session query:
+
+- `GET /auth/me` is the canonical current-session read when the frontend has an
+  access token.
+- `GET /auth/me` returns only `{ account, session }`; it does not rotate the
+  refresh cookie and does not return a new access token.
+- the `queryKeys.auth.session()` query should call `GET /auth/me` only when an
+  access token exists in memory
+- a `401` from `GET /auth/me` should use the shared request runtime's single
+  refresh retry; if the retry succeeds, the original request may run again
+- `auth_session_inactive`, `invalid_access_token`, and refresh-token failures
+  clear the in-memory auth session and private auth-dependent query data
+- `account_auth_forbidden` keeps the user out of protected areas and is handled
+  as forbidden UX, not as a silent retry loop
+
+Session-producing mutations:
+
+- `POST /auth/google/sign-in`, `POST /auth/refresh`, and future magic-link
+  consume success responses must all hydrate the same in-memory snapshot shape:
+  `{ account, session, accessToken, accessTokenExpiresAt }`
+- sign-in and refresh must not expect a refresh token in the response body
+- generated response types remain backend contracts; feature hooks expose
+  semantic auth behavior to UI code
+
+Route and rendering boundaries:
+
+- Next.js middleware is not the MVP source of auth truth because the access
+  token intentionally lives only in browser memory
+- Server Components may render public shell and route structure, but they must
+  not be responsible for proving the user's current auth session in the MVP
+- protected route behavior should be implemented as a client boundary or
+  protected layout that reads the auth session query and renders
+  `checking`, `authenticated`, `unauthenticated`, or `forbidden` states
+- the exact expired-session copy and redirect behavior belong to the expired
+  session UX decision, while post-login destination rules belong to the
+  post-login routing decision
+
+Cache invalidation:
+
+- successful sign-in, refresh, and future magic-link consume should set the
+  in-memory auth session and refresh `queryKeys.auth.session()`
+- sign-out and sign-out-all should clear the in-memory auth session and remove
+  or invalidate private auth-dependent queries
+- failed refresh should clear the in-memory auth session, clear private
+  auth-dependent data, and leave public discovery cache intact
+- feature modules should treat auth clearing as an infrastructure signal and
+  avoid duplicating auth/session state in Zustand
 
 Import rules:
 
@@ -918,9 +993,7 @@ integration:
 
 Resolve before first integrated auth implementation:
 
-- cookie/session behavior with the backend
-- CORS and credentials behavior
-- session hydration endpoint and response shape
+- CORS and credentialed browser behavior in each environment
 - expired session UX
 - sign-out behavior
 - post-login routing
