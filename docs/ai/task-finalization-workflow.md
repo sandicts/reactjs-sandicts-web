@@ -6,6 +6,7 @@ priority: high
 canonical: docs/ai/task-finalization-workflow.md
 related:
   - docs/ai/jira-operating-workflow.md
+  - sandicts/sandicts-docs:docs/ai/pull-request-standard.md
   - .codex/skills/jira-pr-commit-writer/SKILL.md
   - .github/pull_request_template.md
 scope: git, github, jira, commits, pull-requests, validation, frontend
@@ -92,6 +93,8 @@ the Jira key when the branch and PR title already carry it.
 
 ## Pull Request Title Standard
 
+Follow `sandicts/sandicts-docs:docs/ai/pull-request-standard.md`.
+
 Use:
 
 ```text
@@ -106,47 +109,22 @@ Examples:
 [KAN-112] docs(process): add frontend PR template
 ```
 
+Rules:
+
+- Put the primary Jira key at the start of every PR title.
+- Never open or leave a Sandicts PR titled with `[codex]`, only a branch name,
+  or no Jira key.
+- If a publishing helper or GitHub UI proposes a different title, rewrite it to
+  the Sandicts format before creating the PR.
+- Do not rely on `gh pr create --fill` or optional connector fields to infer a
+  compliant PR title.
+- Use the same title format in the frontend, backend, and shared docs
+  repositories.
+
 ## Pull Request Body Standard
 
-Always use `.github/pull_request_template.md`.
-
-Keep the template headings and order:
-
-```md
-## Summary
-
-## Problem
-
-## Root cause
-
-## Changes
-
-## Files added or updated
-
-## Impact
-
-### Fixed
-
-### Not changed
-
-## Validation
-
-- [ ] branch governance (CI: Governance)
-- [ ] lint (CI: Quality)
-- [ ] typecheck (CI: Quality)
-- [ ] tests (CI: Test)
-- [ ] build (CI: Build)
-- [ ] dependency audit (CI: Dependency audit)
-- [ ] manual validation completed
-
-## Notes
-
-- Primary Jira: `KAN-123`
-- Related Jira: none
-- Jira status: move delivered issue(s) to `In Review` after opening this PR
-- Branch cleanup: delete branch after merge enabled
-- Known gaps or skipped validation: none
-```
+Follow `sandicts/sandicts-docs:docs/ai/pull-request-standard.md` and always
+use `.github/pull_request_template.md`.
 
 Rules:
 
@@ -158,16 +136,22 @@ Rules:
   checks that actually passed.
 - Mention known gaps, skipped validations, or docs-only rationale explicitly.
 - Update the PR body if the scope changes after opening the PR.
+- Keep the same PR body section structure across Sandicts repositories.
+  Repository-specific differences belong in `Validation` and `Notes`.
+- Do not create or leave a PR with a blank body, omitted body, raw placeholders,
+  or a shortened alternative body.
 
 ## Validation Rule
 
-For docs-only changes:
+Validation must match the repository and the change type.
+
+For frontend docs-only changes:
 
 ```bash
 git diff --check
 ```
 
-For frontend app or setup changes:
+For frontend app, configuration, or setup changes:
 
 ```bash
 npm run lint
@@ -179,6 +163,16 @@ npm audit --audit-level=moderate
 Run tests when test tooling is present and the change touches behavior covered
 by tests. Frontend CI is expected to be configured by `KAN-111`; until then,
 local validation must be called out clearly in the PR and Jira comment.
+
+For shared docs repository changes:
+
+- run `git diff --check`
+- inspect the changed docs or skill metadata
+- do not mark lint, typecheck, tests, build, or dependency audit as complete
+  unless that repository has those commands configured and they actually ran
+
+For backend repository changes, follow
+`sandicts/nodejs-sandicts-api:docs/ai/task-finalization-workflow.md`.
 
 ## Jira Status Rule
 

@@ -16,7 +16,7 @@ under `docs/ai/` or `docs/frontend/`.
 
 When finishing a task, preparing commits, opening a PR, updating a PR title, or
 producing a delivery summary, read `docs/ai/task-finalization-workflow.md`
-first.
+and `sandicts/sandicts-docs:docs/ai/pull-request-standard.md` first.
 
 For Jira roadmap, backlog, Epic, Story, Task, Subtask, Bug, or issue-planning
 requests, read `docs/ai/jira-operating-workflow.md` first. When product scope,
@@ -31,8 +31,9 @@ Default language:
 - Use English for Jira titles, Jira descriptions, PR titles, PR descriptions,
   commit messages, release notes, and delivery summaries unless the user
   explicitly requests another language.
-- Follow `docs/ai/task-finalization-workflow.md` for PR titles, PR bodies, and
-  commit messages.
+- Follow `docs/ai/task-finalization-workflow.md` and
+  `sandicts/sandicts-docs:docs/ai/pull-request-standard.md` for PR titles, PR
+  bodies, validation, and commit messages.
 
 ## PR Title
 
@@ -49,6 +50,36 @@ Examples:
 [KAN-111] ci(frontend): add PR validation workflow
 [KAN-112] docs(process): add frontend PR template
 ```
+
+Rules:
+
+- The primary Jira key must be the first characters in the PR title.
+- Never use `[codex]`, a branch name, or a title without a Jira key.
+- If a generic publishing tool suggests another title, override it with this
+  Sandicts format before opening or updating the PR.
+- Do not rely on `gh pr create --fill` or optional connector fields to infer a
+  compliant PR title.
+- Follow the same PR title format in every Sandicts repository.
+
+## PR Description
+
+Always inspect `.github/pull_request_template.md` and preserve the template
+headings and order exactly.
+
+Use the same PR body structure across Sandicts repositories. Repository-specific
+differences belong in the `Validation` and `Notes` sections, not in a different
+template shape.
+
+Never create or leave a PR with a blank body, omitted body, raw template
+placeholders, or a shortened alternative body.
+
+Frontend validation defaults:
+
+- docs-only: `git diff --check`
+- frontend app/config: `npm run lint`, `npm run typecheck`, `npm run build`
+- dependency/security: `npm audit --audit-level=moderate`
+- tests: run when test tooling exists and the change touches behavior covered
+  by tests
 
 ## Commit Message
 
