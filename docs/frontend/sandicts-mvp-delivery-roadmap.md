@@ -250,6 +250,18 @@ Decision tasks:
 - `[UX] Decide post-login routing`
 - `[UX] Decide Google One Tap placement and fallback behavior`
 
+Selected auth session hydration flow:
+
+- client bootstrap attempts `POST /auth/refresh` with `credentials: 'include'`
+  to recover an access token from the backend-owned refresh cookie
+- successful Google sign-in, refresh, and future magic-link consume responses
+  hydrate the same in-memory snapshot: `{ account, session, accessToken,
+  accessTokenExpiresAt }`
+- the current-session TanStack Query uses `GET /auth/me` when an access token
+  exists and stores only the public `{ account, session }` projection
+- protected-route behavior is implemented by client auth boundaries or layouts,
+  not by Next.js middleware as the MVP source of auth truth
+
 Prototype tasks:
 
 - `[UX] Prototype sign-in screen`
@@ -593,6 +605,9 @@ Resolved foundation decisions:
   adapter under `lib/api`, with a semantic Sandicts API runtime, feature hooks,
   in-memory access token storage, backend-owned refresh cookies, normalized
   backend errors, and TanStack Query server-state ownership
+- auth session hydration flow: browser bootstrap uses `POST /auth/refresh`,
+  current session reads use `GET /auth/me`, access tokens stay in memory, and
+  refresh tokens stay backend-owned in `HttpOnly` cookies
 - KAN-65 navigation model: single login, one user identity, multiple contexts,
   context switcher, first-class Player/Organization/Academy/Admin App areas,
   and slug-based routes from the start
@@ -615,8 +630,7 @@ UX and app shell:
 
 Auth:
 
-- cookie/session behavior with backend
-- session hydration endpoint
+- CORS and credentialed browser behavior with backend
 - expired session UX
 - sign-out behavior
 

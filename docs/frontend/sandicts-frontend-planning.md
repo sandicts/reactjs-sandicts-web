@@ -166,8 +166,8 @@ Rules:
 Open stack details:
 
 - implement the documented API/OpenAPI integration architecture in `KAN-73`
-- CORS, session hydration, and auth UX details for the first integrated auth
-  flow
+- CORS and credentialed browser behavior for the first integrated auth flow
+- expired session UX, sign-out behavior, and post-login routing
 - deployment target
 
 For the full technical decision record, read
@@ -765,6 +765,10 @@ Decided:
   contract adapter under `lib/api`, with semantic feature hooks, a Sandicts API
   runtime, in-memory access token storage, refresh cookies owned by the
   backend, normalized errors, and TanStack Query server-state ownership.
+- [x] Decide auth session hydration flow: client bootstrap attempts
+  `POST /auth/refresh` using the backend-owned refresh cookie, session reads use
+  `GET /auth/me` when an access token exists in memory, and TanStack Query owns
+  the public current-session projection.
 - [x] Decide player, organization, academy, and Admin App navigation model: one
   login, one user identity, multiple accessible contexts, context switcher when
   needed, and slug-based routes from the start.
@@ -779,8 +783,11 @@ Decided:
 
 Still open:
 
-- [ ] Decide remaining auth integration UX: CORS readiness, session hydration
-  endpoint usage, expired session behavior, and sign-out behavior.
+- [ ] Decide CORS and credentialed browser behavior for local, preview, and
+  production environments.
+- [ ] Decide expired session behavior.
+- [ ] Decide sign-out behavior.
+- [ ] Decide post-login routing details.
 - [ ] Decide mobile-first breakpoints.
 - [ ] Decide exact public discovery depth before sign-in.
 - [ ] Decide exact public-facing labels for Organization and Academy in
