@@ -507,6 +507,10 @@ Rules:
 - component tests should focus on behavior, state rendering, and form validation
 - visual/manual QA should be explicit when a flow is not yet stable enough for
   full automation
+- magic link E2E should use the backend-owned Mailpit capture strategy
+  documented in
+  `sandicts/nodejs-sandicts-api:docs/ai/architecture/transactional-email-provider-decision.md`
+  instead of reading tokens from application logs
 
 Initial E2E gates:
 
