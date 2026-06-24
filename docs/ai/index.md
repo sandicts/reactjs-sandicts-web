@@ -36,6 +36,7 @@ repository.
 | `docs/ai/project-context.md` | Frontend repository setup, ownership, and boundaries |
 | `docs/ai/jira-operating-workflow.md` | Direct Jira workflow for known `KAN-*` work |
 | `docs/ai/task-finalization-workflow.md` | Commit, PR, validation, and Jira review workflow |
+| `sandicts/sandicts-docs:docs/ai/pull-request-standard.md` | Shared PR title, body, validation, and no-blank-body standard |
 
 ## Local Codex Skills
 
