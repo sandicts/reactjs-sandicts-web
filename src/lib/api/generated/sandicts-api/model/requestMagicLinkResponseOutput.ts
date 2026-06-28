@@ -6,6 +6,8 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface RequestMagicLinkResponseOutput {
-  message: string;
-}
+export const RequestMagicLinkResponseOutputValue = {
+  status: "accepted",
+} as const;
+export type RequestMagicLinkResponseOutput =
+  typeof RequestMagicLinkResponseOutputValue;

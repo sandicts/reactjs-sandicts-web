@@ -8,8 +8,8 @@
 
 export interface ConsumeMagicLinkBody {
   /**
-     * @minLength 32
-     * @maxLength 256
-     */
+   * @minLength 32
+   * @maxLength 256
+   */
   token: string;
 }

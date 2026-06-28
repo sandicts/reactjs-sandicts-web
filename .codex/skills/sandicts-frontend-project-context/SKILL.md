@@ -29,9 +29,11 @@ documents linked from it.
    needed, read the referenced docs in `sandicts/sandicts-docs`.
 7. When backend contracts, API behavior, validation, or backend architecture are
    needed, read the referenced docs in `sandicts/nodejs-sandicts-api`.
-8. Keep `.codex/skills/` for Codex operating instructions and `docs/ai/` for
+8. For cross-app API compatibility work, follow
+   `sandicts/sandicts-docs:docs/decisions/api-contract-governance.md`.
+9. Keep `.codex/skills/` for Codex operating instructions and `docs/ai/` for
    durable frontend project context.
-9. When changing repository skills, validate the edited skill folder with a
+10. When changing repository skills, validate the edited skill folder with a
    skill validation script when available.
 
 ## Jira Fast Path
@@ -56,8 +58,10 @@ issue, page, or JQL filter is not already known.
 - Do not store tokens, credentials, secrets, private config, local absolute
   paths, or personal preferences in this repository.
 - Do not duplicate shared product or business rules in frontend docs.
-- Keep generated artifacts, build output, local env files, and dev logs out of
-  Git.
+- Commit generated OpenAPI client output under
+  `src/lib/api/generated/sandicts-api`, but never edit it manually.
+- Keep build output, local env files, dev logs, and other disposable generated
+  artifacts out of Git.
 - Prefer small, task-focused project skills over broad generic instructions.
 - Do not read long specs just because they are related; read them only when the
   task needs their detailed sections.

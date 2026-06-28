@@ -5,225 +5,78 @@
  * API documentation generated from Nest controllers and Zod schemas.
  * OpenAPI spec version: 1.0.0
  */
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
   QueryClient,
+  QueryFunction,
+  QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
+  UseQueryOptions,
+  UseQueryResult,
 } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
 
 import type {
   ConsumeMagicLinkBody,
+  ConsumeMagicLinkControllerConsume400,
+  ConsumeMagicLinkControllerConsume401,
+  ConsumeMagicLinkControllerConsume403,
+  ConsumeMagicLinkControllerConsume409,
+  ConsumeMagicLinkControllerConsume410,
+  ConsumeMagicLinkControllerConsume429,
+  ConsumeMagicLinkControllerConsume500,
   ConsumeMagicLinkResponseOutput,
+  GetCurrentAuthSessionControllerGetCurrentSession401,
+  GetCurrentAuthSessionControllerGetCurrentSession403,
+  GetCurrentAuthSessionControllerGetCurrentSession429,
+  GetCurrentAuthSessionControllerGetCurrentSession500,
+  GetCurrentAuthSessionResponseOutput,
   GoogleSignInBody,
+  GoogleSignInControllerSignIn400,
+  GoogleSignInControllerSignIn401,
+  GoogleSignInControllerSignIn403,
+  GoogleSignInControllerSignIn409,
+  GoogleSignInControllerSignIn429,
+  GoogleSignInControllerSignIn500,
   GoogleSignInResponseOutput,
+  RefreshAuthSessionControllerRefresh401,
+  RefreshAuthSessionControllerRefresh403,
+  RefreshAuthSessionControllerRefresh429,
+  RefreshAuthSessionControllerRefresh500,
   RefreshAuthSessionResponseOutput,
   RequestMagicLinkBody,
+  RequestMagicLinkControllerRequest400,
+  RequestMagicLinkControllerRequest429,
+  RequestMagicLinkControllerRequest500,
+  RequestMagicLinkControllerRequest503,
   RequestMagicLinkResponseOutput,
+  SignOutAllControllerSignOutAllSessions401,
+  SignOutAllControllerSignOutAllSessions429,
+  SignOutAllControllerSignOutAllSessions500,
+  SignOutControllerSignOutCurrentSession401,
+  SignOutControllerSignOutCurrentSession429,
+  SignOutControllerSignOutCurrentSession500,
 } from "../model";
 
-import type {
-  BodyType,
-  ErrorType,
-} from "../../../runtime/sandicts-api-request";
 import { sandictsApiRequest } from "../../../runtime/sandicts-api-request";
+import type {
+  ErrorType,
+  BodyType,
+} from "../../../runtime/sandicts-api-request";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-export const getGoogleSignInControllerSignInUrl = () => {
-  return `/auth/google/sign-in`;
-};
-
-/**
- * Validates a Google Sign-In or One Tap ID token and creates an auth session.
- * @summary Sign in with Google
- */
-export const googleSignInControllerSignIn = async (
-  googleSignInBody: GoogleSignInBody,
-  options?: RequestInit,
-): Promise<GoogleSignInResponseOutput> => {
-  return sandictsApiRequest<GoogleSignInResponseOutput>(
-    getGoogleSignInControllerSignInUrl(),
-    {
-      ...options,
-      method: "POST",
-      headers: { "Content-Type": "application/json", ...options?.headers },
-      body: JSON.stringify(googleSignInBody),
-    },
-  );
-};
-
-export const getGoogleSignInControllerSignInMutationOptions = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof googleSignInControllerSignIn>>,
-    TError,
-    { data: BodyType<GoogleSignInBody> },
-    TContext
-  >;
-  request?: SecondParameter<typeof sandictsApiRequest>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof googleSignInControllerSignIn>>,
-  TError,
-  { data: BodyType<GoogleSignInBody> },
-  TContext
-> => {
-  const mutationKey = ["googleSignInControllerSignIn"];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, request: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof googleSignInControllerSignIn>>,
-    { data: BodyType<GoogleSignInBody> }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return googleSignInControllerSignIn(data, requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type GoogleSignInControllerSignInMutationResult = NonNullable<
-  Awaited<ReturnType<typeof googleSignInControllerSignIn>>
->;
-export type GoogleSignInControllerSignInMutationBody =
-  BodyType<GoogleSignInBody>;
-export type GoogleSignInControllerSignInMutationError = ErrorType<unknown>;
-
-/**
- * @summary Sign in with Google
- */
-export const useGoogleSignInControllerSignIn = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof googleSignInControllerSignIn>>,
-      TError,
-      { data: BodyType<GoogleSignInBody> },
-      TContext
-    >;
-    request?: SecondParameter<typeof sandictsApiRequest>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof googleSignInControllerSignIn>>,
-  TError,
-  { data: BodyType<GoogleSignInBody> },
-  TContext
-> => {
-  return useMutation(
-    getGoogleSignInControllerSignInMutationOptions(options),
-    queryClient,
-  );
-};
-export const getRefreshAuthSessionControllerRefreshUrl = () => {
-  return `/auth/refresh`;
-};
-
-/**
- * Rotates the refresh token cookie and returns a new access token.
- * @summary Refresh auth session
- */
-export const refreshAuthSessionControllerRefresh = async (
-  options?: RequestInit,
-): Promise<RefreshAuthSessionResponseOutput> => {
-  return sandictsApiRequest<RefreshAuthSessionResponseOutput>(
-    getRefreshAuthSessionControllerRefreshUrl(),
-    {
-      ...options,
-      method: "POST",
-    },
-  );
-};
-
-export const getRefreshAuthSessionControllerRefreshMutationOptions = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof refreshAuthSessionControllerRefresh>>,
-    TError,
-    void,
-    TContext
-  >;
-  request?: SecondParameter<typeof sandictsApiRequest>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof refreshAuthSessionControllerRefresh>>,
-  TError,
-  void,
-  TContext
-> => {
-  const mutationKey = ["refreshAuthSessionControllerRefresh"];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, request: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof refreshAuthSessionControllerRefresh>>,
-    void
-  > = () => {
-    return refreshAuthSessionControllerRefresh(requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type RefreshAuthSessionControllerRefreshMutationResult = NonNullable<
-  Awaited<ReturnType<typeof refreshAuthSessionControllerRefresh>>
->;
-
-export type RefreshAuthSessionControllerRefreshMutationError =
-  ErrorType<unknown>;
-
-/**
- * @summary Refresh auth session
- */
-export const useRefreshAuthSessionControllerRefresh = <
-  TError = ErrorType<unknown>,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof refreshAuthSessionControllerRefresh>>,
-      TError,
-      void,
-      TContext
-    >;
-    request?: SecondParameter<typeof sandictsApiRequest>;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof refreshAuthSessionControllerRefresh>>,
-  TError,
-  void,
-  TContext
-> => {
-  return useMutation(
-    getRefreshAuthSessionControllerRefreshMutationOptions(options),
-    queryClient,
-  );
-};
 export const getRequestMagicLinkControllerRequestUrl = () => {
   return `/auth/magic-link/request`;
 };
 
 /**
- * Returns a generic success response for valid email input.
+ * Accepts a magic link request without revealing account existence.
  * @summary Request magic link
  */
 export const requestMagicLinkControllerRequest = async (
@@ -242,7 +95,12 @@ export const requestMagicLinkControllerRequest = async (
 };
 
 export const getRequestMagicLinkControllerRequestMutationOptions = <
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | RequestMagicLinkControllerRequest400
+    | RequestMagicLinkControllerRequest429
+    | RequestMagicLinkControllerRequest500
+    | RequestMagicLinkControllerRequest503
+  >,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -284,13 +142,23 @@ export type RequestMagicLinkControllerRequestMutationResult = NonNullable<
 >;
 export type RequestMagicLinkControllerRequestMutationBody =
   BodyType<RequestMagicLinkBody>;
-export type RequestMagicLinkControllerRequestMutationError = ErrorType<unknown>;
+export type RequestMagicLinkControllerRequestMutationError = ErrorType<
+  | RequestMagicLinkControllerRequest400
+  | RequestMagicLinkControllerRequest429
+  | RequestMagicLinkControllerRequest500
+  | RequestMagicLinkControllerRequest503
+>;
 
 /**
  * @summary Request magic link
  */
 export const useRequestMagicLinkControllerRequest = <
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | RequestMagicLinkControllerRequest400
+    | RequestMagicLinkControllerRequest429
+    | RequestMagicLinkControllerRequest500
+    | RequestMagicLinkControllerRequest503
+  >,
   TContext = unknown,
 >(
   options?: {
@@ -338,7 +206,15 @@ export const consumeMagicLinkControllerConsume = async (
 };
 
 export const getConsumeMagicLinkControllerConsumeMutationOptions = <
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | ConsumeMagicLinkControllerConsume400
+    | ConsumeMagicLinkControllerConsume401
+    | ConsumeMagicLinkControllerConsume403
+    | ConsumeMagicLinkControllerConsume409
+    | ConsumeMagicLinkControllerConsume410
+    | ConsumeMagicLinkControllerConsume429
+    | ConsumeMagicLinkControllerConsume500
+  >,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -380,13 +256,29 @@ export type ConsumeMagicLinkControllerConsumeMutationResult = NonNullable<
 >;
 export type ConsumeMagicLinkControllerConsumeMutationBody =
   BodyType<ConsumeMagicLinkBody>;
-export type ConsumeMagicLinkControllerConsumeMutationError = ErrorType<unknown>;
+export type ConsumeMagicLinkControllerConsumeMutationError = ErrorType<
+  | ConsumeMagicLinkControllerConsume400
+  | ConsumeMagicLinkControllerConsume401
+  | ConsumeMagicLinkControllerConsume403
+  | ConsumeMagicLinkControllerConsume409
+  | ConsumeMagicLinkControllerConsume410
+  | ConsumeMagicLinkControllerConsume429
+  | ConsumeMagicLinkControllerConsume500
+>;
 
 /**
  * @summary Consume magic link
  */
 export const useConsumeMagicLinkControllerConsume = <
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | ConsumeMagicLinkControllerConsume400
+    | ConsumeMagicLinkControllerConsume401
+    | ConsumeMagicLinkControllerConsume403
+    | ConsumeMagicLinkControllerConsume409
+    | ConsumeMagicLinkControllerConsume410
+    | ConsumeMagicLinkControllerConsume429
+    | ConsumeMagicLinkControllerConsume500
+  >,
   TContext = unknown,
 >(
   options?: {
@@ -407,6 +299,228 @@ export const useConsumeMagicLinkControllerConsume = <
 > => {
   return useMutation(
     getConsumeMagicLinkControllerConsumeMutationOptions(options),
+    queryClient,
+  );
+};
+export const getGoogleSignInControllerSignInUrl = () => {
+  return `/auth/google/sign-in`;
+};
+
+/**
+ * Validates a Google Sign-In or One Tap ID token and creates an auth session.
+ * @summary Sign in with Google
+ */
+export const googleSignInControllerSignIn = async (
+  googleSignInBody: GoogleSignInBody,
+  options?: RequestInit,
+): Promise<GoogleSignInResponseOutput> => {
+  return sandictsApiRequest<GoogleSignInResponseOutput>(
+    getGoogleSignInControllerSignInUrl(),
+    {
+      ...options,
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(googleSignInBody),
+    },
+  );
+};
+
+export const getGoogleSignInControllerSignInMutationOptions = <
+  TError = ErrorType<
+    | GoogleSignInControllerSignIn400
+    | GoogleSignInControllerSignIn401
+    | GoogleSignInControllerSignIn403
+    | GoogleSignInControllerSignIn409
+    | GoogleSignInControllerSignIn429
+    | GoogleSignInControllerSignIn500
+  >,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof googleSignInControllerSignIn>>,
+    TError,
+    { data: BodyType<GoogleSignInBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof sandictsApiRequest>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof googleSignInControllerSignIn>>,
+  TError,
+  { data: BodyType<GoogleSignInBody> },
+  TContext
+> => {
+  const mutationKey = ["googleSignInControllerSignIn"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof googleSignInControllerSignIn>>,
+    { data: BodyType<GoogleSignInBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return googleSignInControllerSignIn(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type GoogleSignInControllerSignInMutationResult = NonNullable<
+  Awaited<ReturnType<typeof googleSignInControllerSignIn>>
+>;
+export type GoogleSignInControllerSignInMutationBody =
+  BodyType<GoogleSignInBody>;
+export type GoogleSignInControllerSignInMutationError = ErrorType<
+  | GoogleSignInControllerSignIn400
+  | GoogleSignInControllerSignIn401
+  | GoogleSignInControllerSignIn403
+  | GoogleSignInControllerSignIn409
+  | GoogleSignInControllerSignIn429
+  | GoogleSignInControllerSignIn500
+>;
+
+/**
+ * @summary Sign in with Google
+ */
+export const useGoogleSignInControllerSignIn = <
+  TError = ErrorType<
+    | GoogleSignInControllerSignIn400
+    | GoogleSignInControllerSignIn401
+    | GoogleSignInControllerSignIn403
+    | GoogleSignInControllerSignIn409
+    | GoogleSignInControllerSignIn429
+    | GoogleSignInControllerSignIn500
+  >,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof googleSignInControllerSignIn>>,
+      TError,
+      { data: BodyType<GoogleSignInBody> },
+      TContext
+    >;
+    request?: SecondParameter<typeof sandictsApiRequest>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof googleSignInControllerSignIn>>,
+  TError,
+  { data: BodyType<GoogleSignInBody> },
+  TContext
+> => {
+  return useMutation(
+    getGoogleSignInControllerSignInMutationOptions(options),
+    queryClient,
+  );
+};
+export const getRefreshAuthSessionControllerRefreshUrl = () => {
+  return `/auth/refresh`;
+};
+
+/**
+ * Rotates the refresh token cookie and returns a new access token.
+ * @summary Refresh auth session
+ */
+export const refreshAuthSessionControllerRefresh = async (
+  options?: RequestInit,
+): Promise<RefreshAuthSessionResponseOutput> => {
+  return sandictsApiRequest<RefreshAuthSessionResponseOutput>(
+    getRefreshAuthSessionControllerRefreshUrl(),
+    {
+      ...options,
+      method: "POST",
+    },
+  );
+};
+
+export const getRefreshAuthSessionControllerRefreshMutationOptions = <
+  TError = ErrorType<
+    | RefreshAuthSessionControllerRefresh401
+    | RefreshAuthSessionControllerRefresh403
+    | RefreshAuthSessionControllerRefresh429
+    | RefreshAuthSessionControllerRefresh500
+  >,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof refreshAuthSessionControllerRefresh>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof sandictsApiRequest>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof refreshAuthSessionControllerRefresh>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["refreshAuthSessionControllerRefresh"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof refreshAuthSessionControllerRefresh>>,
+    void
+  > = () => {
+    return refreshAuthSessionControllerRefresh(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type RefreshAuthSessionControllerRefreshMutationResult = NonNullable<
+  Awaited<ReturnType<typeof refreshAuthSessionControllerRefresh>>
+>;
+
+export type RefreshAuthSessionControllerRefreshMutationError = ErrorType<
+  | RefreshAuthSessionControllerRefresh401
+  | RefreshAuthSessionControllerRefresh403
+  | RefreshAuthSessionControllerRefresh429
+  | RefreshAuthSessionControllerRefresh500
+>;
+
+/**
+ * @summary Refresh auth session
+ */
+export const useRefreshAuthSessionControllerRefresh = <
+  TError = ErrorType<
+    | RefreshAuthSessionControllerRefresh401
+    | RefreshAuthSessionControllerRefresh403
+    | RefreshAuthSessionControllerRefresh429
+    | RefreshAuthSessionControllerRefresh500
+  >,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof refreshAuthSessionControllerRefresh>>,
+      TError,
+      void,
+      TContext
+    >;
+    request?: SecondParameter<typeof sandictsApiRequest>;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof refreshAuthSessionControllerRefresh>>,
+  TError,
+  void,
+  TContext
+> => {
+  return useMutation(
+    getRefreshAuthSessionControllerRefreshMutationOptions(options),
     queryClient,
   );
 };
@@ -431,7 +545,11 @@ export const signOutControllerSignOutCurrentSession = async (
 };
 
 export const getSignOutControllerSignOutCurrentSessionMutationOptions = <
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | SignOutControllerSignOutCurrentSession401
+    | SignOutControllerSignOutCurrentSession429
+    | SignOutControllerSignOutCurrentSession500
+  >,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -470,14 +588,21 @@ export type SignOutControllerSignOutCurrentSessionMutationResult = NonNullable<
   Awaited<ReturnType<typeof signOutControllerSignOutCurrentSession>>
 >;
 
-export type SignOutControllerSignOutCurrentSessionMutationError =
-  ErrorType<unknown>;
+export type SignOutControllerSignOutCurrentSessionMutationError = ErrorType<
+  | SignOutControllerSignOutCurrentSession401
+  | SignOutControllerSignOutCurrentSession429
+  | SignOutControllerSignOutCurrentSession500
+>;
 
 /**
  * @summary Sign out
  */
 export const useSignOutControllerSignOutCurrentSession = <
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | SignOutControllerSignOutCurrentSession401
+    | SignOutControllerSignOutCurrentSession429
+    | SignOutControllerSignOutCurrentSession500
+  >,
   TContext = unknown,
 >(
   options?: {
@@ -522,7 +647,11 @@ export const signOutAllControllerSignOutAllSessions = async (
 };
 
 export const getSignOutAllControllerSignOutAllSessionsMutationOptions = <
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | SignOutAllControllerSignOutAllSessions401
+    | SignOutAllControllerSignOutAllSessions429
+    | SignOutAllControllerSignOutAllSessions500
+  >,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
@@ -561,14 +690,21 @@ export type SignOutAllControllerSignOutAllSessionsMutationResult = NonNullable<
   Awaited<ReturnType<typeof signOutAllControllerSignOutAllSessions>>
 >;
 
-export type SignOutAllControllerSignOutAllSessionsMutationError =
-  ErrorType<unknown>;
+export type SignOutAllControllerSignOutAllSessionsMutationError = ErrorType<
+  | SignOutAllControllerSignOutAllSessions401
+  | SignOutAllControllerSignOutAllSessions429
+  | SignOutAllControllerSignOutAllSessions500
+>;
 
 /**
  * @summary Sign out all sessions
  */
 export const useSignOutAllControllerSignOutAllSessions = <
-  TError = ErrorType<unknown>,
+  TError = ErrorType<
+    | SignOutAllControllerSignOutAllSessions401
+    | SignOutAllControllerSignOutAllSessions429
+    | SignOutAllControllerSignOutAllSessions500
+  >,
   TContext = unknown,
 >(
   options?: {
@@ -592,3 +728,231 @@ export const useSignOutAllControllerSignOutAllSessions = <
     queryClient,
   );
 };
+export const getGetCurrentAuthSessionControllerGetCurrentSessionUrl = () => {
+  return `/auth/me`;
+};
+
+/**
+ * Returns the authenticated account and active auth session for a Bearer access token.
+ * @summary Get current auth session
+ */
+export const getCurrentAuthSessionControllerGetCurrentSession = async (
+  options?: RequestInit,
+): Promise<GetCurrentAuthSessionResponseOutput> => {
+  return sandictsApiRequest<GetCurrentAuthSessionResponseOutput>(
+    getGetCurrentAuthSessionControllerGetCurrentSessionUrl(),
+    {
+      ...options,
+      method: "GET",
+    },
+  );
+};
+
+export const getGetCurrentAuthSessionControllerGetCurrentSessionQueryKey =
+  () => {
+    return [`/auth/me`] as const;
+  };
+
+export const getGetCurrentAuthSessionControllerGetCurrentSessionQueryOptions = <
+  TData = Awaited<
+    ReturnType<typeof getCurrentAuthSessionControllerGetCurrentSession>
+  >,
+  TError = ErrorType<
+    | GetCurrentAuthSessionControllerGetCurrentSession401
+    | GetCurrentAuthSessionControllerGetCurrentSession403
+    | GetCurrentAuthSessionControllerGetCurrentSession429
+    | GetCurrentAuthSessionControllerGetCurrentSession500
+  >,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<
+        ReturnType<typeof getCurrentAuthSessionControllerGetCurrentSession>
+      >,
+      TError,
+      TData
+    >
+  >;
+  request?: SecondParameter<typeof sandictsApiRequest>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetCurrentAuthSessionControllerGetCurrentSessionQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getCurrentAuthSessionControllerGetCurrentSession>>
+  > = ({ signal }) =>
+    getCurrentAuthSessionControllerGetCurrentSession({
+      signal,
+      ...requestOptions,
+    });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<
+      ReturnType<typeof getCurrentAuthSessionControllerGetCurrentSession>
+    >,
+    TError,
+    TData
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type GetCurrentAuthSessionControllerGetCurrentSessionQueryResult =
+  NonNullable<
+    Awaited<ReturnType<typeof getCurrentAuthSessionControllerGetCurrentSession>>
+  >;
+export type GetCurrentAuthSessionControllerGetCurrentSessionQueryError =
+  ErrorType<
+    | GetCurrentAuthSessionControllerGetCurrentSession401
+    | GetCurrentAuthSessionControllerGetCurrentSession403
+    | GetCurrentAuthSessionControllerGetCurrentSession429
+    | GetCurrentAuthSessionControllerGetCurrentSession500
+  >;
+
+export function useGetCurrentAuthSessionControllerGetCurrentSession<
+  TData = Awaited<
+    ReturnType<typeof getCurrentAuthSessionControllerGetCurrentSession>
+  >,
+  TError = ErrorType<
+    | GetCurrentAuthSessionControllerGetCurrentSession401
+    | GetCurrentAuthSessionControllerGetCurrentSession403
+    | GetCurrentAuthSessionControllerGetCurrentSession429
+    | GetCurrentAuthSessionControllerGetCurrentSession500
+  >,
+>(
+  options: {
+    query: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof getCurrentAuthSessionControllerGetCurrentSession>
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof getCurrentAuthSessionControllerGetCurrentSession>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof getCurrentAuthSessionControllerGetCurrentSession>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof sandictsApiRequest>;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetCurrentAuthSessionControllerGetCurrentSession<
+  TData = Awaited<
+    ReturnType<typeof getCurrentAuthSessionControllerGetCurrentSession>
+  >,
+  TError = ErrorType<
+    | GetCurrentAuthSessionControllerGetCurrentSession401
+    | GetCurrentAuthSessionControllerGetCurrentSession403
+    | GetCurrentAuthSessionControllerGetCurrentSession429
+    | GetCurrentAuthSessionControllerGetCurrentSession500
+  >,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof getCurrentAuthSessionControllerGetCurrentSession>
+        >,
+        TError,
+        TData
+      >
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<
+            ReturnType<typeof getCurrentAuthSessionControllerGetCurrentSession>
+          >,
+          TError,
+          Awaited<
+            ReturnType<typeof getCurrentAuthSessionControllerGetCurrentSession>
+          >
+        >,
+        "initialData"
+      >;
+    request?: SecondParameter<typeof sandictsApiRequest>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetCurrentAuthSessionControllerGetCurrentSession<
+  TData = Awaited<
+    ReturnType<typeof getCurrentAuthSessionControllerGetCurrentSession>
+  >,
+  TError = ErrorType<
+    | GetCurrentAuthSessionControllerGetCurrentSession401
+    | GetCurrentAuthSessionControllerGetCurrentSession403
+    | GetCurrentAuthSessionControllerGetCurrentSession429
+    | GetCurrentAuthSessionControllerGetCurrentSession500
+  >,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof getCurrentAuthSessionControllerGetCurrentSession>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof sandictsApiRequest>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+/**
+ * @summary Get current auth session
+ */
+
+export function useGetCurrentAuthSessionControllerGetCurrentSession<
+  TData = Awaited<
+    ReturnType<typeof getCurrentAuthSessionControllerGetCurrentSession>
+  >,
+  TError = ErrorType<
+    | GetCurrentAuthSessionControllerGetCurrentSession401
+    | GetCurrentAuthSessionControllerGetCurrentSession403
+    | GetCurrentAuthSessionControllerGetCurrentSession429
+    | GetCurrentAuthSessionControllerGetCurrentSession500
+  >,
+>(
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof getCurrentAuthSessionControllerGetCurrentSession>
+        >,
+        TError,
+        TData
+      >
+    >;
+    request?: SecondParameter<typeof sandictsApiRequest>;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions =
+    getGetCurrentAuthSessionControllerGetCurrentSessionQueryOptions(options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}

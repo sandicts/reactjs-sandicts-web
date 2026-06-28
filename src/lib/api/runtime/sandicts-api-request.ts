@@ -18,7 +18,7 @@ async function sandictsApiRequest<T>(
 
   let response = await fetch(targetUrl, requestOptions);
 
-  if (await shouldRetryAfterRefresh(response, url)) {
+  if (await shouldRetryAfterRefresh(response, url, requestOptions)) {
     response = await fetch(targetUrl, buildRequestOptions(options));
   }
 
@@ -71,15 +71,26 @@ function shouldSetJsonContentType(body: BodyInit) {
   return typeof body === "string";
 }
 
-async function shouldRetryAfterRefresh(response: Response, url: string) {
+async function shouldRetryAfterRefresh(
+  response: Response,
+  url: string,
+  requestOptions: RequestInit,
+) {
   if (
     response.status !== unauthorizedStatusCode ||
-    isRefreshAuthSessionUrl(url)
+    isRefreshAuthSessionUrl(url) ||
+    !hasBearerAccessToken(requestOptions)
   ) {
     return false;
   }
 
   return refreshSandictsAuthSession();
+}
+
+function hasBearerAccessToken(options: RequestInit) {
+  const authorization = new Headers(options.headers).get("Authorization");
+
+  return authorization?.startsWith("Bearer ") === true;
 }
 
 async function readSandictsApiResponse<T>(response: Response) {

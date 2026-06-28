@@ -59,8 +59,10 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
 npm run dev
 npm run lint
 npm run typecheck
+npm run test:ci
 npm run build
 npm run api:generate
+npm run api:check
 npm run start
 ```
 
@@ -69,10 +71,11 @@ npm run start
 API types and TanStack Query hooks are generated from the Nest API OpenAPI
 contract with Orval.
 
-The default local schema URL is:
+The default schema sources are tried in order:
 
 ```text
-http://localhost:3000/docs-json
+../nodejs-sandicts-api/openapi/sandicts-api.json
+https://raw.githubusercontent.com/sandicts/nodejs-sandicts-api/developer/openapi/sandicts-api.json
 ```
 
 Generate the client with:
@@ -81,11 +84,16 @@ Generate the client with:
 npm run api:generate
 ```
 
-Use `OPENAPI_SCHEMA_URL` to override the schema source for CI, preview, or
-non-default local environments:
+Use `OPENAPI_SCHEMA_URL` to override the schema source:
 
 ```bash
 OPENAPI_SCHEMA_URL=http://localhost:3000/docs-json npm run api:generate
+```
+
+Verify that committed generated output is current with:
+
+```bash
+npm run api:check
 ```
 
 Generated files live under:
@@ -109,6 +117,8 @@ and validates:
 - branch name and pull request target branch
 - lint
 - TypeScript typecheck
+- Vitest API runtime tests
+- generated API contract drift
 - production build
 - dependency audit for moderate or higher vulnerabilities
 
@@ -116,6 +126,8 @@ and validates:
 npm ci
 npm run lint
 npm run typecheck
+npm run test:ci
+npm run api:check
 npm run build
 npm audit --audit-level=moderate
 ```

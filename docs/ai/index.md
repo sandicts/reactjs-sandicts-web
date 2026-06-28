@@ -69,6 +69,12 @@ product scope, business rules, entity names, or shared Jira planning:
 Read backend docs from `sandicts/nodejs-sandicts-api` only when API contracts,
 backend architecture, validation, errors, or implementation behavior matter.
 
+For API contract integration, also read:
+
+1. `sandicts/sandicts-docs:docs/decisions/api-contract-governance.md`
+2. `sandicts/nodejs-sandicts-api:docs/ai/api/semantic-api-contracts.md`
+3. `docs/frontend/sandicts-frontend-tech-decisions.md`
+
 ## Common Reading Paths
 
 For frontend setup or architecture work, read:

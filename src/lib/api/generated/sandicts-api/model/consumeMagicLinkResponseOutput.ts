@@ -5,8 +5,8 @@
  * API documentation generated from Nest controllers and Zod schemas.
  * OpenAPI spec version: 1.0.0
  */
-import type { AuthAccountResponseOutput } from './authAccountResponseOutput';
-import type { AuthSessionResponseOutput } from './authSessionResponseOutput';
+import type { AuthAccountResponseOutput } from "./authAccountResponseOutput";
+import type { AuthSessionResponseOutput } from "./authSessionResponseOutput";
 
 export interface ConsumeMagicLinkResponseOutput {
   account: AuthAccountResponseOutput;

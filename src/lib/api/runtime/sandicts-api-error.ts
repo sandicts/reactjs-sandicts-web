@@ -3,40 +3,24 @@ import type {
   SandictsApiErrorResponse,
   SandictsApiValidationIssue,
 } from "@/lib/api/contracts/sandicts-api-error.types";
-
-const knownSandictsApiErrorCodes = [
-  "bad_request",
-  "validation_error",
-  "rate_limited",
-  "unauthorized",
-  "invalid_google_credential",
-  "invalid_magic_link_token",
-  "invalid_access_token",
-  "invalid_refresh_token",
-  "refresh_token_expired",
-  "refresh_token_reused",
-  "refresh_token_revoked",
-  "auth_session_inactive",
-  "forbidden",
-  "account_auth_forbidden",
-  "external_identity_conflict",
-  "resource_not_found",
-  "conflict",
-  "business_rule_violation",
-  "internal_error",
-] as const satisfies readonly SandictsApiErrorCode[];
+import {
+  ApiErrorResponseCode,
+  type ApiErrorResponseCode as KnownSandictsApiErrorCode,
+} from "@/lib/api/generated/sandicts-api/model";
 
 const knownSandictsApiErrorCodeSet = new Set<string>(
-  knownSandictsApiErrorCodes,
+  Object.values(ApiErrorResponseCode),
 );
 
 const unauthorizedStatusCode = 401;
 const forbiddenStatusCode = 403;
 const notFoundStatusCode = 404;
 const conflictStatusCode = 409;
+const goneStatusCode = 410;
 const rateLimitedStatusCode = 429;
 const unprocessableEntityStatusCode = 422;
 const internalServerErrorStatusCode = 500;
+const serviceUnavailableStatusCode = 503;
 
 type SandictsApiErrorOptions<TResponseBody = unknown> = Readonly<{
   cause?: unknown;
@@ -122,6 +106,12 @@ function isSandictsApiErrorResponse(
 }
 
 function isSandictsApiErrorCode(value: unknown): value is SandictsApiErrorCode {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+function isKnownSandictsApiErrorCode(
+  value: unknown,
+): value is KnownSandictsApiErrorCode {
   return typeof value === "string" && knownSandictsApiErrorCodeSet.has(value);
 }
 
@@ -160,10 +150,14 @@ function mapHttpStatusToErrorCode(statusCode: number): SandictsApiErrorCode {
       return "resource_not_found";
     case conflictStatusCode:
       return "conflict";
+    case goneStatusCode:
+      return "resource_not_found";
     case rateLimitedStatusCode:
       return "rate_limited";
     case unprocessableEntityStatusCode:
       return "business_rule_violation";
+    case serviceUnavailableStatusCode:
+      return "internal_error";
     default:
       return statusCode >= internalServerErrorStatusCode
         ? "internal_error"
@@ -174,6 +168,7 @@ function mapHttpStatusToErrorCode(statusCode: number): SandictsApiErrorCode {
 export {
   isSandictsApiError,
   isSandictsApiErrorCode,
+  isKnownSandictsApiErrorCode,
   parseSandictsApiError,
   SandictsApiError,
 };
