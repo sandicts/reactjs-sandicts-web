@@ -11,9 +11,12 @@
     "dev": "next dev --port 3001",
     "build": "next build",
     "start": "next start --port 3001",
-    "api:generate": "orval --config orval.config.ts",
+    "api:generate": "orval --config orval.config.ts --fail-on-warnings",
+    "api:check": "npm run api:generate && git diff --exit-code -- src/lib/api/generated/sandicts-api",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run",
+    "test:ci": "vitest run --passWithNoTests"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.0",
@@ -30,8 +33,10 @@
     "eslint": "9.39.4",
     "eslint-config-next": "16.2.9",
     "orval": "^8.17.0",
+    "prettier": "^3.9.1",
     "tailwindcss": "4.3.0",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "vitest": "^4.1.9"
   },
   "overrides": {
     "js-yaml": "^4.2.0",

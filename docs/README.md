@@ -38,10 +38,12 @@ truth for:
 - Sandicts business rules
 - entity glossary and naming
 - shared Jira planning workflow details
+- cross-app API compatibility and delivery rules
 
 The backend API repository remains the source of truth for:
 
 - backend architecture and API contracts
+- generated OpenAPI artifact and semantic HTTP behavior
 - shared backend implementation details
 
 When frontend documentation references shared product rules or backend-owned API

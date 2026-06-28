@@ -1,14 +1,25 @@
 import { defineConfig } from "orval";
 
-const defaultOpenApiSchemaUrl = "http://localhost:3000/docs-json";
+const localOpenApiSchemaPath =
+  "../nodejs-sandicts-api/openapi/sandicts-api.json";
+const canonicalOpenApiSchemaUrl =
+  "https://raw.githubusercontent.com/sandicts/nodejs-sandicts-api/developer/openapi/sandicts-api.json";
+const configuredOpenApiSchemaUrl = process.env.OPENAPI_SCHEMA_URL?.trim();
+const openApiSchemaTarget = [
+  localOpenApiSchemaPath,
+  ...(configuredOpenApiSchemaUrl ? [configuredOpenApiSchemaUrl] : []),
+  canonicalOpenApiSchemaUrl,
+];
 
 export default defineConfig({
   sandictsApi: {
     input: {
-      target: process.env.OPENAPI_SCHEMA_URL ?? defaultOpenApiSchemaUrl,
+      target: openApiSchemaTarget,
     },
     output: {
       client: "react-query",
+      clean: true,
+      formatter: "prettier",
       httpClient: "fetch",
       mode: "tags-split",
       override: {

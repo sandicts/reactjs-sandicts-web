@@ -10,6 +10,8 @@ related:
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-page-functional-spec.md
   - sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
+  - sandicts/sandicts-docs:docs/decisions/api-contract-governance.md
+  - sandicts/nodejs-sandicts-api:docs/ai/api/semantic-api-contracts.md
 scope: frontend, architecture, stack, mvp, delivery
 read-when:
   - creating the Sandicts frontend app
@@ -277,8 +279,8 @@ Rules:
   instead of making generated operation names the UI language
 - use one Sandicts request runtime for generated calls so auth, credentials,
   base URL, refresh retry, and error parsing stay consistent
-- use `npm run api:generate` as the future regeneration command implemented by
-  `KAN-73`
+- use `npm run api:generate` to regenerate and `npm run api:check` to reject
+  stale committed output
 
 Reason:
 
@@ -444,6 +446,10 @@ Error contract:
 - the API runtime maps normalized backend error responses to `SandictsApiError`
 - `SandictsApiError` preserves `statusCode`, `code`, `message`, `requestId`,
   and optional `issues`
+- public error types and known-code values are derived from generated OpenAPI
+  models; the frontend does not maintain a second error-code catalog
+- unknown future codes are preserved for safe fallback behavior instead of
+  being discarded during parsing
 - validation issues from `validation_error` are mapped near the relevant form
   fields when practical
 - `business_rule_violation`, `forbidden`, `conflict`, and
@@ -468,10 +474,11 @@ TanStack Query rules:
 
 Generation workflow:
 
-- `KAN-73` implements the Orval dependency, `orval.config.ts`, and
+- `KAN-73` implemented the Orval dependency, `orval.config.ts`, and
   `npm run api:generate`
-- the default local OpenAPI source should be the backend Swagger JSON document,
-  expected at `http://localhost:3000/docs-json` when backend docs are enabled
+- generation first reads the sibling backend artifact at
+  `../nodejs-sandicts-api/openapi/sandicts-api.json`
+- CI falls back to the canonical backend `developer` artifact on GitHub
 - the command should support an explicit `OPENAPI_SCHEMA_URL` or equivalent
   non-public environment override for local, CI, and future preview workflows
 - generation should use a tags-split style output so API areas can scale by
@@ -480,6 +487,8 @@ Generation workflow:
   APIs are introduced
 - current generated output lives under `src/lib/api/generated/sandicts-api`
 - generated files are committed and must not be edited manually
+- generation cleans the output directory before writing
+- `npm run api:check` regenerates and fails when Git reports a generated diff
 
 Multiple API and BFF strategy:
 
@@ -539,15 +548,15 @@ Rules:
 - temporary branches must follow the backend naming pattern:
   `(feature|fix|hotfix|docs|refactor|test|ci|chore|rc|codex)/KAN-123-short-description`
 - install dependencies with `npm ci`
-- fail the workflow on lint, typecheck, build, or dependency audit failures
-- keep the `Test` job as an explicit placeholder until Playwright and Vitest
-  tooling is configured
+- fail the workflow on lint, typecheck, tests, generated-contract drift, build,
+  or dependency audit failures
 
 Current jobs:
 
 - `Governance`: branch naming and pull request target validation
 - `Quality`: `npm run lint` and `npm run typecheck`
-- `Test`: placeholder until frontend test tooling is configured
+- `Test`: `npm run test:ci`
+- `Contract`: `npm run api:check`
 - `Build`: `npm run build`
 - `Dependency audit`: `npm audit --audit-level=moderate`
 
