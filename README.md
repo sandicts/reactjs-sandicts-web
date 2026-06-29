@@ -58,7 +58,11 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
 ```bash
 npm run dev
 npm run lint
+npm run lint:fix
 npm run typecheck
+npm run format
+npm run format:check
+npm run quality
 npm test
 npm run test:ci
 npm run test:watch
@@ -69,6 +73,22 @@ npm run api:generate
 npm run api:check
 npm run start
 ```
+
+## Code Quality
+
+TypeScript runs in strict mode. ESLint owns correctness rules, while Prettier
+owns code formatting. Run the complete local quality gate with:
+
+```bash
+npm run quality
+```
+
+Use `npm run lint:fix` for safe ESLint fixes and `npm run format` for mechanical
+formatting. Generated Orval output is excluded from linting and formatting
+because `npm run api:generate` owns those files.
+
+Use the `@/*` alias for stable imports from `src/*` when crossing folders. Keep
+sibling implementation and type imports relative.
 
 ## Testing
 

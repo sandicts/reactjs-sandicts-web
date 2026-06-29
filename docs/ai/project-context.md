@@ -79,11 +79,16 @@ Use these checks for frontend changes:
 ```bash
 npm run lint
 npm run typecheck
+npm run format:check
+npm run quality
 npm test
 npm run test:e2e
 npm run build
 npm audit --audit-level=moderate
 ```
+
+`npm run quality` is the aggregate local gate for lint, TypeScript, and
+formatting. Use `npm run format` to apply mechanical formatting.
 
 Use `npm run dev` for local development. The app runs on:
 
