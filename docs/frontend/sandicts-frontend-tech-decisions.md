@@ -558,6 +558,27 @@ Commands:
 Playwright remains a local validation command until a separate task defines E2E
 CI execution, test data ownership, and the broader browser/device matrix.
 
+### TypeScript, Linting, And Formatting
+
+Use TypeScript strict mode as the compile-time baseline, ESLint for correctness
+rules, and Prettier for deterministic formatting.
+
+Rules:
+
+- keep `strict`, `noEmit`, and bundler module resolution enabled in
+  `tsconfig.json`
+- run `npm run typecheck` instead of emitting JavaScript with TypeScript
+- keep formatting rules out of ESLint; `eslint-config-prettier` disables
+  conflicting rules
+- use `npm run lint:fix` for ESLint fixes and `npm run format` for mechanical
+  formatting
+- run `npm run quality` as the aggregate lint, typecheck, and formatting gate
+- exclude generated Orval output from linting and formatting; regenerate it
+  with `npm run api:generate`
+- keep canonical prose and repository automation outside broad automatic
+  formatting to avoid unrelated churn
+- use LF line endings, UTF-8, two-space indentation, and a final newline
+
 ### CI And Validation
 
 Use:

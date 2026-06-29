@@ -5,8 +5,7 @@ import type {
 } from "@/lib/api/generated/sandicts-api/model";
 
 type SandictsApiErrorCode =
-  | ApiErrorResponseCode
-  | (string & Record<never, never>);
+  ApiErrorResponseCode | (string & Record<never, never>);
 
 type SandictsApiErrorResponse = Readonly<
   Omit<ApiErrorResponse, "code"> & {

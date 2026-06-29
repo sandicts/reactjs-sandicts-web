@@ -1,4 +1,5 @@
 import { defineConfig, globalIgnores } from "eslint/config";
+import prettierConfig from "eslint-config-prettier/flat";
 import jestDom from "eslint-plugin-jest-dom";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
@@ -29,11 +30,14 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Generated API client:
+    "src/lib/api/generated/**",
     // Test artifacts:
     "blob-report/**",
     "playwright-report/**",
     "test-results/**",
   ]),
+  prettierConfig,
 ]);
 
 export default eslintConfig;
