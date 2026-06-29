@@ -59,12 +59,57 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
 npm run dev
 npm run lint
 npm run typecheck
+npm test
 npm run test:ci
+npm run test:watch
+npm run test:e2e
+npm run test:e2e:ui
 npm run build
 npm run api:generate
 npm run api:check
 npm run start
 ```
+
+## Testing
+
+Install the local Chromium binary once before the first E2E run:
+
+```bash
+npx playwright install chromium
+```
+
+If Windows Application Control blocks Playwright-managed executables, use the
+installed Chrome channel without hardcoding a machine path:
+
+```powershell
+$env:PLAYWRIGHT_BROWSER_CHANNEL = "chrome"
+npm run test:e2e
+```
+
+Use Vitest for fast unit, contract, component, and hook behavior:
+
+```bash
+npm test
+npm run test:watch
+```
+
+Use Playwright for user-visible flows across real routes:
+
+```bash
+npm run test:e2e
+npm run test:e2e:ui
+```
+
+`npm run test:e2e` starts or reuses the Next.js app at
+`http://localhost:3001` and runs the local Chromium project. Unit, component,
+and hook files stay beside their source as `*.test.ts` or `*.test.tsx`. E2E
+specs live in `e2e` as `*.spec.ts`. Keep one-off setup inside its spec and add
+shared builders, fixtures, or render helpers to `test/support` only after more
+than one spec needs them.
+
+Prefer accessible roles, names, labels, and observable behavior over CSS
+selectors, implementation details, or snapshots. Async Server Component flows
+belong in E2E coverage rather than jsdom component tests.
 
 ## API Client
 
@@ -117,7 +162,7 @@ and validates:
 - branch name and pull request target branch
 - lint
 - TypeScript typecheck
-- Vitest API runtime tests
+- Vitest unit, contract, component, and hook tests
 - generated API contract drift
 - production build
 - dependency audit for moderate or higher vulnerabilities

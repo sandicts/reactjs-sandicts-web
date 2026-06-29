@@ -512,7 +512,21 @@ Use:
 Rules:
 
 - each MVP module needs an integration gate
+- colocate unit, component, and hook tests with their source using
+  `*.test.ts` or `*.test.tsx`
+- keep Playwright specs under `e2e` using `*.spec.ts`
+- keep Node as the default Vitest environment and opt React behavior tests
+  into jsdom at the file level
+- query rendered UI by accessible role, name, or label and assert observable
+  behavior instead of implementation details
+- keep tests isolated; restore mocks, clear shared state, and create fresh
+  provider state for each test
 - E2E should cover the critical user flow, not every UI detail
+- use Playwright locators and web-first assertions; do not use fixed sleeps or
+  CSS selectors for user interactions
+- use Chromium as the initial local E2E baseline; expand the browser and device
+  matrix only through an explicit follow-up decision
+- prefer E2E coverage over jsdom unit tests for async Server Components
 - component tests should focus on behavior, state rendering, and form validation
 - visual/manual QA should be explicit when a flow is not yet stable enough for
   full automation
@@ -532,6 +546,17 @@ Initial E2E gates:
 - reservations: request, confirm, cancel, and block duplicates
 - payments: update manual payment state
 - open matches: create, join, leave, and block invalid joins
+
+Commands:
+
+- `npm test`: run all Vitest tests once
+- `npm run test:watch`: run Vitest in watch mode
+- `npm run test:ci`: run Vitest in the pull request workflow
+- `npm run test:e2e`: start or reuse the local Next.js app and run Playwright
+- `npm run test:e2e:ui`: run Playwright in UI mode
+
+Playwright remains a local validation command until a separate task defines E2E
+CI execution, test data ownership, and the broader browser/device matrix.
 
 ### CI And Validation
 
@@ -911,13 +936,13 @@ Rules:
 
 ### Test Helpers
 
-Testing Library, Vitest, and Playwright are the decided tools, but broad test
-tooling setup is still pending.
+Shared Testing Library setup lives in `test/setup.ts`. Vitest keeps runtime and
+contract tests in Node while React component and hook tests opt into jsdom.
+Playwright owns browser-level setup separately through `playwright.config.ts`.
 
 Rules:
 
-- when test tooling exists, repeated builders, fixtures, and render helpers
-  should live in `test/support`
+- repeated builders, fixtures, and render helpers should live in `test/support`
 - prefer builders over exported mutable fixture objects
 - keep local setup inside a spec when it only supports that spec
 - do not add a shared helper before at least two specs need it
@@ -1001,7 +1026,7 @@ Resolve before completing the frontend foundation and first real API
 integration:
 
 - environment variable naming
-- frontend test commands after Playwright and Vitest are configured
+- E2E CI execution and the browser/device matrix beyond local Chromium
 - deployment target and preview environment strategy
 
 Resolve before first integrated auth implementation:
