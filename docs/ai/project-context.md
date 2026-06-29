@@ -79,6 +79,8 @@ Use these checks for frontend changes:
 ```bash
 npm run lint
 npm run typecheck
+npm test
+npm run test:e2e
 npm run build
 npm audit --audit-level=moderate
 ```
@@ -110,7 +112,8 @@ Follow the decided frontend direction:
 - React Hook Form and Zod for forms
 - Orval as the initial MVP OpenAPI generator for the Nest Swagger contract
 - Zustand only for local UI state
-- Playwright, Vitest, and Testing Library when test tooling is configured
+- Vitest with Testing Library for unit, component, and hook behavior
+- Playwright with a local Chromium baseline for E2E flows
 
 Open stack details should be tracked in Jira or frontend docs instead of being
 assumed silently. Current known architecture decision status:
