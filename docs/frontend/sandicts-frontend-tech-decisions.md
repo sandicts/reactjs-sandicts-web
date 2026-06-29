@@ -8,6 +8,7 @@ related:
   - docs/frontend/sandicts-frontend-context.md
   - docs/frontend/sandicts-frontend-planning.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
+  - docs/frontend/sandicts-mvp-visual-system.md
   - docs/frontend/sandicts-page-functional-spec.md
   - sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
   - sandicts/sandicts-docs:docs/decisions/api-contract-governance.md
@@ -172,8 +173,10 @@ Rules:
 - keep components owned in the frontend codebase instead of depending on a
   closed external design system
 - use lucide-react for icons where an existing icon fits the control
-- define Sandicts tokens early: color, radius, typography, spacing, status
-  colors, focus rings, and surface styles
+- use semantic shadcn/ui-compatible tokens for color, radius, typography,
+  status, focus, and surfaces
+- keep palette names out of shared component APIs
+- ship one dark theme for MVP and defer a user-selectable light theme
 - keep Organization screens denser and more operational than player screens
 
 Reason:
@@ -181,6 +184,10 @@ Reason:
 - shadcn/ui is fast for MVP delivery and easy to customize
 - Sandicts needs a recognizable brand direction without spending the MVP on a
   full custom component system
+
+The canonical MVP token values, component variants, common states, icon rules,
+and post-MVP visual boundaries live in
+`docs/frontend/sandicts-mvp-visual-system.md`.
 
 ### Server State
 
