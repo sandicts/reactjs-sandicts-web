@@ -260,6 +260,17 @@ Rules:
   invalid field
 - use `FormProvider` only when a form is deeply nested enough that explicit
   form props become harder to understand
+- every product form that uses React Hook Form must separate orchestration from
+  presentation through a sibling `use-<form-name>.ts` hook
+- the form hook owns `useForm`, resolver and default-value configuration,
+  submission orchestration, API mutation coordination, and validation or
+  business-error mapping
+- the form component owns semantic markup, accessible IDs, labels, descriptions,
+  error placement, controls, and simple presentation state
+- schema-derived types stay in `*.schemas.ts`, while component props and the
+  public hook return contract stay in `*.types.ts`
+- plain HTML navigation or search forms that do not use React Hook Form do not
+  require a form hook
 - client validation should improve UX, not replace backend validation
 - form schemas should match backend contracts when practical
 - backend validation and business-rule errors must still be rendered clearly
@@ -286,11 +297,15 @@ Rules:
 Reference implementation:
 
 - `src/components/examples/form-pattern-example/form-pattern-example.tsx`
+- `src/components/examples/form-pattern-example/use-form-pattern-example.ts`
 - `src/lib/forms/apply-api-validation-issues.ts`
 
 The reference demonstrates the conventions without becoming a generic form
 framework. Feature forms should compose `Field`, `FieldLabel`, `FieldError`, and
 the relevant control directly instead of wrapping every React Hook Form API.
+Tailwind classes remain colocated with markup or shared UI primitives; create a
+`*.styles.ts` file only when class composition becomes dense enough to obscure
+the component structure.
 
 Primary form areas:
 

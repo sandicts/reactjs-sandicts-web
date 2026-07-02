@@ -1,9 +1,7 @@
 "use client";
 
 import { useId } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert, LoaderCircle } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,42 +12,13 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { isSandictsApiError } from "@/lib/api/runtime/sandicts-api-error";
-import { applyApiValidationIssues } from "@/lib/forms/apply-api-validation-issues";
-import type { ApiValidationIssueFieldMap } from "@/lib/forms/apply-api-validation-issues.types";
-import {
-  formPatternExampleSchema,
-  type FormPatternExampleInput,
-  type FormPatternExampleValues,
-} from "./form-pattern-example.schemas";
 import type { FormPatternExampleProps } from "./form-pattern-example.types";
-
-const defaultValues = {
-  displayName: "",
-  email: "",
-} satisfies FormPatternExampleInput;
-
-const apiValidationIssueFieldMap = {
-  displayName: "displayName",
-  email: "email",
-} satisfies ApiValidationIssueFieldMap<FormPatternExampleInput>;
+import { useFormPatternExample } from "./use-form-pattern-example";
 
 function FormPatternExample({ onSubmit }: FormPatternExampleProps) {
   const id = useId();
-  const form = useForm<
-    FormPatternExampleInput,
-    unknown,
-    FormPatternExampleValues
-  >({
-    defaultValues,
-    mode: "onSubmit",
-    reValidateMode: "onChange",
-    resolver: zodResolver(formPatternExampleSchema),
-    shouldFocusError: true,
-  });
-  const {
-    formState: { errors, isSubmitting },
-  } = form;
+  const { errors, handleSubmit, isSubmitting, register } =
+    useFormPatternExample({ onSubmit });
 
   const displayNameId = `${id}-display-name`;
   const displayNameDescriptionId = `${displayNameId}-description`;
@@ -58,45 +27,13 @@ function FormPatternExample({ onSubmit }: FormPatternExampleProps) {
   const emailDescriptionId = `${emailId}-description`;
   const emailErrorId = `${emailId}-error`;
 
-  async function handleValidSubmit(values: FormPatternExampleValues) {
-    form.clearErrors("root");
-
-    try {
-      await onSubmit(values);
-    } catch (error) {
-      if (
-        isSandictsApiError(error) &&
-        error.code === "validation_error" &&
-        error.issues?.length
-      ) {
-        applyApiValidationIssues({
-          fieldMap: apiValidationIssueFieldMap,
-          issues: error.issues,
-          rootErrorMessage:
-            "Some fields could not be matched. Review your information and try again.",
-          setError: form.setError,
-        });
-        return;
-      }
-
-      form.setError("root.server", {
-        message: "Unable to save your information. Try again.",
-        type: "server",
-      });
-    }
-  }
-
   return (
-    <form
-      noValidate
-      aria-busy={isSubmitting}
-      onSubmit={form.handleSubmit(handleValidSubmit)}
-    >
+    <form noValidate aria-busy={isSubmitting} onSubmit={handleSubmit}>
       <FieldGroup>
         <Field data-invalid={Boolean(errors.displayName)}>
           <FieldLabel htmlFor={displayNameId}>Display name</FieldLabel>
           <Input
-            {...form.register("displayName")}
+            {...register("displayName")}
             required
             aria-describedby={
               errors.displayName
@@ -116,7 +53,7 @@ function FormPatternExample({ onSubmit }: FormPatternExampleProps) {
         <Field data-invalid={Boolean(errors.email)}>
           <FieldLabel htmlFor={emailId}>Email</FieldLabel>
           <Input
-            {...form.register("email")}
+            {...register("email")}
             required
             aria-describedby={
               errors.email
