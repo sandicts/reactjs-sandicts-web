@@ -865,6 +865,14 @@ Keep one main responsibility per file.
 Rules:
 
 - `*.tsx` component files render and compose UI
+- components may own accessible IDs, event binding, and small derived values
+  used only to render their current state
+- move React state/effects, async workflow orchestration, API mutations, domain
+  decisions, and reusable data transformations out of presentational
+  components into feature hooks, view models, services, or pure utilities
+- do not create a custom hook for a synchronous presentation calculation that
+  does not use React state or lifecycle; keep it as a colocated pure function or
+  promote it to `*.utils.ts` only when it becomes reusable
 - `*.types.ts` files hold local component props, hook contracts, view models,
   service option types, and helper option types
 - `*.constants.ts` files hold semantic constants, local copy catalogs, option
