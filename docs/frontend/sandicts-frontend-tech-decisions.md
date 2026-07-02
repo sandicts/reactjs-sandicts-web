@@ -9,9 +9,11 @@ related:
   - docs/frontend/sandicts-frontend-planning.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-mvp-visual-system.md
+  - docs/frontend/sandicts-local-ui-state.md
   - docs/frontend/sandicts-page-functional-spec.md
   - sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
   - sandicts/sandicts-docs:docs/decisions/api-contract-governance.md
+  - sandicts/sandicts-docs:docs/decisions/shared-documentation-strategy.md
   - sandicts/nodejs-sandicts-api:docs/ai/api/semantic-api-contracts.md
 scope: frontend, architecture, stack, mvp, delivery
 read-when:
@@ -217,22 +219,36 @@ Examples of server state:
 
 ### Local UI State
 
-Use:
+Decision:
 
-- Zustand only where local UI state needs cross-component coordination
+- keep state in the smallest owner that can coordinate the required UI
+- use React state for component-local behavior, the URL for shareable
+  navigation state, React Hook Form for forms, TanStack Query for server state,
+  and `lib/auth` for authentication runtime state
+- use Zustand only where concrete local UI state needs cross-component
+  coordination and a shared lifecycle
+- do not install Zustand or create an example store before a real consumer
+  exists
 
-Allowed examples:
+Potential examples:
 
 - active app area or context switcher state
 - sidebar and mobile navigation state
 - multi-step UI draft state that is not yet persisted
 - modal orchestration when local component state is insufficient
 
-Avoid:
+Never use Zustand for:
 
-- storing API collections in Zustand
+- API records, collections, pagination, or request status
 - duplicating TanStack Query cache
-- using Zustand as a persistence substitute
+- authentication credentials or session state
+- form state already owned by React Hook Form
+- state that should be represented in the URL
+- persistence without an explicit product requirement and hydration plan
+
+The canonical ownership matrix, store entry criteria, Next.js provider model,
+selector rules, persistence boundary, tests, and review checklist live in
+`docs/frontend/sandicts-local-ui-state.md`.
 
 ### Forms And Validation
 
@@ -714,7 +730,8 @@ Recommended boundaries:
 - `lib/routes`: route builders and navigation constants that are reused across
   app areas
 - `lib/env`: typed environment access and non-secret runtime config helpers
-- `lib/ui-state`: Zustand stores for local UI state only
+- `lib/ui-state`: scoped Zustand stores for concrete local UI state only,
+  created when a real consumer justifies the dependency
 - `test/support`: shared test builders, fixtures, and render helpers when test
   tooling exists and repetition justifies extraction
 
@@ -1067,6 +1084,8 @@ Review questions:
 - does the file live in the layer that owns its responsibility?
 - did a route file stay thin enough, or should the screen move into `features`?
 - are API data and cache behavior handled by TanStack Query rather than Zustand?
+- does every Zustand store have a concrete shared UI consumer and the narrowest
+  valid provider boundary?
 - are generated API contracts separate from UI view models?
 - are server-only and client-only helpers separated clearly?
 - are sibling `.types.ts` imports relative and cross-root imports using `@/*`?
@@ -1094,6 +1113,13 @@ spec describes intent; the prototype decides the first shippable shape.
 ## Documentation Rules
 
 Frontend documentation work is real delivery work and should be tracked.
+
+Follow
+`sandicts/sandicts-docs:docs/decisions/shared-documentation-strategy.md`: keep
+small and stable rules in their overview document, and give a complex rule a
+dedicated canonical document when it has interacting states, lifecycle
+behavior, edge cases, or independent evolution. The overview must keep only the
+decision summary and link to the detailed document.
 
 Create docs tasks when:
 

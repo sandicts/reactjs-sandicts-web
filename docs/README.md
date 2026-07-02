@@ -6,6 +6,7 @@ This repository is the canonical home for Sandicts frontend documentation.
 
 - `docs/frontend/sandicts-frontend-context.md`: product feel, UX direction, and frontend positioning
 - `docs/frontend/sandicts-frontend-tech-decisions.md`: frontend stack and architecture decisions
+- `docs/frontend/sandicts-local-ui-state.md`: state ownership and Zustand boundaries
 - `docs/frontend/sandicts-mvp-visual-system.md`: MVP tokens, components, states, and accessibility direction
 - `docs/frontend/sandicts-frontend-planning.md`: frontend start criteria and fullstack delivery model
 - `docs/frontend/sandicts-mvp-delivery-roadmap.md`: frontend and fullstack MVP delivery roadmap
