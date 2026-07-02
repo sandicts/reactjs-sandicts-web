@@ -51,6 +51,7 @@ repository.
 | --- | --- |
 | `docs/frontend/sandicts-frontend-context.md` | Product feel, UX direction, and frontend positioning |
 | `docs/frontend/sandicts-frontend-tech-decisions.md` | Frontend stack and architecture decisions |
+| `docs/frontend/sandicts-local-ui-state.md` | State ownership, Zustand entry criteria, lifecycle, and review rules |
 | `docs/frontend/sandicts-mvp-visual-system.md` | MVP token, component, state, icon, and accessibility direction |
 | `docs/frontend/sandicts-frontend-planning.md` | Frontend start criteria and fullstack delivery model |
 | `docs/frontend/sandicts-mvp-delivery-roadmap.md` | Frontend and fullstack MVP delivery roadmap |
@@ -83,6 +84,11 @@ For frontend setup or architecture work, read:
 1. `docs/ai/project-context.md`
 2. `docs/frontend/sandicts-frontend-tech-decisions.md`
 3. `docs/frontend/sandicts-frontend-planning.md`
+
+For local UI state or Zustand work, read:
+
+1. `docs/frontend/sandicts-frontend-tech-decisions.md`
+2. `docs/frontend/sandicts-local-ui-state.md`
 
 For visual tokens, shared UI components, or common UI states, read:
 
