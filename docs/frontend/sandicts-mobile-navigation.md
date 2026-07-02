@@ -10,6 +10,7 @@ related:
   - docs/frontend/sandicts-frontend-planning.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-mvp-visual-system.md
+  - docs/frontend/prototypes/app-shells/README.md
   - docs/frontend/sandicts-page-functional-spec.md
   - docs/frontend/sandicts-local-ui-state.md
 scope: frontend, ux, navigation, mobile, responsive, accessibility, mvp
@@ -373,6 +374,10 @@ KAN-68 must prototype:
 The prototype may refine spacing, icon choice, sheet direction, and breakpoint
 placement. It must not change navigation ownership, context separation, route
 source of truth, or accessibility requirements without updating this document.
+
+The approved KAN-68 direction and raw visual-reference classification live in
+`docs/frontend/prototypes/app-shells/README.md`. Its repository-native prototype
+is the handoff artifact for KAN-77 and later page implementation tasks.
 
 ## Implementation Handoff
 

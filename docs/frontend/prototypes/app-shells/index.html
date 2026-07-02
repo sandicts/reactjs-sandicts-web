@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="pt-BR" data-demo-state="ready" data-context-mode="multiple">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Protótipo navegável dos shells público, Player e Organization do Sandicts."
+    />
+    <title>Sandicts — Protótipos de app shell</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./prototype.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#prototype-main">Pular para o conteúdo</a>
+
+    <aside class="prototype-toolbar" aria-label="Controles do protótipo">
+      <div>
+        <strong>Protótipo KAN-68</strong>
+        <span>Use os controles para comparar shells e estados.</span>
+      </div>
+
+      <label>
+        Área
+        <select id="shell-selector">
+          <option value="public">Público</option>
+          <option value="player">Player</option>
+          <option value="organization">Organization</option>
+        </select>
+      </label>
+
+      <label>
+        Estado
+        <select id="state-selector">
+          <option value="ready">Com conteúdo</option>
+          <option value="empty">Vazio</option>
+          <option value="forbidden">Proibido</option>
+          <option value="suspended">Suspenso</option>
+        </select>
+      </label>
+
+      <label>
+        Contextos
+        <select id="context-selector">
+          <option value="multiple">Múltiplos</option>
+          <option value="single">Somente um</option>
+        </select>
+      </label>
+
+      <button class="button button--outline" id="focus-example" type="button">
+        Demonstrar foco
+      </button>
+    </aside>
+
+    <div id="prototype-main" tabindex="-1">
+      <section class="prototype-shell public-shell" data-shell="public">
+        <header class="public-header">
+          <a class="brand" href="#" aria-label="Sandicts — página inicial">
+            <img
+              src="../../../../public/sandicts-mark.svg"
+              width="32"
+              height="32"
+              alt=""
+            />
+            <span>Sandicts</span>
+          </a>
+
+          <nav class="public-header__nav" aria-label="Navegação pública">
+            <a href="#" aria-current="page">Explorar</a>
+            <a href="#">Como funciona</a>
+          </nav>
+
+          <a class="button button--primary" href="#">Entrar</a>
+        </header>
+
+        <main class="public-main">
+          <div data-when-state="ready">
+            <header class="page-heading page-heading--spacious">
+              <div>
+                <p class="eyebrow">Descoberta pública</p>
+                <h1>Encontre sua próxima quadra</h1>
+                <p>
+                  Compare espaços, horários e modalidades antes de entrar ou
+                  criar uma conta.
+                </p>
+              </div>
+            </header>
+
+            <form class="discovery-search" role="search">
+              <label>
+                Buscar quadras
+                <input
+                  type="search"
+                  placeholder="Cidade, modalidade ou organização"
+                />
+              </label>
+              <button class="button button--primary" type="submit">
+                Pesquisar
+              </button>
+            </form>
+
+            <div class="filter-row" aria-label="Filtros ativos">
+              <button class="chip" type="button">Modalidade: todas</button>
+              <button class="chip" type="button">Cidade: São Paulo</button>
+              <button class="chip" type="button">Somente com horários</button>
+              <button class="button button--ghost" type="button">Limpar</button>
+            </div>
+
+            <section aria-labelledby="public-results-title">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Perto de você</p>
+                  <h2 id="public-results-title">Quadras disponíveis</h2>
+                </div>
+                <span class="result-count">4 resultados</span>
+              </div>
+
+              <div class="discovery-grid">
+                <article class="venue-card">
+                  <div class="venue-card__media venue-card__media--sand">
+                    <span>Foto da quadra</span>
+                  </div>
+                  <div class="venue-card__content">
+                    <div>
+                      <p class="eyebrow">Futevôlei · Sintético</p>
+                      <h3>Quadra Central Esportes</h3>
+                      <p>Vila Mariana, São Paulo · 1,2 km</p>
+                    </div>
+                    <div class="venue-card__footer">
+                      <span aria-label="Avaliação 4,8 de 5">★ 4,8</span>
+                      <a class="button button--secondary" href="#">
+                        Ver horários
+                      </a>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="venue-card">
+                  <div class="venue-card__media venue-card__media--water">
+                    <span>Foto da quadra</span>
+                  </div>
+                  <div class="venue-card__content">
+                    <div>
+                      <p class="eyebrow">Beach tennis · Areia</p>
+                      <h3>Arena Praia Sul</h3>
+                      <p>Moema, São Paulo · 2,4 km</p>
+                    </div>
+                    <div class="venue-card__footer">
+                      <span aria-label="Avaliação 4,6 de 5">★ 4,6</span>
+                      <a class="button button--secondary" href="#">
+                        Ver horários
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </section>
+          </div>
+
+          <article class="state-panel" data-when-state="empty" hidden>
+            <span class="state-panel__icon" aria-hidden="true">⌕</span>
+            <h1>Nenhuma quadra encontrada</h1>
+            <p>
+              Ajuste a cidade ou remova filtros para ampliar os resultados.
+            </p>
+            <button class="button button--primary" type="button">
+              Limpar filtros
+            </button>
+          </article>
+
+          <article class="state-panel" data-when-state="forbidden" hidden>
+            <span class="state-panel__icon" aria-hidden="true">↗</span>
+            <h1>Entre para continuar</h1>
+            <p>
+              A descoberta é pública, mas reservar e participar exigem uma
+              conta autenticada.
+            </p>
+            <a class="button button--primary" href="#">Entrar</a>
+          </article>
+
+          <article class="state-panel" data-when-state="suspended" hidden>
+            <span class="state-panel__icon" aria-hidden="true">!</span>
+            <h1>Organização temporariamente indisponível</h1>
+            <p>
+              Esta página pública não aceita novas reservas no momento. Você
+              ainda pode voltar à descoberta.
+            </p>
+            <a class="button button--secondary" href="#">Voltar à descoberta</a>
+          </article>
+        </main>
+      </section>
+
+      <section class="prototype-shell auth-shell player-shell" data-shell="player" hidden>
+        <header class="auth-topbar">
+          <a class="brand" href="#" aria-label="Sandicts Player — início">
+            <img
+              src="../../../../public/sandicts-mark.svg"
+              width="32"
+              height="32"
+              alt=""
+            />
+            <span>Sandicts Player</span>
+          </a>
+
+          <div class="auth-topbar__actions">
+            <span class="single-context-label" data-single-context-label>
+              Player
+            </span>
+            <button
+              class="context-trigger"
+              type="button"
+              data-context-trigger
+              aria-haspopup="dialog"
+            >
+              Player · Lucas Lima
+              <span aria-hidden="true">⌄</span>
+            </button>
+            <button class="icon-button" type="button" aria-label="Notificações">
+              <span aria-hidden="true">●</span>
+            </button>
+          </div>
+        </header>
+
+        <div class="auth-body">
+          <aside class="desktop-sidebar" aria-label="Navegação Player">
+            <nav>
+              <a href="#" aria-current="page" data-destination="Início">
+                <span aria-hidden="true">⌂</span>
+                Início
+              </a>
+              <a href="#" data-destination="Explorar">
+                <span aria-hidden="true">⌕</span>
+                Explorar
+              </a>
+              <a href="#" data-destination="Reservas">
+                <span aria-hidden="true">▣</span>
+                Reservas
+              </a>
+              <a href="#" data-destination="Partidas">
+                <span aria-hidden="true">◎</span>
+                Partidas
+              </a>
+              <a href="#" data-destination="Perfil">
+                <span aria-hidden="true">○</span>
+                Perfil
+              </a>
+            </nav>
+          </aside>
+
+          <aside class="medium-rail" aria-label="Navegação Player">
+            <nav>
+              <a
+                href="#"
+                aria-current="page"
+                aria-label="Início"
+                data-destination="Início"
+              >
+                <span aria-hidden="true">⌂</span>
+              </a>
+              <a href="#" aria-label="Explorar" data-destination="Explorar">
+                <span aria-hidden="true">⌕</span>
+              </a>
+              <a href="#" aria-label="Reservas" data-destination="Reservas">
+                <span aria-hidden="true">▣</span>
+              </a>
+              <a href="#" aria-label="Partidas" data-destination="Partidas">
+                <span aria-hidden="true">◎</span>
+              </a>
+              <a href="#" aria-label="Perfil" data-destination="Perfil">
+                <span aria-hidden="true">○</span>
+              </a>
+            </nav>
+          </aside>
+
+          <main class="auth-main">
+            <div data-when-state="ready">
+              <header class="page-heading">
+                <div>
+                  <p class="eyebrow">Quinta-feira, 2 de julho</p>
+                  <h1>Olá, Lucas</h1>
+                  <p>Veja o que merece sua atenção hoje.</p>
+                </div>
+                <button class="button button--primary" type="button">
+                  Encontrar quadra
+                </button>
+              </header>
+
+              <section class="player-hero" aria-labelledby="next-reservation-title">
+                <div>
+                  <p class="eyebrow">Próxima reserva</p>
+                  <h2 id="next-reservation-title">Arena Praia Sul</h2>
+                  <p>Hoje · 19:00–20:00 · Quadra 2</p>
+                  <span class="status status--success">Confirmada</span>
+                </div>
+                <div class="player-hero__actions">
+                  <button class="button button--secondary" type="button">
+                    Ver detalhes
+                  </button>
+                  <button class="button button--outline" type="button">
+                    Convidar
+                  </button>
+                </div>
+              </section>
+
+              <div class="dashboard-grid">
+                <section class="panel" aria-labelledby="player-invites-title">
+                  <div class="section-heading">
+                    <div>
+                      <p class="eyebrow">2 novas</p>
+                      <h2 id="player-invites-title">Convites</h2>
+                    </div>
+                    <a href="#">Ver todos</a>
+                  </div>
+                  <ul class="compact-list">
+                    <li>
+                      <div>
+                        <strong>Partida aberta no Parque Sul</strong>
+                        <span>Amanhã, 18:30 · Intermediário</span>
+                      </div>
+                      <button class="button button--secondary" type="button">
+                        Ver
+                      </button>
+                    </li>
+                    <li>
+                      <div>
+                        <strong>Time Areia FC</strong>
+                        <span>Sábado, 09:00 · Futevôlei</span>
+                      </div>
+                      <button class="button button--secondary" type="button">
+                        Ver
+                      </button>
+                    </li>
+                  </ul>
+                </section>
+
+                <section class="panel" aria-labelledby="recommendations-title">
+                  <div class="section-heading">
+                    <div>
+                      <p class="eyebrow">Perto de você</p>
+                      <h2 id="recommendations-title">Recomendações</h2>
+                    </div>
+                  </div>
+                  <ul class="compact-list">
+                    <li>
+                      <div>
+                        <strong>Treino aberto de beach tennis</strong>
+                        <span>Hoje, 20:00 · 2 vagas</span>
+                      </div>
+                      <button class="button button--secondary" type="button">
+                        Participar
+                      </button>
+                    </li>
+                    <li>
+                      <div>
+                        <strong>Quadra Central</strong>
+                        <span>Avaliação 4,8 · 1,2 km</span>
+                      </div>
+                      <button class="button button--outline" type="button">
+                        Explorar
+                      </button>
+                    </li>
+                  </ul>
+                </section>
+              </div>
+            </div>
+
+            <article class="state-panel" data-when-state="empty" hidden>
+              <span class="state-panel__icon" aria-hidden="true">＋</span>
+              <h1>Sua agenda está livre</h1>
+              <p>
+                Você ainda não tem reservas ou convites próximos. Explore
+                quadras e partidas abertas.
+              </p>
+              <button class="button button--primary" type="button">
+                Explorar agora
+              </button>
+            </article>
+
+            <article class="state-panel" data-when-state="forbidden" hidden>
+              <span class="state-panel__icon" aria-hidden="true">×</span>
+              <h1>Este contexto não está disponível</h1>
+              <p>
+                Sua conta não pode abrir esta área Player. Escolha um contexto
+                ao qual você tenha acesso.
+              </p>
+              <button
+                class="button button--primary"
+                type="button"
+                data-context-trigger
+              >
+                Trocar contexto
+              </button>
+            </article>
+
+            <article class="state-panel" data-when-state="suspended" hidden>
+              <span class="state-panel__icon" aria-hidden="true">!</span>
+              <h1>Perfil temporariamente limitado</h1>
+              <p>
+                Algumas ações estão indisponíveis. Consulte o motivo e os
+                próximos passos antes de tentar reservar.
+              </p>
+              <button class="button button--secondary" type="button">
+                Ver orientações
+              </button>
+            </article>
+          </main>
+        </div>
+
+        <nav class="compact-bottom-nav" aria-label="Navegação Player">
+          <a href="#" aria-current="page" data-destination="Início">
+            <span aria-hidden="true">⌂</span>
+            <span>Início</span>
+          </a>
+          <a href="#" data-destination="Explorar">
+            <span aria-hidden="true">⌕</span>
+            <span>Explorar</span>
+          </a>
+          <a href="#" data-destination="Reservas">
+            <span aria-hidden="true">▣</span>
+            <span>Reservas</span>
+          </a>
+          <a href="#" data-destination="Partidas">
+            <span aria-hidden="true">◎</span>
+            <span>Partidas</span>
+          </a>
+          <a href="#" data-destination="Perfil">
+            <span aria-hidden="true">○</span>
+            <span>Perfil</span>
+          </a>
+        </nav>
+      </section>
+
+      <section
+        class="prototype-shell auth-shell organization-shell"
+        data-shell="organization"
+        hidden
+      >
+        <header class="auth-topbar organization-topbar">
+          <button
+            class="icon-button compact-menu-trigger"
+            id="organization-menu-trigger"
+            type="button"
+            aria-haspopup="dialog"
+            aria-label="Abrir menu da organização"
+          >
+            <span aria-hidden="true">☰</span>
+          </button>
+
+          <a class="brand" href="#" aria-label="Sandicts Organization — painel">
+            <img
+              src="../../../../public/sandicts-mark.svg"
+              width="32"
+              height="32"
+              alt=""
+            />
+            <span>Sandicts</span>
+          </a>
+
+          <div class="auth-topbar__actions">
+            <span class="single-context-label" data-single-context-label>
+              Arena Praia Sul
+            </span>
+            <button
+              class="context-trigger"
+              type="button"
+              data-context-trigger
+              aria-haspopup="dialog"
+            >
+              Arena Praia Sul
+              <span aria-hidden="true">⌄</span>
+            </button>
+            <button class="icon-button" type="button" aria-label="Notificações">
+              <span aria-hidden="true">●</span>
+            </button>
+          </div>
+        </header>
+
+        <div class="auth-body">
+          <aside class="desktop-sidebar" aria-label="Navegação da organização">
+            <nav class="grouped-navigation">
+              <div>
+                <p>Visão geral</p>
+                <a href="#" data-destination="Painel">
+                  <span aria-hidden="true">⌂</span>
+                  Painel
+                </a>
+                <a href="#" aria-current="page" data-destination="Agenda">
+                  <span aria-hidden="true">▦</span>
+                  Agenda
+                </a>
+                <a href="#" data-destination="Reservas">
+                  <span aria-hidden="true">▣</span>
+                  Reservas
+                </a>
+              </div>
+              <div>
+                <p>Operação</p>
+                <a href="#" data-destination="Quadras">
+                  <span aria-hidden="true">◎</span>
+                  Quadras
+                </a>
+                <a href="#" data-destination="Disponibilidade">
+                  <span aria-hidden="true">◷</span>
+                  Disponibilidade
+                </a>
+                <a href="#" data-destination="Pagamentos">
+                  <span aria-hidden="true">$</span>
+                  Pagamentos
+                </a>
+              </div>
+              <div>
+                <p>Gestão</p>
+                <a href="#" data-destination="Perfil da organização">
+                  <span aria-hidden="true">○</span>
+                  Perfil da organização
+                </a>
+                <a href="#" data-destination="Membros">
+                  <span aria-hidden="true">◇</span>
+                  Membros
+                </a>
+              </div>
+            </nav>
+          </aside>
+
+          <aside class="medium-rail" aria-label="Navegação da organização">
+            <nav>
+              <a href="#" aria-label="Painel" data-destination="Painel">
+                <span aria-hidden="true">⌂</span>
+              </a>
+              <a
+                href="#"
+                aria-current="page"
+                aria-label="Agenda"
+                data-destination="Agenda"
+              >
+                <span aria-hidden="true">▦</span>
+              </a>
+              <a href="#" aria-label="Reservas" data-destination="Reservas">
+                <span aria-hidden="true">▣</span>
+              </a>
+              <a href="#" aria-label="Quadras" data-destination="Quadras">
+                <span aria-hidden="true">◎</span>
+              </a>
+              <a
+                href="#"
+                aria-label="Disponibilidade"
+                data-destination="Disponibilidade"
+              >
+                <span aria-hidden="true">◷</span>
+              </a>
+              <a href="#" aria-label="Pagamentos" data-destination="Pagamentos">
+                <span aria-hidden="true">$</span>
+              </a>
+              <a
+                href="#"
+                aria-label="Perfil da organização"
+                data-destination="Perfil da organização"
+              >
+                <span aria-hidden="true">○</span>
+              </a>
+            </nav>
+          </aside>
+
+          <main class="auth-main organization-main">
+            <div data-when-state="ready">
+              <header class="page-heading organization-page-heading">
+                <div>
+                  <p class="eyebrow">Operação diária</p>
+                  <h1>Agenda</h1>
+                  <p>Quinta-feira, 2 de julho de 2026</p>
+                </div>
+                <button
+                  class="button button--primary"
+                  id="primary-focus-target"
+                  type="button"
+                >
+                  Nova reserva
+                </button>
+              </header>
+
+              <section class="agenda-toolbar" aria-label="Controles da agenda">
+                <div class="date-navigation">
+                  <button class="icon-button" type="button" aria-label="Dia anterior">
+                    ‹
+                  </button>
+                  <button class="button button--outline" type="button">Hoje</button>
+                  <button class="icon-button" type="button" aria-label="Próximo dia">
+                    ›
+                  </button>
+                </div>
+
+                <div class="segmented-control" aria-label="Visualização">
+                  <button type="button" aria-pressed="true">Dia</button>
+                  <button type="button" aria-pressed="false">Semana</button>
+                </div>
+
+                <label>
+                  Modalidade
+                  <select>
+                    <option>Todas</option>
+                  </select>
+                </label>
+                <label>
+                  Quadra
+                  <select>
+                    <option>Todas</option>
+                  </select>
+                </label>
+                <label>
+                  Status
+                  <select>
+                    <option>Todos</option>
+                  </select>
+                </label>
+              </section>
+
+              <section class="metric-row" aria-label="Resumo do dia">
+                <article>
+                  <span>Reservas confirmadas</span>
+                  <strong>4</strong>
+                </article>
+                <article>
+                  <span>Horários livres</span>
+                  <strong>60</strong>
+                </article>
+                <article>
+                  <span>Pagamentos pendentes</span>
+                  <strong>2</strong>
+                </article>
+                <article>
+                  <span>Ocupação do dia</span>
+                  <strong>12%</strong>
+                </article>
+              </section>
+
+              <div class="agenda-legend" aria-label="Legenda da agenda">
+                <span><i class="legend-dot legend-dot--confirmed"></i>Confirmada</span>
+                <span><i class="legend-dot legend-dot--pending"></i>Pendente</span>
+                <span><i class="legend-dot legend-dot--blocked"></i>Bloqueada</span>
+                <span><i class="legend-dot legend-dot--maintenance"></i>Manutenção</span>
+                <span><i class="legend-dot legend-dot--available"></i>Disponível</span>
+              </div>
+
+              <section aria-labelledby="agenda-grid-title">
+                <h2 class="visually-hidden" id="agenda-grid-title">
+                  Agenda das quadras por horário
+                </h2>
+                <div
+                  class="schedule-scroll"
+                  role="region"
+                  aria-label="Agenda. Role horizontalmente para ver todas as quadras."
+                  tabindex="0"
+                >
+                  <table class="schedule-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Horário</th>
+                        <th scope="col">Quadra 1</th>
+                        <th scope="col">Quadra 2</th>
+                        <th scope="col">Quadra 3</th>
+                        <th scope="col">Quadra 4</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">07:00</th>
+                        <td>
+                          <button class="schedule-event schedule-event--confirmed">
+                            <strong>Rafael Lima</strong>
+                            <span>Futevôlei · 07:00–08:30</span>
+                          </button>
+                        </td>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">08:00</th>
+                        <td><span class="continued-slot">continuação</span></td>
+                        <td>
+                          <button class="schedule-event schedule-event--pending">
+                            <strong>Marina Costa</strong>
+                            <span>Beach tennis · 08:00–09:00</span>
+                          </button>
+                        </td>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">09:00</th>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td>
+                          <span class="schedule-event schedule-event--maintenance">
+                            <strong>Manutenção</strong>
+                            <span>Rede e iluminação</span>
+                          </span>
+                        </td>
+                        <td><span class="available-slot">Disponível</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">10:00</th>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td>
+                          <button class="schedule-event schedule-event--confirmed">
+                            <strong>Prof. Daniel</strong>
+                            <span>Vôlei de praia · 10:00–11:30</span>
+                          </button>
+                        </td>
+                        <td><span class="available-slot">Disponível</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">11:00</th>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td>
+                          <span class="schedule-event schedule-event--blocked">
+                            <strong>Bloqueada</strong>
+                            <span>Uso interno</span>
+                          </span>
+                        </td>
+                        <td><span class="continued-slot">continuação</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">12:00</th>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+
+            <article class="state-panel" data-when-state="empty" hidden>
+              <span class="state-panel__icon" aria-hidden="true">▦</span>
+              <h1>Nenhuma reserva neste período</h1>
+              <p>
+                A agenda está livre para os filtros selecionados. Crie uma
+                reserva ou configure a disponibilidade.
+              </p>
+              <button class="button button--primary" type="button">
+                Nova reserva
+              </button>
+              <a href="#">Configurar disponibilidade</a>
+            </article>
+
+            <article class="state-panel" data-when-state="forbidden" hidden>
+              <span class="state-panel__icon" aria-hidden="true">×</span>
+              <h1>Você não pode acessar esta agenda</h1>
+              <p>
+                Sua associação não permite visualizar esta unidade ou quadra.
+                Escolha um contexto autorizado.
+              </p>
+              <button
+                class="button button--primary"
+                type="button"
+                data-context-trigger
+              >
+                Trocar contexto
+              </button>
+            </article>
+
+            <article class="state-panel" data-when-state="suspended" hidden>
+              <span class="state-panel__icon" aria-hidden="true">!</span>
+              <h1>Organização suspensa</h1>
+              <p>
+                Novas reservas e alterações estão bloqueadas. Os dados
+                existentes permanecem disponíveis para consulta.
+              </p>
+              <button class="button button--secondary" type="button">
+                Entender a suspensão
+              </button>
+            </article>
+          </main>
+        </div>
+      </section>
+    </div>
+
+    <dialog class="context-dialog" id="context-dialog">
+      <form method="dialog">
+        <header>
+          <div>
+            <p class="eyebrow">Conta Sandicts</p>
+            <h2>Trocar contexto</h2>
+          </div>
+          <button class="icon-button" value="cancel" aria-label="Fechar">
+            ×
+          </button>
+        </header>
+
+        <div class="context-groups">
+          <section aria-labelledby="player-context-title">
+            <h3 id="player-context-title">Player</h3>
+            <button class="context-option" value="player">
+              <span class="context-option__mark">LL</span>
+              <span>
+                <strong>Lucas Lima</strong>
+                <small>Perfil de jogador</small>
+              </span>
+              <span aria-hidden="true">›</span>
+            </button>
+          </section>
+
+          <section aria-labelledby="organization-context-title">
+            <h3 id="organization-context-title">Organizações</h3>
+            <button class="context-option" value="organization-south">
+              <span class="context-option__mark">AP</span>
+              <span>
+                <strong>Arena Praia Sul</strong>
+                <small>Administrador</small>
+              </span>
+              <span aria-hidden="true">›</span>
+            </button>
+            <button class="context-option" value="organization-north">
+              <span class="context-option__mark">CT</span>
+              <span>
+                <strong>Centro de Treinamento Norte</strong>
+                <small>Operador · acesso limitado</small>
+              </span>
+              <span aria-hidden="true">›</span>
+            </button>
+          </section>
+        </div>
+
+        <footer>
+          <button class="button button--outline" value="cancel">Cancelar</button>
+          <a href="#">Criar organização</a>
+        </footer>
+      </form>
+    </dialog>
+
+    <dialog class="navigation-drawer" id="organization-drawer">
+      <div>
+        <header>
+          <div>
+            <p class="eyebrow">Arena Praia Sul</p>
+            <h2>Navegação</h2>
+          </div>
+          <button
+            class="icon-button"
+            id="organization-menu-close"
+            type="button"
+            aria-label="Fechar menu"
+          >
+            ×
+          </button>
+        </header>
+
+        <nav class="grouped-navigation" aria-label="Navegação da organização">
+          <div>
+            <p>Visão geral</p>
+            <a href="#" data-destination="Painel">Painel</a>
+            <a href="#" aria-current="page" data-destination="Agenda">Agenda</a>
+            <a href="#" data-destination="Reservas">Reservas</a>
+          </div>
+          <div>
+            <p>Operação</p>
+            <a href="#" data-destination="Quadras">Quadras</a>
+            <a href="#" data-destination="Disponibilidade">Disponibilidade</a>
+            <a href="#" data-destination="Pagamentos">Pagamentos</a>
+          </div>
+          <div>
+            <p>Gestão</p>
+            <a href="#" data-destination="Perfil da organização">
+              Perfil da organização
+            </a>
+            <a href="#" data-destination="Membros">Membros</a>
+          </div>
+        </nav>
+      </div>
+    </dialog>
+  </body>
+</html>
