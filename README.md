@@ -9,8 +9,39 @@ the Nest API.
 - React
 - TypeScript
 - Tailwind CSS
+- shadcn/ui
 - lucide-react
 - npm
+
+## UI Foundation
+
+shadcn/ui is configured through `components.json` for Tailwind CSS v4, React
+Server Components, TypeScript, Radix primitives, lucide-react icons, and the
+existing `@/*` source alias.
+
+Inspect the current configuration or add a component with:
+
+```bash
+npm run ui:info
+npm run ui:add -- button
+```
+
+Low-level primitives live in `src/components/ui`. Cross-feature compositions
+live in `src/components/shared` when more than one feature needs them. Feature
+screens should import primitives from `@/components/ui/*` and must not edit
+generated or copied registry code at call sites to compensate for a shared
+visual rule.
+
+The semantic token and component contract lives in:
+
+```text
+docs/frontend/sandicts-mvp-visual-system.md
+```
+
+Use semantic utilities such as `bg-card`, `text-muted-foreground`,
+`border-border`, and `ring-ring`. Keep raw palette names and repeated color
+values out of shared component APIs. Add new shadcn/ui primitives only when a
+real screen needs them instead of generating the complete catalog up front.
 
 ## Runtime
 

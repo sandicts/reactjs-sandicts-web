@@ -1,46 +1,85 @@
 @import "tailwindcss";
+@import "shadcn/tailwind.css";
+@import "tw-animate-css";
 
 :root {
+  color-scheme: dark;
+  --radius: 0.625rem;
   --background: #071211;
   --foreground: #f8faf5;
-  --muted: #9ca99f;
-  --sand: #f59e0b;
-  --sand-contrast: #161108;
-  --sand-hover: #f7b13a;
-  --mint: #34d399;
-  --water: #38bdf8;
-  --surface: #0d1b19;
-  --surface-raised: #122823;
-  --line: #21413b;
+  --card: #0d1b19;
+  --card-foreground: #f8faf5;
+  --popover: #122823;
+  --popover-foreground: #f8faf5;
+  --primary: #f59e0b;
+  --primary-foreground: #161108;
+  --secondary: #122823;
+  --secondary-foreground: #f8faf5;
+  --muted: #0d1b19;
+  --muted-foreground: #9ca99f;
+  --accent: #21413b;
+  --accent-foreground: #f8faf5;
+  --destructive: #fb7185;
+  --destructive-foreground: #4c0519;
+  --border: #21413b;
+  --input: #47776b;
+  --ring: #f59e0b;
+  --success: #34d399;
+  --success-foreground: #052e2b;
+  --warning: #f59e0b;
+  --warning-foreground: #161108;
+  --info: #38bdf8;
+  --info-foreground: #082f49;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
-  --color-sand: var(--sand);
-  --color-sand-contrast: var(--sand-contrast);
-  --color-sand-hover: var(--sand-hover);
-  --color-mint: var(--mint);
-  --color-water: var(--water);
-  --color-surface: var(--surface);
-  --color-surface-raised: var(--surface-raised);
-  --color-line: var(--line);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-* {
-  box-sizing: border-box;
-}
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
-}
+  html {
+    min-height: 100%;
+  }
 
-button,
-a {
-  font: inherit;
+  body {
+    @apply min-h-full bg-background text-foreground;
+    font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  }
 }
