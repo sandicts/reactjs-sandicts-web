@@ -7,6 +7,7 @@ canonical: docs/frontend/sandicts-mvp-visual-system.md
 related:
   - docs/frontend/sandicts-frontend-context.md
   - docs/frontend/sandicts-frontend-tech-decisions.md
+  - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-mvp-screens-spec.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - sandicts/sandicts-docs:docs/product/sandicts-product-context.md

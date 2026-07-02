@@ -7,6 +7,7 @@ canonical: docs/frontend/sandicts-mvp-delivery-roadmap.md
 related:
   - docs/frontend/sandicts-frontend-tech-decisions.md
   - docs/frontend/sandicts-frontend-planning.md
+  - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-page-functional-spec.md
   - docs/frontend/sandicts-mvp-screens-spec.md
   - sandicts/sandicts-docs:docs/product/sandicts-mvp-functional-spec.md
@@ -611,6 +612,9 @@ Resolved foundation decisions:
 - KAN-65 navigation model: single login, one user identity, multiple contexts,
   context switcher, first-class Player/Organization/Academy/Admin App areas,
   and slug-based routes from the start
+- KAN-66 mobile navigation model: compact public header, five-destination
+  Player bottom navigation, operational navigation sheets, grouped mobile
+  context switcher, medium rails, expanded sidebars, and URL-owned selection
 - Organization and Academy model: Organization owns venue/unit/court operations;
   Academy owns training/class/coach/student operations; they are independent
   contexts that can belong to the same signed-in user
@@ -623,9 +627,6 @@ Frontend foundation:
 
 UX and app shell:
 
-- mobile navigation model
-- exact context switcher mobile shape
-- breakpoint strategy
 - global state templates
 
 Auth:

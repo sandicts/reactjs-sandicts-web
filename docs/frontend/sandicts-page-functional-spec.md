@@ -7,6 +7,7 @@ canonical: docs/frontend/sandicts-page-functional-spec.md
 related:
   - docs/frontend/sandicts-frontend-context.md
   - docs/frontend/sandicts-frontend-tech-decisions.md
+  - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-frontend-planning.md
   - sandicts/sandicts-docs:docs/product/sandicts-product-context.md
@@ -174,9 +175,13 @@ Context switcher:
 - Admin App when authorized
 - create Organization or create Academy entry points when allowed
 
+On compact viewports, multiple contexts are presented in a grouped modal bottom
+sheet or equivalent dialog. Selecting a context closes the switcher and
+navigates to that context home. The complete responsive and accessible behavior
+lives in `docs/frontend/sandicts-mobile-navigation.md`.
+
 Open decisions:
 
-- exact mobile shape for the context switcher
 - exact onboarding copy for "start as Player, Organization, or Academy"
 - whether personal player profile creation is automatic for every signed-in
   account or explicit after login
@@ -2085,7 +2090,8 @@ Rules:
 
 This route map records the KAN-65 navigation decision. Public and operational
 entity pages use slugs from the start. Backend APIs can still use stable IDs
-internally.
+internally. KAN-66 presentation, responsive behavior, context switching, and
+route-selection rules live in `docs/frontend/sandicts-mobile-navigation.md`.
 
 Public:
 

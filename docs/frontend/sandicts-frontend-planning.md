@@ -7,6 +7,7 @@ canonical: docs/frontend/sandicts-frontend-planning.md
 related:
   - docs/frontend/sandicts-frontend-context.md
   - docs/frontend/sandicts-frontend-tech-decisions.md
+  - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-page-functional-spec.md
   - sandicts/sandicts-docs:docs/product/sandicts-product-context.md
@@ -356,10 +357,24 @@ Resolved direction:
 - use slug routes for public and operational entity pages from the beginning
 - keep player, organization, academy, and Admin App as separate app areas with
   shared auth/session foundations
+- use a compact public header instead of a public bottom navigation bar
+- use a five-destination bottom navigation bar for the compact Player area
+- use a navigation sheet or drawer for compact Organization and Admin App
+  navigation because their operational hierarchies exceed five destinations
+- reserve the Organization adaptive navigation pattern for Academy V2
+- adapt authenticated navigation to a rail at medium widths and a labeled
+  sidebar at expanded widths
+- show the mobile context switcher as a grouped modal bottom sheet or equivalent
+  dialog, separate from navigation inside the active context
+- derive active navigation from the URL instead of duplicating selection in
+  React or Zustand state
+
+The detailed destination map, responsive modes, access states, accessibility
+requirements, and implementation handoff live in
+`docs/frontend/sandicts-mobile-navigation.md`.
 
 Needed decisions:
 
-- mobile bottom navigation vs sidebar per context
 - exact empty states for missing profile, missing organization, missing academy,
   forbidden context, and suspended billing
 - exact labels for public-facing Organization and Academy concepts in Brazilian
