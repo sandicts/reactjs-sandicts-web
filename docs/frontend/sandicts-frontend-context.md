@@ -8,6 +8,7 @@ related:
   - docs/frontend/sandicts-frontend-tech-decisions.md
   - docs/frontend/sandicts-frontend-planning.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
+  - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-page-functional-spec.md
 scope: frontend, product-feel, brand, ux, stack, mvp
 read-when:
@@ -120,6 +121,10 @@ After the MVP, Organization or Academy screens can add:
 - keep booking and joining flows short
 - show social proof without making the MVP depend on complex ranking
 - separate player and Organization navigation clearly
+
+The canonical responsive navigation, context-switcher, route-selection, and
+navigation accessibility decisions live in
+`docs/frontend/sandicts-mobile-navigation.md`.
 
 ## MVP Screens
 

@@ -7,6 +7,7 @@ canonical: docs/frontend/sandicts-local-ui-state.md
 related:
   - docs/frontend/sandicts-frontend-tech-decisions.md
   - docs/frontend/sandicts-frontend-planning.md
+  - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-mvp-visual-system.md
 scope: frontend, architecture, react, state, zustand, nextjs
 read-when:
