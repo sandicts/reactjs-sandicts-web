@@ -11,11 +11,13 @@ Read them in this order for most frontend work:
    Zustand
 4. `sandicts-mobile-navigation.md` when deciding app-shell navigation or the
    context switcher
-5. `sandicts-frontend-planning.md`
-6. `sandicts-mvp-delivery-roadmap.md`
-7. `sandicts-page-functional-spec.md` when page behavior, routes, permissions,
+5. `prototypes/app-shells/README.md` when implementing or reviewing the first
+   public, Player, or Organization shell direction
+6. `sandicts-frontend-planning.md`
+7. `sandicts-mvp-delivery-roadmap.md`
+8. `sandicts-page-functional-spec.md` when page behavior, routes, permissions,
    or user flows matter
-8. `sandicts-mvp-screens-spec.md` only for detailed screen-state work
+9. `sandicts-mvp-screens-spec.md` only for detailed screen-state work
 
 Files under `discovery/` are historical inputs. Use them for comparison or
 audit work, then prefer the current docs above for decisions.

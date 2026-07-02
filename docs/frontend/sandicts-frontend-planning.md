@@ -810,7 +810,8 @@ Still open:
 - [ ] Decide billing model for organizations and academies: fixed subscription,
   commission/percentage, or hybrid.
 - [ ] Decide deployment target.
-- [ ] Decide first app-shell prototype.
+- [x] Decide first app-shell prototype. See
+  `docs/frontend/prototypes/app-shells/README.md`.
 - [ ] Decide which uncommitted docs are ready to commit as MVP source docs.
 
 ## Next Planning Step
