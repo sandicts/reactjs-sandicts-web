@@ -239,16 +239,73 @@ Avoid:
 Use:
 
 - React Hook Form
-- Zod
+- Zod 4
 - `@hookform/resolvers`
 
 Rules:
 
+- keep form schemas in feature-local `*.schemas.ts` files and name exported
+  schemas with a `Schema` suffix
+- infer validated values from the schema with `z.input` and `z.output`; do not
+  maintain a second handwritten form-value type
+- provide complete `defaultValues` and never use `undefined` as a controlled
+  field default
+- use `register` for native and uncontrolled inputs; use `Controller` only when
+  a controlled component such as Select, Checkbox, or Radio cannot expose a
+  native registration contract
+- default to validation on submit and revalidate while the user corrects an
+  invalid field; features may choose a different mode only for a documented UX
+  reason
+- keep `shouldFocusError` enabled so failed submissions move focus to the first
+  invalid field
+- use `FormProvider` only when a form is deeply nested enough that explicit
+  form props become harder to understand
+- every product form that uses React Hook Form must separate orchestration from
+  presentation through a sibling `use-<form-name>.ts` hook
+- the form hook owns `useForm`, resolver and default-value configuration,
+  submission orchestration, API mutation coordination, and validation or
+  business-error mapping
+- the form component owns semantic markup, accessible IDs, labels, descriptions,
+  error placement, controls, and simple presentation state
+- schema-derived types stay in `*.schemas.ts`, while component props and the
+  public hook return contract stay in `*.types.ts`
+- plain HTML navigation or search forms that do not use React Hook Form do not
+  require a form hook
 - client validation should improve UX, not replace backend validation
 - form schemas should match backend contracts when practical
 - backend validation and business-rule errors must still be rendered clearly
 - field validation errors should appear inline when possible
 - business-rule failures should appear near the action or workflow state
+- map backend validation paths through an explicit field allowlist before
+  calling React Hook Form `setError`; unknown paths become `root.server`
+- do not introduce Server Actions as a second mutation boundary while the
+  product uses the Nest OpenAPI contract, Orval request functions, and feature
+  hooks for writes
+- use the native `<form>` element and preserve semantic `type`, `required`,
+  `inputMode`, and `autoComplete` attributes
+- `noValidate` is allowed only when the form provides and tests its own
+  accessible validation feedback
+- associate visible labels, helper text, and errors with stable IDs; invalid
+  controls use `aria-invalid`, `aria-describedby`, and the shared `Field`
+  invalid state
+- disable the submitting action, expose an accessible busy state, and preserve
+  its width to prevent duplicate submissions
+- component tests should use Testing Library and `user-event` to verify visible
+  behavior, focus, accessible state, parsed values, server error mapping, and
+  duplicate-submit protection
+
+Reference implementation:
+
+- `src/components/examples/form-pattern-example/form-pattern-example.tsx`
+- `src/components/examples/form-pattern-example/use-form-pattern-example.ts`
+- `src/lib/forms/apply-api-validation-issues.ts`
+
+The reference demonstrates the conventions without becoming a generic form
+framework. Feature forms should compose `Field`, `FieldLabel`, `FieldError`, and
+the relevant control directly instead of wrapping every React Hook Form API.
+Tailwind classes remain colocated with markup or shared UI primitives; create a
+`*.styles.ts` file only when class composition becomes dense enough to obscure
+the component structure.
 
 Primary form areas:
 
@@ -808,6 +865,14 @@ Keep one main responsibility per file.
 Rules:
 
 - `*.tsx` component files render and compose UI
+- components may own accessible IDs, event binding, and small derived values
+  used only to render their current state
+- move React state/effects, async workflow orchestration, API mutations, domain
+  decisions, and reusable data transformations out of presentational
+  components into feature hooks, view models, services, or pure utilities
+- do not create a custom hook for a synchronous presentation calculation that
+  does not use React state or lifecycle; keep it as a colocated pure function or
+  promote it to `*.utils.ts` only when it becomes reusable
 - `*.types.ts` files hold local component props, hook contracts, view models,
   service option types, and helper option types
 - `*.constants.ts` files hold semantic constants, local copy catalogs, option
