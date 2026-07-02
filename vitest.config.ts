@@ -9,6 +9,7 @@ export default defineConfig({
   test: {
     environment: "node",
     exclude: [...configDefaults.exclude, "e2e/**"],
+    globals: true,
     restoreMocks: true,
     setupFiles: ["./test/setup.ts"],
   },
