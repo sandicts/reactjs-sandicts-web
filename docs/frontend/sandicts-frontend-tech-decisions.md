@@ -903,8 +903,18 @@ Rules:
 Simple components may use a flat pair such as:
 
 ```text
-components/shared/area-placeholder.tsx
-components/shared/area-placeholder.types.ts
+components/shared/page-heading.tsx
+components/shared/page-heading.types.ts
+```
+
+When a shared component owns a contract and tests, keep the artifacts in a
+focused folder:
+
+```text
+components/shared/area-placeholder/
+├── area-placeholder.tsx
+├── area-placeholder.types.ts
+└── area-placeholder.test.tsx
 ```
 
 Complex components may use a folder:
@@ -915,6 +925,37 @@ components/shared/status-card/
 ├── status-card.types.ts
 ├── status-card.constants.ts
 └── status-card.styles.ts
+```
+
+Directory organization rules:
+
+- keep a directory flat while it owns one small, cohesive responsibility and
+  remains easy to scan
+- split a growing directory by product area or technical responsibility when
+  it starts mixing shell variants, shared composition, navigation, state,
+  tests, or unrelated helpers
+- prefer responsibility-based folders over broad file-type buckets or
+  dumping-ground names such as `misc`, `common`, or a second generic
+  `components` folder
+- colocate component contracts, constants, tests, and pure utilities with the
+  component or subdomain that owns them
+- keep cross-cutting pieces under an explicitly named `shared` folder only when
+  two or more sibling areas consume them
+- inspect and reorganize the target directory before adding another loose file
+  when ownership is already ambiguous
+
+For example, the app-shell implementation keeps technical responsibilities and
+the Public, Player, and Organization variants as direct, named boundaries:
+
+```text
+components/shared/app-shell/
+├── chrome/
+├── content/
+├── context/
+├── navigation/
+├── public/
+├── player/
+└── organization/
 ```
 
 Avoid turning `index.tsx` into a blanket requirement. Prefer explicit file names
