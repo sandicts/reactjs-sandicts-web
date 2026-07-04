@@ -11,7 +11,10 @@ export function AreaPlaceholder({
   Icon,
 }: AreaPlaceholderProps) {
   return (
-    <main className="min-h-screen bg-background px-5 py-6 text-foreground sm:px-8">
+    <main
+      id="shell-main"
+      className="min-h-screen bg-background px-5 py-6 text-foreground sm:px-8"
+    >
       <div className="mx-auto flex min-h-[calc(100vh-3rem)] max-w-5xl flex-col">
         <Button
           asChild
