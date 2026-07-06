@@ -1,12 +1,15 @@
 import { UserRound } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ShellPagePlaceholder } from "@/components/shared/app-shell/content/shell-page-placeholder";
 
 export default function PlayerProfilePage() {
+  const t = useTranslations("Pages.player.profile");
+
   return (
     <ShellPagePlaceholder
-      eyebrow="Perfil"
-      title="Cuide do seu perfil Player."
-      description="Onboarding e edição de perfil serão conectados aqui sem alterar a navegação principal."
+      eyebrow={t("eyebrow")}
+      title={t("title")}
+      description={t("description")}
       Icon={UserRound}
     />
   );

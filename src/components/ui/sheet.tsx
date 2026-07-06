@@ -44,10 +44,12 @@ function SheetOverlay({
 function SheetContent({
   className,
   children,
+  closeLabel,
   side = "right",
   showCloseButton = true,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
+  closeLabel: string;
   side?: "top" | "right" | "bottom" | "left";
   showCloseButton?: boolean;
 }) {
@@ -75,7 +77,7 @@ function SheetContent({
         {showCloseButton ? (
           <SheetPrimitive.Close
             className="absolute top-4 right-4 inline-flex size-11 items-center justify-center rounded-md text-muted-foreground transition hover:bg-accent hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none disabled:pointer-events-none"
-            aria-label="Fechar"
+            aria-label={closeLabel}
           >
             <X className="size-5" aria-hidden="true" />
           </SheetPrimitive.Close>

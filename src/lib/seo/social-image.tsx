@@ -1,7 +1,13 @@
 import { ImageResponse } from "next/og";
 import { SEO_SITE_NAME, SOCIAL_IMAGE_SIZE } from "./seo.constants";
 
-function createSocialImage() {
+type SocialImageCopy = Readonly<{
+  eyebrow: string;
+  symbolLabel: string;
+  title: string;
+}>;
+
+function createSocialImage(copy: SocialImageCopy) {
   return new ImageResponse(
     <div
       style={{
@@ -40,7 +46,7 @@ function createSocialImage() {
         }}
       >
         <svg
-          aria-label="Símbolo Sandicts"
+          aria-label={copy.symbolLabel}
           height="96"
           viewBox="0 0 96 96"
           width="96"
@@ -91,7 +97,7 @@ function createSocialImage() {
             textTransform: "uppercase",
           }}
         >
-          Sua próxima partida começa aqui
+          {copy.eyebrow}
         </div>
         <div
           style={{
@@ -102,7 +108,7 @@ function createSocialImage() {
             lineHeight: 1.05,
           }}
         >
-          Encontre quadras, partidas e pessoas para jogar.
+          {copy.title}
         </div>
       </div>
 
@@ -121,3 +127,4 @@ function createSocialImage() {
 }
 
 export { createSocialImage };
+export type { SocialImageCopy };

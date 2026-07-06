@@ -1,16 +1,33 @@
 import { z } from "zod";
 
-const formPatternExampleSchema = z.object({
-  displayName: z
-    .string()
-    .trim()
-    .min(2, "Enter at least 2 characters.")
-    .max(80, "Enter no more than 80 characters."),
-  email: z.string().trim().pipe(z.email("Enter a valid email address.")),
-});
+type FormPatternExampleValidationMessages = Readonly<{
+  displayNameMax: string;
+  displayNameMin: string;
+  emailInvalid: string;
+}>;
 
-type FormPatternExampleInput = z.input<typeof formPatternExampleSchema>;
-type FormPatternExampleValues = z.output<typeof formPatternExampleSchema>;
+function createFormPatternExampleSchema(
+  messages: FormPatternExampleValidationMessages,
+) {
+  return z.object({
+    displayName: z
+      .string()
+      .trim()
+      .min(2, messages.displayNameMin)
+      .max(80, messages.displayNameMax),
+    email: z.string().trim().pipe(z.email(messages.emailInvalid)),
+  });
+}
 
-export { formPatternExampleSchema };
-export type { FormPatternExampleInput, FormPatternExampleValues };
+type FormPatternExampleSchema = ReturnType<
+  typeof createFormPatternExampleSchema
+>;
+type FormPatternExampleInput = z.input<FormPatternExampleSchema>;
+type FormPatternExampleValues = z.output<FormPatternExampleSchema>;
+
+export { createFormPatternExampleSchema };
+export type {
+  FormPatternExampleInput,
+  FormPatternExampleValidationMessages,
+  FormPatternExampleValues,
+};

@@ -1,0 +1,206 @@
+{
+  "Common": {
+    "backToSandicts": "Voltar para o Sandicts",
+    "brandHomeLabel": "Sandicts — início",
+    "close": "Fechar",
+    "skipToContent": "Pular para o conteúdo"
+  },
+  "ContextSwitcher": {
+    "academyGroup": "Academias",
+    "adminGroup": "Admin App",
+    "currentContext": "Contexto atual",
+    "description": "Escolha a área ou organização que deseja acessar.",
+    "organizationGroup": "Organizações",
+    "playerGroup": "Player",
+    "title": "Trocar contexto",
+    "triggerLabel": "Trocar contexto. Contexto atual: {context}"
+  },
+  "FormExample": {
+    "displayNameDescription": "Use o nome que as outras pessoas devem ver.",
+    "displayNameLabel": "Nome de exibição",
+    "displayNameMax": "Informe no máximo 80 caracteres.",
+    "displayNameMin": "Informe pelo menos 2 caracteres.",
+    "emailDescription": "Usamos este endereço para acessar sua conta.",
+    "emailInvalid": "Informe um endereço de e-mail válido.",
+    "emailLabel": "E-mail",
+    "rootServerError": "Não foi possível salvar suas informações. Tente novamente.",
+    "saving": "Salvando…",
+    "submit": "Salvar exemplo",
+    "submitErrorTitle": "Não foi possível enviar o formulário",
+    "unmatchedFieldsError": "Alguns campos não puderam ser associados. Revise suas informações e tente novamente."
+  },
+  "Metadata": {
+    "defaultDescription": "Encontre quadras, partidas e pessoas para praticar esportes de areia.",
+    "socialImageAlt": "Sandicts — encontre quadras, partidas e pessoas para jogar",
+    "socialImageEyebrow": "Sua próxima partida começa aqui",
+    "socialImageSymbolLabel": "Símbolo Sandicts",
+    "socialImageTitle": "Encontre quadras, partidas e pessoas para jogar."
+  },
+  "Navigation": {
+    "organization": {
+      "availability": "Disponibilidade",
+      "calendar": "Agenda",
+      "courts": "Quadras",
+      "dashboard": "Painel",
+      "managementGroup": "Gestão",
+      "members": "Membros",
+      "operationGroup": "Operação",
+      "overviewGroup": "Visão geral",
+      "payments": "Pagamentos",
+      "profile": "Perfil da organização",
+      "reservations": "Reservas",
+      "units": "Unidades"
+    },
+    "player": {
+      "courts": "Explorar",
+      "group": "Player",
+      "home": "Início",
+      "openMatches": "Partidas",
+      "profile": "Perfil",
+      "reservations": "Reservas"
+    }
+  },
+  "OrganizationShell": {
+    "ariaLabel": "Navegação da organização",
+    "contextDetail": "Operação de quadras",
+    "defaultContextLabel": "Organização",
+    "defaultTitle": "Operação",
+    "description": "Navegue pelas áreas operacionais autorizadas.",
+    "eyebrow": "Organização",
+    "menuLabel": "Abrir navegação da organização"
+  },
+  "Pages": {
+    "discovery": {
+      "description": "Busca, filtros, resultados e detalhes serão implementados nas tarefas de descoberta. Este shell preserva acesso direto e navegação do navegador.",
+      "eyebrow": "Descoberta pública",
+      "metadataDescription": "Descubra quadras e espaços para praticar esportes de areia perto de você.",
+      "metadataTitle": "Descobrir quadras",
+      "title": "Encontre sua próxima quadra."
+    },
+    "organization": {
+      "availability": {
+        "description": "Abertura recorrente, manutenção e períodos indisponíveis permanecem separados da Agenda.",
+        "eyebrow": "Disponibilidade",
+        "title": "Configure horários e bloqueios."
+      },
+      "calendar": {
+        "description": "A grade operacional por quadra e horário será implementada na tarefa dedicada de Agenda.",
+        "eyebrow": "Agenda",
+        "title": "Visualize quadras por horário."
+      },
+      "courts": {
+        "description": "Cadastro, edição e detalhes das quadras serão entregues na vertical operacional correspondente.",
+        "eyebrow": "Quadras",
+        "title": "Gerencie suas quadras."
+      },
+      "dashboard": {
+        "description": "Indicadores e atalhos operacionais serão adicionados pelas tarefas de Organization sem duplicar a Agenda.",
+        "eyebrow": "Painel",
+        "title": "Opere suas quadras com clareza."
+      },
+      "metadataDescription": "Gerencie sua organização no Sandicts.",
+      "metadataTitle": "Área da organização",
+      "payments": {
+        "description": "Somente os estados manuais aprovados serão implementados; conciliação e relatórios avançados continuam fora do escopo.",
+        "eyebrow": "Pagamentos",
+        "title": "Acompanhe pagamentos do MVP."
+      },
+      "profile": {
+        "description": "Campos e permissões finais serão definidos e implementados pelas tarefas de perfil.",
+        "eyebrow": "Perfil da organização",
+        "title": "Mantenha os dados da organização."
+      },
+      "reservations": {
+        "description": "Filtros, registros e operações de reserva serão implementados sem misturar configuração de disponibilidade.",
+        "eyebrow": "Reservas",
+        "title": "Consulte e opere reservas."
+      }
+    },
+    "player": {
+      "courts": {
+        "description": "Busca, filtros e detalhes de quadras serão adicionados na vertical de descoberta.",
+        "eyebrow": "Explorar",
+        "title": "Descubra quadras e horários."
+      },
+      "home": {
+        "description": "A home Player reunirá reservas, partidas abertas e atalhos para descoberta sem transformar métricas de jogo em escopo do MVP.",
+        "eyebrow": "Início",
+        "title": "Seu próximo jogo começa aqui."
+      },
+      "metadataDescription": "Gerencie sua experiência de jogador no Sandicts.",
+      "metadataTitle": "Área do jogador",
+      "openMatches": {
+        "description": "A lista, os detalhes e a criação de partidas permanecerão dentro deste destino.",
+        "eyebrow": "Partidas",
+        "title": "Encontre uma partida aberta."
+      },
+      "profile": {
+        "description": "Onboarding e edição de perfil serão conectados aqui sem alterar a navegação principal.",
+        "eyebrow": "Perfil",
+        "title": "Cuide do seu perfil Player."
+      },
+      "redirectMetadataDescription": "Acesse sua área de jogador no Sandicts.",
+      "reservations": {
+        "description": "Listas, detalhes e solicitações de alteração serão implementados nas tarefas de reservas.",
+        "eyebrow": "Reservas",
+        "title": "Acompanhe suas reservas."
+      }
+    },
+    "signIn": {
+      "description": "Google Sign-In, One Tap e magic link serão conectados aqui pelas tarefas de autenticação.",
+      "eyebrow": "Área pública",
+      "metadataDescription": "Entre na sua conta Sandicts.",
+      "metadataTitle": "Entrar",
+      "title": "Entre na sua conta."
+    }
+  },
+  "PlayerShell": {
+    "ariaLabel": "Navegação Player",
+    "contextDetail": "Sua experiência de jogo",
+    "defaultTitle": "Área Player",
+    "eyebrow": "Player"
+  },
+  "PublicHome": {
+    "actions": {
+      "courts": {
+        "detail": "Busque por esporte, horário e localização.",
+        "label": "Encontrar uma quadra"
+      },
+      "openMatches": {
+        "detail": "Encontre partidas abertas para jogar.",
+        "label": "Entrar em uma partida"
+      },
+      "organization": {
+        "detail": "Acesse quadras, reservas e disponibilidade.",
+        "label": "Operar a agenda"
+      }
+    },
+    "badge": "Esportes de areia em um só lugar",
+    "cardDescription": "Navegação responsiva e componentes acessíveis para cada contexto.",
+    "cardEyebrow": "Fundação do aplicativo",
+    "cardStatus": "Experiência consistente",
+    "cardTitle": "Pronta para evoluir",
+    "description": "Descubra espaços, organize sua próxima partida e acompanhe suas reservas sem perder o ritmo.",
+    "signals": {
+      "backend": {
+        "label": "Backend",
+        "value": "A API Nest permanece como fonte de verdade"
+      },
+      "frontend": {
+        "label": "Frontend",
+        "value": "Next.js com shells adaptáveis por contexto"
+      },
+      "mvp": {
+        "label": "Foco do MVP",
+        "value": "Quadras, reservas e partidas abertas"
+      }
+    },
+    "title": "Encontre quadras, partidas e gente para jogar."
+  },
+  "PublicShell": {
+    "ariaLabel": "Navegação pública",
+    "explore": "Explorar",
+    "exploreCourts": "Explorar quadras",
+    "signIn": "Entrar"
+  }
+}

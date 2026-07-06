@@ -5,15 +5,18 @@
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { APP_ROUTES } from "@/lib/routes/app-routes";
+import { PLAYER_NAVIGATION_LABELS } from "@test/fixtures/navigation-labels";
 import { AppShellNavigation } from "./app-shell-navigation";
-import { PLAYER_NAVIGATION_GROUPS } from "./navigation.constants";
+import { createPlayerNavigationGroups } from "./navigation.constants";
 
 describe("AppShellNavigation", () => {
   it("renders the stable Player order and marks the route-owned destination", () => {
+    const groups = createPlayerNavigationGroups(PLAYER_NAVIGATION_LABELS);
+
     render(
       <AppShellNavigation
         ariaLabel="Navegação Player"
-        groups={PLAYER_NAVIGATION_GROUPS}
+        groups={groups}
         pathname={`${APP_ROUTES.player.reservations}/reservation-1`}
         presentation="bottom"
       />,

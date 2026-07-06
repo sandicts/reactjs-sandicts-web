@@ -1,12 +1,15 @@
 import { CalendarCheck2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ShellPagePlaceholder } from "@/components/shared/app-shell/content/shell-page-placeholder";
 
 export default function PlayerReservationsPage() {
+  const t = useTranslations("Pages.player.reservations");
+
   return (
     <ShellPagePlaceholder
-      eyebrow="Reservas"
-      title="Acompanhe suas reservas."
-      description="Listas, detalhes e solicitações de alteração serão implementados nas tarefas de reservas."
+      eyebrow={t("eyebrow")}
+      title={t("title")}
+      description={t("description")}
       Icon={CalendarCheck2}
     />
   );

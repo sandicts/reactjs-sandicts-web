@@ -1,12 +1,15 @@
 import { CalendarCheck2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ShellPagePlaceholder } from "@/components/shared/app-shell/content/shell-page-placeholder";
 
 export default function OrganizationReservationsPage() {
+  const t = useTranslations("Pages.organization.reservations");
+
   return (
     <ShellPagePlaceholder
-      eyebrow="Reservas"
-      title="Consulte e opere reservas."
-      description="Filtros, registros e operações de reserva serão implementados sem misturar configuração de disponibilidade."
+      eyebrow={t("eyebrow")}
+      title={t("title")}
+      description={t("description")}
       Icon={CalendarCheck2}
     />
   );

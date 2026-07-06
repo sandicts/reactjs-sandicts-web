@@ -1,19 +1,31 @@
 import { LogIn } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { AreaPlaceholder } from "@/components/shared/area-placeholder/area-placeholder";
+import { DEFAULT_LOCALE } from "@/i18n/config";
 import { createPrivatePageMetadata } from "@/lib/seo/seo-metadata";
 
-export const metadata = createPrivatePageMetadata({
-  description: "Entre na sua conta Sandicts.",
-  follow: true,
-  title: "Entrar",
-});
+export async function generateMetadata() {
+  const t = await getTranslations({
+    locale: DEFAULT_LOCALE,
+    namespace: "Pages.signIn",
+  });
+
+  return createPrivatePageMetadata({
+    description: t("metadataDescription"),
+    follow: true,
+    title: t("metadataTitle"),
+  });
+}
 
 export default function SignInPage() {
+  const t = useTranslations("Pages.signIn");
+
   return (
     <AreaPlaceholder
-      eyebrow="Área pública"
-      title="Entre na sua conta."
-      description="Google Sign-In, One Tap e magic link serão conectados aqui pelas tarefas de autenticação."
+      eyebrow={t("eyebrow")}
+      title={t("title")}
+      description={t("description")}
       Icon={LogIn}
     />
   );

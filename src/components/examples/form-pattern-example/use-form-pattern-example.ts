@@ -1,10 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { isSandictsApiError } from "@/lib/api/runtime/sandicts-api-error";
 import { applyApiValidationIssues } from "@/lib/forms/apply-api-validation-issues";
 import type { ApiValidationIssueFieldMap } from "@/lib/forms/apply-api-validation-issues.types";
 import {
-  formPatternExampleSchema,
+  createFormPatternExampleSchema,
   type FormPatternExampleInput,
   type FormPatternExampleValues,
 } from "./form-pattern-example.schemas";
@@ -26,6 +28,16 @@ const apiValidationIssueFieldMap = {
 function useFormPatternExample({
   onSubmit,
 }: FormPatternExampleProps): UseFormPatternExampleResult {
+  const t = useTranslations("FormExample");
+  const schema = useMemo(
+    () =>
+      createFormPatternExampleSchema({
+        displayNameMax: t("displayNameMax"),
+        displayNameMin: t("displayNameMin"),
+        emailInvalid: t("emailInvalid"),
+      }),
+    [t],
+  );
   const form = useForm<
     FormPatternExampleInput,
     unknown,
@@ -34,7 +46,7 @@ function useFormPatternExample({
     defaultValues,
     mode: "onSubmit",
     reValidateMode: "onChange",
-    resolver: zodResolver(formPatternExampleSchema),
+    resolver: zodResolver(schema),
     shouldFocusError: true,
   });
 
@@ -52,15 +64,14 @@ function useFormPatternExample({
         applyApiValidationIssues({
           fieldMap: apiValidationIssueFieldMap,
           issues: error.issues,
-          rootErrorMessage:
-            "Some fields could not be matched. Review your information and try again.",
+          rootErrorMessage: t("unmatchedFieldsError"),
           setError: form.setError,
         });
         return;
       }
 
       form.setError("root.server", {
-        message: "Unable to save your information. Try again.",
+        message: t("rootServerError"),
         type: "server",
       });
     }

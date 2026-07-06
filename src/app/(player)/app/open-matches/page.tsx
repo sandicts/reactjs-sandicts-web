@@ -1,12 +1,15 @@
 import { UsersRound } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ShellPagePlaceholder } from "@/components/shared/app-shell/content/shell-page-placeholder";
 
 export default function PlayerOpenMatchesPage() {
+  const t = useTranslations("Pages.player.openMatches");
+
   return (
     <ShellPagePlaceholder
-      eyebrow="Partidas"
-      title="Encontre uma partida aberta."
-      description="A lista, os detalhes e a criação de partidas permanecerão dentro deste destino."
+      eyebrow={t("eyebrow")}
+      title={t("title")}
+      description={t("description")}
       Icon={UsersRound}
     />
   );

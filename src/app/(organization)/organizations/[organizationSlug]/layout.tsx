@@ -1,11 +1,20 @@
 import { OrganizationShell } from "@/components/shared/app-shell/organization/organization-shell";
+import { getTranslations } from "next-intl/server";
+import { DEFAULT_LOCALE } from "@/i18n/config";
 import { formatRouteSlugLabel } from "@/lib/routes/route-labels";
 import { createPrivatePageMetadata } from "@/lib/seo/seo-metadata";
 
-export const metadata = createPrivatePageMetadata({
-  description: "Gerencie sua organização no Sandicts.",
-  title: "Área da organização",
-});
+export async function generateMetadata() {
+  const t = await getTranslations({
+    locale: DEFAULT_LOCALE,
+    namespace: "Pages.organization",
+  });
+
+  return createPrivatePageMetadata({
+    description: t("metadataDescription"),
+    title: t("metadataTitle"),
+  });
+}
 
 export default async function OrganizationLayout({
   children,

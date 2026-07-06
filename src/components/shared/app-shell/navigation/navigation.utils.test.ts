@@ -1,33 +1,39 @@
 import { describe, expect, it } from "vitest";
 import { APP_ROUTES } from "@/lib/routes/app-routes";
 import {
+  ORGANIZATION_NAVIGATION_LABELS,
+  PLAYER_NAVIGATION_LABELS,
+} from "@test/fixtures/navigation-labels";
+import {
   createOrganizationNavigationGroups,
-  PLAYER_NAVIGATION_GROUPS,
+  createPlayerNavigationGroups,
 } from "./navigation.constants";
 import { getActiveNavigationItem } from "./navigation.utils";
 
 describe("app shell navigation matching", () => {
   it("keeps the Player home exact while nested routes select their owner", () => {
-    expect(
-      getActiveNavigationItem(APP_ROUTES.player.home, PLAYER_NAVIGATION_GROUPS)
-        ?.id,
-    ).toBe("home");
+    const groups = createPlayerNavigationGroups(PLAYER_NAVIGATION_LABELS);
+
+    expect(getActiveNavigationItem(APP_ROUTES.player.home, groups)?.id).toBe(
+      "home",
+    );
     expect(
       getActiveNavigationItem(
         `${APP_ROUTES.player.reservations}/reservation-1`,
-        PLAYER_NAVIGATION_GROUPS,
+        groups,
       )?.id,
     ).toBe("reservations");
     expect(
-      getActiveNavigationItem(
-        `${APP_ROUTES.player.openMatches}/new`,
-        PLAYER_NAVIGATION_GROUPS,
-      )?.id,
+      getActiveNavigationItem(`${APP_ROUTES.player.openMatches}/new`, groups)
+        ?.id,
     ).toBe("open-matches");
   });
 
   it("chooses the most specific Organization destination", () => {
-    const groups = createOrganizationNavigationGroups("arena-sul");
+    const groups = createOrganizationNavigationGroups(
+      "arena-sul",
+      ORGANIZATION_NAVIGATION_LABELS,
+    );
 
     expect(
       getActiveNavigationItem("/organizations/arena-sul/calendar", groups)?.id,
@@ -41,11 +47,18 @@ describe("app shell navigation matching", () => {
   });
 
   it("adds only capability-backed Organization destinations", () => {
-    const baseGroups = createOrganizationNavigationGroups("arena-sul");
-    const extendedGroups = createOrganizationNavigationGroups("arena-sul", {
-      units: true,
-      members: true,
-    });
+    const baseGroups = createOrganizationNavigationGroups(
+      "arena-sul",
+      ORGANIZATION_NAVIGATION_LABELS,
+    );
+    const extendedGroups = createOrganizationNavigationGroups(
+      "arena-sul",
+      ORGANIZATION_NAVIGATION_LABELS,
+      {
+        units: true,
+        members: true,
+      },
+    );
 
     expect(baseGroups.flatMap((group) => group.items)).not.toEqual(
       expect.arrayContaining([
