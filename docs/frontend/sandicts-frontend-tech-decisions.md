@@ -253,6 +253,45 @@ The canonical MVP token values, component variants, common states, icon rules,
 and post-MVP visual boundaries live in
 `docs/frontend/sandicts-mvp-visual-system.md`.
 
+### Global Feedback And Page States
+
+Use the KAN-69 global-states prototype as the behavior source of truth and the
+KAN-78 shared components as the production composition layer.
+
+Rules:
+
+- use `components/shared/page-state` for non-loading empty, no-results,
+  recoverable error, access, and not-found compositions when a shared layout is
+  useful
+- pass copy, actions, heading level, tone, and live-region intent from the
+  consuming route or feature
+- do not create a global catalog that decides retry, sign-in, create, reset,
+  or navigation behavior for feature-owned states
+- use `components/shared/loading-region` around pending content reads and keep
+  skeleton geometry near the feature or route that knows the expected content
+  shape
+- use `components/shared/pending-button` for user-triggered command loading
+  when duplicate submission must be prevented and button width should remain
+  stable
+- use `components/shared/status-badge` only for semantic presentation; feature
+  code maps API/domain status codes to labels and tones, with a neutral
+  fallback for unknown runtime values
+- keep `components/ui/skeleton` decorative and reduced-motion safe
+- keep `components/ui/alert` live-region semantics opt-in; use
+  `role="alert"` only for newly surfaced interactive failures, and `role="status"`
+  only for polite confirmations that should be announced
+- use `src/app/not-found.tsx` as the global privacy-safe 404 treatment for
+  unknown public URLs; add in-shell route states only inside the owning app
+  segment when the authenticated context exists
+
+Reason:
+
+- the frontend needs consistent state anatomy without hiding business decisions
+  inside generic components
+- accessibility semantics differ between initial page load, user-triggered
+  failure, and static informational UI
+- route boundaries should remain thin while features own safe recovery paths
+
 ### Server State
 
 Use:
