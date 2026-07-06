@@ -84,6 +84,18 @@ Configure the API URL with:
 NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
 ```
 
+Configure the absolute web origin used by canonical URLs, social metadata,
+`robots.txt`, and `sitemap.xml` with:
+
+```env
+WEB_ORIGIN=http://localhost:3001
+SEO_INDEXING_ENABLED=false
+```
+
+Indexing is disabled by default. Enable it only for the public production
+deployment, together with a non-local HTTPS `WEB_ORIGIN`. Preview, test, and
+local environments should keep `SEO_INDEXING_ENABLED=false`.
+
 ## Scripts
 
 ```bash

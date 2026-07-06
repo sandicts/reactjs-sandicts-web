@@ -1,5 +1,12 @@
 import { LogIn } from "lucide-react";
 import { AreaPlaceholder } from "@/components/shared/area-placeholder/area-placeholder";
+import { createPrivatePageMetadata } from "@/lib/seo/seo-metadata";
+
+export const metadata = createPrivatePageMetadata({
+  description: "Entre na sua conta Sandicts.",
+  follow: true,
+  title: "Entrar",
+});
 
 export default function SignInPage() {
   return (

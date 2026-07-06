@@ -161,6 +161,43 @@ Reason:
 - the Nest backend remains the system of record for persistence, auth, and API
   contracts; shared docs remain the system of record for product rules
 
+### SEO And Social Metadata
+
+Use the Next.js Metadata API and file conventions as the single server-side
+metadata path.
+
+Rules:
+
+- configure the canonical origin with the server-only `WEB_ORIGIN` variable
+- keep indexing disabled by default through `SEO_INDEXING_ENABLED=false`
+- require an HTTPS, non-local origin when indexing is enabled in production
+- define shared title, description, Open Graph, Twitter, and locale defaults in
+  the root layout
+- keep reusable metadata composition, URL building, and social image rendering
+  in the focused `lib/seo` boundary
+- use static `metadata` for static routes and reserve `generateMetadata` for
+  routes whose metadata depends on entity data
+- make indexability an explicit route decision; public home and discovery can
+  opt in, while sign-in, redirect, Player, and Organization routes stay
+  `noindex`
+- emit canonical URLs and sitemap entries from the same absolute URL helper
+- include only explicitly public URLs in `sitemap.xml`, and return an empty
+  sitemap when indexing is disabled
+- keep pages crawlable in `robots.txt` so crawlers can observe their `noindex`
+  directive; robots rules are not an authorization boundary
+- advertise the sitemap in `robots.txt` only when indexing is enabled
+- generate root Open Graph and Twitter images from local code and brand tokens;
+  do not depend on remote runtime assets or font downloads
+- when a route overrides nested Open Graph or Twitter metadata, return the
+  complete nested object because Next.js replaces rather than deep-merges those
+  fields
+- keep public entity pages out of the index until their route metadata and
+  sitemap inclusion are explicitly implemented
+
+The initial public sitemap contains only `/` and `/discovery`. Deployment task
+KAN-64 owns the real production origin; the metadata foundation remains
+provider-neutral.
+
 ### UI And Styling
 
 Use:
