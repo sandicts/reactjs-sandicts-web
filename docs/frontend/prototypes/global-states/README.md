@@ -362,6 +362,38 @@ extra wording is test content, not approved product copy.
 KAN-78 should implement small ownership boundaries rather than one universal
 state machine.
 
+## KAN-78 Production Implementation
+
+KAN-78 turns the prototype rules into focused production building blocks:
+
+```text
+src/components/shared/page-state/       # non-loading state composition
+src/components/shared/loading-region/   # aria-busy wrapper for pending reads
+src/components/shared/pending-button/   # user-triggered pending action button
+src/components/shared/status-badge/     # semantic status presentation wrapper
+src/app/not-found.tsx                   # global privacy-safe 404 route state
+```
+
+These components intentionally stay below business logic:
+
+- `PageState` owns layout, icon placement, heading level, action slots, tone,
+  and optional live-region semantics. Consumers own the copy and decide whether
+  retry, sign-in, creation, reset, or navigation is valid.
+- `LoadingRegion` owns `aria-busy` and concise accessible status text. Features
+  and route areas still compose skeleton shapes that match their real content.
+- `PendingButton` owns duplicate-submit protection, busy state, spinner
+  presentation, and preserved button width for command loading.
+- `StatusBadge` maps a semantic tone to the shared badge primitive. Features
+  map API/domain status codes to `{ label, tone }` and provide a neutral
+  fallback for unknown runtime values.
+- `Alert` no longer uses `role="alert"` by default. Assertive announcements are
+  opt-in and should be used only for newly surfaced interactive failures.
+
+Production route boundaries remain thin. The global `not-found.tsx` uses the
+public shell and neutral copy for unknown URLs, while in-shell not-found,
+forbidden, unauthenticated, loading, and recoverable error states should be
+added by the feature or route segment that owns the context.
+
 ### Shared Composition
 
 A focused shared composition can own:
@@ -385,9 +417,9 @@ src/components/shared/page-state/
 └── page-state.test.tsx
 ```
 
-Use the final name chosen during KAN-78 consistently. Do not create parallel
-`empty-state`, `error-state`, and `access-state` folders when one composition
-and semantic props are sufficient.
+The final KAN-78 name is `PageState`. Do not create parallel `empty-state`,
+`error-state`, and `access-state` folders when one composition and semantic
+props are sufficient.
 
 ### Loading Ownership
 
@@ -464,10 +496,8 @@ Recommended order:
 
 ## Deferred Questions
 
-- final production component name
 - whether a future framework-level forbidden file convention is adopted
 - feature-specific retry policies
-- final translated message identifiers after KAN-126
 - domain-specific status badge mappings
 - analytics and observability events for state impressions and retry actions
 

@@ -22,7 +22,7 @@ describe("UI foundation", () => {
           </FieldDescription>
         </Field>
         <Button type="button">Continue</Button>
-        <Alert variant="success">
+        <Alert role="status" variant="success">
           <CheckCircle2 aria-hidden="true" />
           <AlertTitle>Foundation ready</AlertTitle>
           <AlertDescription>
@@ -37,6 +37,6 @@ describe("UI foundation", () => {
       "email-description",
     );
     expect(screen.getByRole("button", { name: "Continue" })).toBeEnabled();
-    expect(screen.getByRole("alert")).toHaveTextContent("Foundation ready");
+    expect(screen.getByRole("status")).toHaveTextContent("Foundation ready");
   });
 });

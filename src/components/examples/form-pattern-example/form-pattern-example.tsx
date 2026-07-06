@@ -1,10 +1,10 @@
 "use client";
 
 import { useId } from "react";
-import { CircleAlert, LoaderCircle } from "lucide-react";
+import { CircleAlert } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { PendingButton } from "@/components/shared/pending-button/pending-button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
 import {
   Field,
   FieldDescription,
@@ -77,19 +77,20 @@ function FormPatternExample({ onSubmit }: FormPatternExampleProps) {
         </Field>
 
         {errors.root?.server?.message && (
-          <Alert variant="destructive">
+          <Alert role="alert" variant="destructive">
             <CircleAlert aria-hidden="true" />
             <AlertTitle>{t("submitErrorTitle")}</AlertTitle>
             <AlertDescription>{errors.root.server.message}</AlertDescription>
           </Alert>
         )}
 
-        <Button disabled={isSubmitting} type="submit">
-          {isSubmitting && (
-            <LoaderCircle aria-hidden="true" className="animate-spin" />
-          )}
-          {isSubmitting ? t("saving") : t("submit")}
-        </Button>
+        <PendingButton
+          pending={isSubmitting}
+          pendingLabel={t("saving")}
+          type="submit"
+        >
+          {t("submit")}
+        </PendingButton>
       </FieldGroup>
     </form>
   );

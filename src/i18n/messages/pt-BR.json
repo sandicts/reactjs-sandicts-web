@@ -77,6 +77,13 @@
       "metadataTitle": "Descobrir quadras",
       "title": "Encontre sua próxima quadra."
     },
+    "notFound": {
+      "description": "O endereço pode estar incorreto ou o conteúdo pode não estar mais disponível.",
+      "eyebrow": "Página indisponível",
+      "primaryAction": "Explorar quadras",
+      "secondaryAction": "Voltar ao início",
+      "title": "Não encontramos esta página."
+    },
     "organization": {
       "availability": {
         "description": "Abertura recorrente, manutenção e períodos indisponíveis permanecem separados da Agenda.",

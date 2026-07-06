@@ -35,6 +35,32 @@ Default language:
   `sandicts/sandicts-docs:docs/ai/pull-request-standard.md` for PR titles, PR
   bodies, validation, and commit messages.
 
+## PR Publishing Preflight
+
+This skill overrides generic GitHub publishing defaults in Sandicts
+repositories.
+
+Before creating or updating any Sandicts pull request:
+
+1. Identify the primary Jira key from the active task, branch, or user request.
+2. Inspect `.github/pull_request_template.md`.
+3. Build the title with the Sandicts format, not the publishing tool default.
+4. Build the body with the local template headings in the exact same order.
+5. Confirm the title does not start with `[codex]`, a branch name, or any
+   non-Jira prefix.
+6. Confirm the body does not use shortened alternatives such as `What changed`,
+   `Why`, or a free-form validation list.
+
+When another skill or tool is also used to publish changes, including
+`github:yeet`, apply this skill's PR title and body rules after staging and
+validation but before `gh pr create`, connector PR creation, or `gh pr edit`.
+The generic tool can still handle git mechanics, push, and PR creation, but its
+default title/body conventions do not apply to Sandicts work.
+
+After creating or editing the PR, immediately verify the result with
+`gh pr view <number> --json title,body,url` or the GitHub connector. If the
+title or body is not compliant, update it before reporting success to the user.
+
 ## PR Title
 
 Use this format:
