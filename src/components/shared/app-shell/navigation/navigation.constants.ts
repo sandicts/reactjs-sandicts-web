@@ -17,48 +17,77 @@ import type {
   ShellNavigationGroup,
 } from "./navigation.types";
 
-const PLAYER_NAVIGATION_GROUPS = [
-  {
-    id: "player",
-    label: "Player",
-    items: [
-      {
-        id: "home",
-        label: "Início",
-        href: APP_ROUTES.player.home,
-        Icon: House,
-        match: "exact",
-      },
-      {
-        id: "courts",
-        label: "Explorar",
-        href: APP_ROUTES.player.courts,
-        Icon: Search,
-      },
-      {
-        id: "reservations",
-        label: "Reservas",
-        href: APP_ROUTES.player.reservations,
-        Icon: CalendarCheck2,
-      },
-      {
-        id: "open-matches",
-        label: "Partidas",
-        href: APP_ROUTES.player.openMatches,
-        Icon: UsersRound,
-      },
-      {
-        id: "profile",
-        label: "Perfil",
-        href: APP_ROUTES.player.profile,
-        Icon: UserRound,
-      },
-    ],
-  },
-] as const satisfies readonly ShellNavigationGroup[];
+type PlayerNavigationLabels = Readonly<{
+  courts: string;
+  group: string;
+  home: string;
+  openMatches: string;
+  profile: string;
+  reservations: string;
+}>;
+
+type OrganizationNavigationLabels = Readonly<{
+  availability: string;
+  calendar: string;
+  courts: string;
+  dashboard: string;
+  managementGroup: string;
+  members: string;
+  operationGroup: string;
+  overviewGroup: string;
+  payments: string;
+  profile: string;
+  reservations: string;
+  units: string;
+}>;
+
+function createPlayerNavigationGroups(
+  labels: PlayerNavigationLabels,
+): readonly ShellNavigationGroup[] {
+  return [
+    {
+      id: "player",
+      label: labels.group,
+      items: [
+        {
+          id: "home",
+          label: labels.home,
+          href: APP_ROUTES.player.home,
+          Icon: House,
+          match: "exact",
+        },
+        {
+          id: "courts",
+          label: labels.courts,
+          href: APP_ROUTES.player.courts,
+          Icon: Search,
+        },
+        {
+          id: "reservations",
+          label: labels.reservations,
+          href: APP_ROUTES.player.reservations,
+          Icon: CalendarCheck2,
+        },
+        {
+          id: "open-matches",
+          label: labels.openMatches,
+          href: APP_ROUTES.player.openMatches,
+          Icon: UsersRound,
+        },
+        {
+          id: "profile",
+          label: labels.profile,
+          href: APP_ROUTES.player.profile,
+          Icon: UserRound,
+        },
+      ],
+    },
+  ];
+}
 
 function createOrganizationNavigationGroups(
   organizationSlug: string,
+  labels: OrganizationNavigationLabels,
   capabilities: OrganizationNavigationCapabilities = {},
 ): readonly ShellNavigationGroup[] {
   const routes = createOrganizationRoutes(organizationSlug);
@@ -66,24 +95,24 @@ function createOrganizationNavigationGroups(
   return [
     {
       id: "overview",
-      label: "Visão geral",
+      label: labels.overviewGroup,
       items: [
         {
           id: "dashboard",
-          label: "Painel",
+          label: labels.dashboard,
           href: routes.root,
           Icon: LayoutDashboard,
           match: "exact",
         },
         {
           id: "calendar",
-          label: "Agenda",
+          label: labels.calendar,
           href: routes.calendar,
           Icon: CalendarRange,
         },
         {
           id: "reservations",
-          label: "Reservas",
+          label: labels.reservations,
           href: routes.reservations,
           Icon: CalendarCheck2,
         },
@@ -91,13 +120,13 @@ function createOrganizationNavigationGroups(
     },
     {
       id: "operation",
-      label: "Operação",
+      label: labels.operationGroup,
       items: [
         ...(capabilities.units
           ? [
               {
                 id: "units",
-                label: "Unidades",
+                label: labels.units,
                 href: routes.units,
                 Icon: Building2,
               },
@@ -105,19 +134,19 @@ function createOrganizationNavigationGroups(
           : []),
         {
           id: "courts",
-          label: "Quadras",
+          label: labels.courts,
           href: routes.courts,
           Icon: MapPin,
         },
         {
           id: "availability",
-          label: "Disponibilidade",
+          label: labels.availability,
           href: routes.availability,
           Icon: Clock3,
         },
         {
           id: "payments",
-          label: "Pagamentos",
+          label: labels.payments,
           href: routes.payments,
           Icon: CreditCard,
         },
@@ -125,11 +154,11 @@ function createOrganizationNavigationGroups(
     },
     {
       id: "management",
-      label: "Gestão",
+      label: labels.managementGroup,
       items: [
         {
           id: "profile",
-          label: "Perfil da organização",
+          label: labels.profile,
           href: routes.profile,
           Icon: Building2,
         },
@@ -137,7 +166,7 @@ function createOrganizationNavigationGroups(
           ? [
               {
                 id: "members",
-                label: "Membros",
+                label: labels.members,
                 href: routes.members,
                 Icon: UsersRound,
               },
@@ -148,4 +177,5 @@ function createOrganizationNavigationGroups(
   ] satisfies readonly ShellNavigationGroup[];
 }
 
-export { createOrganizationNavigationGroups, PLAYER_NAVIGATION_GROUPS };
+export { createOrganizationNavigationGroups, createPlayerNavigationGroups };
+export type { OrganizationNavigationLabels, PlayerNavigationLabels };

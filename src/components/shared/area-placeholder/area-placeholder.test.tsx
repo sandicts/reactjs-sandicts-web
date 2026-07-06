@@ -3,13 +3,14 @@
  */
 
 import { MapPin } from "lucide-react";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { renderWithI18n } from "@test/render-with-i18n";
 import { AreaPlaceholder } from "./area-placeholder";
 
 describe("AreaPlaceholder", () => {
   it("renders its content and a semantic link back to the app shell", () => {
-    render(
+    renderWithI18n(
       <AreaPlaceholder
         eyebrow="Player area"
         title="Discover courts and open matches."
@@ -29,7 +30,7 @@ describe("AreaPlaceholder", () => {
       screen.getByText("Find the next place to play."),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: "Back to Sandicts" }),
+      screen.getByRole("link", { name: "Voltar para o Sandicts" }),
     ).toHaveAttribute("href", "/");
   });
 });

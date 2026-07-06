@@ -2,10 +2,11 @@
  * @vitest-environment jsdom
  */
 
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { SandictsApiError } from "@/lib/api/runtime/sandicts-api-error";
+import { renderWithI18n } from "@test/render-with-i18n";
 import { FormPatternExample } from "./form-pattern-example";
 
 describe("FormPatternExample", () => {
@@ -13,22 +14,22 @@ describe("FormPatternExample", () => {
     const user = userEvent.setup();
     const onSubmit = vi.fn();
 
-    render(<FormPatternExample onSubmit={onSubmit} />);
+    renderWithI18n(<FormPatternExample onSubmit={onSubmit} />);
 
-    await user.click(screen.getByRole("button", { name: "Save example" }));
+    await user.click(screen.getByRole("button", { name: "Salvar exemplo" }));
 
     const displayName = screen.getByRole("textbox", {
-      name: "Display name",
+      name: "Nome de exibição",
     });
 
     expect(onSubmit).not.toHaveBeenCalled();
     expect(displayName).toHaveAttribute("aria-invalid", "true");
     expect(displayName).toHaveFocus();
     expect(
-      screen.getByText("Enter at least 2 characters."),
+      screen.getByText("Informe pelo menos 2 caracteres."),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Enter a valid email address."),
+      screen.getByText("Informe um endereço de e-mail válido."),
     ).toBeInTheDocument();
   });
 
@@ -36,17 +37,17 @@ describe("FormPatternExample", () => {
     const user = userEvent.setup();
     const onSubmit = vi.fn();
 
-    render(<FormPatternExample onSubmit={onSubmit} />);
+    renderWithI18n(<FormPatternExample onSubmit={onSubmit} />);
 
     await user.type(
-      screen.getByRole("textbox", { name: "Display name" }),
+      screen.getByRole("textbox", { name: "Nome de exibição" }),
       "  Lucas  ",
     );
     await user.type(
-      screen.getByRole("textbox", { name: "Email" }),
+      screen.getByRole("textbox", { name: "E-mail" }),
       "  lucas@example.com  ",
     );
-    await user.click(screen.getByRole("button", { name: "Save example" }));
+    await user.click(screen.getByRole("button", { name: "Salvar exemplo" }));
 
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledWith({
@@ -75,12 +76,12 @@ describe("FormPatternExample", () => {
       }),
     );
 
-    render(<FormPatternExample onSubmit={onSubmit} />);
+    renderWithI18n(<FormPatternExample onSubmit={onSubmit} />);
 
     await fillValidForm(user);
-    await user.click(screen.getByRole("button", { name: "Save example" }));
+    await user.click(screen.getByRole("button", { name: "Salvar exemplo" }));
 
-    const email = screen.getByRole("textbox", { name: "Email" });
+    const email = screen.getByRole("textbox", { name: "E-mail" });
 
     expect(await screen.findByText("This email cannot be used.")).toBeVisible();
     expect(email).toHaveAttribute("aria-invalid", "true");
@@ -106,14 +107,14 @@ describe("FormPatternExample", () => {
       }),
     );
 
-    render(<FormPatternExample onSubmit={onSubmit} />);
+    renderWithI18n(<FormPatternExample onSubmit={onSubmit} />);
 
     await fillValidForm(user);
-    await user.click(screen.getByRole("button", { name: "Save example" }));
+    await user.click(screen.getByRole("button", { name: "Salvar exemplo" }));
 
     expect(
       await screen.findByText(
-        "Some fields could not be matched. Review your information and try again.",
+        "Alguns campos não puderam ser associados. Revise suas informações e tente novamente.",
       ),
     ).toBeVisible();
   });
@@ -128,12 +129,12 @@ describe("FormPatternExample", () => {
         }),
     );
 
-    render(<FormPatternExample onSubmit={onSubmit} />);
+    renderWithI18n(<FormPatternExample onSubmit={onSubmit} />);
 
     await fillValidForm(user);
-    await user.click(screen.getByRole("button", { name: "Save example" }));
+    await user.click(screen.getByRole("button", { name: "Salvar exemplo" }));
 
-    const pendingButton = screen.getByRole("button", { name: "Saving..." });
+    const pendingButton = screen.getByRole("button", { name: "Salvando…" });
 
     expect(pendingButton).toBeDisabled();
     await user.click(pendingButton);
@@ -145,7 +146,7 @@ describe("FormPatternExample", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole("button", { name: "Save example" }),
+        screen.getByRole("button", { name: "Salvar exemplo" }),
       ).toBeEnabled();
     });
   });
@@ -153,11 +154,11 @@ describe("FormPatternExample", () => {
 
 async function fillValidForm(user: ReturnType<typeof userEvent.setup>) {
   await user.type(
-    screen.getByRole("textbox", { name: "Display name" }),
+    screen.getByRole("textbox", { name: "Nome de exibição" }),
     "Lucas",
   );
   await user.type(
-    screen.getByRole("textbox", { name: "Email" }),
+    screen.getByRole("textbox", { name: "E-mail" }),
     "lucas@example.com",
   );
 }

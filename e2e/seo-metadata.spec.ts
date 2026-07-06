@@ -14,6 +14,7 @@ test("publishes complete metadata for the public home page", async ({
   await page.goto("/");
 
   await expect(page).toHaveTitle("Sandicts");
+  await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     "href",
     "http://localhost:3001",

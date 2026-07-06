@@ -9,6 +9,7 @@ related:
   - docs/frontend/sandicts-frontend-planning.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-mvp-visual-system.md
+  - docs/frontend/sandicts-localization.md
   - docs/frontend/sandicts-local-ui-state.md
   - docs/frontend/sandicts-page-functional-spec.md
   - sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
@@ -49,6 +50,7 @@ Decided:
 - use shadcn/ui with Tailwind CSS and lucide-react
 - use TanStack Query for server state
 - use Zod with React Hook Form for forms
+- use `next-intl` with `pt-BR` as the only MVP locale and fallback locale
 - use Orval as the initial MVP OpenAPI generator for the Nest Swagger
   contract
 - use Zustand only for local UI state, not API data
@@ -175,8 +177,8 @@ Rules:
   the root layout
 - keep reusable metadata composition, URL building, and social image rendering
   in the focused `lib/seo` boundary
-- use static `metadata` for static routes and reserve `generateMetadata` for
-  routes whose metadata depends on entity data
+- use static `metadata` when no locale-aware copy is needed; locale-aware
+  `generateMetadata` is acceptable when the route remains statically rendered
 - make indexability an explicit route decision; public home and discovery can
   opt in, while sign-in, redirect, Player, and Organization routes stay
   `noindex`
@@ -197,6 +199,29 @@ Rules:
 The initial public sitemap contains only `/` and `/discovery`. Deployment task
 KAN-64 owns the real production origin; the metadata foundation remains
 provider-neutral.
+
+### Localization
+
+Use `next-intl` as the App Router localization and formatting boundary.
+
+MVP rules:
+
+- support only `pt-BR`
+- keep existing public, Player, and Organization URLs unprefixed
+- derive the root document language and Open Graph locale from the active
+  locale configuration
+- keep runtime copy in typed semantic namespaces
+- use Server Component translations by default and the client provider for
+  interactive components
+- keep API codes, routes, logs, and user-generated content language-neutral
+- centralize named date, time, number, percentage, and BRL formats
+- require an explicit domain time zone for real instants instead of treating
+  locale and time zone as the same decision
+- return a visible diagnostic fallback for a missing message
+
+Additional catalogs, localized public URLs, a locale switcher, persistence, and
+`hreflang` are V2 work. The complete ownership and extension contract lives in
+`docs/frontend/sandicts-localization.md`.
 
 ### UI And Styling
 

@@ -2,6 +2,7 @@
 
 import { Check, ChevronsUpDown } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -15,13 +16,6 @@ import {
 import type { AppContextKind } from "./app-context.types";
 import type { ContextSwitcherProps } from "./context-switcher.types";
 
-const contextKindLabels: Record<AppContextKind, string> = {
-  player: "Player",
-  organization: "Organizações",
-  academy: "Academias",
-  admin: "Admin App",
-};
-
 const contextKindOrder: readonly AppContextKind[] = [
   "player",
   "organization",
@@ -30,8 +24,16 @@ const contextKindOrder: readonly AppContextKind[] = [
 ];
 
 function ContextSwitcher({ contexts }: ContextSwitcherProps) {
+  const commonT = useTranslations("Common");
+  const t = useTranslations("ContextSwitcher");
   const currentContext =
     contexts.find((context) => context.current) ?? contexts[0];
+  const contextKindLabels: Record<AppContextKind, string> = {
+    player: t("playerGroup"),
+    organization: t("organizationGroup"),
+    academy: t("academyGroup"),
+    admin: t("adminGroup"),
+  };
 
   if (!currentContext) {
     return null;
@@ -44,7 +46,7 @@ function ContextSwitcher({ contexts }: ContextSwitcherProps) {
         data-context-switcher="single"
       >
         <span className="block text-xs text-muted-foreground">
-          Contexto atual
+          {t("currentContext")}
         </span>
         <strong className="block truncate text-sm font-medium">
           {currentContext.label}
@@ -60,11 +62,11 @@ function ContextSwitcher({ contexts }: ContextSwitcherProps) {
           type="button"
           variant="outline"
           className="h-auto min-w-0 justify-between gap-3 px-3 py-2"
-          aria-label={`Trocar contexto. Contexto atual: ${currentContext.label}`}
+          aria-label={t("triggerLabel", { context: currentContext.label })}
         >
           <span className="min-w-0 text-left">
             <span className="block text-xs font-normal text-muted-foreground">
-              Contexto atual
+              {t("currentContext")}
             </span>
             <strong className="block truncate text-sm font-medium">
               {currentContext.label}
@@ -73,12 +75,14 @@ function ContextSwitcher({ contexts }: ContextSwitcherProps) {
           <ChevronsUpDown className="size-4" aria-hidden="true" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="bottom" className="mx-auto max-w-2xl">
+      <SheetContent
+        closeLabel={commonT("close")}
+        side="bottom"
+        className="mx-auto max-w-2xl"
+      >
         <SheetHeader>
-          <SheetTitle>Trocar contexto</SheetTitle>
-          <SheetDescription>
-            Escolha a área ou organização que deseja acessar.
-          </SheetDescription>
+          <SheetTitle>{t("title")}</SheetTitle>
+          <SheetDescription>{t("description")}</SheetDescription>
         </SheetHeader>
         <div className="overflow-y-auto px-5 pb-6">
           {contextKindOrder.map((kind) => {
@@ -117,7 +121,7 @@ function ContextSwitcher({ contexts }: ContextSwitcherProps) {
                         {context.current ? (
                           <Check
                             className="size-5 text-success"
-                            aria-label="Contexto atual"
+                            aria-label={t("currentContext")}
                           />
                         ) : null}
                       </Link>

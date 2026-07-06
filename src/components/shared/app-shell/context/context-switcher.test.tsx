@@ -2,9 +2,10 @@
  * @vitest-environment jsdom
  */
 
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import type { AppContextOption } from "./app-context.types";
+import { renderWithI18n } from "@test/render-with-i18n";
 import { ContextSwitcher } from "./context-switcher";
 
 const contexts: readonly AppContextOption[] = [
@@ -31,7 +32,7 @@ const contexts: readonly AppContextOption[] = [
 
 describe("ContextSwitcher", () => {
   it("identifies one context without rendering a switcher trigger", () => {
-    render(<ContextSwitcher contexts={[contexts[0]]} />);
+    renderWithI18n(<ContextSwitcher contexts={[contexts[0]]} />);
 
     expect(screen.getByText("Contexto atual")).toBeInTheDocument();
     expect(screen.getByText("Player")).toBeInTheDocument();
@@ -41,7 +42,7 @@ describe("ContextSwitcher", () => {
   });
 
   it("groups multiple contexts in an accessible dialog", () => {
-    render(<ContextSwitcher contexts={contexts} />);
+    renderWithI18n(<ContextSwitcher contexts={contexts} />);
 
     fireEvent.click(
       screen.getByRole("button", {

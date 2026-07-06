@@ -2,6 +2,7 @@
 
 import { useId } from "react";
 import { CircleAlert, LoaderCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +17,7 @@ import type { FormPatternExampleProps } from "./form-pattern-example.types";
 import { useFormPatternExample } from "./use-form-pattern-example";
 
 function FormPatternExample({ onSubmit }: FormPatternExampleProps) {
+  const t = useTranslations("FormExample");
   const id = useId();
   const { errors, handleSubmit, isSubmitting, register } =
     useFormPatternExample({ onSubmit });
@@ -31,7 +33,9 @@ function FormPatternExample({ onSubmit }: FormPatternExampleProps) {
     <form noValidate aria-busy={isSubmitting} onSubmit={handleSubmit}>
       <FieldGroup>
         <Field data-invalid={Boolean(errors.displayName)}>
-          <FieldLabel htmlFor={displayNameId}>Display name</FieldLabel>
+          <FieldLabel htmlFor={displayNameId}>
+            {t("displayNameLabel")}
+          </FieldLabel>
           <Input
             {...register("displayName")}
             required
@@ -45,13 +49,13 @@ function FormPatternExample({ onSubmit }: FormPatternExampleProps) {
             id={displayNameId}
           />
           <FieldDescription id={displayNameDescriptionId}>
-            Use the name other players should see.
+            {t("displayNameDescription")}
           </FieldDescription>
           <FieldError errors={[errors.displayName]} id={displayNameErrorId} />
         </Field>
 
         <Field data-invalid={Boolean(errors.email)}>
-          <FieldLabel htmlFor={emailId}>Email</FieldLabel>
+          <FieldLabel htmlFor={emailId}>{t("emailLabel")}</FieldLabel>
           <Input
             {...register("email")}
             required
@@ -67,7 +71,7 @@ function FormPatternExample({ onSubmit }: FormPatternExampleProps) {
             type="email"
           />
           <FieldDescription id={emailDescriptionId}>
-            We use this address for account access.
+            {t("emailDescription")}
           </FieldDescription>
           <FieldError errors={[errors.email]} id={emailErrorId} />
         </Field>
@@ -75,7 +79,7 @@ function FormPatternExample({ onSubmit }: FormPatternExampleProps) {
         {errors.root?.server?.message && (
           <Alert variant="destructive">
             <CircleAlert aria-hidden="true" />
-            <AlertTitle>We could not submit the form</AlertTitle>
+            <AlertTitle>{t("submitErrorTitle")}</AlertTitle>
             <AlertDescription>{errors.root.server.message}</AlertDescription>
           </Alert>
         )}
@@ -84,7 +88,7 @@ function FormPatternExample({ onSubmit }: FormPatternExampleProps) {
           {isSubmitting && (
             <LoaderCircle aria-hidden="true" className="animate-spin" />
           )}
-          {isSubmitting ? "Saving..." : "Save example"}
+          {isSubmitting ? t("saving") : t("submit")}
         </Button>
       </FieldGroup>
     </form>

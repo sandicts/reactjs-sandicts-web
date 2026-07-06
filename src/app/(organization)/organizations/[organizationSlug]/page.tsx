@@ -1,12 +1,15 @@
 import { LayoutDashboard } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ShellPagePlaceholder } from "@/components/shared/app-shell/content/shell-page-placeholder";
 
 export default function OrganizationDashboardPage() {
+  const t = useTranslations("Pages.organization.dashboard");
+
   return (
     <ShellPagePlaceholder
-      eyebrow="Painel"
-      title="Opere suas quadras com clareza."
-      description="Indicadores e atalhos operacionais serão adicionados pelas tarefas de Organization sem duplicar a Agenda."
+      eyebrow={t("eyebrow")}
+      title={t("title")}
+      description={t("description")}
       Icon={LayoutDashboard}
     />
   );

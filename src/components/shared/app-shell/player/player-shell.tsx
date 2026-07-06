@@ -1,9 +1,10 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { APP_ROUTES } from "@/lib/routes/app-routes";
 import { AppShellNavigation } from "../navigation/app-shell-navigation";
-import { PLAYER_NAVIGATION_GROUPS } from "../navigation/navigation.constants";
+import { createPlayerNavigationGroups } from "../navigation/navigation.constants";
 import { getActiveNavigationItem } from "../navigation/navigation.utils";
 import { AuthenticatedTopbar } from "../chrome/authenticated-topbar";
 import { BrandLink } from "../chrome/brand-link";
@@ -11,26 +12,29 @@ import { SkipLink } from "../chrome/skip-link";
 import type { AppContextOption } from "../context/app-context.types";
 import type { PlayerShellProps } from "./player-shell.types";
 
-const defaultPlayerContexts: readonly AppContextOption[] = [
-  {
-    id: "player",
-    kind: "player",
-    label: "Player",
-    detail: "Sua experiência de jogo",
-    homeHref: APP_ROUTES.player.home,
-    current: true,
-  },
-];
-
-function PlayerShell({
-  children,
-  contexts = defaultPlayerContexts,
-}: PlayerShellProps) {
+function PlayerShell({ children, contexts }: PlayerShellProps) {
+  const navigationT = useTranslations("Navigation.player");
+  const shellT = useTranslations("PlayerShell");
   const pathname = usePathname();
-  const activeItem = getActiveNavigationItem(
-    pathname,
-    PLAYER_NAVIGATION_GROUPS,
-  );
+  const groups = createPlayerNavigationGroups({
+    courts: navigationT("courts"),
+    group: navigationT("group"),
+    home: navigationT("home"),
+    openMatches: navigationT("openMatches"),
+    profile: navigationT("profile"),
+    reservations: navigationT("reservations"),
+  });
+  const availableContexts: readonly AppContextOption[] = contexts ?? [
+    {
+      id: "player",
+      kind: "player",
+      label: shellT("eyebrow"),
+      detail: shellT("contextDetail"),
+      homeHref: APP_ROUTES.player.home,
+      current: true,
+    },
+  ];
+  const activeItem = getActiveNavigationItem(pathname, groups);
 
   return (
     <div className="min-h-screen bg-background text-foreground md:grid md:grid-cols-[5rem_minmax(0,1fr)] lg:grid-cols-[17rem_minmax(0,1fr)]">
@@ -40,8 +44,8 @@ function PlayerShell({
           <BrandLink />
         </div>
         <AppShellNavigation
-          ariaLabel="Navegação Player"
-          groups={PLAYER_NAVIGATION_GROUPS}
+          ariaLabel={shellT("ariaLabel")}
+          groups={groups}
           pathname={pathname}
           presentation="adaptive"
         />
@@ -49,9 +53,9 @@ function PlayerShell({
 
       <div className="min-w-0">
         <AuthenticatedTopbar
-          contexts={contexts}
-          eyebrow="Player"
-          title={activeItem?.label ?? "Área Player"}
+          contexts={availableContexts}
+          eyebrow={shellT("eyebrow")}
+          title={activeItem?.label ?? shellT("defaultTitle")}
         />
         <main id="shell-main" className="pb-24 md:pb-0">
           {children}
@@ -59,8 +63,8 @@ function PlayerShell({
       </div>
 
       <AppShellNavigation
-        ariaLabel="Navegação Player"
-        groups={PLAYER_NAVIGATION_GROUPS}
+        ariaLabel={shellT("ariaLabel")}
+        groups={groups}
         pathname={pathname}
         presentation="bottom"
       />

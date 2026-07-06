@@ -1,5 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import type { AreaPlaceholderProps } from "./area-placeholder.types";
@@ -10,6 +11,8 @@ export function AreaPlaceholder({
   description,
   Icon,
 }: AreaPlaceholderProps) {
+  const t = useTranslations("Common");
+
   return (
     <main
       id="shell-main"
@@ -23,7 +26,7 @@ export function AreaPlaceholder({
         >
           <Link href="/">
             <ArrowLeft aria-hidden="true" />
-            Back to Sandicts
+            {t("backToSandicts")}
           </Link>
         </Button>
 

@@ -6,6 +6,12 @@ import {
   createRootMetadata,
 } from "./seo-metadata";
 
+const localization = {
+  defaultDescription:
+    "Encontre quadras, partidas e pessoas para praticar esportes de areia.",
+  locale: "pt-BR",
+  socialImageAlt: "Sandicts — encontre quadras, partidas e pessoas para jogar",
+} as const;
 const publicEnvironment = createSeoEnvironment({
   indexingEnabled: "true",
   webOrigin: "https://sandicts.com.br",
@@ -22,7 +28,7 @@ const discoveryPage = {
 
 describe("createRootMetadata", () => {
   it("defines the metadata base and a conservative indexing default", () => {
-    const metadata = createRootMetadata(publicEnvironment);
+    const metadata = createRootMetadata(localization, publicEnvironment);
 
     expect(metadata.metadataBase).toEqual(new URL("https://sandicts.com.br"));
     expect(metadata.title).toEqual({
@@ -38,7 +44,11 @@ describe("createRootMetadata", () => {
 
 describe("createPublicPageMetadata", () => {
   it("creates complete indexable metadata when indexing is enabled", () => {
-    const metadata = createPublicPageMetadata(discoveryPage, publicEnvironment);
+    const metadata = createPublicPageMetadata(
+      discoveryPage,
+      localization,
+      publicEnvironment,
+    );
 
     expect(metadata).toMatchObject({
       alternates: {
@@ -86,6 +96,7 @@ describe("createPublicPageMetadata", () => {
   it("keeps a public preview page out of the index", () => {
     const metadata = createPublicPageMetadata(
       discoveryPage,
+      localization,
       previewEnvironment,
     );
 

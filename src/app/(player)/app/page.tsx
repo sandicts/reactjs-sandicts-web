@@ -1,12 +1,15 @@
 import { House } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ShellPagePlaceholder } from "@/components/shared/app-shell/content/shell-page-placeholder";
 
 export default function PlayerHomePage() {
+  const t = useTranslations("Pages.player.home");
+
   return (
     <ShellPagePlaceholder
-      eyebrow="Início"
-      title="Seu próximo jogo começa aqui."
-      description="A home Player reunirá reservas, partidas abertas e atalhos para descoberta sem transformar métricas de jogo em escopo do MVP."
+      eyebrow={t("eyebrow")}
+      title={t("title")}
+      description={t("description")}
       Icon={House}
     />
   );

@@ -1,12 +1,15 @@
 import { CreditCard } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ShellPagePlaceholder } from "@/components/shared/app-shell/content/shell-page-placeholder";
 
 export default function OrganizationPaymentsPage() {
+  const t = useTranslations("Pages.organization.payments");
+
   return (
     <ShellPagePlaceholder
-      eyebrow="Pagamentos"
-      title="Acompanhe pagamentos do MVP."
-      description="Somente os estados manuais aprovados serão implementados; conciliação e relatórios avançados continuam fora do escopo."
+      eyebrow={t("eyebrow")}
+      title={t("title")}
+      description={t("description")}
       Icon={CreditCard}
     />
   );

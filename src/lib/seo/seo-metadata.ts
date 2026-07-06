@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
+import { toOpenGraphLocale, type AppLocale } from "@/i18n/config";
 import { seoEnv, type SeoEnvironment } from "@/lib/env/seo-env";
 import {
   OPEN_GRAPH_IMAGE_PATH,
-  SEO_DEFAULT_DESCRIPTION,
-  SEO_LOCALE,
   SEO_SITE_NAME,
-  SOCIAL_IMAGE_ALT,
   SOCIAL_IMAGE_CONTENT_TYPE,
   SOCIAL_IMAGE_SIZE,
   TWITTER_IMAGE_PATH,
@@ -15,6 +13,12 @@ import { createAbsoluteUrl } from "./seo-url";
 type PageMetadataDefinition = Readonly<{
   description: string;
   title: string;
+}>;
+
+type SeoLocalization = Readonly<{
+  defaultDescription: string;
+  locale: AppLocale;
+  socialImageAlt: string;
 }>;
 
 type PublicPageMetadataDefinition = PageMetadataDefinition &
@@ -28,15 +32,18 @@ type PrivatePageMetadataDefinition = PageMetadataDefinition &
     follow?: boolean;
   }>;
 
-function createRootMetadata(environment: SeoEnvironment = seoEnv): Metadata {
+function createRootMetadata(
+  localization: SeoLocalization,
+  environment: SeoEnvironment = seoEnv,
+): Metadata {
   return {
     applicationName: SEO_SITE_NAME,
-    description: SEO_DEFAULT_DESCRIPTION,
+    description: localization.defaultDescription,
     metadataBase: environment.webOrigin,
     openGraph: {
-      description: SEO_DEFAULT_DESCRIPTION,
-      images: [createOpenGraphImage(environment)],
-      locale: SEO_LOCALE,
+      description: localization.defaultDescription,
+      images: [createOpenGraphImage(environment, localization.socialImageAlt)],
+      locale: toOpenGraphLocale(localization.locale),
       siteName: SEO_SITE_NAME,
       title: SEO_SITE_NAME,
       type: "website",
@@ -49,8 +56,8 @@ function createRootMetadata(environment: SeoEnvironment = seoEnv): Metadata {
     },
     twitter: {
       card: "summary_large_image",
-      description: SEO_DEFAULT_DESCRIPTION,
-      images: [createTwitterImage(environment)],
+      description: localization.defaultDescription,
+      images: [createTwitterImage(environment, localization.socialImageAlt)],
       title: SEO_SITE_NAME,
     },
   };
@@ -58,6 +65,7 @@ function createRootMetadata(environment: SeoEnvironment = seoEnv): Metadata {
 
 function createPublicPageMetadata(
   definition: PublicPageMetadataDefinition,
+  localization: SeoLocalization,
   environment: SeoEnvironment = seoEnv,
 ): Metadata {
   const canonicalUrl = createAbsoluteUrl(definition.canonicalPath, environment);
@@ -69,8 +77,8 @@ function createPublicPageMetadata(
     description: definition.description,
     openGraph: {
       description: definition.description,
-      images: [createOpenGraphImage(environment)],
-      locale: SEO_LOCALE,
+      images: [createOpenGraphImage(environment, localization.socialImageAlt)],
+      locale: toOpenGraphLocale(localization.locale),
       siteName: SEO_SITE_NAME,
       title: definition.title,
       type: "website",
@@ -83,7 +91,7 @@ function createPublicPageMetadata(
     twitter: {
       card: "summary_large_image",
       description: definition.description,
-      images: [createTwitterImage(environment)],
+      images: [createTwitterImage(environment, localization.socialImageAlt)],
       title: definition.title,
     },
   };
@@ -106,9 +114,12 @@ function createRobotsDirective(index: boolean, follow: boolean) {
   } satisfies NonNullable<Metadata["robots"]>;
 }
 
-function createOpenGraphImage(environment: SeoEnvironment) {
+function createOpenGraphImage(
+  environment: SeoEnvironment,
+  socialImageAlt: string,
+) {
   return {
-    alt: SOCIAL_IMAGE_ALT,
+    alt: socialImageAlt,
     height: SOCIAL_IMAGE_SIZE.height,
     type: SOCIAL_IMAGE_CONTENT_TYPE,
     url: createAbsoluteUrl(OPEN_GRAPH_IMAGE_PATH, environment),
@@ -116,9 +127,12 @@ function createOpenGraphImage(environment: SeoEnvironment) {
   };
 }
 
-function createTwitterImage(environment: SeoEnvironment) {
+function createTwitterImage(
+  environment: SeoEnvironment,
+  socialImageAlt: string,
+) {
   return {
-    alt: SOCIAL_IMAGE_ALT,
+    alt: socialImageAlt,
     height: SOCIAL_IMAGE_SIZE.height,
     url: createAbsoluteUrl(TWITTER_IMAGE_PATH, environment),
     width: SOCIAL_IMAGE_SIZE.width,
@@ -134,4 +148,5 @@ export type {
   PageMetadataDefinition,
   PrivatePageMetadataDefinition,
   PublicPageMetadataDefinition,
+  SeoLocalization,
 };
