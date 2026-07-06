@@ -13,11 +13,13 @@ Read them in this order for most frontend work:
    context switcher
 5. `prototypes/app-shells/README.md` when implementing or reviewing the first
    public, Player, or Organization shell direction
-6. `sandicts-frontend-planning.md`
-7. `sandicts-mvp-delivery-roadmap.md`
-8. `sandicts-page-functional-spec.md` when page behavior, routes, permissions,
+6. `prototypes/global-states/README.md` when implementing or reviewing
+   loading, empty, error, unauthenticated, forbidden, or not-found UI
+7. `sandicts-frontend-planning.md`
+8. `sandicts-mvp-delivery-roadmap.md`
+9. `sandicts-page-functional-spec.md` when page behavior, routes, permissions,
    or user flows matter
-9. `sandicts-mvp-screens-spec.md` only for detailed screen-state work
+10. `sandicts-mvp-screens-spec.md` only for detailed screen-state work
 
 Files under `discovery/` are historical inputs. Use them for comparison or
 audit work, then prefer the current docs above for decisions.
