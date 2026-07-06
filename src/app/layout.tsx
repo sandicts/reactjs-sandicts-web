@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { createRootMetadata } from "@/lib/seo/seo-metadata";
 import { AppProviders } from "./providers";
 import "./globals.css";
 
@@ -13,10 +13,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Sandicts",
-  description: "Marketplace e comunidade para esportes de areia.",
-};
+export const metadata = createRootMetadata();
 
 export default function RootLayout({
   children,

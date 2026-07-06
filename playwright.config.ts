@@ -26,6 +26,10 @@ export default defineConfig({
   ],
   webServer: {
     command: "npm run dev",
+    env: {
+      SEO_INDEXING_ENABLED: "true",
+      WEB_ORIGIN: localWebAppUrl,
+    },
     reuseExistingServer: !process.env.CI,
     timeout: localWebServerTimeoutMilliseconds,
     url: localWebAppUrl,
