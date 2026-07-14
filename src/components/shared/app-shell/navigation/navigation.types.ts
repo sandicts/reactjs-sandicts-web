@@ -2,6 +2,8 @@ import type { LucideIcon } from "lucide-react";
 
 type NavigationMatch = "exact" | "prefix";
 
+type ShellNavigationPresentation = "bottom" | "adaptive" | "drawer";
+
 type ShellNavigationItem = Readonly<{
   id: string;
   label: string;
@@ -25,7 +27,7 @@ type ShellNavigationProps = Readonly<{
   ariaLabel: string;
   groups: readonly ShellNavigationGroup[];
   pathname: string;
-  presentation: "bottom" | "adaptive" | "drawer";
+  presentation: ShellNavigationPresentation;
   onNavigate?: () => void;
 }>;
 
@@ -34,5 +36,6 @@ export type {
   OrganizationNavigationCapabilities,
   ShellNavigationGroup,
   ShellNavigationItem,
+  ShellNavigationPresentation,
   ShellNavigationProps,
 };
