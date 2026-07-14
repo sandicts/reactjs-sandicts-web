@@ -1,6 +1,7 @@
 import { LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { pendingButtonStyles } from "./pending-button.styles";
 import type { PendingButtonProps } from "./pending-button.types";
 
 function PendingButton({
@@ -14,15 +15,15 @@ function PendingButton({
   return (
     <Button
       {...props}
-      className={cn("grid", className)}
+      className={cn(pendingButtonStyles.root, className)}
       disabled={disabled || pending}
       aria-busy={pending || undefined}
     >
       <span
         aria-hidden={pending}
         className={cn(
-          "col-start-1 row-start-1 inline-flex items-center justify-center gap-2",
-          pending && "invisible",
+          pendingButtonStyles.content,
+          pending && pendingButtonStyles.hiddenContent,
         )}
       >
         {children}
@@ -30,12 +31,12 @@ function PendingButton({
       <span
         aria-hidden={!pending}
         className={cn(
-          "col-start-1 row-start-1 inline-flex items-center justify-center gap-2",
-          !pending && "invisible",
+          pendingButtonStyles.content,
+          !pending && pendingButtonStyles.hiddenContent,
         )}
       >
         <LoaderCircle
-          className="animate-spin motion-reduce:animate-none"
+          className={pendingButtonStyles.spinner}
           aria-hidden="true"
         />
         {pendingLabel}

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { areaPlaceholderStyles } from "./area-placeholder.styles";
 import type { AreaPlaceholderProps } from "./area-placeholder.types";
 
 export function AreaPlaceholder({
@@ -14,15 +15,12 @@ export function AreaPlaceholder({
   const t = useTranslations("Common");
 
   return (
-    <main
-      id="shell-main"
-      className="min-h-screen bg-background px-5 py-6 text-foreground sm:px-8"
-    >
-      <div className="mx-auto flex min-h-[calc(100vh-3rem)] max-w-5xl flex-col">
+    <main id="shell-main" className={areaPlaceholderStyles.root}>
+      <div className={areaPlaceholderStyles.container}>
         <Button
           asChild
           variant="outline"
-          className="mb-10 w-fit text-muted-foreground"
+          className={areaPlaceholderStyles.backButton}
         >
           <Link href="/">
             <ArrowLeft aria-hidden="true" />
@@ -30,18 +28,14 @@ export function AreaPlaceholder({
           </Link>
         </Button>
 
-        <section className="grid flex-1 content-center gap-8 lg:grid-cols-[1fr_320px]">
+        <section className={areaPlaceholderStyles.content}>
           <div>
-            <p className="mb-4 text-sm font-medium text-primary">{eyebrow}</p>
-            <h1 className="max-w-2xl text-5xl font-semibold leading-[1.05]">
-              {title}
-            </h1>
-            <p className="mt-5 max-w-xl text-lg leading-8 text-muted-foreground">
-              {description}
-            </p>
+            <p className={areaPlaceholderStyles.eyebrow}>{eyebrow}</p>
+            <h1 className={areaPlaceholderStyles.title}>{title}</h1>
+            <p className={areaPlaceholderStyles.description}>{description}</p>
           </div>
-          <Card className="flex h-64 items-center justify-center py-0 shadow-none">
-            <Icon className="size-16 text-success" aria-hidden="true" />
+          <Card className={areaPlaceholderStyles.iconCard}>
+            <Icon className={areaPlaceholderStyles.icon} aria-hidden="true" />
           </Card>
         </section>
       </div>

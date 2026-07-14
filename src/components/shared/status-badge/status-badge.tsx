@@ -1,18 +1,7 @@
-import type { ComponentProps } from "react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import type { StatusBadgeProps, StatusBadgeTone } from "./status-badge.types";
-
-const badgeVariantByTone: Record<
-  StatusBadgeTone,
-  ComponentProps<typeof Badge>["variant"]
-> = {
-  neutral: "outline",
-  info: "info",
-  success: "success",
-  warning: "warning",
-  destructive: "destructive",
-};
+import { badgeVariantByTone, statusBadgeStyles } from "./status-badge.styles";
+import type { StatusBadgeProps } from "./status-badge.types";
 
 function StatusBadge({
   className,
@@ -25,7 +14,7 @@ function StatusBadge({
       data-slot="status-badge"
       data-tone={tone}
       variant={badgeVariantByTone[tone]}
-      className={cn("gap-1.5", className)}
+      className={cn(statusBadgeStyles.root, className)}
     >
       {Icon && <Icon aria-hidden="true" />}
       {label}
