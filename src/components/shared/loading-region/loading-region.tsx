@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { loadingRegionStyles } from "./loading-region.styles";
 import type { LoadingRegionProps } from "./loading-region.types";
 
 function LoadingRegion({ children, className, label }: LoadingRegionProps) {
@@ -7,9 +8,9 @@ function LoadingRegion({ children, className, label }: LoadingRegionProps) {
       data-slot="loading-region"
       aria-busy="true"
       aria-label={label}
-      className={cn("w-full", className)}
+      className={cn(loadingRegionStyles.root, className)}
     >
-      <p className="sr-only" role="status">
+      <p className={loadingRegionStyles.status} role="status">
         {label}
       </p>
       {children}
