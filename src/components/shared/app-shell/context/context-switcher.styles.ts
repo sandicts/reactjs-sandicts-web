@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils";
+
 const contextSwitcherStyles = {
   singleContainer:
     "min-w-0 rounded-lg border border-border/70 bg-card px-3 py-2 text-right",
@@ -14,10 +16,16 @@ const contextSwitcherStyles = {
   groupTitle:
     "mb-2 text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase",
   groupOptions: "grid gap-2",
-  optionLink:
-    "flex min-h-14 items-center gap-3 rounded-lg border border-border/70 bg-card px-4 py-3 outline-none transition hover:border-primary/70 hover:bg-accent focus-visible:ring-[3px] focus-visible:ring-ring/50",
-  optionAvatar:
-    "flex size-9 shrink-0 items-center justify-center rounded-full bg-secondary text-sm font-semibold text-secondary-foreground",
+  optionLink: cn(
+    "flex min-h-14 items-center gap-3 rounded-lg border border-border/70",
+    "bg-card px-4 py-3 transition outline-none",
+    "hover:border-primary/70 hover:bg-accent",
+    "focus-visible:ring-[3px] focus-visible:ring-ring/50",
+  ),
+  optionAvatar: cn(
+    "flex size-9 shrink-0 items-center justify-center rounded-full",
+    "bg-secondary text-sm font-semibold text-secondary-foreground",
+  ),
   optionBody: "min-w-0 flex-1",
   optionLabel: "block truncate text-sm",
   optionDetail: "block truncate text-xs text-muted-foreground",
