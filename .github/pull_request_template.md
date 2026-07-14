@@ -1,3 +1,11 @@
+<!--
+PR title format required by CI Governance:
+[KAN-123] type(scope): short summary
+
+Example:
+[KAN-132] refactor(app-shell): Split PublicShell styles
+-->
+
 ## Summary
 
 Describe clearly what this pull request changes and the intended scope.
