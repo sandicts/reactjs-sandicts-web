@@ -1,23 +1,18 @@
 "use client";
 
 import { useGoogleSignInControllerSignIn } from "@/lib/api/generated/sandicts-api/auth/auth";
-import type { GoogleSignInResponseOutput } from "@/lib/api/generated/sandicts-api/model";
 import {
-  clearAuthSession,
-  setAuthSession,
-} from "@/lib/auth/auth-session-store";
+  clearPersistedAuthSession,
+  persistGoogleSignInSession,
+} from "./auth-session-mutation-handlers";
 
 function useGoogleSignIn() {
   return useGoogleSignInControllerSignIn({
     mutation: {
-      onError: clearAuthSession,
-      onSuccess: persistAuthSession,
+      onError: clearPersistedAuthSession,
+      onSuccess: persistGoogleSignInSession,
     },
   });
-}
-
-function persistAuthSession(authSession: GoogleSignInResponseOutput) {
-  setAuthSession(authSession);
 }
 
 export { useGoogleSignIn };
