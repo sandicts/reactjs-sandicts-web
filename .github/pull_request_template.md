@@ -4,6 +4,11 @@ PR title format required by CI Governance:
 
 Example:
 [KAN-132] refactor(app-shell): Split PublicShell styles
+
+PR description required by CI Governance:
+- Keep the template headings and order unchanged.
+- Replace raw placeholders before opening or updating the PR.
+- Set Primary Jira to the same Jira key used in the PR title.
 -->
 
 ## Summary
@@ -48,6 +53,7 @@ For docs-only or setup work, describe why the repository needed this change.
 - [ ] lint (CI: Quality)
 - [ ] typecheck (CI: Quality)
 - [ ] tests (CI: Test)
+- [ ] contract (CI: Contract)
 - [ ] build (CI: Build)
 - [ ] dependency audit (CI: Dependency audit)
 - [ ] manual validation completed
