@@ -29,19 +29,25 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - name: Validate branch naming and PR target
+      - name: Validate branch naming, PR title, and PR target
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
           HEAD="${{ github.head_ref }}"
           BASE="${{ github.base_ref }}"
+          TITLE="$PR_TITLE"
 
           echo "Source branch: $HEAD"
           echo "Target branch: $BASE"
+          echo "Pull request title: $TITLE"
 
           TEMP_BRANCH_REGEX='^(feature|fix|hotfix|docs|refactor|test|ci|chore|rc|codex)/KAN-[0-9]+-[a-z0-9]+(-[a-z0-9]+)*$'
+          PR_TITLE_REGEX='^\[KAN-[0-9]+\] (feat|fix|hotfix|docs|refactor|test|ci|chore|build|perf|style|revert)\([a-z0-9-]+\): .+$'
 
           is_valid_temp_branch=false
           is_valid_protected_branch=false
           is_valid_target=false
+          is_valid_pr_title=false
 
           if [[ "$HEAD" =~ $TEMP_BRANCH_REGEX ]]; then
             is_valid_temp_branch=true
@@ -55,9 +61,22 @@ jobs:
             is_valid_target=true
           fi
 
+          if [[ "$TITLE" =~ $PR_TITLE_REGEX ]]; then
+            is_valid_pr_title=true
+          fi
+
           if [[ "$is_valid_target" == "false" ]]; then
             echo "Invalid target branch: $BASE"
             echo "Allowed targets: developer, staging, master"
+            exit 1
+          fi
+
+          if [[ "$is_valid_pr_title" == "false" ]]; then
+            echo "Invalid pull request title: $TITLE"
+            echo "Expected format: [KAN-123] type(scope): short summary"
+            echo "Allowed types: feat, fix, hotfix, docs, refactor, test, ci, chore, build, perf, style, revert"
+            echo "Allowed scope format: lowercase letters, numbers, and hyphens"
+            echo "Example: [KAN-132] refactor(app-shell): Split PublicShell styles"
             exit 1
           fi
 
