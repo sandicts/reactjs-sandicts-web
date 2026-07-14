@@ -4,6 +4,7 @@
 
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
 import {
   clearAuthSession,
   getAuthSession,
@@ -15,13 +16,13 @@ import {
   createJsonResponse,
   createQueryClientTestWrapper,
 } from "./auth-hooks.test-utils";
-import { useGoogleSignIn } from "./use-google-sign-in";
+import { useRefreshAuthSession } from "./use-refresh-auth-session";
 
 const fetchMock = vi.fn<typeof fetch>();
 
 let queryClient = createAuthQueryClient();
 
-describe("useGoogleSignIn", () => {
+describe("useRefreshAuthSession", () => {
   beforeEach(() => {
     queryClient = createAuthQueryClient();
     fetchMock.mockReset();
@@ -35,15 +36,13 @@ describe("useGoogleSignIn", () => {
     vi.unstubAllGlobals();
   });
 
-  it("persists the authenticated session after a successful sign-in", async () => {
+  it("persists the authenticated session after a successful refresh", async () => {
     fetchMock.mockResolvedValueOnce(createJsonResponse(200, authSession));
 
-    const { result } = renderUseGoogleSignIn();
+    const { result } = renderUseRefreshAuthSession();
 
     act(() => {
-      result.current.mutate({
-        data: { credential: "google-identity-token" },
-      });
+      result.current.mutate();
     });
 
     await waitFor(() => {
@@ -54,25 +53,23 @@ describe("useGoogleSignIn", () => {
     expect(fetchMock).toHaveBeenCalledOnce();
   });
 
-  it("clears a previous session when sign-in fails", async () => {
+  it("clears a previous session when refresh fails", async () => {
     setAuthSession(authSession);
     fetchMock.mockResolvedValueOnce(
-      createJsonResponse(400, {
-        statusCode: 400,
-        code: "validation_error",
-        message: "Google credential is required",
-        path: "/auth/google/sign-in",
+      createJsonResponse(401, {
+        statusCode: 401,
+        code: "unauthorized",
+        message: "Refresh session is invalid",
+        path: "/auth/refresh",
         timestamp: "2026-06-28T00:00:00.000Z",
         requestId: "request-id",
       }),
     );
 
-    const { result } = renderUseGoogleSignIn();
+    const { result } = renderUseRefreshAuthSession();
 
     act(() => {
-      result.current.mutate({
-        data: { credential: "invalid-google-token" },
-      });
+      result.current.mutate();
     });
 
     await waitFor(() => {
@@ -84,8 +81,8 @@ describe("useGoogleSignIn", () => {
   });
 });
 
-function renderUseGoogleSignIn() {
-  return renderHook(() => useGoogleSignIn(), {
+function renderUseRefreshAuthSession() {
+  return renderHook(() => useRefreshAuthSession(), {
     wrapper: createQueryClientTestWrapper(queryClient),
   });
 }
