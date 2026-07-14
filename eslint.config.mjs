@@ -3,6 +3,7 @@ import prettierConfig from "eslint-config-prettier/flat";
 import jestDom from "eslint-plugin-jest-dom";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
+import tailwindcss from "eslint-plugin-tailwindcss";
 import testingLibrary from "eslint-plugin-testing-library";
 
 const testingLibraryConfig = testingLibrary.configs["flat/react"];
@@ -38,6 +39,36 @@ const eslintConfig = defineConfig([
     "test-results/**",
   ]),
   prettierConfig,
+  {
+    name: "sandicts/tailwindcss",
+    files: ["src/**/*.{ts,tsx}"],
+    plugins: {
+      tailwindcss,
+    },
+    settings: {
+      tailwindcss: {
+        cssConfigPath: "./src/app/globals.css",
+      },
+    },
+    rules: {
+      "tailwindcss/classnames-order": "error",
+      "tailwindcss/no-contradicting-classname": "error",
+    },
+  },
+  {
+    name: "sandicts/readable-component-style-files",
+    files: ["src/components/**/*.styles.{ts,tsx}"],
+    rules: {
+      "max-len": [
+        "error",
+        {
+          code: 100,
+          ignoreComments: true,
+          ignoreUrls: true,
+        },
+      ],
+    },
+  },
 ]);
 
 export default eslintConfig;

@@ -34,7 +34,7 @@ function PublicHomeScreen() {
               <Link
                 key={id}
                 href={href}
-                className="group rounded-xl border border-border bg-card p-4 outline-none transition hover:border-primary focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                className="group rounded-xl border border-border bg-card p-4 transition outline-none hover:border-primary focus-visible:ring-[3px] focus-visible:ring-ring/50"
               >
                 <div className="mb-5 flex size-10 items-center justify-center rounded-lg bg-secondary text-success">
                   <Icon className="size-5" aria-hidden="true" />
