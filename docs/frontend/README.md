@@ -13,19 +13,22 @@ Read them in this order for most frontend work:
    structure refactor PRs
 5. `sandicts-localization.md` when adding user-facing copy, formatting
    locale-sensitive values, or planning locale-aware routes
-6. `sandicts-local-ui-state.md` when deciding state ownership or introducing
+6. `sandicts-expired-session-experience.md` when implementing protected routes
+   or distinguishing expired, unauthenticated, verification-failed, and
+   forbidden auth states
+7. `sandicts-local-ui-state.md` when deciding state ownership or introducing
    Zustand
-7. `sandicts-mobile-navigation.md` when deciding app-shell navigation or the
+8. `sandicts-mobile-navigation.md` when deciding app-shell navigation or the
    context switcher
-8. `prototypes/app-shells/README.md` when implementing or reviewing the first
+9. `prototypes/app-shells/README.md` when implementing or reviewing the first
    public, Player, or Organization shell direction
-9. `prototypes/global-states/README.md` when implementing or reviewing
+10. `prototypes/global-states/README.md` when implementing or reviewing
    loading, empty, error, unauthenticated, forbidden, or not-found UI
-10. `sandicts-frontend-planning.md`
-11. `sandicts-mvp-delivery-roadmap.md`
-12. `sandicts-page-functional-spec.md` when page behavior, routes, permissions,
+11. `sandicts-frontend-planning.md`
+12. `sandicts-mvp-delivery-roadmap.md`
+13. `sandicts-page-functional-spec.md` when page behavior, routes, permissions,
    or user flows matter
-13. `sandicts-mvp-screens-spec.md` only for detailed screen-state work
+14. `sandicts-mvp-screens-spec.md` only for detailed screen-state work
 
 Files under `discovery/` are historical inputs. Use them for comparison or
 audit work, then prefer the current docs above for decisions.
