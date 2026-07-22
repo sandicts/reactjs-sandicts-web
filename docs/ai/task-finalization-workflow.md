@@ -5,6 +5,7 @@ role: source-of-truth
 priority: high
 canonical: docs/ai/task-finalization-workflow.md
 related:
+  - docs/ai/ci-cd/security-audit-remediation.md
   - docs/ai/jira-operating-workflow.md
   - sandicts/sandicts-docs:docs/ai/pull-request-standard.md
   - .codex/skills/jira-pr-commit-writer/SKILL.md
@@ -159,6 +160,15 @@ npm run typecheck
 npm run build
 npm audit --audit-level=moderate
 ```
+
+When an unrelated task reveals an audit failure already present on its base
+branch, keep that task's diff unchanged. Create or reuse a dedicated security
+Jira task and remediation PR, merge it first, then update the blocked branch
+from `developer`. Do not remove the audit job, lower its threshold, or mix
+dependency changes into the unrelated PR. The frontend workflow lives in
+`docs/ai/ci-cd/security-audit-remediation.md`; the cross-repository standard
+lives in
+`sandicts/sandicts-docs:docs/ai/dependency-security-remediation.md`.
 
 Run tests when test tooling is present and the change touches behavior covered
 by tests. Frontend CI is expected to be configured by `KAN-111`; until then,

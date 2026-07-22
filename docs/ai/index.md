@@ -35,6 +35,7 @@ repository.
 | --- | --- |
 | `docs/ai/project-context.md` | Frontend repository setup, ownership, and boundaries |
 | `docs/ai/jira-operating-workflow.md` | Direct Jira workflow for known `KAN-*` work |
+| `docs/ai/ci-cd/security-audit-remediation.md` | Isolated frontend dependency-security remediation workflow |
 | `docs/ai/task-finalization-workflow.md` | Commit, PR, validation, and Jira review workflow |
 | `sandicts/sandicts-docs:docs/ai/pull-request-standard.md` | Shared PR title, body, validation, and no-blank-body standard |
 
@@ -113,6 +114,12 @@ For finishing a Jira task, read:
 
 1. `docs/ai/task-finalization-workflow.md`
 2. `.codex/skills/jira-pr-commit-writer/SKILL.md`
+
+For a dependency audit failure, read:
+
+1. `sandicts/sandicts-docs:docs/ai/dependency-security-remediation.md`
+2. `docs/ai/ci-cd/security-audit-remediation.md`
+3. `docs/ai/task-finalization-workflow.md`
 
 For page, route, permission, or flow behavior, read:
 
