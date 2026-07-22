@@ -7,6 +7,7 @@ canonical: docs/frontend/sandicts-page-functional-spec.md
 related:
   - docs/frontend/sandicts-frontend-context.md
   - docs/frontend/sandicts-frontend-tech-decisions.md
+  - docs/frontend/sandicts-expired-session-experience.md
   - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-frontend-planning.md
@@ -588,7 +589,17 @@ States:
 Rules:
 
 - Auth should preserve the user's intended action when possible.
-- Expired session behavior must be predictable.
+- A rejected initial bootstrap without a previously established in-memory
+  session is unauthenticated, not expired.
+- A confirmed expired session redirects to sign-in with a validated internal
+  `returnTo`; a temporary verification failure provides retry without claiming
+  that the session expired.
+- Expired-session feedback is persistent inline sign-in content, not a toast or
+  a dedicated screen.
+- MVP form drafts are discarded during expiry navigation and are not persisted
+  in the return URL or browser storage.
+- Forbidden access preserves the authenticated shell and never silently signs
+  the user out or switches context.
 - Auth errors should be understandable without exposing provider internals.
 - The sign-in page is shared by Player, Organization, Academy, and Sandicts
   Admin users.
@@ -598,8 +609,9 @@ Implementation ownership:
 - session hydration uses the frontend auth decision: browser bootstrap attempts
   `POST /auth/refresh`, current-session reads use `GET /auth/me`, and access
   tokens stay in memory
-- exact expired-session copy, state shape, and redirect behavior belong to the
-  expired session UX decision
+- exact state classification, expired-session copy, safe `returnTo`, draft,
+  redirect, and E2E behavior live in
+  `docs/frontend/sandicts-expired-session-experience.md`
 - exact post-login destination and `returnTo` priority belong to the post-login
   routing decision
 

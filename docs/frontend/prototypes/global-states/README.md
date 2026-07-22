@@ -6,6 +6,7 @@ priority: high
 canonical: docs/frontend/prototypes/global-states/README.md
 related:
   - docs/frontend/prototypes/app-shells/README.md
+  - docs/frontend/sandicts-expired-session-experience.md
   - docs/frontend/sandicts-mvp-visual-system.md
   - docs/frontend/sandicts-page-functional-spec.md
   - KAN-69
@@ -247,6 +248,10 @@ appears after the user initiated an interaction.
 - When no session is known, use a public or minimal access boundary instead of
   exposing private navigation.
 - Keep unauthenticated distinct from forbidden.
+
+Confirmed session-expiry classification, sign-in copy, safe `returnTo`, form
+draft behavior, and auth-level forbidden behavior live in
+`docs/frontend/sandicts-expired-session-experience.md`.
 
 ### Forbidden
 

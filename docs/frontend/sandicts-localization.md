@@ -5,6 +5,7 @@ role: source-of-truth
 priority: high
 canonical: docs/frontend/sandicts-localization.md
 related:
+  - docs/frontend/sandicts-expired-session-experience.md
   - docs/frontend/sandicts-frontend-tech-decisions.md
   - docs/frontend/prototypes/global-states/README.md
   - docs/frontend/sandicts-mobile-navigation.md

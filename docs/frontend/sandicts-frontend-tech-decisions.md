@@ -9,6 +9,7 @@ related:
   - docs/frontend/sandicts-frontend-planning.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-mvp-visual-system.md
+  - docs/frontend/sandicts-expired-session-experience.md
   - docs/frontend/sandicts-localization.md
   - docs/frontend/sandicts-local-ui-state.md
   - docs/frontend/sandicts-page-functional-spec.md
@@ -532,8 +533,11 @@ Rules:
   the original request is retried
 - refresh retry limits must use semantic constants such as
   `sessionRefreshRetryLimit`
-- if refresh fails, the auth session is cleared and feature UI renders the
-  approved expired-session or sign-in state
+- if refresh is definitively rejected, the auth session is cleared and feature
+  UI renders the approved unauthenticated or expired-session state according to
+  whether this browser runtime had established a session
+- network, timeout, and `5xx` refresh failures render a recoverable session
+  verification state and must not be described as confirmed expiry
 - CORS must allow the frontend origin and credentials before real browser
   integration can pass locally or in deployed environments
 
@@ -559,6 +563,9 @@ Initial browser bootstrap:
 4. If refresh fails because there is no valid refresh cookie, clear the
    in-memory auth session and let protected-route boundaries decide whether to
    render unauthenticated or expired-session UX.
+5. If refresh cannot be completed because of a network, timeout, or `5xx`
+   failure, protect private content and expose a recoverable verification state
+   without claiming that the session expired.
 
 Current session query:
 
@@ -591,11 +598,13 @@ Route and rendering boundaries:
 - Server Components may render public shell and route structure, but they must
   not be responsible for proving the user's current auth session in the MVP
 - protected route behavior should be implemented as a client boundary or
-  protected layout that reads the auth session query and renders
-  `checking`, `authenticated`, `unauthenticated`, or `forbidden` states
-- the exact expired-session copy and redirect behavior belong to the expired
-  session UX decision, while post-login destination rules belong to the
-  post-login routing decision
+  protected layout that reads the auth session query and renders `checking`,
+  `authenticated`, `unauthenticated`, `expired`, `verification-failed`, or
+  `forbidden` states
+- exact classification, copy, safe `returnTo`, draft, redirect, and E2E
+  behavior live in `docs/frontend/sandicts-expired-session-experience.md`, while
+  the general post-login destination priority remains in the page functional
+  specification
 
 Cache invalidation:
 
@@ -603,8 +612,10 @@ Cache invalidation:
   in-memory auth session and refresh `queryKeys.auth.session()`
 - sign-out and sign-out-all should clear the in-memory auth session and remove
   or invalidate private auth-dependent queries
-- failed refresh should clear the in-memory auth session, clear private
-  auth-dependent data, and leave public discovery cache intact
+- definitively rejected refresh should clear the in-memory auth session and
+  private auth-dependent data while leaving public discovery cache intact
+- temporary refresh failure should keep private content unavailable until
+  verification succeeds, provide a safe retry, and avoid an expiry claim
 - feature modules should treat auth clearing as an infrastructure signal and
   avoid duplicating auth/session state in Zustand
 
