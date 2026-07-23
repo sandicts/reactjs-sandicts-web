@@ -10,6 +10,7 @@ related:
   - docs/frontend/sandicts-frontend-planning.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-mvp-visual-system.md
+  - docs/frontend/sandicts-post-login-routing.md
   - docs/frontend/sandicts-google-one-tap-experience.md
   - docs/frontend/prototypes/app-shells/README.md
   - docs/frontend/sandicts-page-functional-spec.md
@@ -158,8 +159,9 @@ Rules:
 - do not add V2 classes to the bottom bar until V2 navigation is planned
 
 `/app/onboarding` is a focused account-completion route. It is not a sixth
-destination and must provide an explicit route back or forward into the Player
-area.
+destination. `missing` or `incomplete` Player completion enters it before
+regular Player navigation renders. Completion may continue only to a
+re-checked safe authorized Player destination.
 
 ## Organization Navigation
 
@@ -266,7 +268,8 @@ can expose the same grouping, names, status, and keyboard behavior.
 
 The context switcher does not restore an arbitrary nested page when the user
 actively changes context. It navigates to the selected context home. Login
-bootstrap may still restore the last active context according to KAN-65.
+bootstrap may restore a safe authorized `returnTo`; otherwise it uses the last
+active usable context, the only usable context, or the picker in that order.
 
 ## Routing And Browser History
 
@@ -284,6 +287,11 @@ Rules:
 - preserve `returnTo` when an unauthenticated user enters an auth-gated route
 - after successful authentication, restore `returnTo` only when authorization
   still allows it
+- discard malformed, external, auth-loop, callback, secret-bearing, and
+  oversized `returnTo` values before resolving a destination
+- when a structurally safe internal `returnTo` is unauthorized, use the normal
+  authorized context fallback and show neutral feedback without naming the
+  target
 - route guards and the backend remain responsible for authorization; hiding a
   link is not an authorization control
 
@@ -297,9 +305,13 @@ reservation detail selects `Reservas`, and an open-match creation route selects
 | --- | --- |
 | Unauthenticated public visitor | Show public navigation and sign-in |
 | Unauthenticated access to protected route | Navigate to sign-in with safe `returnTo` |
-| One usable context | Enter it directly and hide the context switcher |
-| Multiple usable contexts | Show the context switcher |
-| Missing Player profile | Keep Player navigation stable and show onboarding or empty state |
+| Valid last active context and no authorized `returnTo` | Enter that context home |
+| One usable context after no valid last context | Enter it directly and hide the context switcher |
+| Multiple usable contexts after no valid last context | Show the context picker |
+| No usable contexts | Show the explicit no-context state |
+| Missing or incomplete Player profile for a Player destination | Route to `/app/onboarding` before regular Player navigation and retain only a safe authorized Player continuation |
+| Missing or incomplete Player profile for an operational destination | Enter the authorized Organization, Academy, or Admin App destination without Player onboarding |
+| Safe internal but unauthorized post-login `returnTo` | Use authorized context fallback with neutral, non-disclosing feedback |
 | Missing Organization or Academy | Do not invent an operational context; show creation entry when allowed |
 | Direct forbidden route | Render forbidden state with a path to an allowed context |
 | Access removed during a session | Remove unavailable links after session refresh and render forbidden state for the current route |
@@ -315,6 +327,9 @@ fallback defined in
 
 Do not silently redirect a forbidden operational route to a different entity.
 The user must understand that access failed and have an explicit next path.
+This direct-access rule is distinct from rejected post-login `returnTo`
+fallback. The complete trigger and precedence rules live in
+`docs/frontend/sandicts-post-login-routing.md`.
 
 ## Navigation State Ownership
 

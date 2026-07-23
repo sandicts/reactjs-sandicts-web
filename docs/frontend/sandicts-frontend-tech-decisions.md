@@ -10,6 +10,7 @@ related:
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-mvp-visual-system.md
   - docs/frontend/sandicts-expired-session-experience.md
+  - docs/frontend/sandicts-post-login-routing.md
   - docs/frontend/sandicts-google-one-tap-experience.md
   - docs/frontend/sandicts-localization.md
   - docs/frontend/sandicts-local-ui-state.md
@@ -591,6 +592,12 @@ Session-producing mutations:
 - sign-in and refresh must not expect a refresh token in the response body
 - generated response types remain backend contracts; feature hooks expose
   semantic auth behavior to UI code
+- explicit Google Sign-In, Google One Tap, future magic-link consumption, and
+  reauthentication hand the hydrated snapshot to one provider-independent
+  post-login resolver
+- passive refresh is navigation-neutral on regular public routes, verifies the
+  current protected route, and runs the resolver only when the current route
+  is `/sign-in`
 
 Route and rendering boundaries:
 
@@ -603,9 +610,11 @@ Route and rendering boundaries:
   `authenticated`, `unauthenticated`, `expired`, `verification-failed`, or
   `forbidden` states
 - exact classification, copy, safe `returnTo`, draft, redirect, and E2E
-  behavior live in `docs/frontend/sandicts-expired-session-experience.md`, while
-  the general post-login destination priority remains in the page functional
-  specification
+  behavior for expiry live in
+  `docs/frontend/sandicts-expired-session-experience.md`
+- exact post-login trigger classification, destination precedence, context
+  fallback, Player completion gate, and unauthorized `returnTo` behavior live
+  in `docs/frontend/sandicts-post-login-routing.md`
 - route access and Google One Tap eligibility must be resolved through
   `src/lib/routes/route-access-policy.ts`; page components, provider callbacks,
   and layouts must not duplicate pathname checks
@@ -1314,9 +1323,7 @@ integration:
 Resolve before first integrated auth implementation:
 
 - CORS and credentialed browser behavior in each environment
-- expired session UX
 - sign-out behavior
-- post-login routing
 
 Resolve before each page implementation:
 

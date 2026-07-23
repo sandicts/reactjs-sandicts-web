@@ -8,6 +8,7 @@ related:
   - docs/frontend/sandicts-frontend-context.md
   - docs/frontend/sandicts-frontend-tech-decisions.md
   - docs/frontend/sandicts-expired-session-experience.md
+  - docs/frontend/sandicts-post-login-routing.md
   - docs/frontend/sandicts-google-one-tap-experience.md
   - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
@@ -164,8 +165,12 @@ Rules:
   the first context.
 - A user may have Player, Organization, Academy, and Admin App contexts at
   the same time.
-- After authentication, the app should use `returnTo` when authorized, then the
-  last active context, then the only available context, then a context picker.
+- After explicit authentication, the app uses a safe authorized `returnTo`,
+  then the last active usable context, then the only usable context, then a
+  context picker. It renders an explicit no-context state when none exists.
+- `missing` or `incomplete` Player completion gates only Player destinations;
+  Organization, Academy, and Admin App destinations do not require Player
+  onboarding.
 - Context routes use stable IDs internally and slugs in user-facing URLs from
   the start.
 
@@ -565,16 +570,24 @@ Actions:
 
 - sign in with Google
 - use Google One Tap
+- request or consume a magic link when that flow is available
 - sign out from an authenticated state
 - refresh or preserve session
 
 Post-auth routing:
 
-- if `returnTo` exists and the user is authorized, resume that route
-- otherwise restore the last active context
-- otherwise enter the only available context
-- otherwise show the context picker
-- incomplete player profile goes to onboarding when the active context is Player
+- wait for the common session snapshot and usable context inventory
+- if a structurally safe `returnTo` exists and the account is authorized,
+  resume that route
+- otherwise restore the last active context only when it remains usable
+- otherwise enter the only usable context
+- otherwise show the context picker when multiple contexts remain
+- otherwise show the no-context state
+- `missing` or `incomplete` Player completion goes to `/app/onboarding` before
+  entering a Player destination and retains only a safe authorized Player
+  continuation
+- Player completion never blocks an Organization, Academy, or Admin App
+  destination
 - user attempting reservation returns to reservation flow
 - user attempting class scheduling returns to class flow if academy module exists
 
@@ -590,6 +603,14 @@ States:
 Rules:
 
 - Auth should preserve the user's intended action when possible.
+- Explicit Google Sign-In, Google One Tap, magic-link consumption, and
+  reauthentication use the same provider-independent post-login resolver.
+- Passive refresh keeps a regular public page in place, verifies and unlocks
+  the current protected route, and runs the post-login resolver on
+  `/sign-in`.
+- An invalid or external `returnTo` is discarded. A safe internal but
+  unauthorized `returnTo` uses the normal authorized fallback with neutral,
+  non-disclosing feedback.
 - Google One Tap is eligible only on `/`, `/discovery`, and `/sign-in`, and may
   attempt only on the first eligible route visited in a browser tab.
 - Public detail pages do not inherit One Tap eligibility from public access.
@@ -623,8 +644,9 @@ Implementation ownership:
 - exact state classification, expired-session copy, safe `returnTo`, draft,
   redirect, and E2E behavior live in
   `docs/frontend/sandicts-expired-session-experience.md`
-- exact post-login destination and `returnTo` priority belong to the post-login
-  routing decision
+- exact trigger classification, destination precedence, context fallback,
+  Player completion gate, and unauthorized `returnTo` behavior live in
+  `docs/frontend/sandicts-post-login-routing.md`
 
 ## Player Pages
 
@@ -648,20 +670,18 @@ Content:
 - open match suggestions
 - shortcuts to court discovery
 - shortcut to create open match
-- profile completion prompt
 - reservation history shortcut
 - classes only if academy module is enabled
 
 Rules:
 
-- If the profile is incomplete, the home should block or strongly guide profile
-  completion before practical actions.
+- The regular Player home renders only after `GET /players/me` reports
+  `complete`. `missing` and `incomplete` route to `/app/onboarding` first.
 - The MVP home should not become a social feed.
 - Tournament, ranking, and progression widgets are not MVP.
 
 Open decisions:
 
-- whether profile completion blocks all actions or only selected actions
 - whether upcoming classes appear before academy module is implemented
 
 ### Profile Onboarding
@@ -681,7 +701,6 @@ Purpose:
 MVP fields:
 
 - display name
-- city if confirmed
 - main sport
 - simple level
 
@@ -700,12 +719,17 @@ Actions:
 Rules:
 
 - Onboarding should not ask for too much.
+- `GET /players/me` is the completion authority. The frontend must use its
+  `missing`, `incomplete`, or `complete` state instead of duplicating required
+  field logic.
+- On successful completion, re-check any retained safe authorized Player
+  continuation before navigating.
 - No photo, bio, ranking, achievements, or athlete card in MVP.
 - The goal is to enable reservation, open match, and later class flows.
 
 Open decisions:
 
-- exact required fields
+- whether city is collected as an optional MVP field
 - whether side and dominant foot are MVP
 - whether academy affiliation is MVP
 - whether profile visibility is MVP or V2

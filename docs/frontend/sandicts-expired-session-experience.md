@@ -6,6 +6,7 @@ priority: high
 canonical: docs/frontend/sandicts-expired-session-experience.md
 related:
   - docs/frontend/sandicts-frontend-tech-decisions.md
+  - docs/frontend/sandicts-post-login-routing.md
   - docs/frontend/sandicts-localization.md
   - docs/frontend/sandicts-page-functional-spec.md
   - docs/frontend/prototypes/global-states/README.md
@@ -125,8 +126,9 @@ When expiry is confirmed:
    `/sign-in?reason=session-expired&returnTo=<encoded-internal-path>`.
 6. Render the sign-in page in its public or minimal shell.
 7. Show the approved inline expired-session message.
-8. After successful authentication, validate authorization again before using
-   `returnTo`.
+8. After successful authentication, delegate to
+   `docs/frontend/sandicts-post-login-routing.md`, which validates
+   authorization again before using `returnTo`.
 
 Use replace navigation for the expiry transition so the browser Back action
 does not immediately reopen a private route that no longer has a session.

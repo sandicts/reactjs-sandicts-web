@@ -9,6 +9,8 @@ related:
   - sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
   - docs/frontend/sandicts-frontend-context.md
   - docs/frontend/sandicts-frontend-planning.md
+  - docs/frontend/sandicts-expired-session-experience.md
+  - docs/frontend/sandicts-post-login-routing.md
   - docs/frontend/sandicts-google-one-tap-experience.md
 scope: frontend, figma, ux, mvp, screens, flows
 read-when:
@@ -154,6 +156,7 @@ Rotas publicas:
 Rotas do jogador:
 
 - `/app`
+- `/app/onboarding`
 - `/app/profile`
 - `/app/discovery`
 - `/app/courts/[courtId]`
@@ -229,6 +232,12 @@ Regras:
 - usar o fallback explicito em iOS, Safari/ITP, Firefox e webviews
 - seguir supressao, persistencia, privacidade e restricoes de navegador de
   `docs/frontend/sandicts-google-one-tap-experience.md`
+- Google Sign-In, One Tap e o futuro consumo de magic link devem hidratar a
+  mesma sessao e usar o mesmo resolvedor pos-login
+- refresh passivo mantem uma rota publica regular, verifica a propria rota
+  protegida e executa o resolvedor quando a rota atual e `/sign-in`
+- seguir precedencia, `returnTo`, contextos e gate de perfil de
+  `docs/frontend/sandicts-post-login-routing.md`
 
 Dependencias de backend:
 
@@ -344,7 +353,6 @@ Conteudo principal:
 - CTA para encontrar quadra
 - resumo das proximas reservas
 - CTA para criar ou ver partidas abertas
-- aviso de perfil incompleto, se aplicavel
 - esporte principal e nivel simples
 
 Acoes:
@@ -360,7 +368,8 @@ Estados:
 - carregando home
 - sem reservas futuras
 - sem partidas sugeridas
-- perfil incompleto
+- redirecionamento para onboarding antes de renderizar a home quando o perfil
+  estiver `missing` ou `incomplete`
 - erro ao carregar dados
 
 Dependencias de backend:
@@ -379,7 +388,7 @@ Notas para Figma:
 
 Rota sugerida:
 
-- `/app/profile`
+- `/app/onboarding`
 
 Usuarios:
 
@@ -415,6 +424,10 @@ Regras:
 - esporte deve ser um dos esportes do MVP
 - nivel e autodeclarado
 - nao exigir localizacao, foto, bio ou atributos avancados
+- `GET /players/me` define `missing`, `incomplete` ou `complete`; a tela nao
+  duplica a lista de campos obrigatorios
+- apos salvar, revalidar o perfil e qualquer continuacao Player segura e
+  autorizada antes de navegar
 
 Dependencias de backend:
 

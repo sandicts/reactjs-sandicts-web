@@ -16,21 +16,24 @@ Read them in this order for most frontend work:
 6. `sandicts-expired-session-experience.md` when implementing protected routes
    or distinguishing expired, unauthenticated, verification-failed, and
    forbidden auth states
-7. `sandicts-google-one-tap-experience.md` when implementing Google One Tap,
+7. `sandicts-post-login-routing.md` when implementing successful sign-in,
+   passive session refresh, safe `returnTo`, context fallback, or Player
+   profile completion
+8. `sandicts-google-one-tap-experience.md` when implementing Google One Tap,
    changing route access classifications, or reviewing provider suppression
-8. `sandicts-local-ui-state.md` when deciding state ownership or introducing
+9. `sandicts-local-ui-state.md` when deciding state ownership or introducing
    Zustand
-9. `sandicts-mobile-navigation.md` when deciding app-shell navigation or the
+10. `sandicts-mobile-navigation.md` when deciding app-shell navigation or the
    context switcher
-10. `prototypes/app-shells/README.md` when implementing or reviewing the first
+11. `prototypes/app-shells/README.md` when implementing or reviewing the first
    public, Player, or Organization shell direction
-11. `prototypes/global-states/README.md` when implementing or reviewing
+12. `prototypes/global-states/README.md` when implementing or reviewing
    loading, empty, error, unauthenticated, forbidden, or not-found UI
-12. `sandicts-frontend-planning.md`
-13. `sandicts-mvp-delivery-roadmap.md`
-14. `sandicts-page-functional-spec.md` when page behavior, routes, permissions,
+13. `sandicts-frontend-planning.md`
+14. `sandicts-mvp-delivery-roadmap.md`
+15. `sandicts-page-functional-spec.md` when page behavior, routes, permissions,
    or user flows matter
-15. `sandicts-mvp-screens-spec.md` only for detailed screen-state work
+16. `sandicts-mvp-screens-spec.md` only for detailed screen-state work
 
 Files under `discovery/` are historical inputs. Use them for comparison or
 audit work, then prefer the current docs above for decisions.
