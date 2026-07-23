@@ -10,6 +10,7 @@ related:
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-mvp-visual-system.md
   - docs/frontend/sandicts-expired-session-experience.md
+  - docs/frontend/sandicts-google-one-tap-experience.md
   - docs/frontend/sandicts-localization.md
   - docs/frontend/sandicts-local-ui-state.md
   - docs/frontend/sandicts-page-functional-spec.md
@@ -605,6 +606,15 @@ Route and rendering boundaries:
   behavior live in `docs/frontend/sandicts-expired-session-experience.md`, while
   the general post-login destination priority remains in the page functional
   specification
+- route access and Google One Tap eligibility must be resolved through
+  `src/lib/routes/route-access-policy.ts`; page components, provider callbacks,
+  and layouts must not duplicate pathname checks
+- public access, One Tap eligibility, and search indexing remain independent
+  decisions; no one flag or route prefix may imply the other two
+- an unclassified route is One Tap ineligible and must be classified before a
+  route boundary or auth promotion consumes it
+- exact Google One Tap placement, suppression, fallback, platform, and privacy
+  behavior live in `docs/frontend/sandicts-google-one-tap-experience.md`
 
 Cache invalidation:
 

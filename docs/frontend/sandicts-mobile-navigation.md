@@ -10,6 +10,7 @@ related:
   - docs/frontend/sandicts-frontend-planning.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-mvp-visual-system.md
+  - docs/frontend/sandicts-google-one-tap-experience.md
   - docs/frontend/prototypes/app-shells/README.md
   - docs/frontend/sandicts-page-functional-spec.md
   - docs/frontend/sandicts-local-ui-state.md
@@ -304,6 +305,13 @@ reservation detail selects `Reservas`, and an open-match creation route selects
 | Access removed during a session | Remove unavailable links after session refresh and render forbidden state for the current route |
 | Suspended operational context | Keep an authorized context identifiable, show its status, and route to the documented recovery or blocked state |
 | Admin permission absent | Hide Admin App entry; direct access still returns forbidden |
+
+Google One Tap is a public auth enhancement, not a navigation destination. It
+may attempt only on the first eligible `/`, `/discovery`, or `/sign-in` route in
+a browser tab. Desktop Chromium/Edge and Android Chromium top-level browsers use
+One Tap; iOS, Safari/ITP, Firefox, and embedded webviews use the explicit
+fallback defined in
+`docs/frontend/sandicts-google-one-tap-experience.md`.
 
 Do not silently redirect a forbidden operational route to a different entity.
 The user must understand that access failed and have an explicit next path.

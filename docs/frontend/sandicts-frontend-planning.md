@@ -7,6 +7,7 @@ canonical: docs/frontend/sandicts-frontend-planning.md
 related:
   - docs/frontend/sandicts-frontend-context.md
   - docs/frontend/sandicts-frontend-tech-decisions.md
+  - docs/frontend/sandicts-google-one-tap-experience.md
   - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-page-functional-spec.md
@@ -395,11 +396,22 @@ Route direction:
 Needed decisions:
 
 - Google button placement
-- Google One Tap behavior
 - sign-out behavior
 - expired session behavior
 - refresh failure behavior
 - exact public discovery depth before sign-in
+
+Selected Google One Tap behavior:
+
+- `/`, `/discovery`, and `/sign-in` are the only MVP-eligible routes
+- attempt only on the first eligible route visited in a browser tab
+- protected layouts never mount One Tap
+- explicit Google Sign-In remains available on `/sign-in`
+- skipped, cancelled, or failed credential exchange suppresses automatic One
+  Tap for 24 hours
+- route access and One Tap eligibility use the central route policy
+- detailed behavior lives in
+  `docs/frontend/sandicts-google-one-tap-experience.md`
 
 ### Forms
 

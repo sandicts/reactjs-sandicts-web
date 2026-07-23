@@ -7,6 +7,7 @@ canonical: docs/frontend/sandicts-mvp-delivery-roadmap.md
 related:
   - docs/frontend/sandicts-frontend-tech-decisions.md
   - docs/frontend/sandicts-frontend-planning.md
+  - docs/frontend/sandicts-google-one-tap-experience.md
   - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-page-functional-spec.md
   - docs/frontend/sandicts-mvp-screens-spec.md
@@ -262,6 +263,20 @@ Selected auth session hydration flow:
   exists and stores only the public `{ account, session }` projection
 - protected-route behavior is implemented by client auth boundaries or layouts,
   not by Next.js middleware as the MVP source of auth truth
+
+Selected Google One Tap placement and fallback:
+
+- `/`, `/discovery`, and `/sign-in` are eligible, with one attempt on the first
+  eligible route visited per browser tab
+- public detail pages remain ineligible until explicitly added to the central
+  route policy
+- protected layouts never initialize One Tap
+- desktop Chromium/Edge and Android Chromium use One Tap; iOS, Safari/ITP,
+  Firefox, and webviews use the explicit fallback
+- skipped, cancelled, and failed credential exchanges suppress automatic
+  prompting for 24 hours while `/sign-in` keeps the explicit Google button
+- the implementation contract lives in
+  `docs/frontend/sandicts-google-one-tap-experience.md`
 
 Prototype tasks:
 

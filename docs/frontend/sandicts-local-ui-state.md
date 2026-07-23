@@ -7,6 +7,7 @@ canonical: docs/frontend/sandicts-local-ui-state.md
 related:
   - docs/frontend/sandicts-frontend-tech-decisions.md
   - docs/frontend/sandicts-frontend-planning.md
+  - docs/frontend/sandicts-google-one-tap-experience.md
   - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-mvp-visual-system.md
 scope: frontend, architecture, react, state, zustand, nextjs
@@ -227,6 +228,20 @@ When persistence is approved:
 
 Never persist authentication data, API resources, personal data, payment data,
 or transient overlay state through Zustand.
+
+### Google One Tap Exception
+
+The approved One Tap behavior requires two narrow browser-storage records:
+
+- a versioned `sessionStorage` attempt marker for the current tab
+- a versioned `localStorage` suppression record containing only a reason
+  category and expiry timestamp for 24 hours
+
+These records are provider-prompt preferences, not authentication state, and do
+not use Zustand. They must never contain a credential, token, account data,
+route, query, `returnTo`, intended action, raw provider notification, or backend
+error. Their schema, keys, reset behavior, and invalid-data handling live in
+`docs/frontend/sandicts-google-one-tap-experience.md`.
 
 ## Testing Requirements
 

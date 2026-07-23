@@ -8,6 +8,7 @@ related:
   - docs/frontend/sandicts-frontend-context.md
   - docs/frontend/sandicts-frontend-tech-decisions.md
   - docs/frontend/sandicts-expired-session-experience.md
+  - docs/frontend/sandicts-google-one-tap-experience.md
   - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-frontend-planning.md
@@ -589,6 +590,16 @@ States:
 Rules:
 
 - Auth should preserve the user's intended action when possible.
+- Google One Tap is eligible only on `/`, `/discovery`, and `/sign-in`, and may
+  attempt only on the first eligible route visited in a browser tab.
+- Public detail pages do not inherit One Tap eligibility from public access.
+- Protected layouts never mount provider prompts; they reach `/sign-in` through
+  the approved unauthenticated or expired-session flow first.
+- The explicit Google Sign-In button remains available on `/sign-in` when One
+  Tap is skipped, cancelled, suppressed, unavailable, or fails.
+- Exact route policy, 24-hour suppression, platform, fallback, storage, and
+  privacy behavior live in
+  `docs/frontend/sandicts-google-one-tap-experience.md`.
 - A rejected initial bootstrap without a previously established in-memory
   session is unauthenticated, not expired.
 - A confirmed expired session redirects to sign-in with a validated internal
@@ -2114,6 +2125,12 @@ Public:
 - `/organizations/:organizationSlug`
 - `/academies/:academySlug`
 - `/players/:playerSlug`
+
+This product route inventory includes planned surfaces. Current runtime access
+and Google One Tap eligibility are classified separately in
+`src/lib/routes/route-access-policy.ts`. A new public detail page must receive
+an explicit route policy; public status does not make it One Tap eligible or
+indexable.
 
 Player:
 
