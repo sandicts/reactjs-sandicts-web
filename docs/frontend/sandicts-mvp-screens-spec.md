@@ -9,6 +9,7 @@ related:
   - sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
   - docs/frontend/sandicts-frontend-context.md
   - docs/frontend/sandicts-frontend-planning.md
+  - docs/frontend/sandicts-google-one-tap-experience.md
 scope: frontend, figma, ux, mvp, screens, flows
 read-when:
   - desenhar telas do MVP no Figma
@@ -221,6 +222,13 @@ Regras:
 - nao mostrar formulario de senha como caminho padrao do MVP
 - nao pedir escopos de Google Calendar
 - nao expor detalhes tecnicos do provider
+- manter o botao Google explicito disponivel em `/sign-in`
+- permitir One Tap somente em `/`, `/discovery` e `/sign-in`, na primeira rota
+  elegivel visitada por aba
+- nao montar One Tap dentro de layouts protegidos
+- usar o fallback explicito em iOS, Safari/ITP, Firefox e webviews
+- seguir supressao, persistencia, privacidade e restricoes de navegador de
+  `docs/frontend/sandicts-google-one-tap-experience.md`
 
 Dependencias de backend:
 

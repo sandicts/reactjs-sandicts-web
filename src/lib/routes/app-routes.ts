@@ -5,6 +5,7 @@ const APP_ROUTES = {
     signIn: "/sign-in",
   },
   player: {
+    legacyHome: "/player",
     home: "/app",
     courts: "/app/courts",
     reservations: "/app/reservations",
