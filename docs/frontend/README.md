@@ -26,14 +26,16 @@ Read them in this order for most frontend work:
 10. `sandicts-mobile-navigation.md` when deciding app-shell navigation or the
    context switcher
 11. `prototypes/app-shells/README.md` when implementing or reviewing the first
-   public, Player, or Organization shell direction
+    public, Player, or Organization shell direction
 12. `prototypes/global-states/README.md` when implementing or reviewing
-   loading, empty, error, unauthenticated, forbidden, or not-found UI
-13. `sandicts-frontend-planning.md`
-14. `sandicts-mvp-delivery-roadmap.md`
-15. `sandicts-page-functional-spec.md` when page behavior, routes, permissions,
-   or user flows matter
-16. `sandicts-mvp-screens-spec.md` only for detailed screen-state work
+    loading, empty, error, unauthenticated, forbidden, or not-found UI
+13. `prototypes/player-profile-selectors/README.md` when implementing or
+    reviewing the Player profile main-sport and level selectors
+14. `sandicts-frontend-planning.md`
+15. `sandicts-mvp-delivery-roadmap.md`
+16. `sandicts-page-functional-spec.md` when page behavior, routes, permissions,
+    or user flows matter
+17. `sandicts-mvp-screens-spec.md` only for detailed screen-state work
 
 Files under `discovery/` are historical inputs. Use them for comparison or
 audit work, then prefer the current docs above for decisions.

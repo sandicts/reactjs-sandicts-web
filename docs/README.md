@@ -12,6 +12,7 @@ This repository is the canonical home for Sandicts frontend documentation.
 - `docs/frontend/sandicts-local-ui-state.md`: state ownership and Zustand boundaries
 - `docs/frontend/sandicts-mobile-navigation.md`: responsive navigation and context-switcher decisions
 - `docs/frontend/sandicts-mvp-visual-system.md`: MVP tokens, components, states, and accessibility direction
+- `docs/frontend/prototypes/player-profile-selectors/README.md`: approved Player profile sport and level selector behavior, states, copy, and target contract
 - `docs/frontend/sandicts-frontend-planning.md`: frontend start criteria and fullstack delivery model
 - `docs/frontend/sandicts-mvp-delivery-roadmap.md`: frontend and fullstack MVP delivery roadmap
 - `docs/frontend/sandicts-page-functional-spec.md`: page inventory, routes, permissions, and flow behavior
