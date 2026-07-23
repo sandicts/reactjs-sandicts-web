@@ -6,6 +6,7 @@ priority: high
 canonical: docs/frontend/sandicts-google-one-tap-experience.md
 related:
   - docs/frontend/sandicts-expired-session-experience.md
+  - docs/frontend/sandicts-post-login-routing.md
   - docs/frontend/sandicts-frontend-tech-decisions.md
   - docs/frontend/sandicts-local-ui-state.md
   - docs/frontend/sandicts-mobile-navigation.md
@@ -186,7 +187,8 @@ They keep the KAN-81 contract unchanged:
 
 After navigation reaches `/sign-in`, that public route evaluates One Tap using
 the normal once-per-tab and suppression rules. Authentication success delegates
-to the post-login routing decision; One Tap does not choose a destination.
+to `docs/frontend/sandicts-post-login-routing.md`; One Tap does not choose a
+destination.
 
 ## Platform Policy
 

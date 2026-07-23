@@ -7,6 +7,7 @@ This repository is the canonical home for Sandicts frontend documentation.
 - `docs/frontend/sandicts-frontend-context.md`: product feel, UX direction, and frontend positioning
 - `docs/frontend/sandicts-frontend-tech-decisions.md`: frontend stack and architecture decisions
 - `docs/frontend/sandicts-expired-session-experience.md`: expired-session, return route, form draft, and forbidden UX decisions
+- `docs/frontend/sandicts-post-login-routing.md`: provider-independent post-login routing, safe return route, context fallback, and Player profile-completion decisions
 - `docs/frontend/sandicts-google-one-tap-experience.md`: One Tap route placement, suppression, fallback, browser, and privacy decisions
 - `docs/frontend/sandicts-local-ui-state.md`: state ownership and Zustand boundaries
 - `docs/frontend/sandicts-mobile-navigation.md`: responsive navigation and context-switcher decisions

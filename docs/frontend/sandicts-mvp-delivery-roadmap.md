@@ -7,6 +7,8 @@ canonical: docs/frontend/sandicts-mvp-delivery-roadmap.md
 related:
   - docs/frontend/sandicts-frontend-tech-decisions.md
   - docs/frontend/sandicts-frontend-planning.md
+  - docs/frontend/sandicts-expired-session-experience.md
+  - docs/frontend/sandicts-post-login-routing.md
   - docs/frontend/sandicts-google-one-tap-experience.md
   - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-page-functional-spec.md
@@ -263,6 +265,22 @@ Selected auth session hydration flow:
   exists and stores only the public `{ account, session }` projection
 - protected-route behavior is implemented by client auth boundaries or layouts,
   not by Next.js middleware as the MVP source of auth truth
+
+Selected post-login routing:
+
+- explicit Google Sign-In, Google One Tap, future magic-link consumption, and
+  reauthentication use one provider-independent resolver
+- a safe authorized `returnTo` wins; otherwise use the last active usable
+  context, the only usable context, the context picker, or the no-context state
+- Player `missing` or `incomplete` completion routes to `/app/onboarding`;
+  Organization, Academy, and Admin App destinations do not require Player
+  onboarding
+- passive refresh stays on regular public routes, verifies the same protected
+  route, and runs the resolver on `/sign-in`
+- invalid `returnTo` is discarded; a safe internal but unauthorized target
+  uses authorized fallback with neutral, non-disclosing feedback
+- the implementation contract lives in
+  `docs/frontend/sandicts-post-login-routing.md`
 
 Selected Google One Tap placement and fallback:
 
@@ -624,6 +642,12 @@ Resolved foundation decisions:
 - auth session hydration flow: browser bootstrap uses `POST /auth/refresh`,
   current session reads use `GET /auth/me`, access tokens stay in memory, and
   refresh tokens stay backend-owned in `HttpOnly` cookies
+- expired session experience: confirmed expiry uses sign-in with a validated
+  internal return route, while temporary verification failures remain
+  recoverable and do not claim expiry
+- post-login routing: authorized `returnTo`, last active usable context, only
+  usable context, picker, and no-context state in that order, with Player-only
+  profile completion gating
 - KAN-65 navigation model: single login, one user identity, multiple contexts,
   context switcher, first-class Player/Organization/Academy/Admin App areas,
   and slug-based routes from the start
@@ -647,7 +671,6 @@ UX and app shell:
 Auth:
 
 - CORS and credentialed browser behavior with backend
-- expired session UX
 - sign-out behavior
 
 Product and page decisions:

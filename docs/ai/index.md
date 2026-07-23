@@ -52,6 +52,9 @@ repository.
 | --- | --- |
 | `docs/frontend/sandicts-frontend-context.md` | Product feel, UX direction, and frontend positioning |
 | `docs/frontend/sandicts-frontend-tech-decisions.md` | Frontend stack and architecture decisions |
+| `docs/frontend/sandicts-expired-session-experience.md` | Expired-session classification, safe return route, draft, and forbidden behavior |
+| `docs/frontend/sandicts-post-login-routing.md` | Provider-independent routing after authentication, context fallback, and Player profile completion |
+| `docs/frontend/sandicts-google-one-tap-experience.md` | Google One Tap placement, suppression, fallback, browser, and privacy behavior |
 | `docs/frontend/sandicts-local-ui-state.md` | State ownership, Zustand entry criteria, lifecycle, and review rules |
 | `docs/frontend/sandicts-mobile-navigation.md` | Responsive navigation, context switching, route selection, and accessibility |
 | `docs/frontend/sandicts-mvp-visual-system.md` | MVP token, component, state, icon, and accessibility direction |
@@ -97,6 +100,15 @@ For app-shell navigation or context-switcher work, read:
 1. `docs/frontend/sandicts-frontend-context.md`
 2. `docs/frontend/sandicts-mobile-navigation.md`
 3. `docs/frontend/sandicts-page-functional-spec.md` when route details matter
+
+For authentication routing or session-lifecycle work, read:
+
+1. `docs/frontend/sandicts-frontend-tech-decisions.md`
+2. `docs/frontend/sandicts-expired-session-experience.md`
+3. `docs/frontend/sandicts-post-login-routing.md`
+4. `docs/frontend/sandicts-google-one-tap-experience.md` when Google One Tap is
+   in scope
+5. `docs/frontend/sandicts-page-functional-spec.md` when page details matter
 
 For visual tokens, shared UI components, or common UI states, read:
 

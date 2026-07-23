@@ -7,6 +7,8 @@ canonical: docs/frontend/sandicts-frontend-planning.md
 related:
   - docs/frontend/sandicts-frontend-context.md
   - docs/frontend/sandicts-frontend-tech-decisions.md
+  - docs/frontend/sandicts-expired-session-experience.md
+  - docs/frontend/sandicts-post-login-routing.md
   - docs/frontend/sandicts-google-one-tap-experience.md
   - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
@@ -169,7 +171,7 @@ Open stack details:
 
 - implement the documented API/OpenAPI integration architecture in `KAN-73`
 - CORS and credentialed browser behavior for the first integrated auth flow
-- expired session UX, sign-out behavior, and post-login routing
+- sign-out behavior
 - deployment target
 
 For the full technical decision record, read
@@ -351,10 +353,16 @@ Current direction from `sandicts-frontend-context.md`:
 Resolved direction:
 
 - use one login and route users by active context after authentication
-- restore `returnTo` when the user is authorized for the attempted route
-- restore the last active context when there is no `returnTo`
-- if the user has only one context, enter that context directly
-- if the user has multiple contexts, show the context switcher/picker
+- restore a structurally safe `returnTo` only when the user is currently
+  authorized for it
+- without an authorized `returnTo`, restore the last active context only while
+  it remains usable
+- otherwise enter the only usable context, show the context picker for
+  multiple contexts, or render the no-context state
+- gate `missing` and `incomplete` profiles only when the selected destination
+  belongs to Player
+- keep passive refresh on a regular public route navigation-neutral, verify the
+  same protected route, and run post-login routing on `/sign-in`
 - use slug routes for public and operational entity pages from the beginning
 - keep player, organization, academy, and Admin App as separate app areas with
   shared auth/session foundations
@@ -397,9 +405,29 @@ Needed decisions:
 
 - Google button placement
 - sign-out behavior
-- expired session behavior
-- refresh failure behavior
 - exact public discovery depth before sign-in
+
+Selected expired-session behavior:
+
+- confirmed expiry replaces the protected route with `/sign-in`, preserving
+  only a structurally safe internal `returnTo`
+- temporary refresh verification failures keep private content hidden and
+  provide retry without claiming that the session expired
+- exact behavior lives in
+  `docs/frontend/sandicts-expired-session-experience.md`
+
+Selected post-login behavior:
+
+- explicit Google, One Tap, future magic-link consumption, and
+  reauthentication use one provider-independent resolver
+- use an authorized `returnTo`, then last active usable context, then the only
+  usable context, then the context picker, then the no-context state
+- Player `missing` or `incomplete` completion routes to `/app/onboarding`;
+  operational contexts do not require Player onboarding
+- invalid `returnTo` is discarded; safe internal but unauthorized `returnTo`
+  uses authorized fallback with neutral, non-disclosing feedback
+- exact behavior lives in
+  `docs/frontend/sandicts-post-login-routing.md`
 
 Selected Google One Tap behavior:
 
@@ -812,9 +840,11 @@ Still open:
 
 - [ ] Decide CORS and credentialed browser behavior for local, preview, and
   production environments.
-- [ ] Decide expired session behavior.
+- [x] Decide expired session behavior. See
+  `docs/frontend/sandicts-expired-session-experience.md`.
 - [ ] Decide sign-out behavior.
-- [ ] Decide post-login routing details.
+- [x] Decide post-login routing details. See
+  `docs/frontend/sandicts-post-login-routing.md`.
 - [ ] Decide mobile-first breakpoints.
 - [ ] Decide exact public discovery depth before sign-in.
 - [ ] Decide exact public-facing labels for Organization and Academy in
