@@ -10,10 +10,11 @@ import type {
   CardTitleProps,
 } from "./card.types";
 
-function Card({ className, ...props }: CardProps) {
+function Card({ className, size = "default", ...props }: CardProps) {
   return (
     <div
       data-slot="card"
+      data-size={size}
       className={cn(cardStyles.root, className)}
       {...props}
     />

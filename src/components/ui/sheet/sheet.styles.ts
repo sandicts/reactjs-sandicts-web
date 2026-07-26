@@ -27,26 +27,28 @@ const sheetContentSideClasses: Record<SheetSide, string> = {
 
 const sheetStyles = {
   overlay: cn(
-    "fixed inset-0 z-50 bg-black/70 backdrop-blur-xs",
+    "fixed inset-0 z-50 bg-black/20 duration-100",
+    "supports-backdrop-filter:backdrop-blur-xs",
     "data-[state=closed]:animate-out data-[state=open]:animate-in",
     "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
   ),
   content: cn(
-    "fixed z-50 flex flex-col gap-4 border-border bg-background",
-    "shadow-2xl transition ease-in-out",
+    "fixed z-50 flex flex-col gap-4 border-border bg-popover",
+    "bg-clip-padding text-sm text-popover-foreground shadow-lg",
+    "transition ease-in-out",
     "data-[state=closed]:duration-200 data-[state=open]:duration-300",
   ),
   closeButton: cn(
     "absolute top-4 right-4 inline-flex size-11 items-center justify-center",
-    "rounded-md text-muted-foreground transition",
-    "hover:bg-accent hover:text-foreground",
+    "rounded-lg text-muted-foreground transition",
+    "hover:bg-muted hover:text-foreground",
     "focus-visible:ring-[3px] focus-visible:ring-ring/50",
     "focus-visible:outline-none disabled:pointer-events-none",
   ),
   closeIcon: "size-5",
-  header: "flex flex-col gap-1.5 p-5 pr-16",
-  footer: "mt-auto flex flex-col gap-2 border-t p-5",
-  title: "text-lg font-semibold text-foreground",
+  header: "flex flex-col gap-0.5 p-4 pr-16",
+  footer: "mt-auto flex flex-col gap-2 border-t p-4",
+  title: "font-heading text-base font-medium text-foreground",
   description: "text-sm leading-6 text-muted-foreground",
 } as const;
 

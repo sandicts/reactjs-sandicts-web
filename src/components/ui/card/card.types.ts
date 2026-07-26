@@ -1,6 +1,9 @@
 import type { ComponentProps } from "react";
 
-type CardProps = ComponentProps<"div">;
+type CardProps = ComponentProps<"div"> &
+  Readonly<{
+    size?: "default" | "sm";
+  }>;
 type CardHeaderProps = ComponentProps<"div">;
 type CardTitleProps = ComponentProps<"div">;
 type CardDescriptionProps = ComponentProps<"div">;
