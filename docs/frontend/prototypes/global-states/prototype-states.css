@@ -6,7 +6,11 @@
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) * 1.4);
   background:
-    linear-gradient(135deg, rgb(52 211 153 / 0.04), transparent 38%),
+    linear-gradient(
+      135deg,
+      color-mix(in oklch, var(--primary) 4%, transparent),
+      transparent 38%
+    ),
     var(--card);
 }
 
@@ -257,7 +261,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgb(248 250 245 / 0.08),
+    color-mix(in oklch, var(--foreground) 8%, transparent),
     transparent
   );
   content: "";

@@ -10,7 +10,11 @@
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) * 1.6);
   background:
-    radial-gradient(circle at 15% 30%, rgb(245 158 11 / 0.06), transparent 25rem),
+    radial-gradient(
+      circle at 15% 30%,
+      color-mix(in oklch, var(--primary) 6%, transparent),
+      transparent 25rem
+    ),
     var(--background);
   box-shadow: var(--shadow);
 }
@@ -22,7 +26,8 @@
   gap: 0.75rem;
   padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--border);
-  background: rgb(7 18 17 / 0.94);
+  background: color-mix(in oklch, var(--background) 94%, transparent);
+  backdrop-filter: blur(1.5rem) saturate(1.5);
 }
 
 .brand-link {

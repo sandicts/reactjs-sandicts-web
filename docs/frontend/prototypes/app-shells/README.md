@@ -58,6 +58,12 @@ Use the prototype toolbar to change:
 Resize the viewport to exercise the compact, medium, and expanded navigation
 presentations.
 
+The prototype imports `../shared/sandicts-visual-tokens.css`, generated from
+the runtime token block in `src/app/globals.css`. Change runtime tokens first,
+then run `npm run visual-system:sync`; validation uses
+`npm run visual-system:check` to prevent drift. Google Fonts fall back safely
+when the prototype is opened offline.
+
 ## Status And Authority
 
 | Artifact | Status | Authority |
@@ -315,7 +321,7 @@ The production app-shell task must:
 - render compact, medium, and expanded navigation from the same semantic
   destination definitions
 - use Next.js links without breaking native browser behavior
-- use the existing semantic visual tokens and lucide-react icons
+- use the canonical semantic visual tokens and Phosphor icons
 - keep context switching separate from primary navigation
 - preserve public, Player, Organization, Academy, and Admin App boundaries
 - add focused component tests and Playwright coverage

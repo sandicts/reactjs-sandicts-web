@@ -24,7 +24,8 @@
   min-height: 4.5rem;
   padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--border);
-  background: rgb(7 18 17 / 0.96);
+  background: color-mix(in oklch, var(--background) 96%, transparent);
+  backdrop-filter: blur(1.5rem) saturate(1.5);
 }
 
 .public-header {
@@ -59,7 +60,7 @@
   display: none;
   min-width: 0;
   border-right: 1px solid var(--border);
-  background: rgb(13 27 25 / 0.62);
+  background: color-mix(in oklch, var(--sidebar) 62%, transparent);
 }
 
 .shell-sidebar__brand {
@@ -191,7 +192,8 @@
     calc(0.5rem + env(safe-area-inset-bottom))
     max(0.5rem, env(safe-area-inset-left));
   border-top: 1px solid var(--border);
-  background: rgb(7 18 17 / 0.98);
+  background: color-mix(in oklch, var(--sidebar) 78%, transparent);
+  backdrop-filter: blur(1.5rem) saturate(1.5);
 }
 
 .bottom-navigation .navigation-link {
@@ -209,7 +211,7 @@
 }
 
 .bottom-navigation .navigation-link[aria-current="page"] {
-  background: rgb(245 158 11 / 0.12);
+  background: color-mix(in oklch, var(--primary) 12%, transparent);
   color: var(--primary);
 }
 
@@ -255,7 +257,7 @@
 }
 
 .navigation-link[aria-current="page"] {
-  background: rgb(245 158 11 / 0.12);
+  background: color-mix(in oklch, var(--primary) 12%, transparent);
   color: var(--primary);
 }
 

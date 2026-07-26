@@ -112,7 +112,7 @@ Those ideas require their own contracts and delivery tasks.
 | DL-16 | Treat a structural meaning change as a new scale with an explicit migration map. | Editing copy cannot silently redefine a Player's recorded level. |
 | DL-17 | Keep fixed interface copy in `next-intl`; return catalog content from the API in pt-BR. | UI localization and managed domain content have separate ownership. |
 | DL-18 | Keep `SportSelector` and `LevelSelector` feature-local initially. | Reuse onboarding and profile editing without creating a premature global abstraction. |
-| DL-19 | Use shadcn/ui primitives, Tailwind semantic tokens, and lucide-react icons. | The feature stays within the existing frontend system. |
+| DL-19 | Use shadcn/ui primitives, Tailwind semantic tokens, and Phosphor icons. | The feature stays within the existing frontend system. |
 | DL-20 | Validate on submit, focus the first invalid field, and revalidate while correcting. | Errors are discoverable without aggressive validation before interaction. |
 | DL-21 | Use mobile-first one-column layouts, expanding to three sport columns and two level columns at `48rem`. | The choices remain readable and touch-friendly without horizontal page scrolling. |
 | DL-22 | Record post-MVP progression separately. | Skill budgets, fundamentals, and archetypes do not expand the selector MVP. |
@@ -351,7 +351,7 @@ feature convention. The ownership rule is more important than the sample tree:
 - `LevelSelector` owns resolved-scale presentation and single level selection.
 - KAN-94 owns the form, onboarding step, submit action, and navigation.
 - Existing shared `LoadingRegion`, `PendingButton`, state composition, shadcn/ui
-  primitives, Tailwind tokens, and lucide-react icons should be reused.
+  primitives, Tailwind tokens, and Phosphor icons should be reused.
 - A generic card/radio primitive may live under `components/ui` when it contains
   no Player-profile business rules.
 - Promote selectors to a broader shared feature boundary only after another
