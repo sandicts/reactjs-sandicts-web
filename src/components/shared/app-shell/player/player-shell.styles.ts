@@ -6,8 +6,11 @@ const playerShellStyles = {
     "md:grid-cols-[5rem_minmax(0,1fr)]",
     "lg:grid-cols-[17rem_minmax(0,1fr)]",
   ),
-  sidebar:
-    "sticky top-0 hidden h-screen border-r border-border bg-card/40 md:flex md:flex-col",
+  sidebar: cn(
+    "sticky top-0 hidden h-screen border-r border-sidebar-border",
+    "bg-sidebar/80 text-sidebar-foreground",
+    "supports-backdrop-filter:backdrop-blur-2xl md:flex md:flex-col",
+  ),
   sidebarBrand: cn(
     "flex min-h-20 items-center justify-center border-b border-border px-3",
     "lg:justify-start lg:px-6",

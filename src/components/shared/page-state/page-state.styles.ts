@@ -2,10 +2,11 @@ import type { PageStateTone } from "./page-state.types";
 
 const pageStateToneClasses: Record<PageStateTone, string> = {
   neutral: "border-border bg-card text-muted-foreground",
-  info: "border-info/30 bg-info/10 text-info",
-  success: "border-success/30 bg-success/10 text-success",
-  warning: "border-warning/30 bg-warning/10 text-warning",
-  destructive: "border-destructive/30 bg-destructive/10 text-destructive",
+  info: "border-info-border bg-info-subtle text-info",
+  success: "border-success-border bg-success-subtle text-success",
+  warning: "border-warning-border bg-warning-subtle text-warning",
+  destructive:
+    "border-destructive-border bg-destructive-subtle text-destructive",
 };
 
 const pageStateStyles = {
