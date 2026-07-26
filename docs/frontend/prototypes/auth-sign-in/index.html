@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Protótipo dos estados de entrada, Google Sign-In e sessão expirada do Sandicts."
+    />
+    <title>Sandicts — Protótipo de entrada e sessão</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./prototype-toolbar.css" />
+    <link rel="stylesheet" href="./prototype-shell.css" />
+    <link rel="stylesheet" href="./prototype-auth.css" />
+    <script src="./prototype.catalog.js" defer></script>
+    <script src="./prototype.renderers.js" defer></script>
+    <script src="./prototype.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#auth-main">Pular para o exemplo</a>
+
+    <svg class="icon-sprite" aria-hidden="true">
+      <symbol id="icon-alert-triangle" viewBox="0 0 24 24">
+        <path d="m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3Z" />
+        <path d="M12 9v4M12 17h.01" />
+      </symbol>
+      <symbol id="icon-arrow-left" viewBox="0 0 24 24">
+        <path d="m15 18-6-6 6-6M9 12h12" />
+      </symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24">
+        <path d="m5 12 4 4L19 6" />
+      </symbol>
+      <symbol id="icon-clock" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v5l3 2" />
+      </symbol>
+      <symbol id="icon-compass" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="m16 8-2.5 5.5L8 16l2.5-5.5Z" />
+      </symbol>
+      <symbol id="icon-external-link" viewBox="0 0 24 24">
+        <path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      </symbol>
+      <symbol id="icon-info" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 11v5M12 8h.01" />
+      </symbol>
+      <symbol id="icon-loader" viewBox="0 0 24 24">
+        <path d="M21 12a9 9 0 1 1-6.2-8.6" />
+      </symbol>
+      <symbol id="icon-log-in" viewBox="0 0 24 24">
+        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" />
+      </symbol>
+      <symbol id="icon-refresh" viewBox="0 0 24 24">
+        <path d="M20 12a8 8 0 1 1-2.3-5.7L20 8" />
+        <path d="M20 3v5h-5" />
+      </symbol>
+      <symbol id="icon-route" viewBox="0 0 24 24">
+        <circle cx="6" cy="19" r="2" />
+        <circle cx="18" cy="5" r="2" />
+        <path d="M8 19h5a5 5 0 0 0 5-5V7M16 5h-5a5 5 0 0 0-5 5v7" />
+      </symbol>
+      <symbol id="icon-shield-x" viewBox="0 0 24 24">
+        <path d="M20 13c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V5l8-3 8 3z" />
+        <path d="m9.5 9.5 5 5M14.5 9.5l-5 5" />
+      </symbol>
+      <symbol id="icon-user-round" viewBox="0 0 24 24">
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4 22a8 8 0 0 1 16 0" />
+      </symbol>
+      <symbol id="icon-users" viewBox="0 0 24 24">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8" />
+      </symbol>
+      <symbol id="icon-wifi-off" viewBox="0 0 24 24">
+        <path d="m2 2 20 20M8.5 8.5A10.8 10.8 0 0 1 12 8c3.1 0 5.9 1.3 8 3.4M5 11.5A10.4 10.4 0 0 0 3.8 13M8.5 16.5A5 5 0 0 1 12 15c1 0 1.9.3 2.7.8M12 20h.01" />
+      </symbol>
+    </svg>
+
+    <header class="prototype-toolbar">
+      <div class="prototype-toolbar__intro">
+        <p class="prototype-kicker">KAN-84 · UX prototype</p>
+        <h1>Entrada e sessão do Sandicts</h1>
+        <p>
+          Compare entrada, Google Sign-In, fallback do One Tap, falhas e
+          handoffs pós-login antes da implementação.
+        </p>
+      </div>
+
+      <form class="prototype-controls" id="prototype-controls">
+        <label class="prototype-control">
+          <span>Estado</span>
+          <select id="state-selector" name="state"></select>
+        </label>
+
+        <label class="prototype-checkbox">
+          <input id="long-copy-toggle" name="long" type="checkbox" />
+          <span>Testar cópia longa em português</span>
+        </label>
+      </form>
+
+      <output class="prototype-status" id="prototype-status" for="state-selector">
+        Entrada de login
+      </output>
+    </header>
+
+    <p
+      class="sr-only"
+      id="prototype-announcement"
+      aria-live="polite"
+      aria-atomic="true"
+    ></p>
+
+    <div class="prototype-canvas">
+      <section
+        class="demo-shell"
+        id="demo-shell"
+        aria-label="Exemplo interativo do estado de autenticação selecionado"
+      >
+        <header class="public-header" id="public-header">
+          <a class="brand-link" href="#auth-main" aria-label="Sandicts — início">
+            <img
+              src="../../../../public/sandicts-mark.svg"
+              width="36"
+              height="36"
+              alt=""
+            />
+            <span>Sandicts</span>
+          </a>
+
+          <nav class="public-navigation" aria-label="Navegação pública">
+            <a class="button button--ghost" href="#auth-main">
+              <svg class="icon" aria-hidden="true">
+                <use href="#icon-compass"></use>
+              </svg>
+              <span class="explore-label">Explorar</span>
+              <span class="sr-only explore-label-compact">Explorar quadras</span>
+            </a>
+            <a
+              class="button button--primary button--compact"
+              id="header-sign-in-link"
+              href="#auth-card-title"
+              aria-current="page"
+            >
+              Entrar
+            </a>
+          </nav>
+        </header>
+
+        <main class="auth-main" id="auth-main">
+          <section class="auth-introduction" id="auth-introduction">
+            <p class="auth-eyebrow" id="hero-eyebrow">Acesso Sandicts</p>
+            <h2 id="hero-title">Entre para continuar</h2>
+            <p id="hero-description">
+              Use sua conta Google para acessar seu perfil e os contextos
+              disponíveis.
+            </p>
+
+            <ul
+              class="auth-benefits"
+              id="auth-benefits"
+              aria-label="O que acontece depois do acesso"
+            >
+              <li>
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-check"></use>
+                </svg>
+                <span>Retome um destino autorizado.</span>
+              </li>
+              <li>
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-check"></use>
+                </svg>
+                <span>Acesse Player ou uma operação disponível.</span>
+              </li>
+            </ul>
+          </section>
+
+          <section class="auth-surface" id="auth-surface">
+            <div
+              class="auth-alert"
+              id="auth-alert"
+              data-tone="info"
+              tabindex="-1"
+              hidden
+            >
+              <svg class="icon" id="alert-icon" aria-hidden="true">
+                <use href="#icon-info"></use>
+              </svg>
+              <div>
+                <h3 id="alert-title">Informação de acesso</h3>
+                <p id="alert-description"></p>
+              </div>
+            </div>
+
+            <article class="auth-card" id="auth-card" tabindex="-1">
+              <p class="auth-card__eyebrow" id="auth-card-eyebrow">
+                Acesso seguro
+              </p>
+              <h3 id="auth-card-title">Entre na sua conta</h3>
+              <p class="auth-card__description" id="auth-card-description">
+                Continue com o Google para acessar o Sandicts.
+              </p>
+
+              <div
+                class="provider-region"
+                id="provider-region"
+                aria-live="polite"
+                aria-atomic="true"
+                tabindex="-1"
+              >
+                <div class="provider-skeleton" id="provider-skeleton" hidden>
+                  <span class="sr-only" id="provider-loading-label">
+                    Preparando acesso com Google…
+                  </span>
+                  <span aria-hidden="true"></span>
+                </div>
+
+                <button
+                  class="google-button"
+                  id="google-button"
+                  type="button"
+                  data-demo-action="sign-in"
+                >
+                  <span class="google-mark" aria-hidden="true">G</span>
+                  <span id="google-button-label">Continuar com Google</span>
+                  <svg class="icon google-button__loader" aria-hidden="true" hidden>
+                    <use href="#icon-loader"></use>
+                  </svg>
+                </button>
+              </div>
+
+              <p class="provider-note" id="provider-note">
+                O Google será usado apenas para confirmar sua identidade.
+              </p>
+
+              <div class="auth-actions" id="auth-actions">
+                <button
+                  class="button button--secondary"
+                  id="secondary-action"
+                  type="button"
+                  data-demo-action="back"
+                >
+                  <svg class="icon" aria-hidden="true">
+                    <use href="#icon-arrow-left"></use>
+                  </svg>
+                  <span id="secondary-action-label">Voltar à descoberta</span>
+                </button>
+              </div>
+            </article>
+
+            <section
+              class="boundary-state"
+              id="boundary-state"
+              tabindex="-1"
+              hidden
+            >
+              <div class="boundary-state__icon" id="boundary-icon-container">
+                <svg class="icon" aria-hidden="true">
+                  <use id="boundary-icon-use" href="#icon-info"></use>
+                </svg>
+              </div>
+              <p class="boundary-state__eyebrow" id="boundary-eyebrow">
+                Estado da conta
+              </p>
+              <h3 id="boundary-title">Preparando sua área</h3>
+              <p id="boundary-description"></p>
+              <div class="boundary-state__actions" id="boundary-actions">
+                <button
+                  class="button button--primary"
+                  id="boundary-primary"
+                  type="button"
+                  data-demo-action="home"
+                >
+                  <span id="boundary-primary-label">Voltar ao início</span>
+                </button>
+                <button
+                  class="button button--secondary"
+                  id="boundary-secondary"
+                  type="button"
+                  data-demo-action="back"
+                  hidden
+                >
+                  <span id="boundary-secondary-label">Voltar</span>
+                </button>
+              </div>
+            </section>
+          </section>
+        </main>
+
+        <footer class="demo-footer">
+          <span>Protótipo de UX — nenhuma autenticação real é iniciada.</span>
+          <a href="../../README.md">Documentação frontend</a>
+        </footer>
+      </section>
+    </div>
+  </body>
+</html>

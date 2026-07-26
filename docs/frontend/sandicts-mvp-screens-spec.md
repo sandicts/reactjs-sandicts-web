@@ -197,28 +197,56 @@ Objetivo:
 - permitir entrada com Google Sign-In ou Google One Tap
 - criar ou recuperar a sessao interna do Sandicts
 - evitar friccao de cadastro
+- recuperar uma sessao expirada sem perder um destino interno autorizado
 
 Conteudo principal:
 
 - marca Sandicts
 - chamada curta de entrada
-- botao "Continuar com Google"
-- area onde o Google One Tap pode aparecer
-- mensagem discreta de erro quando login falhar
+- botao oficial do Google representado pelo espaco de integracao do provider
+- aviso contextual persistente quando a sessao expirou ou o login falhou
+- caminho seguro de volta para a descoberta
+
+Direcao de layout:
+
+- usar uma pagina dedicada em `/sign-in` dentro do shell Public
+- usar uma coluna em mobile e composicao de duas colunas no desktop expandido
+- restringir o card de autenticacao a uma largura de leitura e controle
+- nao reproduzir visualmente o prompt do One Tap dentro do layout
+- manter o fallback explicito disponivel independentemente do prompt
 
 Acoes:
 
 - iniciar login com Google
 - aceitar Google One Tap
-- tentar novamente em caso de falha
+- reiniciar o login quando a recuperacao exigir uma nova interacao
+- repetir somente a verificacao de sessao quando essa leitura falhar
+- voltar para uma area publica segura
 
 Estados:
 
+- verificando sessao
 - carregando script do Google
 - botao disponivel
+- One Tap solicitado
+- fallback do One Tap
+- One Tap nao suportado
+- webview nao suportada
 - login em andamento
-- erro generico de autenticacao
+- login cancelado
+- credencial Google invalida
+- provider indisponivel
+- servico de acesso indisponivel
+- conflito de identidade externa
+- limite de tentativas
+- forbidden de autenticacao
+- sessao expirada
+- falha temporaria ao verificar a sessao
 - usuario ja autenticado
+- destino interno nao autorizado
+- handoff para onboarding Player
+- seletor de contexto
+- nenhum contexto disponivel
 
 Regras:
 
@@ -230,6 +258,8 @@ Regras:
   elegivel visitada por aba
 - nao montar One Tap dentro de layouts protegidos
 - usar o fallback explicito em iOS, Safari/ITP, Firefox e webviews
+- tratar skip ou dismiss do One Tap como fallback silencioso, nao como erro
+- mostrar feedback neutro quando o usuario cancelar o login Google explicito
 - seguir supressao, persistencia, privacidade e restricoes de navegador de
   `docs/frontend/sandicts-google-one-tap-experience.md`
 - Google Sign-In, One Tap e o futuro consumo de magic link devem hidratar a
@@ -238,6 +268,12 @@ Regras:
   protegida e executa o resolvedor quando a rota atual e `/sign-in`
 - seguir precedencia, `returnTo`, contextos e gate de perfil de
   `docs/frontend/sandicts-post-login-routing.md`
+- mapear `validation_error`, `invalid_google_credential`,
+  `account_auth_forbidden`, `external_identity_conflict`, `rate_limited`,
+  falhas de rede e `internal_error` para estados semanticamente distintos
+- nunca repetir automaticamente um comando cujo resultado e desconhecido
+- seguir layout, copy, acoes e estados de
+  `docs/frontend/prototypes/auth-sign-in/README.md`
 
 Dependencias de backend:
 
@@ -245,55 +281,67 @@ Dependencias de backend:
 - endpoint de sessao atual
 - politica de CORS/cookies
 
-Notas para Figma:
+Referencia de prototipo:
 
-- criar versao desktop e mobile
-- desenhar erro generico sem mencionar detalhes do Google
-- prever onde One Tap aparece sem quebrar layout
+- `docs/frontend/prototypes/auth-sign-in/index.html`
+- `docs/frontend/prototypes/auth-sign-in/README.md`
 
 ### Tela: Sessao Expirada
 
-Rota sugerida:
+Rota:
 
-- pode ser estado dentro de `/sign-in` ou modal global
+- estado persistente dentro de `/sign-in`
 
 Usuarios:
 
 - usuario autenticado anteriormente
-- usuario cujo refresh falhou
+- usuario cuja sessao estabelecida teve refresh definitivamente rejeitado
 
 Objetivo:
 
-- explicar que a sessao acabou
-- levar usuario de volta ao login
+- explicar que a sessao terminou
+- permitir reautenticacao e retorno somente a um destino autorizado
 
 Conteudo principal:
 
-- mensagem curta de sessao expirada
-- acao para entrar novamente com Google
+- titulo `Sua sessão expirou`
+- descricao
+  `Entre novamente para continuar. Alterações não salvas não foram mantidas.`
+- botao oficial do Google como acao de reautenticacao
+- acao segura `Ir para o início`
 
 Acoes:
 
-- voltar para login
 - iniciar login com Google
+- voltar para o inicio
 
 Estados:
 
 - sessao expirada detectada em rota protegida
-- tentativa de refresh falhou
+- reautenticacao em andamento
+- handoff para o resolvedor pos-login
+
+Regras:
+
+- usar replace navigation para chegar a `/sign-in`
+- aceitar apenas `returnTo` interno, validado e novamente autorizado
+- nao persistir ou restaurar rascunho de formulario no MVP
+- nao usar toast, modal global ou rota dedicada como tratamento principal
+- nao chamar falha de rede, timeout ou `5xx` de sessao expirada
+- seguir `docs/frontend/sandicts-expired-session-experience.md`
 
 Dependencias de backend:
 
 - endpoint de refresh/sessao
-- sign-out/invalida sessao local quando necessario
+- rejeicoes terminais de refresh documentadas
 
-Notas para Figma:
+Referencia de prototipo:
 
-- deve funcionar como tela e como estado modal/toast global
+- `docs/frontend/prototypes/auth-sign-in/index.html?state=session-expired`
 
 ### Tela: Erro De Autenticacao
 
-Rota sugerida:
+Rota:
 
 - estado dentro de `/sign-in`
 
@@ -305,30 +353,49 @@ Usuarios:
 Objetivo:
 
 - mostrar falha de login de forma segura
-- permitir nova tentativa
+- oferecer a recuperacao correta para cada semantica
 
 Conteudo principal:
 
-- mensagem generica
-- botao tentar novamente
+- titulo curto que descreve o resultado
+- uma frase de contexto sem detalhes tecnicos
+- uma acao primaria somente quando a recuperacao e segura
+- uma rota publica de escape quando util
 
 Acoes:
 
-- tentar login novamente
+- abrir uma nova interacao Google
+- repetir o carregamento do provider
+- aguardar antes de nova tentativa quando houver rate limit
+- usar outra conta quando a autenticacao estiver forbidden
+- voltar para uma area publica
 
 Estados:
 
-- token invalido
-- email nao verificado
-- falha temporaria
+- login explicito cancelado
+- `validation_error`
+- `invalid_google_credential`
+- `account_auth_forbidden`
+- `external_identity_conflict`
+- `rate_limited`
+- falha de rede ou timeout
+- `internal_error`
 
 Regras:
 
-- nao expor se a falha veio de assinatura, issuer, audience ou provider
+- nao expor token, assinatura, issuer, audience, payload do provider,
+  vinculacao interna de identidade ou mensagem bruta da API
+- nao tratar `403` como expiracao, retry ou refresh
+- iniciar uma nova interacao em vez de reapresentar automaticamente uma
+  credencial anterior
+- manter erro de Google separado dos futuros estados de magic link
+- seguir `docs/frontend/prototypes/auth-sign-in/README.md`
 
-Notas para Figma:
+Referencia de prototipo:
 
-- mensagem deve ser clara e curta
+- `docs/frontend/prototypes/auth-sign-in/index.html?state=invalid-credential`
+- `docs/frontend/prototypes/auth-sign-in/index.html?state=service-unavailable`
+- `docs/frontend/prototypes/auth-sign-in/index.html?state=auth-forbidden`
 
 ## Telas Do Jogador
 
