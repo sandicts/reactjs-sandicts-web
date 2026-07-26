@@ -570,7 +570,7 @@ Actions:
 
 - sign in with Google
 - use Google One Tap
-- request or consume a magic link when that flow is available
+- request or consume a magic link
 - sign out from an authenticated state
 - refresh or preserve session
 
@@ -606,6 +606,10 @@ States:
 - unauthorized intended destination
 - Player onboarding handoff
 - context picker and no available context
+- magic-link email entry, request pending, sent confirmation, and resend
+- invalid, expired, used, superseded, rate-limited, or temporarily unavailable
+  magic link
+- magic-link verification pending and successful session handoff
 
 Rules:
 
@@ -645,8 +649,17 @@ Rules:
 - Exact responsive composition, copy, action hierarchy, Google fallback,
   loading, failure, forbidden, and post-login handoff states live in
   `docs/frontend/prototypes/auth-sign-in/README.md`.
-- Magic-link-specific email entry, sent, resend, expired, invalid, already-used,
-  and token-consumption states remain outside the KAN-84 prototype boundary.
+- Magic-link-specific email entry, sent confirmation, resend, request recovery,
+  token cleanup, verification, expired, invalid, already-used, superseded, and
+  rate-limited states live in
+  `docs/frontend/prototypes/auth-magic-link/README.md`.
+- The shared sign-in surface keeps Google first, then
+  `ou continue por e-mail`, with both methods visible.
+- Magic-link request success remains generic and never reveals whether an
+  account existed.
+- The `/sign-in/magic-link` callback removes the token from the URL before
+  consume, never mounts One Tap, and uses the common post-login resolver after
+  success.
 
 Implementation ownership:
 
@@ -661,6 +674,8 @@ Implementation ownership:
   `docs/frontend/sandicts-post-login-routing.md`
 - exact sign-in and auth-state visual handoff lives in
   `docs/frontend/prototypes/auth-sign-in/README.md`
+- exact magic-link request, resend, consume, recovery, privacy, and callback
+  behavior lives in `docs/frontend/prototypes/auth-magic-link/README.md`
 
 ## Player Pages
 

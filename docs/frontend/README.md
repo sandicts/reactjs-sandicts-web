@@ -33,13 +33,15 @@ Read them in this order for most frontend work:
     reviewing the Player profile main-sport and level selectors
 14. `prototypes/auth-sign-in/README.md` when implementing or reviewing sign-in,
     Google One Tap fallback, expired-session feedback, or auth failure UI
-15. `prototypes/shared/README.md` when changing runtime visual tokens or adding
+15. `prototypes/auth-magic-link/README.md` when implementing or reviewing
+    magic-link email entry, request, resend, verification, or recovery UI
+16. `prototypes/shared/README.md` when changing runtime visual tokens or adding
     a static prototype
-16. `sandicts-frontend-planning.md`
-17. `sandicts-mvp-delivery-roadmap.md`
-17. `sandicts-page-functional-spec.md` when page behavior, routes, permissions,
+17. `sandicts-frontend-planning.md`
+18. `sandicts-mvp-delivery-roadmap.md`
+19. `sandicts-page-functional-spec.md` when page behavior, routes, permissions,
     or user flows matter
-18. `sandicts-mvp-screens-spec.md` only for detailed screen-state work
+20. `sandicts-mvp-screens-spec.md` only for detailed screen-state work
 
 Files under `discovery/` are historical inputs. Use them for comparison or
 audit work, then prefer the current docs above for decisions.

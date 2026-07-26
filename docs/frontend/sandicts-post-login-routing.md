@@ -5,6 +5,7 @@ role: source-of-truth
 priority: high
 canonical: docs/frontend/sandicts-post-login-routing.md
 related:
+  - docs/frontend/prototypes/auth-magic-link/README.md
   - docs/frontend/sandicts-expired-session-experience.md
   - docs/frontend/sandicts-google-one-tap-experience.md
   - docs/frontend/sandicts-frontend-tech-decisions.md
@@ -309,14 +310,20 @@ Magic-link request does not authenticate and does not run routing.
 
 Successful consumption:
 
-1. consumes the token exactly once through the backend contract
-2. hydrates the same session snapshot as Google
-3. removes the token-bearing route from browser history through replace
-   navigation
-4. invokes the common post-login resolver
+1. extracts the token into transient memory
+2. immediately removes the token-bearing URL from browser history through
+   replace behavior
+3. consumes the token exactly once through the backend contract
+4. hydrates the same session snapshot as Google
+5. keeps the callback route clean for failure recovery
+6. invokes the common post-login resolver
+7. replace-navigates from the clean callback route to the authorized result
 
 The token, consumption URL, and raw provider state are never accepted as
 `returnTo`.
+
+Exact request, resend, consume, failure, recovery, and token-cleanup UX lives in
+`docs/frontend/prototypes/auth-magic-link/README.md`.
 
 ## Routing Matrix
 
@@ -387,7 +394,7 @@ Downstream consumers:
 | KAN-86 | Google Sign-In success must hydrate the common session and invoke the resolver |
 | KAN-88 | Protected routes need passive hydration, safe handoff, Player gating, and direct-forbidden distinction |
 | KAN-90 | The web auth happy-path suite needs the provider-independent routing matrix |
-| KAN-104 | The magic-link prototype needs token cleanup, failure states, and the shared success handoff |
+| KAN-104 | The magic-link prototype defines token cleanup, failure states, and the shared success handoff |
 | KAN-105 | Magic-link consumption success must clean browser history and invoke the resolver |
 | KAN-106 | Magic-link E2E must assert common session creation and post-login routing |
 
@@ -464,6 +471,8 @@ not permit routing from unverified slugs or placeholder shell data.
 - authenticated `/sign-in` runs post-login routing
 - Google button and One Tap share the same resolver
 - magic-link success removes the token URL before routing
+- magic-link failure remains on a clean callback URL
+- refreshing a cleaned callback without an in-memory token requires a new link
 - temporary verification failure does not become a post-login fallback
 - confirmed expiry retains only the safe route behavior from KAN-81
 

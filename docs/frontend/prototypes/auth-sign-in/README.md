@@ -5,6 +5,7 @@ role: source-of-truth
 priority: high
 canonical: docs/frontend/prototypes/auth-sign-in/README.md
 related:
+  - docs/frontend/prototypes/auth-magic-link/README.md
   - docs/frontend/sandicts-expired-session-experience.md
   - docs/frontend/sandicts-post-login-routing.md
   - docs/frontend/sandicts-google-one-tap-experience.md
@@ -159,16 +160,19 @@ recorded so runtime implementation does not reopen them implicitly.
 | Keep the form and add an inline warning | Keeps another-account entry immediately visible; can imply that repeating the same credential will resolve a policy denial | Not selected |
 | Reuse the authenticated resource-forbidden screen | Reduces visual variants; incorrectly retains private shell semantics after unusable authentication | Not selected |
 
-### Future KAN-104 Composition
+### KAN-104 Magic-Link Composition
 
 | Option | Tradeoff | Status |
 | --- | --- | --- |
-| **Recommended: one shared `/sign-in` container with stacked methods and a neutral divider** | Keeps expiry and `returnTo` behavior unified; may produce a taller compact layout | Provisional, pending KAN-104 approval |
+| **Recommended: one shared `/sign-in` container with Google first, a neutral `ou continue por e-mail` divider, and email entry below** | Keeps expiry and `returnTo` behavior unified and every method visible; produces a taller compact layout | Selected by KAN-104 |
 | Tabs for Google and email | Reduces initial height; hides an available method and adds selection, focus, and error-preservation rules | Not selected |
 | Separate `/sign-in/email` route | Isolates the magic-link flow; duplicates shared entry, expiry, analytics, and post-login concerns | Not selected |
 
-KAN-84 does not decide method order or divider copy. Those remain an explicit
-integration decision after KAN-104 has an approved artifact.
+Magic-link-specific request, confirmation, resend, verification, and recovery
+states live in
+[`../auth-magic-link/README.md`](../auth-magic-link/README.md). KAN-84 keeps the
+shared shell, Google presentation, session feedback, and provider-independent
+handoff.
 
 ## Selected Surface
 
@@ -458,34 +462,37 @@ KAN-104 owns:
 - email entry
 - magic-link request confirmation
 - resend behavior and limits
-- expired, invalid, already-used, and rate-limited link states
+- expired, invalid, already-used, superseded, and rate-limited link states
 - token-consumption presentation
+- token cleanup and magic-link-specific recovery copy
 
 Rules that avoid conflicts:
 
-- do not add a magic-link form or placeholder method to this prototype
+- keep the magic-link form and state catalog in the separate KAN-104 artifact
 - do not call an expired magic link an expired session
 - do not reuse invalid-Google-credential copy for invalid or used links
 - keep magic-link resend rate limiting separate from Google sign-in rate
   limiting
 - keep magic-link consumption and callback routes ineligible for One Tap
 - let successful magic-link consumption use the same post-login resolver
-- keep KAN-104 in its own prototype artifact and reference this anatomy
+- use [`../auth-magic-link/README.md`](../auth-magic-link/README.md) as the
+  canonical KAN-104 artifact and reference this anatomy
 
 Potential integration conflicts:
 
 | Area | Conflict risk | Resolution owner |
 | --- | --- | --- |
-| Shared `/sign-in` container | KAN-104 could redefine card width, order, spacing, or compact reflow | Joint visual integration after both artifacts are approved |
-| Method order and divider | Either task could silently make its method primary | Explicit KAN-104 integration decision; KAN-84 leaves both open |
+| Shared `/sign-in` container | KAN-104 could redefine card width, order, spacing, or compact reflow | Reuse this anatomy; keep magic-link additions in the separate artifact |
+| Method order and divider | Either task could silently make its method primary | Google first, then `ou continue por e-mail`, selected by KAN-104 |
 | Expiry language | An expired magic link could be mistaken for an expired authenticated session | KAN-81 copy remains session-only; KAN-104 owns link-expiry copy |
 | Invalid credential | Google credential rejection could be reused for an invalid or consumed link | Provider-specific mapping remains separate before the shared resolver |
 | Rate limiting | Google interaction cooldown could be conflated with resend limits | Each method owns its cooldown and retry eligibility |
 | Callback and One Tap | Magic-link consumption could accidentally mount One Tap | KAN-104 callback routes remain ineligible; KAN-83 owns eligibility |
 | Successful destination | Each method could introduce a competing redirect policy | KAN-82 provider-independent resolver is the single owner |
 
-Method order, divider copy, and the eventual combined surface require an
-explicit integration decision after both prototypes are approved.
+The KAN-104 artifact closes method order, divider copy, email privacy, resend,
+token cleanup, and callback integration decisions without adding its states to
+this catalog.
 
 ## Artifact Organization
 
