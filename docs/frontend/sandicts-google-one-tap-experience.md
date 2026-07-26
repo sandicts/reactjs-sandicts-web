@@ -11,6 +11,7 @@ related:
   - docs/frontend/sandicts-local-ui-state.md
   - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-page-functional-spec.md
+  - docs/frontend/prototypes/auth-sign-in/README.md
   - src/lib/routes/route-access-policy.ts
 scope: frontend, auth, google-one-tap, public-routes, protected-routes, privacy, ux, e2e
 read-when:

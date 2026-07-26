@@ -31,11 +31,13 @@ Read them in this order for most frontend work:
     loading, empty, error, unauthenticated, forbidden, or not-found UI
 13. `prototypes/player-profile-selectors/README.md` when implementing or
     reviewing the Player profile main-sport and level selectors
-14. `sandicts-frontend-planning.md`
-15. `sandicts-mvp-delivery-roadmap.md`
-16. `sandicts-page-functional-spec.md` when page behavior, routes, permissions,
+14. `prototypes/auth-sign-in/README.md` when implementing or reviewing sign-in,
+    Google One Tap fallback, expired-session feedback, or auth failure UI
+15. `sandicts-frontend-planning.md`
+16. `sandicts-mvp-delivery-roadmap.md`
+17. `sandicts-page-functional-spec.md` when page behavior, routes, permissions,
     or user flows matter
-17. `sandicts-mvp-screens-spec.md` only for detailed screen-state work
+18. `sandicts-mvp-screens-spec.md` only for detailed screen-state work
 
 Files under `discovery/` are historical inputs. Use them for comparison or
 audit work, then prefer the current docs above for decisions.

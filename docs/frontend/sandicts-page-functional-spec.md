@@ -593,12 +593,19 @@ Post-auth routing:
 
 States:
 
-- loading
-- authentication error
-- expired session
-- already signed in
-- no available context
-- forbidden attempted context
+- session checking and provider loading
+- explicit Google Sign-In ready and pending
+- Google One Tap prompted, fallback, suppressed, or unsupported
+- cancelled explicit sign-in
+- invalid Google credential
+- provider or Sandicts service unavailable
+- external identity conflict and rate limit
+- expired session and temporary verification failure
+- authentication-level forbidden
+- already signed in and post-login routing
+- unauthorized intended destination
+- Player onboarding handoff
+- context picker and no available context
 
 Rules:
 
@@ -635,6 +642,11 @@ Rules:
 - Auth errors should be understandable without exposing provider internals.
 - The sign-in page is shared by Player, Organization, Academy, and Sandicts
   Admin users.
+- Exact responsive composition, copy, action hierarchy, Google fallback,
+  loading, failure, forbidden, and post-login handoff states live in
+  `docs/frontend/prototypes/auth-sign-in/README.md`.
+- Magic-link-specific email entry, sent, resend, expired, invalid, already-used,
+  and token-consumption states remain outside the KAN-84 prototype boundary.
 
 Implementation ownership:
 
@@ -647,6 +659,8 @@ Implementation ownership:
 - exact trigger classification, destination precedence, context fallback,
   Player completion gate, and unauthorized `returnTo` behavior live in
   `docs/frontend/sandicts-post-login-routing.md`
+- exact sign-in and auth-state visual handoff lives in
+  `docs/frontend/prototypes/auth-sign-in/README.md`
 
 ## Player Pages
 

@@ -9,6 +9,7 @@ related:
   - docs/frontend/sandicts-post-login-routing.md
   - docs/frontend/sandicts-localization.md
   - docs/frontend/sandicts-page-functional-spec.md
+  - docs/frontend/prototypes/auth-sign-in/README.md
   - docs/frontend/prototypes/global-states/README.md
 scope: frontend, auth, session, protected-routes, forms, ux, e2e
 read-when:
