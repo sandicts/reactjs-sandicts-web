@@ -1,22 +1,8 @@
+@import url("../shared/sandicts-visual-tokens.css");
+
 :root {
-  color-scheme: dark;
-  --background: #071211;
-  --foreground: #f8faf5;
-  --card: #0d1b19;
-  --raised: #122823;
-  --border: #21413b;
-  --input: #47776b;
-  --muted: #9ca99f;
-  --primary: #f59e0b;
-  --primary-foreground: #161108;
-  --success: #34d399;
-  --info: #38bdf8;
-  --destructive: #fb7185;
-  --radius: 0.625rem;
   --shadow: 0 1rem 3rem rgb(0 0 0 / 0.24);
-  font-family:
-    Geist, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
+  font-family: var(--font-sans-stack);
   font-synthesis: none;
 }
 
@@ -25,7 +11,7 @@
 }
 
 html {
-  background: #020706;
+  background: var(--background);
 }
 
 body {
@@ -34,6 +20,15 @@ body {
   margin: 0;
   color: var(--foreground);
   background: var(--background);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading-stack);
 }
 
 button,
@@ -116,7 +111,7 @@ button {
   align-items: end;
   padding: 0.75rem 1rem;
   color: var(--foreground);
-  background: #020706;
+  background: var(--background);
   border-bottom: 1px solid var(--border);
 }
 
@@ -126,7 +121,7 @@ button {
 }
 
 .prototype-toolbar span {
-  color: var(--muted);
+  color: var(--muted-foreground);
   font-size: 0.8125rem;
 }
 
@@ -134,7 +129,7 @@ button {
 .agenda-toolbar label {
   display: grid;
   gap: 0.375rem;
-  color: var(--muted);
+  color: var(--muted-foreground);
   font-size: 0.75rem;
   font-weight: 700;
 }
@@ -145,7 +140,7 @@ button {
   min-height: 2.75rem;
   padding: 0.625rem 0.75rem;
   color: var(--foreground);
-  background: var(--raised);
+  background: var(--popover);
   border: 1px solid var(--input);
   border-radius: var(--radius);
 }
@@ -195,7 +190,7 @@ button {
 
 .button--secondary {
   color: var(--foreground);
-  background: var(--raised);
+  background: var(--popover);
   border-color: var(--border);
 }
 
@@ -206,7 +201,7 @@ button {
 }
 
 .button--ghost {
-  color: var(--muted);
+  color: var(--muted-foreground);
   background: transparent;
 }
 
@@ -214,19 +209,19 @@ button {
   width: 2.75rem;
   padding: 0;
   color: var(--foreground);
-  background: var(--raised);
+  background: var(--popover);
   border-color: var(--border);
 }
 
 .context-trigger {
   color: var(--foreground);
-  background: var(--raised);
+  background: var(--popover);
   border-color: var(--border);
 }
 
 .single-context-label {
   display: none;
-  color: var(--muted);
+  color: var(--muted-foreground);
   font-weight: 700;
 }
 
@@ -261,14 +256,14 @@ html[data-context-mode="single"] [data-single-context-label] {
 .public-header__nav a {
   min-height: 2.75rem;
   padding: 0.75rem 1rem;
-  color: var(--muted);
+  color: var(--muted-foreground);
   text-decoration: none;
   border-radius: var(--radius);
 }
 
 .public-header__nav a[aria-current="page"] {
   color: var(--foreground);
-  background: var(--raised);
+  background: var(--popover);
 }
 
 .public-main,
@@ -318,7 +313,7 @@ html[data-context-mode="single"] [data-single-context-label] {
 .venue-card p {
   max-width: 65ch;
   margin: 0.5rem 0 0;
-  color: var(--muted);
+  color: var(--muted-foreground);
   line-height: 1.55;
 }
 
@@ -357,7 +352,7 @@ html[data-context-mode="single"] [data-single-context-label] {
 .chip {
   flex: 0 0 auto;
   color: var(--foreground);
-  background: var(--raised);
+  background: var(--popover);
   border-color: var(--border);
 }
 
@@ -381,7 +376,7 @@ html[data-context-mode="single"] [data-single-context-label] {
 }
 
 .result-count {
-  color: var(--muted);
+  color: var(--muted-foreground);
   white-space: nowrap;
 }
 
@@ -402,7 +397,7 @@ html[data-context-mode="single"] [data-single-context-label] {
   display: grid;
   min-height: 10rem;
   place-items: center;
-  color: rgb(248 250 245 / 0.82);
+  color: color-mix(in oklch, var(--foreground) 82%, transparent);
   font-size: 0.75rem;
   font-weight: 750;
   letter-spacing: 0.04em;
@@ -411,25 +406,33 @@ html[data-context-mode="single"] [data-single-context-label] {
 
 .venue-card__media--sand {
   background:
-    linear-gradient(135deg, rgb(245 158 11 / 0.12), rgb(13 27 25 / 0.7)),
+    linear-gradient(
+      135deg,
+      color-mix(in oklch, var(--warning) 12%, transparent),
+      color-mix(in oklch, var(--card) 70%, transparent)
+    ),
     repeating-linear-gradient(
       115deg,
-      #8a5c23 0,
-      #8a5c23 1px,
-      #382818 1px,
-      #382818 0.75rem
+      var(--warning-border) 0,
+      var(--warning-border) 1px,
+      var(--warning-subtle) 1px,
+      var(--warning-subtle) 0.75rem
     );
 }
 
 .venue-card__media--water {
   background:
-    linear-gradient(135deg, rgb(56 189 248 / 0.16), rgb(13 27 25 / 0.72)),
+    linear-gradient(
+      135deg,
+      color-mix(in oklch, var(--info) 16%, transparent),
+      color-mix(in oklch, var(--card) 72%, transparent)
+    ),
     repeating-linear-gradient(
       60deg,
-      #16495a 0,
-      #16495a 1px,
-      #12302f 1px,
-      #12302f 0.75rem
+      var(--info-border) 0,
+      var(--info-border) 1px,
+      var(--info-subtle) 1px,
+      var(--info-subtle) 0.75rem
     );
 }
 
@@ -493,7 +496,7 @@ html[data-context-mode="single"] [data-single-context-label] {
   min-height: 3.5rem;
   padding: 0.35rem 0.125rem;
   place-items: center;
-  color: var(--muted);
+  color: var(--muted-foreground);
   font-size: clamp(0.625rem, 3vw, 0.75rem);
   line-height: 1.1;
   text-align: center;
@@ -509,7 +512,7 @@ html[data-context-mode="single"] [data-single-context-label] {
 
 .compact-bottom-nav a[aria-current="page"] {
   color: var(--primary);
-  background: rgb(245 158 11 / 0.09);
+  background: color-mix(in oklch, var(--primary) 9%, transparent);
 }
 
 .player-hero,
@@ -534,7 +537,7 @@ html[data-context-mode="single"] [data-single-context-label] {
 }
 
 .player-hero p {
-  color: var(--muted);
+  color: var(--muted-foreground);
 }
 
 .player-hero__actions {
@@ -554,7 +557,7 @@ html[data-context-mode="single"] [data-single-context-label] {
 
 .status--success {
   color: var(--success);
-  background: rgb(52 211 153 / 0.08);
+  background: var(--success-subtle);
 }
 
 .dashboard-grid {
@@ -577,7 +580,7 @@ html[data-context-mode="single"] [data-single-context-label] {
   align-items: center;
   justify-content: space-between;
   padding: 0.875rem;
-  background: var(--raised);
+  background: var(--popover);
   border-radius: var(--radius);
 }
 
@@ -587,7 +590,7 @@ html[data-context-mode="single"] [data-single-context-label] {
 }
 
 .compact-list span {
-  color: var(--muted);
+  color: var(--muted-foreground);
   font-size: 0.8125rem;
 }
 
@@ -611,8 +614,8 @@ html[data-context-mode="single"] [data-single-context-label] {
   margin-bottom: 1rem;
   place-items: center;
   color: var(--primary);
-  background: rgb(245 158 11 / 0.1);
-  border: 1px solid rgb(245 158 11 / 0.5);
+  background: var(--warning-subtle);
+  border: 1px solid var(--warning-border);
   border-radius: 50%;
   font-size: 1.25rem;
   font-weight: 900;
@@ -656,7 +659,7 @@ html[data-context-mode="single"] [data-single-context-label] {
 
 .segmented-control {
   padding: 0.25rem;
-  background: var(--raised);
+  background: var(--popover);
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }
@@ -664,7 +667,7 @@ html[data-context-mode="single"] [data-single-context-label] {
 .segmented-control button {
   min-height: 2.25rem;
   padding: 0.375rem 0.75rem;
-  color: var(--muted);
+  color: var(--muted-foreground);
   background: transparent;
   border: 0;
   border-radius: calc(var(--radius) * 0.75);
@@ -693,7 +696,7 @@ html[data-context-mode="single"] [data-single-context-label] {
 }
 
 .metric-row span {
-  color: var(--muted);
+  color: var(--muted-foreground);
   font-size: 0.75rem;
 }
 
@@ -706,7 +709,7 @@ html[data-context-mode="single"] [data-single-context-label] {
   gap: 0.875rem;
   margin-bottom: 0.75rem;
   overflow-x: auto;
-  color: var(--muted);
+  color: var(--muted-foreground);
   font-size: 0.75rem;
   white-space: nowrap;
 }
@@ -772,8 +775,8 @@ html[data-context-mode="single"] [data-single-context-label] {
   top: 0;
   z-index: 1;
   height: auto;
-  color: var(--muted);
-  background: var(--raised);
+  color: var(--muted-foreground);
+  background: var(--popover);
   font-size: 0.8125rem;
   text-align: left;
 }
@@ -783,7 +786,7 @@ html[data-context-mode="single"] [data-single-context-label] {
 }
 
 .schedule-table tbody th {
-  color: var(--muted);
+  color: var(--muted-foreground);
   font-size: 0.75rem;
   font-weight: 600;
   text-align: left;
@@ -796,7 +799,7 @@ html[data-context-mode="single"] [data-single-context-label] {
   min-height: 4.25rem;
   padding: 0.625rem;
   color: var(--foreground);
-  background: var(--raised);
+  background: var(--popover);
   border: 1px solid currentcolor;
   border-radius: calc(var(--radius) * 0.75);
   text-align: left;
@@ -809,28 +812,28 @@ button.schedule-event {
 .schedule-event span,
 .available-slot,
 .continued-slot {
-  color: var(--muted);
+  color: var(--muted-foreground);
   font-size: 0.7rem;
 }
 
 .schedule-event--confirmed {
   color: var(--success);
-  background: rgb(52 211 153 / 0.08);
+  background: var(--success-subtle);
 }
 
 .schedule-event--pending {
   color: var(--primary);
-  background: rgb(245 158 11 / 0.08);
+  background: var(--warning-subtle);
 }
 
 .schedule-event--blocked {
   color: var(--info);
-  background: rgb(56 189 248 / 0.08);
+  background: var(--info-subtle);
 }
 
 .schedule-event--maintenance {
   color: var(--destructive);
-  background: rgb(251 113 133 / 0.08);
+  background: var(--destructive-subtle);
 }
 
 .available-slot {
@@ -902,7 +905,7 @@ dialog::backdrop {
 
 .context-groups h3 {
   margin: 0;
-  color: var(--muted);
+  color: var(--muted-foreground);
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -917,7 +920,7 @@ dialog::backdrop {
   min-height: 4.5rem;
   padding: 0.75rem;
   color: var(--foreground);
-  background: var(--raised);
+  background: var(--popover);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   text-align: left;
@@ -942,7 +945,7 @@ dialog::backdrop {
 }
 
 .context-option small {
-  color: var(--muted);
+  color: var(--muted-foreground);
 }
 
 .navigation-drawer {
@@ -981,7 +984,7 @@ dialog::backdrop {
 
 .grouped-navigation p {
   margin: 0 0 0.25rem;
-  color: var(--muted);
+  color: var(--muted-foreground);
   font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -994,7 +997,7 @@ dialog::backdrop {
   align-items: center;
   min-height: 2.75rem;
   padding: 0.625rem 0.75rem;
-  color: var(--muted);
+  color: var(--muted-foreground);
   text-decoration: none;
   border-radius: var(--radius);
 }
@@ -1084,7 +1087,7 @@ dialog::backdrop {
     width: 3.25rem;
     height: 3.25rem;
     place-items: center;
-    color: var(--muted);
+    color: var(--muted-foreground);
     text-decoration: none;
     border-radius: var(--radius);
   }
@@ -1147,7 +1150,7 @@ dialog::backdrop {
     align-items: center;
     min-height: 2.75rem;
     padding: 0.625rem 0.75rem;
-    color: var(--muted);
+    color: var(--muted-foreground);
     text-decoration: none;
     border-radius: var(--radius);
   }

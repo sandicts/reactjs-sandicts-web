@@ -222,7 +222,7 @@ Implementation tasks:
 - `[Frontend] Create Next.js App Router project`
 - `[Frontend] Configure TypeScript, lint, format, and path aliases`
 - `[Frontend] Configure Tailwind CSS and shadcn/ui`
-- `[Frontend] Configure lucide-react icon usage`
+- `[Frontend] Configure Phosphor icon usage`
 - `[Frontend] Configure TanStack Query`
 - `[Frontend] Configure generated OpenAPI client workflow`
 - `[Frontend] Configure React Hook Form and Zod patterns`
@@ -727,7 +727,7 @@ Recommended first batch:
 - `[Design] Define MVP visual tokens and component direction`
 - `[UX] Prototype public, player, organization, academy, and Admin App shells`
 - `[Frontend] Create Next.js app foundation`
-- `[Frontend] Configure shadcn/ui, Tailwind CSS, and lucide-react`
+- `[Frontend] Configure shadcn/ui, Tailwind CSS, and Phosphor Icons`
 - `[Frontend] Configure TanStack Query and API client foundation`
 - `[Frontend] Configure Playwright, Vitest, and Testing Library`
 

@@ -42,7 +42,8 @@
   padding: 1rem;
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) * 1.4);
-  background: rgb(13 27 25 / 0.82);
+  background: color-mix(in oklch, var(--popover) 82%, transparent);
+  backdrop-filter: blur(1.5rem) saturate(1.5);
 }
 
 .prototype-control {

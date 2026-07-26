@@ -9,20 +9,20 @@
 }
 
 .auth-alert[data-tone="info"] {
-  border-color: rgb(56 189 248 / 0.35);
-  background: rgb(56 189 248 / 0.1);
+  border-color: var(--info-border);
+  background: var(--info-subtle);
   color: var(--info);
 }
 
 .auth-alert[data-tone="warning"] {
-  border-color: rgb(245 158 11 / 0.4);
-  background: rgb(245 158 11 / 0.1);
+  border-color: var(--warning-border);
+  background: var(--warning-subtle);
   color: var(--warning);
 }
 
 .auth-alert[data-tone="destructive"] {
-  border-color: rgb(251 113 133 / 0.4);
-  background: rgb(251 113 133 / 0.1);
+  border-color: var(--destructive-border);
+  background: var(--destructive-subtle);
   color: var(--destructive);
 }
 
@@ -43,7 +43,7 @@
   padding: 1.25rem;
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) * 1.5);
-  background: rgb(13 27 25 / 0.96);
+  background: color-mix(in oklch, var(--popover) 96%, transparent);
 }
 
 .auth-card h3,
@@ -121,9 +121,9 @@
   border-radius: 999px;
   background: linear-gradient(
     90deg,
-    rgb(71 119 107 / 0.35),
-    rgb(71 119 107 / 0.8),
-    rgb(71 119 107 / 0.35)
+    color-mix(in oklch, var(--muted-foreground) 35%, transparent),
+    color-mix(in oklch, var(--muted-foreground) 80%, transparent),
+    color-mix(in oklch, var(--muted-foreground) 35%, transparent)
   );
   background-size: 200% 100%;
   animation: shimmer 1.4s ease-in-out infinite;
@@ -150,7 +150,7 @@
   padding: 2rem 1.25rem;
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) * 1.5);
-  background: rgb(13 27 25 / 0.96);
+  background: color-mix(in oklch, var(--popover) 96%, transparent);
   text-align: center;
 }
 
@@ -160,21 +160,21 @@
   height: 3.5rem;
   margin-bottom: 1.25rem;
   place-items: center;
-  border: 1px solid rgb(56 189 248 / 0.35);
+  border: 1px solid var(--info-border);
   border-radius: calc(var(--radius) * 1.4);
-  background: rgb(56 189 248 / 0.1);
+  background: var(--info-subtle);
   color: var(--info);
 }
 
 .boundary-state[data-tone="warning"] .boundary-state__icon {
-  border-color: rgb(245 158 11 / 0.4);
-  background: rgb(245 158 11 / 0.1);
+  border-color: var(--warning-border);
+  background: var(--warning-subtle);
   color: var(--warning);
 }
 
 .boundary-state[data-tone="destructive"] .boundary-state__icon {
-  border-color: rgb(251 113 133 / 0.4);
-  background: rgb(251 113 133 / 0.1);
+  border-color: var(--destructive-border);
+  background: var(--destructive-subtle);
   color: var(--destructive);
 }
 

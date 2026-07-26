@@ -1,4 +1,4 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeftIcon } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -23,7 +23,7 @@ export function AreaPlaceholder({
           className={areaPlaceholderStyles.backButton}
         >
           <Link href="/">
-            <ArrowLeft aria-hidden="true" />
+            <ArrowLeftIcon aria-hidden="true" />
             {t("backToSandicts")}
           </Link>
         </Button>

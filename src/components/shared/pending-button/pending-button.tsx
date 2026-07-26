@@ -1,4 +1,4 @@
-import { LoaderCircle } from "lucide-react";
+import { SpinnerGapIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { pendingButtonStyles } from "./pending-button.styles";
@@ -35,7 +35,7 @@ function PendingButton({
           !pending && pendingButtonStyles.hiddenContent,
         )}
       >
-        <LoaderCircle
+        <SpinnerGapIcon
           className={pendingButtonStyles.spinner}
           aria-hidden="true"
         />

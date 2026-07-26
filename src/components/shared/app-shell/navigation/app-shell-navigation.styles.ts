@@ -11,10 +11,12 @@ function getNavigationRootClassName(presentation: ShellNavigationPresentation) {
     presentation === "bottom" &&
       cn(
         "fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 gap-1",
-        "border-t border-border bg-background/98",
+        "border-t border-sidebar-border bg-sidebar/75 text-sidebar-foreground",
+        "supports-backdrop-filter:bg-sidebar/65 supports-backdrop-filter:backdrop-blur-2xl",
+        "supports-backdrop-filter:backdrop-saturate-150",
         "px-[max(0.375rem,env(safe-area-inset-left))] pt-1.5",
         "pb-[calc(0.375rem+env(safe-area-inset-bottom))]",
-        "shadow-[0_-12px_35px_rgba(0,0,0,0.28)] md:hidden",
+        "shadow-2xl md:hidden",
       ),
     presentation === "adaptive" &&
       "flex h-full flex-col gap-5 px-2 py-4 lg:px-4",
@@ -68,18 +70,25 @@ function getNavigationItemClassName({
         "text-muted-foreground lg:justify-start",
       ),
     presentation === "drawer" &&
-      "flex min-h-12 items-center gap-3 rounded-lg px-3 text-sm font-medium text-muted-foreground",
+      cn(
+        "flex min-h-12 items-center gap-3 rounded-lg px-3",
+        "text-sm font-medium text-muted-foreground",
+      ),
     isCurrent &&
-      "bg-accent text-foreground shadow-[inset_3px_0_0_var(--primary)]",
+      cn(
+        "bg-sidebar-accent text-sidebar-accent-foreground",
+        "shadow-[inset_3px_0_0_var(--sidebar-primary)]",
+      ),
     presentation === "bottom" &&
       isCurrent &&
-      "bg-secondary text-primary shadow-[inset_0_3px_0_var(--primary)]",
-    !isCurrent && "hover:bg-accent/70 hover:text-foreground",
+      "bg-sidebar-accent text-sidebar-primary shadow-[inset_0_3px_0_var(--sidebar-primary)]",
+    !isCurrent &&
+      "hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground",
   );
 }
 
 function getNavigationIconClassName(isCurrent: boolean) {
-  return cn("size-5 shrink-0", isCurrent && "text-primary");
+  return cn("size-5 shrink-0", isCurrent && "text-sidebar-primary");
 }
 
 function getNavigationLabelClassName(

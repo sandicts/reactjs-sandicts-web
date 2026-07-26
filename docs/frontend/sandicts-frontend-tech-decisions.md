@@ -50,7 +50,7 @@ Decided:
   repository
 - use npm as the package manager, with Node.js 24 LTS and npm 11
 - use Next.js App Router with TypeScript
-- use shadcn/ui with Tailwind CSS and lucide-react
+- use shadcn/ui Radix Nova with Tailwind CSS and Phosphor Icons
 - use TanStack Query for server state
 - use Zod with React Hook Form for forms
 - use `next-intl` with `pt-BR` as the only MVP locale and fallback locale
@@ -232,14 +232,18 @@ Use:
 
 - shadcn/ui
 - Tailwind CSS
-- lucide-react
+- `@phosphor-icons/react`
 
 Rules:
 
-- start with shadcn/ui primitives and customize tokens for Sandicts
+- use preset `b6pMnd9eSI`: Radix Nova, Stone, Amber, small radius, IBM Plex
+  Sans, Montserrat, Phosphor, translucent menus, subtle menu accents, and
+  Orange charts
 - keep components owned in the frontend codebase instead of depending on a
   closed external design system
-- use lucide-react for icons where an existing icon fits the control
+- use canonical Phosphor `*Icon` exports where an existing icon fits the control
+- keep the locally reconciled primitive behavior, types, accessibility, and
+  tests when comparing with a generated registry payload
 - use semantic shadcn/ui-compatible tokens for color, radius, typography,
   status, focus, and surfaces
 - keep palette names out of shared component APIs

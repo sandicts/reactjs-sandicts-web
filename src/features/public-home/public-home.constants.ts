@@ -1,21 +1,25 @@
-import { CalendarDays, MapPin, UsersRound } from "lucide-react";
+import {
+  CalendarDotsIcon,
+  MapPinIcon,
+  UsersThreeIcon,
+} from "@phosphor-icons/react/ssr";
 import { APP_ROUTES } from "@/lib/routes/app-routes";
 
 const PUBLIC_HOME_ACTIONS = [
   {
     id: "courts",
     href: APP_ROUTES.public.discovery,
-    Icon: MapPin,
+    Icon: MapPinIcon,
   },
   {
     id: "openMatches",
     href: APP_ROUTES.player.openMatches,
-    Icon: UsersRound,
+    Icon: UsersThreeIcon,
   },
   {
     id: "organization",
     href: "/organizations/sandicts-demo",
-    Icon: CalendarDays,
+    Icon: CalendarDotsIcon,
   },
 ] as const;
 

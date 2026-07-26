@@ -1,4 +1,4 @@
-import { Menu } from "lucide-react";
+import { ListIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -34,7 +34,7 @@ function OrganizationNavigationDrawer({
           className={organizationShellStyles.mobileMenuTrigger}
           aria-label={menuLabel}
         >
-          <Menu aria-hidden="true" />
+          <ListIcon aria-hidden="true" />
         </Button>
       </SheetTrigger>
       <SheetContent

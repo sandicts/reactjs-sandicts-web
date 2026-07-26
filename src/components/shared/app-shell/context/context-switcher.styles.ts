@@ -1,8 +1,10 @@
 import { cn } from "@/lib/utils";
 
 const contextSwitcherStyles = {
-  singleContainer:
-    "min-w-0 rounded-lg border border-border/70 bg-card px-3 py-2 text-right",
+  singleContainer: cn(
+    "min-w-0 rounded-lg border border-border bg-popover/70 px-3 py-2",
+    "text-right supports-backdrop-filter:backdrop-blur-2xl",
+  ),
   singleEyebrow: "block text-xs text-muted-foreground",
   singleLabel: "block truncate text-sm font-medium",
   trigger: "h-auto min-w-0 justify-between gap-3 px-3 py-2",
@@ -17,8 +19,9 @@ const contextSwitcherStyles = {
     "mb-2 text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase",
   groupOptions: "grid gap-2",
   optionLink: cn(
-    "flex min-h-14 items-center gap-3 rounded-lg border border-border/70",
-    "bg-card px-4 py-3 transition outline-none",
+    "flex min-h-14 items-center gap-3 rounded-lg border border-border",
+    "bg-popover/70 px-4 py-3 transition outline-none",
+    "supports-backdrop-filter:backdrop-blur-2xl",
     "hover:border-primary/70 hover:bg-accent",
     "focus-visible:ring-[3px] focus-visible:ring-ring/50",
   ),

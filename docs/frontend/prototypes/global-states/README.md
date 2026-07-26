@@ -69,14 +69,15 @@ index.html?context=organization&state=loading-page&shape=calendar
 
 ## Artifact Organization
 
-The prototype remains dependency-free and can be opened directly from the
-filesystem. Files are split by responsibility without introducing a build
-step:
+The prototype remains build-free and can be opened directly from the
+filesystem. Its visual tokens and font stacks come from the shared artifact
+generated from `src/app/globals.css`; Google Fonts require network access and
+fall back safely when unavailable.
 
 ```text
 global-states/
 ├── index.html                 # semantic document and local SVG sprite
-├── styles.css                # tokens, reset, focus, and shared controls
+├── styles.css                # reset, focus, and shared controls
 ├── prototype-toolbar.css     # prototype-only scenario controls
 ├── prototype-shell.css       # Public, Player, and Organization shells
 ├── prototype-states.css      # loading, empty, error, and access compositions
@@ -85,6 +86,10 @@ global-states/
 ├── prototype.js              # URL state, events, dialog behavior, and bootstrap
 └── README.md                 # decisions, validation, and KAN-78 handoff
 ```
+
+The imported `../shared/sandicts-visual-tokens.css` file must not be edited
+directly. Run `npm run visual-system:sync` after changing runtime tokens and
+`npm run visual-system:check` in validation.
 
 Classic deferred scripts intentionally share one `SandictsGlobalStates`
 namespace. ES modules were not introduced because this artifact must continue

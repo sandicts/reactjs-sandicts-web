@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ChevronsUpDown } from "lucide-react";
+import { CaretUpDownIcon, CheckIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -70,7 +70,7 @@ function ContextSwitcher({ contexts }: ContextSwitcherProps) {
               {currentContext.label}
             </strong>
           </span>
-          <ChevronsUpDown
+          <CaretUpDownIcon
             className={contextSwitcherStyles.triggerIcon}
             aria-hidden="true"
           />
@@ -122,7 +122,7 @@ function ContextSwitcher({ contexts }: ContextSwitcherProps) {
                           ) : null}
                         </span>
                         {context.current ? (
-                          <Check
+                          <CheckIcon
                             className={contextSwitcherStyles.currentIcon}
                             aria-label={t("currentContext")}
                           />

@@ -3,16 +3,16 @@
  */
 
 import { forwardRef } from "react";
-import type { LucideIcon, LucideProps } from "lucide-react";
+import type { Icon, IconProps } from "@phosphor-icons/react";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { StatusBadge } from "./status-badge";
 
-const TestIcon = forwardRef<SVGSVGElement, Omit<LucideProps, "ref">>(
+const TestIcon = forwardRef<SVGSVGElement, Omit<IconProps, "ref">>(
   function TestIcon(props, ref) {
     return <svg data-testid="status-badge-icon" ref={ref} {...props} />;
   },
-) as LucideIcon;
+) as Icon;
 
 describe("StatusBadge", () => {
   it("renders a neutral status by default", () => {

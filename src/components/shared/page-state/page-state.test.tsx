@@ -3,17 +3,17 @@
  */
 
 import { forwardRef } from "react";
-import type { LucideIcon, LucideProps } from "lucide-react";
+import type { Icon, IconProps } from "@phosphor-icons/react";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Button } from "@/components/ui/button";
 import { PageState } from "./page-state";
 
-const TestIcon = forwardRef<SVGSVGElement, Omit<LucideProps, "ref">>(
+const TestIcon = forwardRef<SVGSVGElement, Omit<IconProps, "ref">>(
   function TestIcon(props, ref) {
     return <svg data-testid="page-state-icon" ref={ref} {...props} />;
   },
-) as LucideIcon;
+) as Icon;
 
 describe("PageState", () => {
   it("renders a route-level state with h1, decorative icon, and actions", () => {

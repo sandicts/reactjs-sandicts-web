@@ -490,7 +490,7 @@ explicit integration decision after both prototypes are approved.
 ## Artifact Organization
 
 - `index.html`: semantic prototype structure
-- `styles.css`: tokens and shared controls
+- `styles.css`: reset and shared controls
 - `prototype-toolbar.css`: review controls
 - `prototype-shell.css`: Public shell and responsive composition
 - `prototype-auth.css`: auth card, alerts, provider footprint, and boundaries
@@ -498,9 +498,12 @@ explicit integration decision after both prototypes are approved.
 - `prototype.renderers.js`: DOM rendering boundary
 - `prototype.js`: query state, toolbar behavior, and simulated transitions
 
-The artifact remains dependency-free and directly openable. Production
-components must use the actual design tokens, shadcn/ui primitives, next-intl,
-and provider SDK rather than copying this JavaScript architecture.
+The artifact remains build-free and directly openable. It imports
+`../shared/sandicts-visual-tokens.css`, generated from runtime tokens with
+`npm run visual-system:sync`; the check command prevents drift. Google Fonts
+fall back safely when the prototype is opened offline. Production components
+must use the actual design tokens, shadcn/ui primitives, next-intl, and provider
+SDK rather than copying this JavaScript architecture.
 
 ## Implementation Handoff
 

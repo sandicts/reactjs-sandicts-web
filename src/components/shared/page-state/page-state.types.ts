@@ -1,4 +1,4 @@
-import type { LucideIcon } from "lucide-react";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 import type { ReactNode } from "react";
 
 type PageStateTone = "neutral" | "info" | "success" | "warning" | "destructive";
@@ -12,7 +12,7 @@ type PageStateProps = Readonly<{
   description: ReactNode;
   headingLevel: PageStateHeadingLevel;
   eyebrow?: ReactNode;
-  Icon?: LucideIcon;
+  Icon?: PhosphorIcon;
   tone?: PageStateTone;
   primaryAction?: ReactNode;
   secondaryAction?: ReactNode;

@@ -1,4 +1,4 @@
-import { CreditCard } from "lucide-react";
+import { CreditCardIcon } from "@phosphor-icons/react/ssr";
 import { useTranslations } from "next-intl";
 import { ShellPagePlaceholder } from "@/components/shared/app-shell/content/shell-page-placeholder";
 
@@ -10,7 +10,7 @@ export default function OrganizationPaymentsPage() {
       eyebrow={t("eyebrow")}
       title={t("title")}
       description={t("description")}
-      Icon={CreditCard}
+      Icon={CreditCardIcon}
     />
   );
 }

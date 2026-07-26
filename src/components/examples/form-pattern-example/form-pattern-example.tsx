@@ -1,7 +1,7 @@
 "use client";
 
 import { useId } from "react";
-import { CircleAlert } from "lucide-react";
+import { WarningCircleIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { PendingButton } from "@/components/shared/pending-button/pending-button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -78,7 +78,7 @@ function FormPatternExample({ onSubmit }: FormPatternExampleProps) {
 
         {errors.root?.server?.message && (
           <Alert role="alert" variant="destructive">
-            <CircleAlert aria-hidden="true" />
+            <WarningCircleIcon aria-hidden="true" />
             <AlertTitle>{t("submitErrorTitle")}</AlertTitle>
             <AlertDescription>{errors.root.server.message}</AlertDescription>
           </Alert>

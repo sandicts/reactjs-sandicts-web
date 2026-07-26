@@ -1,4 +1,4 @@
-import { CalendarCheck2 } from "lucide-react";
+import { CalendarCheckIcon } from "@phosphor-icons/react/ssr";
 import { useTranslations } from "next-intl";
 import { ShellPagePlaceholder } from "@/components/shared/app-shell/content/shell-page-placeholder";
 
@@ -10,7 +10,7 @@ export default function OrganizationReservationsPage() {
       eyebrow={t("eyebrow")}
       title={t("title")}
       description={t("description")}
-      Icon={CalendarCheck2}
+      Icon={CalendarCheckIcon}
     />
   );
 }

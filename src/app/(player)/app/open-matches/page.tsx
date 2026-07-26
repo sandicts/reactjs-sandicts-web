@@ -1,4 +1,4 @@
-import { UsersRound } from "lucide-react";
+import { UsersThreeIcon } from "@phosphor-icons/react/ssr";
 import { useTranslations } from "next-intl";
 import { ShellPagePlaceholder } from "@/components/shared/app-shell/content/shell-page-placeholder";
 
@@ -10,7 +10,7 @@ export default function PlayerOpenMatchesPage() {
       eyebrow={t("eyebrow")}
       title={t("title")}
       description={t("description")}
-      Icon={UsersRound}
+      Icon={UsersThreeIcon}
     />
   );
 }

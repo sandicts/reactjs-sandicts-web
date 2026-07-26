@@ -16,8 +16,9 @@ const publicHomeScreenStyles = {
   actionsGrid: "mt-8 grid gap-3 sm:grid-cols-3",
   actionCard: {
     root: cn(
-      "group rounded-xl border border-border bg-card p-4 transition outline-none",
-      "hover:border-primary focus-visible:ring-[3px] focus-visible:ring-ring/50",
+      "group rounded-xl bg-card p-4 ring-1 ring-foreground/10",
+      "transition outline-none hover:ring-primary",
+      "focus-visible:ring-[3px] focus-visible:ring-ring/50",
     ),
     iconContainer:
       "mb-5 flex size-10 items-center justify-center rounded-lg bg-secondary text-success",

@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { alertStyles, alertVariants } from "./alert.styles";
 import type {
+  AlertActionProps,
   AlertDescriptionProps,
   AlertProps,
   AlertTitleProps,
@@ -36,4 +37,14 @@ function AlertDescription({ className, ...props }: AlertDescriptionProps) {
   );
 }
 
-export { Alert, AlertDescription, AlertTitle };
+function AlertAction({ className, ...props }: AlertActionProps) {
+  return (
+    <div
+      data-slot="alert-action"
+      className={cn(alertStyles.action, className)}
+      {...props}
+    />
+  );
+}
+
+export { Alert, AlertAction, AlertDescription, AlertTitle };
