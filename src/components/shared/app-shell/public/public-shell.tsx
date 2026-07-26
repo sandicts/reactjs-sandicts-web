@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import { MagnifyingGlassIcon } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -23,7 +23,7 @@ function PublicShell({ children }: PublicShellProps) {
           >
             <Button asChild variant="ghost" size="sm">
               <Link href={APP_ROUTES.public.discovery}>
-                <Search aria-hidden="true" />
+                <MagnifyingGlassIcon aria-hidden="true" />
                 <span className={publicShellStyles.exploreText}>
                   {t("explore")}
                 </span>

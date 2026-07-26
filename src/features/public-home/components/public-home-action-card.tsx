@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRightIcon } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 import { publicHomeScreenStyles } from "../public-home-screen.styles";
 import type { PublicHomeActionCardProps } from "./public-home-action-card.types";
@@ -19,7 +19,7 @@ function PublicHomeActionCard({
       </div>
       <div className={publicHomeScreenStyles.actionCard.headingRow}>
         <h2 className={publicHomeScreenStyles.actionCard.heading}>{label}</h2>
-        <ArrowRight
+        <ArrowRightIcon
           className={publicHomeScreenStyles.actionCard.arrow}
           aria-hidden="true"
         />

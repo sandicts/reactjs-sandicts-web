@@ -1,4 +1,4 @@
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheckIcon } from "@phosphor-icons/react/ssr";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { publicHomeScreenStyles } from "../public-home-screen.styles";
@@ -22,14 +22,14 @@ function PublicHomeStatusCard({
             </p>
             <h2 className={publicHomeScreenStyles.statusCard.title}>{title}</h2>
           </div>
-          <ShieldCheck
+          <ShieldCheckIcon
             className={publicHomeScreenStyles.statusCard.icon}
             aria-hidden="true"
           />
         </CardHeader>
         <CardContent className={publicHomeScreenStyles.statusCard.content}>
           <Alert variant="success">
-            <ShieldCheck aria-hidden="true" />
+            <ShieldCheckIcon aria-hidden="true" />
             <AlertTitle>{status}</AlertTitle>
             <AlertDescription>{description}</AlertDescription>
           </Alert>

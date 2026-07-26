@@ -1,4 +1,4 @@
-import { FileQuestion } from "lucide-react";
+import { FileMagnifyingGlassIcon } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { PublicShell } from "@/components/shared/app-shell/public/public-shell";
@@ -18,7 +18,7 @@ function NotFoundScreen() {
           title={t("title")}
           description={t("description")}
           headingLevel={1}
-          Icon={FileQuestion}
+          Icon={FileMagnifyingGlassIcon}
           primaryAction={
             <Button asChild>
               <Link href={APP_ROUTES.public.discovery}>

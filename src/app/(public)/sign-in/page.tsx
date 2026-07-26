@@ -1,4 +1,4 @@
-import { LogIn } from "lucide-react";
+import { SignInIcon } from "@phosphor-icons/react/ssr";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { AreaPlaceholder } from "@/components/shared/area-placeholder/area-placeholder";
@@ -26,7 +26,7 @@ export default function SignInPage() {
       eyebrow={t("eyebrow")}
       title={t("title")}
       description={t("description")}
-      Icon={LogIn}
+      Icon={SignInIcon}
     />
   );
 }

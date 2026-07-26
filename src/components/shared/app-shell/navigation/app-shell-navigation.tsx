@@ -60,6 +60,7 @@ function AppShellNavigation({
                 >
                   <item.Icon
                     className={getNavigationIconClassName(isCurrent)}
+                    weight={isCurrent ? "fill" : "regular"}
                     aria-hidden="true"
                   />
                   <span className={getNavigationLabelClassName(presentation)}>

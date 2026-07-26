@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 
-import { MapPin } from "lucide-react";
+import { MapPinIcon } from "@phosphor-icons/react";
 import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { renderWithI18n } from "@test/render-with-i18n";
@@ -15,7 +15,7 @@ describe("AreaPlaceholder", () => {
         eyebrow="Player area"
         title="Discover courts and open matches."
         description="Find the next place to play."
-        Icon={MapPin}
+        Icon={MapPinIcon}
       />,
     );
 

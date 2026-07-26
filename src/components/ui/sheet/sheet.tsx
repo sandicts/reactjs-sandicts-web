@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react";
+import { XIcon } from "@phosphor-icons/react";
 import { Dialog as SheetPrimitive } from "radix-ui";
 import { cn } from "@/lib/utils";
 import { sheetContentSideClasses, sheetStyles } from "./sheet.styles";
@@ -70,7 +70,7 @@ function SheetContent({
             className={sheetStyles.closeButton}
             aria-label={closeLabel}
           >
-            <X className={sheetStyles.closeIcon} aria-hidden="true" />
+            <XIcon className={sheetStyles.closeIcon} aria-hidden="true" />
           </SheetPrimitive.Close>
         ) : null}
       </SheetPrimitive.Content>

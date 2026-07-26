@@ -1,4 +1,4 @@
-import type { LucideIcon } from "lucide-react";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 
 type NavigationMatch = "exact" | "prefix";
 
@@ -8,7 +8,7 @@ type ShellNavigationItem = Readonly<{
   id: string;
   label: string;
   href: string;
-  Icon: LucideIcon;
+  Icon: PhosphorIcon;
   match?: NavigationMatch;
 }>;
 

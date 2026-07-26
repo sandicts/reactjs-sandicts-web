@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircleIcon } from "@phosphor-icons/react";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -23,7 +23,7 @@ describe("UI foundation", () => {
         </Field>
         <Button type="button">Continue</Button>
         <Alert role="status" variant="success">
-          <CheckCircle2 aria-hidden="true" />
+          <CheckCircleIcon aria-hidden="true" />
           <AlertTitle>Foundation ready</AlertTitle>
           <AlertDescription>
             Shared primitives can be composed.

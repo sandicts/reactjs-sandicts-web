@@ -1,4 +1,4 @@
-import type { LucideIcon } from "lucide-react";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 
 type StatusBadgeTone =
   "neutral" | "info" | "success" | "warning" | "destructive";
@@ -6,7 +6,7 @@ type StatusBadgeTone =
 type StatusBadgeProps = Readonly<{
   label: string;
   tone?: StatusBadgeTone;
-  Icon?: LucideIcon;
+  Icon?: PhosphorIcon;
   className?: string;
 }>;
 

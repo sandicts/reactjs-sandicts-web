@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import { MagnifyingGlassIcon } from "@phosphor-icons/react/ssr";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { AreaPlaceholder } from "@/components/shared/area-placeholder/area-placeholder";
@@ -34,7 +34,7 @@ export default function DiscoveryPage() {
       eyebrow={t("eyebrow")}
       title={t("title")}
       description={t("description")}
-      Icon={Search}
+      Icon={MagnifyingGlassIcon}
     />
   );
 }

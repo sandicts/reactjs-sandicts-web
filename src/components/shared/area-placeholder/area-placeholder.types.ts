@@ -1,10 +1,10 @@
-import type { LucideIcon } from "lucide-react";
+import type { Icon as PhosphorIcon } from "@phosphor-icons/react";
 
 type AreaPlaceholderProps = {
   eyebrow: string;
   title: string;
   description: string;
-  Icon: LucideIcon;
+  Icon: PhosphorIcon;
 };
 
 export type { AreaPlaceholderProps };

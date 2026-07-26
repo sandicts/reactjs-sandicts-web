@@ -1,4 +1,4 @@
-import { Trophy } from "lucide-react";
+import { TrophyIcon } from "@phosphor-icons/react/ssr";
 import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import { PublicHomeActionCard } from "./components/public-home-action-card";
@@ -35,7 +35,7 @@ function PublicHomeScreen() {
       <div className={publicHomeScreenStyles.container}>
         <section className={publicHomeScreenStyles.hero}>
           <Badge variant="outline" className={publicHomeScreenStyles.badge}>
-            <Trophy
+            <TrophyIcon
               className={publicHomeScreenStyles.badgeIcon}
               aria-hidden="true"
             />
