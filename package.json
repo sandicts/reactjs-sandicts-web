@@ -8,6 +8,7 @@
     "npm": ">=11 <12"
   },
   "scripts": {
+    "postinstall": "node scripts/patch-minimatch-brace-expansion.mjs",
     "dev": "next dev --port 3001",
     "build": "next build",
     "start": "next start --port 3001",
@@ -55,7 +56,7 @@
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
-    "eslint": "9.39.4",
+    "eslint": "9.39.5",
     "eslint-config-next": "16.2.11",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-jest-dom": "^5.5.0",
@@ -73,9 +74,10 @@
     "@modelcontextprotocol/sdk": {
       "@hono/node-server": "^2.0.11"
     },
+    "brace-expansion": "5.0.8",
     "js-yaml": "^4.3.0",
     "next": {
-      "postcss": "8.5.15",
+      "postcss": "8.5.23",
       "sharp": "^0.35.3"
     }
   }
