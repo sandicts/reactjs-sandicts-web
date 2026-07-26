@@ -33,8 +33,10 @@ Read them in this order for most frontend work:
     reviewing the Player profile main-sport and level selectors
 14. `prototypes/auth-sign-in/README.md` when implementing or reviewing sign-in,
     Google One Tap fallback, expired-session feedback, or auth failure UI
-15. `sandicts-frontend-planning.md`
-16. `sandicts-mvp-delivery-roadmap.md`
+15. `prototypes/shared/README.md` when changing runtime visual tokens or adding
+    a static prototype
+16. `sandicts-frontend-planning.md`
+17. `sandicts-mvp-delivery-roadmap.md`
 17. `sandicts-page-functional-spec.md` when page behavior, routes, permissions,
     or user flows matter
 18. `sandicts-mvp-screens-spec.md` only for detailed screen-state work

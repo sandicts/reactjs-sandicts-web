@@ -10,14 +10,14 @@ the Nest API.
 - TypeScript
 - Tailwind CSS
 - shadcn/ui
-- lucide-react
+- Phosphor Icons
 - npm
 
 ## UI Foundation
 
-shadcn/ui is configured through `components.json` for Tailwind CSS v4, React
-Server Components, TypeScript, Radix primitives, lucide-react icons, and the
-existing `@/*` source alias.
+shadcn/ui is configured through `components.json` for the Radix Nova preset,
+Tailwind CSS v4, React Server Components, TypeScript, Phosphor icons, Stone
+surfaces, Amber actions, and the existing `@/*` source alias.
 
 Inspect the current configuration or add a component with:
 

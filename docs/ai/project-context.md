@@ -111,7 +111,7 @@ http://localhost:3001
 Follow the decided frontend direction:
 
 - Next.js App Router with TypeScript
-- Tailwind CSS and lucide-react
+- Tailwind CSS and Phosphor Icons
 - shadcn/ui as the component strategy
 - TanStack Query for server state
 - React Hook Form and Zod for forms

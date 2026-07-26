@@ -28,7 +28,7 @@ do-not-read-when:
 ## Purpose
 
 Define the smallest durable visual contract needed to build the Sandicts MVP
-consistently with shadcn/ui, Tailwind CSS, and lucide-react.
+consistently with shadcn/ui, Tailwind CSS, and Phosphor Icons.
 
 This is a direction and decision document. It defines token roles, component
 defaults, interaction states, and visual boundaries. It does not initialize
@@ -38,15 +38,16 @@ shadcn/ui, generate components, or replace feature-specific UX decisions.
 
 - Ship one dark Sandicts theme for the MVP.
 - Use semantic CSS variables as the public component styling API.
-- Preserve Sand Orange as the primary brand and action color.
-- Use Geist Sans for product UI and Geist Mono only for technical values.
-- Use the standard Tailwind spacing scale and a `0.625rem` base radius.
+- Use the Stone/Amber foundation from shadcn preset `b6pMnd9eSI`.
+- Use IBM Plex Sans for product UI, Montserrat for headings, and a system
+  monospace stack for technical values.
+- Use the standard Tailwind spacing scale and a `0.45rem` base radius.
 - Keep player experiences energetic and comfortably spaced.
 - Keep Organization experiences denser and operational without creating a
   second component system.
 - Use shadcn/ui primitives as owned source code, not as an external visual
   dependency.
-- Use lucide-react for interface icons and the Sandicts mark for brand identity.
+- Use Phosphor for interface icons and the Sandicts mark for brand identity.
 - Require an explicit loading, empty, error, forbidden, and not-found treatment
   for every data-driven screen.
 
@@ -70,10 +71,10 @@ The interface should not feel:
 
 ## Theme Model
 
-The MVP uses a dark theme by default and does not include a theme switcher.
-Dark values live in `:root`, and the document root should declare a dark color
-scheme. A future light theme must override the same semantic tokens rather than
-introducing component-specific colors.
+The MVP uses a dark theme and does not include a theme switcher. The preset's
+light values live in `:root`; dark values live in `.dark`; the document root
+activates `.dark` explicitly. Both maps use the same semantic contract so a
+future theme decision does not require component-specific colors.
 
 Components must consume semantic utilities such as `bg-background`,
 `text-foreground`, `bg-primary`, `border-border`, and `ring-ring`.
@@ -84,27 +85,19 @@ on palette names such as `sand`, `mint`, or `water`.
 
 ## Color Foundation
 
-The following values are the human-readable MVP color references. KAN-72 may
-store equivalent values as OKLCH when configuring shadcn/ui and Tailwind CSS,
-provided contrast and visual intent remain equivalent.
+The canonical foundation is the resolved OKLCH output of preset
+`b6pMnd9eSI`:
 
-| Reference | Value | Role |
-| --- | --- | --- |
-| Deep night | `#071211` | App background |
-| Dark surface | `#0D1B19` | Cards and grouped content |
-| Raised surface | `#122823` | Popovers and stronger surface separation |
-| Border green | `#21413B` | Borders, separators, and interactive tint |
-| Control border | `#47776B` | Inputs and outline controls that need a clear boundary |
-| Chalk | `#F8FAF5` | Primary text and icons |
-| Muted sage | `#9CA99F` | Secondary text and placeholders |
-| Sand Orange | `#F59E0B` | Primary action and brand emphasis |
-| Sand ink | `#161108` | Content placed on Sand Orange |
-| Court mint | `#34D399` | Success |
-| Water blue | `#38BDF8` | Informational state |
-| Coral red | `#FB7185` | Destructive and error emphasis |
+- Nova component language on the Radix base
+- Stone neutral surfaces
+- Amber primary actions
+- subtle menu accents
+- default translucent menu surfaces
+- Orange chart sequence
 
-Do not add arbitrary hexadecimal colors in JSX. A repeated color or a color
-with semantic meaning belongs in the token layer.
+Exact light and dark values live in `src/app/globals.css`. Do not duplicate
+them in JSX or feature CSS. Renderers that cannot consume CSS variables may use
+the documented static serialization in `src/lib/visual-system`.
 
 ## Semantic Token Contract
 
@@ -112,28 +105,21 @@ with semantic meaning belongs in the token layer.
 
 These tokens form the public visual contract for shared components.
 
-| Token | Initial reference | Meaning |
+| Token | Foundation | Meaning |
 | --- | --- | --- |
-| `background` | Deep night | Default page and app-shell background |
-| `foreground` | Chalk | Default text and icon color |
-| `card` | Dark surface | Cards, panels, and grouped sections |
-| `card-foreground` | Chalk | Content on cards |
-| `popover` | Raised surface | Menus, popovers, and floating panels |
-| `popover-foreground` | Chalk | Content on floating panels |
-| `primary` | Sand Orange | Primary actions, selected states, brand emphasis |
-| `primary-foreground` | Sand ink | Content on primary surfaces |
-| `secondary` | Raised surface | Lower-emphasis filled actions and surfaces |
-| `secondary-foreground` | Chalk | Content on secondary surfaces |
-| `muted` | Dark surface | Subdued backgrounds and skeleton foundations |
-| `muted-foreground` | Muted sage | Helper text, placeholders, and metadata |
-| `accent` | Border green | Hovered rows, ghost controls, and active support |
-| `accent-foreground` | Chalk | Content on accent surfaces |
-| `destructive` | Coral red | Destructive actions and error emphasis |
-| `destructive-foreground` | `#4C0519` | Content on filled destructive surfaces |
-| `border` | Border green | Default border and separator |
-| `input` | Control border | Form-control and outline-control boundary |
-| `ring` | Sand Orange | Visible keyboard focus |
-| `radius` | `0.625rem` | Base radius used to derive the radius scale |
+| `background` / `foreground` | Stone | Default page surface and content |
+| `card` / `card-foreground` | Stone | Cards, panels, and grouped sections |
+| `popover` / `popover-foreground` | Stone | Menus, popovers, and floating panels |
+| `primary` / `primary-foreground` | Amber | Primary actions and selected emphasis |
+| `secondary` / `secondary-foreground` | Stone | Lower-emphasis filled actions |
+| `muted` / `muted-foreground` | Stone | Subdued surfaces, metadata, and help |
+| `accent` / `accent-foreground` | Stone subtle | Hovered rows and ghost controls |
+| `destructive` / `destructive-foreground` | Preset red | Destructive action and content |
+| `border` / `input` | Stone | Separators and control boundaries |
+| `ring` | Stone/Amber-compatible | Visible keyboard focus |
+| `radius` | `0.45rem` | Base radius used to derive the scale |
+| `sidebar-*` | Stone/Amber | App-shell navigation surfaces and states |
+| `chart-1` through `chart-5` | Orange | Reviewed chart sequence |
 
 If a generated shadcn/ui component does not use one of these tokens by default,
 adapt the locally owned component once. Do not compensate at every call site.
@@ -143,21 +129,20 @@ adapt the locally owned component once. Do not compensate at every call site.
 Status colors communicate system meaning and must be paired with text or an
 icon.
 
-| Token pair | Initial reference | Use |
+| Token family | Owner | Use |
 | --- | --- | --- |
-| `success` / `success-foreground` | `#34D399` / `#052E2B` | Completed or confirmed outcomes |
-| `warning` / `warning-foreground` | `#F59E0B` / `#161108` | Attention and recoverable risk |
-| `info` / `info-foreground` | `#38BDF8` / `#082F49` | Neutral operational information |
-| `destructive` / `destructive-foreground` | `#FB7185` / `#4C0519` | Failure, cancellation, or destructive action |
+| `success`, `success-foreground`, `success-subtle`, `success-border` | Sandicts | Completed or confirmed outcomes |
+| `warning`, `warning-foreground`, `warning-subtle`, `warning-border` | Sandicts | Attention and recoverable risk |
+| `info`, `info-foreground`, `info-subtle`, `info-border` | Sandicts | Neutral operational information |
+| `destructive` | Preset | Base destructive emphasis |
+| `destructive-foreground`, `destructive-subtle`, `destructive-border` | Sandicts | Failure and destructive compositions |
 
-Use low-opacity status surfaces for alerts and badges when a filled color would
-be too dominant. Status meaning must never rely on hue alone.
+Use the explicit subtle and border tokens for alerts and badges instead of
+recreating opacity formulas at call sites. Status meaning must never rely on hue
+alone.
 
 ### Deferred Tokens
 
-- Add `sidebar-*` tokens when the first approved sidebar is implemented.
-- Add `chart-1` through `chart-5` only when a real chart needs a reviewed
-  categorical palette.
 - Add calendar-slot tokens with the availability feature, where domain statuses
   are known.
 - Do not create tokens for speculative Admin App, academy, tournament, or V2
@@ -175,16 +160,17 @@ be too dominant. Status meaning must never rely on hue alone.
   this contract.
 - Do not create a wrapper component that only renames a shadcn/ui primitive.
 - Do not generate the entire component catalog in advance.
-- Use the current supported shadcn/ui registry style during setup; the registry
-  style name is not a Sandicts product decision.
+- Keep `components.json` aligned to `radix-nova`, Stone, Phosphor,
+  `default-translucent`, and `subtle`.
 
 ## Typography
 
-Use the fonts already loaded by the app:
+Use the fonts loaded by the app:
 
-- Geist Sans for interface text
-- Geist Mono for identifiers, timestamps, or technical values where a
-  monospace face materially improves scanning
+- IBM Plex Sans for interface and body text
+- Montserrat for headings and component titles
+- the system monospace stack for identifiers, timestamps, or technical values
+  where a monospace face materially improves scanning
 
 Use semibold instead of bold for most headings and actions. Avoid extra-light
 text on dark surfaces.
@@ -228,7 +214,7 @@ clear and the control is not a primary mobile action.
 
 ## Radius, Borders, And Elevation
 
-- Set `--radius` to `0.625rem` and derive the shadcn/ui radius scale from it.
+- Set `--radius` to `0.45rem` and derive the shadcn/ui radius scale from it.
 - Use medium radii for buttons and fields.
 - Use the base or larger derived radius for cards, dialogs, and empty states.
 - Reserve full pills for badges, avatars, and genuinely circular controls.
@@ -343,7 +329,7 @@ communicated.
 
 Use a consistent composition:
 
-1. optional lucide-react icon
+1. optional Phosphor icon
 2. short title describing the absence
 3. one sentence explaining context
 4. primary next action when the user can resolve the state
@@ -374,7 +360,7 @@ mutations.
 
 ## Icon Direction
 
-Use lucide-react as the interface icon set.
+Use `@phosphor-icons/react` as the interface icon set.
 
 Rules:
 
@@ -383,19 +369,20 @@ Rules:
 - use `1.25rem` icons for default controls and navigation
 - use `1.5rem` icons for prominent landmarks
 - use approximately `2.5rem` to `3rem` icons in empty states
-- keep the default stroke style unless a reviewed component needs a local
-  adjustment
+- use canonical `*Icon` exports and the shared `Icon` / `IconProps` types
+- use regular weight by default; fill or bold may reinforce an already visible
+  selected state
 - mark decorative icons with `aria-hidden="true"`
 - give icon-only controls an accessible name
 - pair status icons with text
-- do not use a lucide-react icon as the Sandicts logo
+- do not use a Phosphor icon as the Sandicts logo
 - do not mix a second general-purpose icon set into MVP product UI
 
 ## Accessibility Baseline
 
 - Meet WCAG AA contrast for text, controls, and meaningful state indicators.
-- The initial text and filled-state pairs in this document exceed `4.5:1`;
-  recheck them if KAN-72 converts or adjusts their values.
+- Validate text pairs at `4.5:1` and UI/focus boundaries at `3:1` whenever the
+  preset or Sandicts status extensions change.
 - Keep keyboard focus visible through `ring-ring`.
 - Do not remove outlines without an equivalent visible focus treatment.
 - Use semantic HTML before adding ARIA.
@@ -424,26 +411,21 @@ sequences are outside the MVP.
 - Avoid decorative stock imagery in empty and error states.
 - Treat marketing art direction and a complete logo system as post-MVP work.
 
-## Implementation Handoff To KAN-72
+## Implementation Contract From KAN-144
 
-KAN-72 should:
+KAN-144 establishes:
 
-1. initialize shadcn/ui with CSS variables and existing `@/*` aliases
-2. expose the core semantic and status tokens through Tailwind `@theme inline`
-3. replace draft palette-facing utilities with semantic utilities
-4. set the MVP dark theme and derived radius scale
-5. preserve Geist Sans and Geist Mono
-6. add only the first primitives needed to prove layout and form usage
-7. demonstrate a button, field, surface, alert, and lucide-react icon through
-   existing shared or shell UI
-8. keep table, dialog, alert-dialog, and feature-specific primitives
-   demand-driven
-9. verify keyboard focus, contrast, loading, disabled, and invalid states
+1. the complete preset configuration and both token maps
+2. the dark-only product activation
+3. IBM Plex Sans, Montserrat, and system monospace fallbacks
+4. the reconciled local primitives and semantic status extensions
+5. Phosphor as the only general-purpose interface icon set
+6. shared runtime/prototype token synchronization
+7. keyboard focus, contrast, loading, disabled, invalid, and semantic-state
+   validation
 
-The current `sand`, `mint`, `water`, `surface`, `surface-raised`, and `line`
-variables are implementation drafts. KAN-72 should migrate their consumers to
-the semantic contract in this document rather than preserving palette names as
-the shared component API.
+Later features must consume this contract rather than reintroducing palette
+names, legacy font stacks, or a second interface icon library.
 
 ## Deferred Until After MVP
 
@@ -454,7 +436,6 @@ the shared component API.
 - advanced motion and transitions
 - a complete component catalog
 - speculative Academy, Admin App, tournament, or Web3 visual states
-- chart palettes without real chart requirements
 - multiple density themes or user-selectable compact mode
 
 ## Review Checklist
@@ -466,7 +447,7 @@ Before approving shared visual work, confirm:
 - loading, empty, error, and success states are explicit
 - focus, contrast, and keyboard behavior remain visible
 - Organization density does not fork the component system
-- lucide-react icons are accessible and not used as the brand mark
+- Phosphor icons are accessible and not used as the brand mark
 - a post-MVP refinement has not entered the foundation by accident
 
 ## Implementation References

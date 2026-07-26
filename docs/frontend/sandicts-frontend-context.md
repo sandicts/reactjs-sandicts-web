@@ -56,7 +56,7 @@ Visual direction:
 
 - minimal scorpion logo
 - dark background
-- primary color: `#F59E0B` (Sand Orange)
+- Stone neutral surfaces with Amber brand and action emphasis
 - energetic contrast
 - beach/lifestyle imagery when useful
 
@@ -65,7 +65,7 @@ Visual direction:
 Decided stack:
 
 - Next.js App Router with TypeScript
-- shadcn/ui with Tailwind CSS and lucide-react
+- shadcn/ui Radix Nova with Tailwind CSS and Phosphor Icons
 - TanStack Query for server state
 - Zod with React Hook Form for forms
 - OpenAPI client generated from the Nest Swagger contract

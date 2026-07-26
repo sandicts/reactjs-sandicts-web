@@ -146,7 +146,7 @@ destinations and order:
 
 Rules:
 
-- use a visible short label and a lucide-react icon for every destination
+- use a visible short label and a Phosphor icon for every destination
 - keep all five destinations in the same order across regular Player pages
 - derive the active destination from the current route
 - use the most specific matching route group so only one destination is current

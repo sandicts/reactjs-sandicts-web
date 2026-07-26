@@ -149,7 +149,7 @@ for the actual user workflow.
 Decided stack:
 
 - Next.js App Router with TypeScript
-- shadcn/ui with Tailwind CSS and lucide-react
+- shadcn/ui Radix Nova with Tailwind CSS and Phosphor Icons
 - TanStack Query for server state
 - Zod with React Hook Form for forms
 - Orval as the initial MVP OpenAPI generator for a client generated from the
@@ -803,7 +803,7 @@ Capture the user's frontend rules here until they are moved into stable docs.
 Decided:
 
 - [x] Decide framework: Next.js App Router with TypeScript.
-- [x] Decide UI component strategy: shadcn/ui with Tailwind CSS and lucide-react.
+- [x] Decide UI component strategy: shadcn/ui Radix Nova with Tailwind CSS and Phosphor Icons.
 - [x] Decide server-state strategy: TanStack Query.
 - [x] Decide form strategy: Zod with React Hook Form.
 - [x] Decide API client strategy: generated OpenAPI client from Nest Swagger.
