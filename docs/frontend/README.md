@@ -31,17 +31,20 @@ Read them in this order for most frontend work:
     loading, empty, error, unauthenticated, forbidden, or not-found UI
 13. `prototypes/player-profile-selectors/README.md` when implementing or
     reviewing the Player profile main-sport and level selectors
-14. `prototypes/auth-sign-in/README.md` when implementing or reviewing sign-in,
+14. `prototypes/player-profile-onboarding/README.md` when implementing or
+    reviewing first-time Player profile onboarding, abandonment, validation,
+    or post-completion routing
+15. `prototypes/auth-sign-in/README.md` when implementing or reviewing sign-in,
     Google One Tap fallback, expired-session feedback, or auth failure UI
-15. `prototypes/auth-magic-link/README.md` when implementing or reviewing
+16. `prototypes/auth-magic-link/README.md` when implementing or reviewing
     magic-link email entry, request, resend, verification, or recovery UI
-16. `prototypes/shared/README.md` when changing runtime visual tokens or adding
+17. `prototypes/shared/README.md` when changing runtime visual tokens or adding
     a static prototype
-17. `sandicts-frontend-planning.md`
-18. `sandicts-mvp-delivery-roadmap.md`
-19. `sandicts-page-functional-spec.md` when page behavior, routes, permissions,
+18. `sandicts-frontend-planning.md`
+19. `sandicts-mvp-delivery-roadmap.md`
+20. `sandicts-page-functional-spec.md` when page behavior, routes, permissions,
     or user flows matter
-20. `sandicts-mvp-screens-spec.md` only for detailed screen-state work
+21. `sandicts-mvp-screens-spec.md` only for detailed screen-state work
 
 Files under `discovery/` are historical inputs. Use them for comparison or
 audit work, then prefer the current docs above for decisions.
