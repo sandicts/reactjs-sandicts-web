@@ -12,7 +12,28 @@ const targetPath = resolve(
 const checkOnly = process.argv.includes("--check");
 const startMarker = "/* visual-system:tokens:start */";
 const endMarker = "/* visual-system:tokens:end */";
-const prototypeDirectories = ["app-shells", "global-states", "auth-sign-in"];
+const prototypeConsumers = [
+  {
+    directory: "app-shells",
+    styleEntry: "styles.css",
+    styleHref: "./styles.css",
+  },
+  {
+    directory: "global-states",
+    styleEntry: "styles.css",
+    styleHref: "./styles.css",
+  },
+  {
+    directory: "auth-sign-in",
+    styleEntry: "styles.css",
+    styleHref: "./styles.css",
+  },
+  {
+    directory: "auth-magic-link",
+    styleEntry: "../auth-sign-in/styles.css",
+    styleHref: "../auth-sign-in/styles.css",
+  },
+];
 
 function extractTokenBlock(source) {
   const start = source.indexOf(startMarker);
@@ -40,14 +61,14 @@ ${tokenBlock}
 
 async function validatePrototypeConsumers() {
   const results = await Promise.all(
-    prototypeDirectories.map(async (directory) => {
+    prototypeConsumers.map(async ({ directory, styleEntry, styleHref }) => {
       const basePath = resolve(
         projectRoot,
         "docs/frontend/prototypes",
         directory,
       );
       const [styles, document] = await Promise.all([
-        readFile(resolve(basePath, "styles.css"), "utf8"),
+        readFile(resolve(basePath, styleEntry), "utf8"),
         readFile(resolve(basePath, "index.html"), "utf8"),
       ]);
 
@@ -56,6 +77,7 @@ async function validatePrototypeConsumers() {
         importsSharedTokens: styles.includes(
           '@import url("../shared/sandicts-visual-tokens.css");',
         ),
+        linksStyleEntry: document.includes(`href="${styleHref}"`),
         activatesDarkTheme: /<html\b[^>]*\bclass=["'][^"']*\bdark\b/.test(
           document,
         ),
@@ -63,8 +85,8 @@ async function validatePrototypeConsumers() {
     }),
   );
   const invalid = results.filter(
-    ({ importsSharedTokens, activatesDarkTheme }) =>
-      !importsSharedTokens || !activatesDarkTheme,
+    ({ importsSharedTokens, linksStyleEntry, activatesDarkTheme }) =>
+      !importsSharedTokens || !linksStyleEntry || !activatesDarkTheme,
   );
 
   if (invalid.length > 0) {

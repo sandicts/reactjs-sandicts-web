@@ -262,7 +262,7 @@ Regras:
 - mostrar feedback neutro quando o usuario cancelar o login Google explicito
 - seguir supressao, persistencia, privacidade e restricoes de navegador de
   `docs/frontend/sandicts-google-one-tap-experience.md`
-- Google Sign-In, One Tap e o futuro consumo de magic link devem hidratar a
+- Google Sign-In, One Tap e o consumo de magic link devem hidratar a
   mesma sessao e usar o mesmo resolvedor pos-login
 - refresh passivo mantem uma rota publica regular, verifica a propria rota
   protegida e executa o resolvedor quando a rota atual e `/sign-in`
@@ -274,10 +274,14 @@ Regras:
 - nunca repetir automaticamente um comando cujo resultado e desconhecido
 - seguir layout, copy, acoes e estados de
   `docs/frontend/prototypes/auth-sign-in/README.md`
+- seguir entrada, envio, reenvio, verificacao e recuperacao de magic link de
+  `docs/frontend/prototypes/auth-magic-link/README.md`
 
 Dependencias de backend:
 
 - `POST /auth/google/sign-in`
+- `POST /auth/magic-link/request`
+- `POST /auth/magic-link/consume`
 - endpoint de sessao atual
 - politica de CORS/cookies
 
@@ -285,6 +289,115 @@ Referencia de prototipo:
 
 - `docs/frontend/prototypes/auth-sign-in/index.html`
 - `docs/frontend/prototypes/auth-sign-in/README.md`
+- `docs/frontend/prototypes/auth-magic-link/index.html`
+- `docs/frontend/prototypes/auth-magic-link/README.md`
+
+### Tela: Magic Link
+
+Rotas:
+
+- solicitacao e confirmacao dentro de `/sign-in`
+- consumo em `/sign-in/magic-link`
+
+Usuarios:
+
+- visitante
+- usuario recuperando uma sessao expirada
+- pessoa que abriu um link valido, invalido, expirado, usado ou substituido
+
+Objetivo:
+
+- permitir entrada por e-mail sem senha
+- confirmar solicitacao sem revelar existencia ou estado de conta
+- orientar reenvio e recuperacao
+- consumir o token uma vez e delegar o destino ao resolvedor pos-login
+
+Conteudo principal:
+
+- Google primeiro como metodo explicito ja selecionado
+- divisor neutro `ou continue por e-mail`
+- campo `E-mail`
+- acao `Enviar link`
+- confirmacao generica sem repetir o endereco
+- boundaries especificas para falhas de solicitacao e consumo
+
+Acoes:
+
+- enviar link
+- corrigir ou trocar e-mail
+- reenviar depois do cooldown local
+- usar Google quando seguro
+- solicitar novo link
+- repetir manualmente uma operacao recuperavel
+- voltar para uma area publica
+
+Estados de solicitacao:
+
+- entrada comum
+- entrada com aviso de sessao expirada
+- e-mail invalido
+- envio em andamento
+- confirmacao e cooldown local
+- reenvio disponivel
+- reenvio em andamento
+- `rate_limited`
+- `email_delivery_unavailable`
+- falha de rede, timeout ou `internal_error`
+
+Estados de consumo:
+
+- verificacao em andamento
+- `invalid_magic_link_token`
+- `magic_link_expired`
+- `magic_link_already_used`
+- `magic_link_superseded`
+- `rate_limited`
+- `account_auth_forbidden`
+- falha de rede, timeout ou `internal_error`
+- sessao criada e handoff pos-login
+
+Mapeamento da API:
+
+| Endpoint | Resultado | Estado |
+| --- | --- | --- |
+| request | `202` | confirmacao e cooldown |
+| request | `400 validation_error` | e-mail invalido |
+| request | `429 rate_limited` | limite de solicitacoes |
+| request | `503 email_delivery_unavailable` | envio indisponivel |
+| request | `500 internal_error` ou falha de rede | envio nao confirmado |
+| consume | `200` | sessao comum e resolvedor pos-login |
+| consume | `400 validation_error` ou `401 invalid_magic_link_token` | link invalido |
+| consume | `403 account_auth_forbidden` | boundary de autenticacao proibida |
+| consume | `409 magic_link_already_used` | link ja utilizado |
+| consume | `409 magic_link_superseded` | link substituido |
+| consume | `410 magic_link_expired` | link expirado |
+| consume | `429 rate_limited` | limite de verificacoes |
+| consume | `500 internal_error` ou falha de rede | verificacao interrompida |
+
+Regras:
+
+- nao repetir o e-mail na confirmacao, URL, storage, analytics ou logs
+- nao revelar se uma conta existe, foi criada, esta bloqueada ou tem acesso
+- manter apenas um cooldown local de 60 segundos para reenvio acidental
+- nao exibir countdown autoritativo para `429` sem sinal contratual
+- orientar que uma nova solicitacao substitui links ativos anteriores
+- remover o token da URL com replace antes do consume e mante-lo somente em
+  memoria transitoria
+- nunca montar One Tap na rota de consumo
+- nao repetir automaticamente request ou consume com resultado desconhecido
+- nao chamar link expirado de sessao expirada
+- nao expor provider, payload, mensagem bruta, request ID, account ID ou
+  session ID
+- hidratar a mesma sessao usada por Google e delegar o destino a
+  `docs/frontend/sandicts-post-login-routing.md`
+- seguir `docs/frontend/prototypes/auth-magic-link/README.md`
+
+Referencias de prototipo:
+
+- `docs/frontend/prototypes/auth-magic-link/index.html?state=email-entry`
+- `docs/frontend/prototypes/auth-magic-link/index.html?state=sent-cooldown`
+- `docs/frontend/prototypes/auth-magic-link/index.html?state=expired-link`
+- `docs/frontend/prototypes/auth-magic-link/index.html?state=routing`
 
 ### Tela: Sessao Expirada
 

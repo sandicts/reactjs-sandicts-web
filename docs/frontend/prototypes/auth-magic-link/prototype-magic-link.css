@@ -1,0 +1,162 @@
+.method-stack {
+  margin-top: 1.4rem;
+}
+
+.method-stack .provider-region {
+  margin-top: 0;
+}
+
+.auth-divider {
+  display: grid;
+  grid-template-columns: minmax(1rem, 1fr) auto minmax(1rem, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.2rem 0;
+}
+
+.auth-divider span {
+  height: 1px;
+  background: var(--border);
+}
+
+.auth-divider p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.email-form {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.email-form label {
+  color: var(--foreground);
+  font-size: 0.85rem;
+  font-weight: 750;
+}
+
+.email-form input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--input);
+  border-radius: calc(var(--radius) * 0.8);
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.email-form input::placeholder {
+  color: var(--muted-foreground);
+  opacity: 0.8;
+}
+
+.email-form input[aria-invalid="true"] {
+  border-color: var(--destructive);
+}
+
+.email-form input:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.field-hint,
+.field-error {
+  margin: 0;
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.field-hint {
+  color: var(--muted-foreground);
+}
+
+.field-error {
+  color: var(--destructive);
+  font-weight: 650;
+}
+
+.email-submit {
+  width: 100%;
+  margin-top: 0.45rem;
+}
+
+.action-loader {
+  animation: spin 800ms linear infinite;
+}
+
+.sent-panel {
+  display: grid;
+  justify-items: center;
+  margin-top: 1.4rem;
+  text-align: center;
+}
+
+.sent-panel__icon {
+  display: grid;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 1rem;
+  place-items: center;
+  border: 1px solid var(--success-border);
+  border-radius: calc(var(--radius) * 1.4);
+  background: var(--success-subtle);
+  color: var(--success);
+}
+
+.sent-panel__status {
+  max-width: 28rem;
+  min-height: 1.25rem;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.sent-panel__actions {
+  display: grid;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 1.25rem;
+}
+
+.sent-panel__actions .button {
+  width: 100%;
+}
+
+.boundary-state__status {
+  min-height: 1.25rem;
+  font-size: 0.8rem;
+}
+
+.boundary-state.is-busy .boundary-state__icon .icon {
+  animation: spin 800ms linear infinite;
+}
+
+.boundary-state[data-tone="success"] .boundary-state__icon {
+  border-color: var(--success-border);
+  background: var(--success-subtle);
+  color: var(--success);
+}
+
+.auth-card[aria-busy="true"] {
+  border-color: var(--info-border);
+}
+
+@media (min-width: 36rem) {
+  .sent-panel__actions {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 35.999rem) {
+  .auth-divider {
+    gap: 0.55rem;
+  }
+
+  .auth-divider p {
+    max-width: 9rem;
+  }
+}
