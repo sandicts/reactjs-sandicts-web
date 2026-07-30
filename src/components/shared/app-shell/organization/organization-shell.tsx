@@ -1,8 +1,8 @@
 "use client";
 
+import { BrandLink } from "@/components/shared/brand";
 import { AppShellNavigation } from "../navigation/app-shell-navigation";
 import { AuthenticatedTopbar } from "../chrome/authenticated-topbar";
-import { BrandLink } from "../chrome/brand-link";
 import { SkipLink } from "../chrome/skip-link";
 import { OrganizationNavigationDrawer } from "./components/organization-navigation-drawer";
 import { useOrganizationShell } from "./hooks/use-organization-shell";

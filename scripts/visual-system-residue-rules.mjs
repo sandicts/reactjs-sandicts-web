@@ -1,14 +1,17 @@
-const deferredBrandFiles = new Set([
-  "docs/frontend/sandicts-frontend-planning.md",
+const canonicalBrandFiles = new Set([
   "public/sandicts-mark.svg",
-  "src/lib/seo/social-image.tsx",
-  "src/lib/visual-system/static-colors.ts",
+  "src/app/brand-variants.generated.css",
+  "src/app/icon.svg",
+  "src/config/brand.ts",
+  "docs/frontend/prototypes/shared/sandicts-brand-tokens.css",
 ]);
 
 const legacyIconGlyphPattern =
   /<(?:span|div)\b[^>]*\baria-hidden=["']true["'][^>]*>\s*([⌕↗!⌄●⌂▣◎○☰▦◷$◇＋×›])\s*<\/(?:span|div)>/gu;
 const legacyFoundationColorPattern =
   /#(?:071211|f59e0b|34d399|0f766e|14b8a6|2dd4bf)\b/giu;
+const legacyMarkGeometryPattern = /M25 58c8 10 31 11 43 0|M69 29l7-13/giu;
+const rawVisualValuePattern = /#[\da-f]{3,8}\b|\b(?:rgb|hsl|oklch)\(/giu;
 
 function createViolation(filePath, rule, match) {
   return {
@@ -57,6 +60,38 @@ function inspectVisualSystemResidues(filePath, contents) {
         "sand-orange-terminology",
         /\bSand Orange\b/giu,
       ),
+      ...collectMatches(
+        normalizedPath,
+        contents,
+        "obsolete-scorpion-brand",
+        /\bscorpion\b/giu,
+      ),
+    );
+  }
+
+  if (normalizedPath.startsWith("src/")) {
+    violations.push(
+      ...collectMatches(
+        normalizedPath,
+        contents,
+        "direct-public-brand-asset",
+        /["']\/sandicts-mark\.svg["']/giu,
+      ),
+    );
+  }
+
+  if (
+    (normalizedPath.startsWith("src/components/") ||
+      normalizedPath.startsWith("src/features/")) &&
+    !canonicalBrandFiles.has(normalizedPath)
+  ) {
+    violations.push(
+      ...collectMatches(
+        normalizedPath,
+        contents,
+        "raw-feature-visual-value",
+        rawVisualValuePattern,
+      ),
     );
   }
 
@@ -71,7 +106,7 @@ function inspectVisualSystemResidues(filePath, contents) {
     );
   }
 
-  if (!deferredBrandFiles.has(normalizedPath)) {
+  if (!canonicalBrandFiles.has(normalizedPath)) {
     violations.push(
       ...collectMatches(
         normalizedPath,
@@ -82,7 +117,16 @@ function inspectVisualSystemResidues(filePath, contents) {
     );
   }
 
+  violations.push(
+    ...collectMatches(
+      normalizedPath,
+      contents,
+      "obsolete-brand-geometry",
+      legacyMarkGeometryPattern,
+    ),
+  );
+
   return violations;
 }
 
-export { deferredBrandFiles, inspectVisualSystemResidues };
+export { canonicalBrandFiles, inspectVisualSystemResidues };

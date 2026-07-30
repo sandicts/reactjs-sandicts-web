@@ -73,8 +73,20 @@ test("uses complete Phosphor sprites without legacy glyph placeholders", async (
           document.querySelectorAll('[aria-hidden="true"]'),
           (element) => element.textContent?.trim() ?? "",
         ).filter((text) => legacyIconGlyphs.some((glyph) => glyph === text));
+        const brandImages = Array.from(
+          document.querySelectorAll<HTMLImageElement>(
+            'img[src$="public/sandicts-mark.svg"]',
+          ),
+          (image) => ({
+            complete: image.complete,
+            naturalWidth: image.naturalWidth,
+          }),
+        );
 
         return {
+          brandImages,
+          brandNameCount: document.querySelectorAll(".brand-name").length,
+          brandVariant: document.documentElement.dataset.brandVariant,
           horizontalOverflow:
             document.documentElement.scrollWidth - window.innerWidth,
           iconCount: document.querySelectorAll("svg.icon use").length,
@@ -99,6 +111,14 @@ test("uses complete Phosphor sprites without legacy glyph placeholders", async (
         result.horizontalOverflow,
         `${prototype.name}:${viewport.width}px`,
       ).toBeLessThanOrEqual(0);
+      expect(result.brandVariant).toBe("default");
+      expect(result.brandNameCount).toBeGreaterThan(0);
+      expect(result.brandImages.length).toBeGreaterThan(0);
+      expect(
+        result.brandImages.every(
+          (image) => image.complete && image.naturalWidth > 0,
+        ),
+      ).toBe(true);
     }
   }
 

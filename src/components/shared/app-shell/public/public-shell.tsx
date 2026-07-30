@@ -1,9 +1,9 @@
 import { MagnifyingGlassIcon } from "@phosphor-icons/react/ssr";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { BrandLink } from "@/components/shared/brand";
 import { Button } from "@/components/ui/button";
 import { APP_ROUTES } from "@/lib/routes/app-routes";
-import { BrandLink } from "../chrome/brand-link";
 import { SkipLink } from "../chrome/skip-link";
 import { publicShellStyles } from "./public-shell.styles";
 import type { PublicShellProps } from "./public-shell.types";

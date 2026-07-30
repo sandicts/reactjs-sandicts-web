@@ -14,8 +14,7 @@ const prototypeStyles = {
   ),
   headerInner:
     "mx-auto flex min-h-16 w-full max-w-6xl items-center justify-between gap-4 px-4 min-[48rem]:px-6",
-  brand:
-    "inline-flex items-center gap-2 font-heading font-semibold tracking-tight",
+  brand: "text-brand",
   scenarioArea: "mx-auto w-full max-w-6xl px-4 pt-4 min-[48rem]:px-6",
   scenarioPanel: cn(
     "grid gap-3 rounded-xl border border-dashed border-warning-border",

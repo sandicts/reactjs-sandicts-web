@@ -3,6 +3,11 @@
 `sandicts-visual-tokens.css` is generated from the canonical token block in
 `src/app/globals.css`.
 
+Brand-specific tokens are generated from `src/config/brand.ts` by
+`scripts/sync-brand-system.mjs`. The shared visual-token stylesheet imports
+`sandicts-brand-tokens.css`, so standalone prototypes receive the variant
+contract without copying values locally.
+
 Prototype SVG sprites are generated from
 `scripts/prototype-icon-manifest.mjs` using the installed
 `@phosphor-icons/react` package. The generated blocks stay inline so every

@@ -2,6 +2,7 @@
   "name": "reactjs-sandicts-web",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "packageManager": "npm@11.13.0",
   "engines": {
     "node": ">=24 <25",
@@ -16,13 +17,15 @@
     "api:check": "npm run api:generate && git diff --exit-code -- src/lib/api/generated/sandicts-api",
     "ui:add": "shadcn add",
     "ui:info": "shadcn info",
+    "brand:sync": "node scripts/sync-brand-system.mjs",
+    "brand:check": "node scripts/sync-brand-system.mjs --check",
     "visual-system:tokens:sync": "node scripts/sync-visual-system.mjs",
     "visual-system:tokens:check": "node scripts/sync-visual-system.mjs --check",
     "visual-system:icons:sync": "node scripts/sync-prototype-icons.mjs",
     "visual-system:icons:check": "node scripts/sync-prototype-icons.mjs --check",
     "visual-system:residues:check": "node scripts/check-visual-system-residues.mjs",
-    "visual-system:sync": "npm run visual-system:tokens:sync && npm run visual-system:icons:sync",
-    "visual-system:check": "npm run visual-system:tokens:check && npm run visual-system:icons:check && npm run visual-system:residues:check",
+    "visual-system:sync": "npm run brand:sync && npm run visual-system:tokens:sync && npm run visual-system:icons:sync",
+    "visual-system:check": "npm run brand:check && npm run visual-system:tokens:check && npm run visual-system:icons:check && npm run visual-system:residues:check",
     "typecheck": "tsc --noEmit",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
@@ -36,6 +39,7 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
+    "@fontsource/roboto": "^5.3.0",
     "@hookform/resolvers": "^5.4.0",
     "@phosphor-icons/react": "^2.1.10",
     "@tanstack/react-query": "^5.101.0",

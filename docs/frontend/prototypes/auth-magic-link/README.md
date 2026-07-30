@@ -71,7 +71,7 @@ token.
 | KAN-81 expired-session decision | Session-expiry classification, copy, safe `returnTo`, and history behavior |
 | KAN-82 post-login routing decision | Provider-independent destination resolution after successful consumption |
 | KAN-144 visual foundation | shadcn preset, Stone/Amber tokens, IBM Plex Sans, Montserrat, Phosphor, radius, and shared static token artifact |
-| KAN-145 brand assets | Canonical scorpion mark and wordmark; KAN-104 references the shared asset path and does not fork logo artwork |
+| KAN-145 brand system | Canonical stylized `S`, Roboto brand name, variant registry, and generated shared asset |
 | Backend OpenAPI | Request and consume HTTP status and error-code contract |
 | Generated Orval client | Typed frontend transport functions and error unions |
 
@@ -416,8 +416,8 @@ landscape, long Portuguese copy, and reflow equivalent to `200%` zoom.
   Montserrat headings, small radius, and Phosphor production icons.
 - Magic-link CSS uses semantic status tokens instead of retaining the old
   teal/amber hexadecimal or RGB values.
-- KAN-104 references `public/sandicts-mark.svg`; KAN-145 owns replacing that
-  centralized asset with the approved scorpion without a local prototype copy.
+- KAN-104 references the generated `public/sandicts-mark.svg` and renders
+  `SANDICTS` as text in Roboto without a local artwork copy.
 
 ## Accessibility And Focus
 

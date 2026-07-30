@@ -1,8 +1,8 @@
 "use client";
 
+import { BrandLink } from "@/components/shared/brand";
 import { AppShellNavigation } from "../navigation/app-shell-navigation";
 import { AuthenticatedTopbar } from "../chrome/authenticated-topbar";
-import { BrandLink } from "../chrome/brand-link";
 import { SkipLink } from "../chrome/skip-link";
 import { usePlayerShell } from "./hooks/use-player-shell";
 import { playerShellStyles } from "./player-shell.styles";
