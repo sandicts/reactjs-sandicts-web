@@ -342,11 +342,15 @@ Needed decisions:
 
 Current direction from `sandicts-frontend-context.md`:
 
-- minimal scorpion logo
+- stylized `S` mark through the shared brand system
+- `SANDICTS` text in Roboto
 - dark background
-- primary color `#F59E0B`
+- Stone/Amber semantic tokens with variant-driven brand aliases
 - energetic contrast
 - beach/lifestyle imagery when useful
+
+KAN-145 centralizes the active artwork and theme. Adding a seasonal variant
+must not require edits in feature screens.
 
 ### Navigation
 

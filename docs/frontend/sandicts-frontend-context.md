@@ -54,11 +54,16 @@ Core idea:
 
 Visual direction:
 
-- minimal scorpion logo
+- stylized `S` mark with transparent, scalable vector geometry
+- `SANDICTS` rendered as text in Roboto
 - dark background
 - Stone neutral surfaces with Amber brand and action emphasis
 - energetic contrast
 - beach/lifestyle imagery when useful
+
+Brand geometry, the active variant, and brand-specific semantic colors are
+centralized by KAN-145. Feature screens consume shared brand primitives rather
+than importing or redrawing the mark.
 
 ## Frontend Stack Direction
 

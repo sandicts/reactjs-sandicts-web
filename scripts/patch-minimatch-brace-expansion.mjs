@@ -6,8 +6,9 @@ import { dirname, resolve } from "node:path";
 // exposes a named `expand` export, while minimatch 3 expects the legacy module
 // itself to be callable. Remove this script when no minimatch 3 installation
 // remains in the supported ESLint/plugin tree.
-const legacyImport = "var expand = require('brace-expansion')";
 const patchedImport = "var expand = require('brace-expansion').expand";
+const compatibleImportPattern =
+  /var expand = require\('brace-expansion'\)(?:\.expand)*/;
 let patchedPackages = 0;
 
 for await (const minimatchPackagePath of glob(
@@ -27,19 +28,24 @@ for await (const minimatchPackagePath of glob(
   );
   const minimatchSource = await readFile(minimatchEntryPath, "utf8");
 
-  if (
-    !minimatchSource.includes(legacyImport) &&
-    !minimatchSource.includes(patchedImport)
-  ) {
+  if (!compatibleImportPattern.test(minimatchSource)) {
     throw new Error(
       `Could not find the expected brace-expansion import in ${minimatchPackagePath}.`,
     );
   }
 
-  if (minimatchSource.includes(legacyImport)) {
+  if (!minimatchSource.includes(patchedImport)) {
     await writeFile(
       minimatchEntryPath,
-      minimatchSource.replace(legacyImport, patchedImport),
+      minimatchSource.replace(compatibleImportPattern, patchedImport),
+      "utf8",
+    );
+  } else if (
+    minimatchSource.match(compatibleImportPattern)?.[0] !== patchedImport
+  ) {
+    await writeFile(
+      minimatchEntryPath,
+      minimatchSource.replace(compatibleImportPattern, patchedImport),
       "utf8",
     );
   }

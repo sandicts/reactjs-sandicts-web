@@ -7,10 +7,10 @@ import {
   SignInIcon,
   WarningCircleIcon,
 } from "@phosphor-icons/react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller } from "react-hook-form";
+import { BrandLockup } from "@/components/shared/brand";
 import { LoadingRegion } from "@/components/shared/loading-region/loading-region";
 import { PageState } from "@/components/shared/page-state/page-state";
 import { PendingButton } from "@/components/shared/pending-button/pending-button";
@@ -370,16 +370,7 @@ function PlayerProfileOnboardingPrototype() {
 
       <header className={prototypeStyles.header}>
         <div className={prototypeStyles.headerInner}>
-          <div className={prototypeStyles.brand} aria-label="Sandicts">
-            <Image
-              src="/sandicts-mark.svg"
-              alt=""
-              width={36}
-              height={36}
-              priority
-            />
-            <span>Sandicts</span>
-          </div>
+          <BrandLockup className={prototypeStyles.brand} markSize={36} />
           <Button
             ref={exitButtonRef}
             type="button"

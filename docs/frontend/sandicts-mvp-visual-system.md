@@ -405,12 +405,22 @@ sequences are outside the MVP.
 
 ## Image And Brand Asset Direction
 
-- Use the Sandicts mark for brand recognition in shells and entry surfaces.
+- Use the canonical stylized `S` through `BrandMark`, `BrandLockup`, or
+  `BrandLink` in runtime surfaces.
+- Render `SANDICTS` as text in Roboto through `BrandName`; keep IBM Plex Sans
+  and Montserrat for interface content.
+- Keep the base mark flat, transparent, and driven by `currentColor`.
+- Restrict glow to large expressive surfaces and social imagery.
+- Change the active artwork and semantic colors through
+  `src/config/brand.ts`, then run `npm run brand:sync`.
+- Treat `public/sandicts-mark.svg`, `src/app/icon.svg`, and both generated
+  brand-token stylesheets as generated artifacts.
 - Use beach or sport photography only when it contributes context or discovery
   value.
 - Do not require photography for operational Organization workflows.
 - Avoid decorative stock imagery in empty and error states.
-- Treat marketing art direction and a complete logo system as post-MVP work.
+- Treat a complete corporate brand manual and marketing campaign as post-MVP
+  work.
 
 ## Implementation Contract From KAN-144
 

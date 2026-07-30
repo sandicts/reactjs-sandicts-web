@@ -1,5 +1,6 @@
 import { IBM_Plex_Sans, Montserrat } from "next/font/google";
 import { setRequestLocale } from "next-intl/server";
+import { activeBrandVariantId } from "@/config/brand";
 import { DEFAULT_LOCALE } from "@/i18n/config";
 import { I18nClientProvider } from "@/i18n/i18n-client-provider";
 import messages from "@/i18n/messages/pt-BR.json";
@@ -37,6 +38,7 @@ export default function RootLayout({
     <html
       lang={DEFAULT_LOCALE}
       className={`${ibmPlexSans.variable} ${montserrat.variable} dark h-full antialiased`}
+      data-brand-variant={activeBrandVariantId}
     >
       <body className="flex min-h-full flex-col">
         <I18nClientProvider locale={DEFAULT_LOCALE} messages={messages}>

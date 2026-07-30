@@ -1,5 +1,5 @@
+import { BrandLink } from "@/components/shared/brand";
 import type { AuthenticatedTopbarProps } from "./authenticated-topbar.types";
-import { BrandLink } from "./brand-link";
 import { ContextSwitcher } from "../context/context-switcher";
 
 function AuthenticatedTopbar({
@@ -12,8 +12,8 @@ function AuthenticatedTopbar({
     <header className="sticky top-0 z-30 flex min-h-20 items-center gap-3 border-b border-border bg-background/95 px-4 py-3 backdrop-blur-sm sm:px-6">
       {menuTrigger}
       {menuTrigger ? null : (
-        <div className="md:hidden [&_span]:hidden">
-          <BrandLink />
+        <div className="md:hidden">
+          <BrandLink compact />
         </div>
       )}
       <div className="min-w-0 flex-1">
