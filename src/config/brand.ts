@@ -1,4 +1,4 @@
-import type { BrandArtworkId } from "../lib/brand/brand-artwork.ts";
+import type { BrandArtworkId } from "../lib/brand/brand-artwork";
 
 type BrandThemeTokens = Readonly<{
   brand: string;
