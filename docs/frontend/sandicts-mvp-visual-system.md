@@ -248,7 +248,8 @@ Rules:
 - loading buttons preserve their width, expose busy state, and prevent duplicate
   submission
 - disabled buttons are not a substitute for explaining unmet requirements
-- destructive actions must not use the primary Sand Orange treatment
+- destructive actions must use the `destructive` treatment rather than the
+  primary action treatment
 
 ### Forms
 

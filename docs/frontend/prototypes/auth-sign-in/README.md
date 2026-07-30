@@ -427,7 +427,7 @@ visual shell remains the app-shell and global-state prototypes.
 - Busy regions expose concise status text and `aria-busy`.
 - Decorative skeletons and icons remain hidden from assistive technology.
 - Do not rely on color alone for status.
-- Preserve the Sand Orange focus indicator.
+- Preserve the shared semantic `ring` focus indicator.
 - Remove hidden controls from the focus order.
 - Respect reduced motion.
 - Verify the runtime provider iframe/button with keyboard and assistive
