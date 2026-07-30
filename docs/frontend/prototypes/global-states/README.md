@@ -155,7 +155,7 @@ but those combinations do not create new product requirements.
 
 Non-loading state composition uses:
 
-1. optional Lucide-direction icon
+1. optional Phosphor icon generated from the shared prototype manifest
 2. short state category label
 3. direct title
 4. one useful explanatory sentence
@@ -336,7 +336,7 @@ Rules:
 | Skeletons | Decorative and hidden from assistive technology |
 | Errors | Assertive announcement only when a new interactive failure appears |
 | Icons | Decorative unless the icon itself is the named control |
-| Focus | Visible Sand Orange indicator and logical source order |
+| Focus | Visible semantic `ring` indicator and logical source order |
 | Hidden UI | `hidden` or unmounted, never merely transparent |
 | Color | Text or icon accompanies every semantic color |
 | Motion | Reduced-motion preference removes shimmer and nonessential transitions |
@@ -478,7 +478,7 @@ Recommended order:
 - Keep forbidden distinct from unauthenticated.
 - Treat privacy-safe not found as neutral.
 - Keep action loading inside the initiating control.
-- Use local SVGs following Lucide direction in the prototype.
+- Generate local SVG symbols from the shared Phosphor prototype manifest.
 - Keep the prototype dependency-free and directly openable.
 - Split JavaScript into catalog, rendering, and orchestration boundaries instead
   of growing one prototype script.

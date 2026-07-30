@@ -434,7 +434,7 @@ landscape, long Portuguese copy, and reflow equivalent to `200%` zoom.
 - Remove hidden methods and actions from the focus order.
 - Do not move focus into content that immediately unmounts.
 - Do not rely on color alone.
-- Preserve the Sand Orange focus indicator.
+- Preserve the shared semantic `ring` focus indicator.
 - Respect reduced motion.
 
 ## Privacy And Security

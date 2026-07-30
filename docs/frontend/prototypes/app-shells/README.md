@@ -211,7 +211,7 @@ Rules:
 | State | Prototype treatment |
 | --- | --- |
 | Selected navigation | Explicit text, contrast, and `aria-current="page"` |
-| Keyboard focus | Shared visible Sand Orange outline |
+| Keyboard focus | Shared visible semantic `ring` outline |
 | Empty | Explanation and relevant next action |
 | Forbidden | Reason plus a safe path to an allowed context |
 | Suspended | Status, operational consequence, and recovery information |

@@ -212,9 +212,9 @@ The friendly language should be welcoming but not excessively informal.
 | --- | --- | --- |
 | Default | Neutral border and surface | Neutral border and surface |
 | Hover | Subtle semantic hover surface and border change | Same treatment |
-| Focus visible | `2px` Sand Orange focus ring with sufficient offset | Same treatment |
+| Focus visible | `2px` semantic `ring` focus indicator with sufficient offset | Same treatment |
 | Pressed | Brief pressed surface/scale feedback | Same treatment |
-| Selected | Sand Orange border, subtle selected surface, and `CircleCheck` | Same treatment |
+| Selected | Semantic `primary` border, subtle selected surface, and `CheckCircle` | Same treatment |
 | Disabled | Muted surface and text, unavailable cursor, no hover treatment | Same treatment |
 
 Rules:
