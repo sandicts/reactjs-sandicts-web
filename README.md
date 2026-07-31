@@ -229,7 +229,9 @@ from screens.
 ## CI
 
 Pull requests targeting `developer`, `staging`, or `master` run the GitHub
-Actions `CI PR` workflow.
+Actions `CI PR` workflow. The same workflow is reusable by the deployment
+workflows so the exact post-merge SHA is validated before deployment without
+copying test commands into CD.
 
 The workflow uses Node.js from `.nvmrc`, npm cache keyed by `package-lock.json`,
 and validates:
@@ -268,13 +270,28 @@ Pull requests use:
 
 Vercel is the selected MVP frontend provider.
 
-- feature pull requests receive ephemeral Vercel previews with browser
-  authentication disabled and search indexing off
-- `staging` receives the stable preview custom domain and full-stack
-  authentication configuration
-- `master` is the Vercel Production branch
-- GitHub Actions remains the quality and API-contract gate
-- Vercel is the deployability and served-commit gate
+- feature, fix, and `developer` pushes do not create deployments
+- a successful reusable CI run for a `staging` push creates a Vercel Preview
+  deployment and assigns `preview.sandicts.com.br`
+- a successful reusable CI run for a `master` push creates a Vercel Production
+  deployment for `sandicts.com.br`
+- GitHub Actions is the only CI/CD orchestrator; the Vercel Git integration and
+  automatic Git deployments remain disabled
+- CD uses Vercel CLI `58.4.4`, `vercel pull`, `vercel build`, and prebuilt
+  deployments
+
+The deployment workflows are:
+
+```text
+.github/workflows/cd-vercel-preview.yml
+.github/workflows/cd-vercel-production.yml
+```
+
+Create GitHub Environments named `preview` and `production`. Store
+`VERCEL_TOKEN` as an environment secret, and configure `VERCEL_ORG_ID` and
+`VERCEL_PROJECT_ID` as GitHub variables. Runtime and build variables remain in
+the corresponding Vercel Preview and Production environments; do not commit
+their deployed values or generated `.vercel` files.
 
 The complete URL, CORS, cookie, variable, authentication, validation, and
 rollback contract lives in:

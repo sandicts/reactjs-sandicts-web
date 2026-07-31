@@ -68,8 +68,9 @@ Decided:
   contract adapter under `lib/api`, not the frontend application API
 - hydrate auth sessions on the client through the backend refresh cookie,
   in-memory access token storage, `GET /auth/me`, and TanStack Query
-- deploy the MVP Next.js frontend on Vercel with ephemeral pull request
-  previews, a stable `staging` preview origin, and `master` production
+- deploy the MVP Next.js frontend on Vercel exclusively through GitHub Actions
+  and pinned Vercel CLI, with no feature or `developer` deployments, a stable
+  `staging` preview origin, and `master` production
 
 Still open:
 

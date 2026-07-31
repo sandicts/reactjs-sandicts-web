@@ -11,6 +11,7 @@ on:
       - synchronize
       - reopened
       - edited
+  workflow_call:
 
 permissions:
   contents: read
@@ -19,7 +20,7 @@ env:
   NEXT_TELEMETRY_DISABLED: "1"
 
 concurrency:
-  group: ci-pr-${{ github.event.pull_request.number }}
+  group: ci-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -30,6 +31,7 @@ jobs:
 
     steps:
       - name: Validate branch naming, PR title, PR description, and PR target
+        if: github.event_name == 'pull_request'
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_BODY: ${{ github.event.pull_request.body }}
@@ -173,6 +175,19 @@ jobs:
             exit 1
           fi
 
+      - name: Validate reusable CI caller
+        if: github.event_name != 'pull_request'
+        run: |
+          if [[ "${{ github.event_name }}" != "push" ]]; then
+            echo "Reusable CI accepts only staging or master push callers."
+            exit 1
+          fi
+
+          if [[ "${{ github.ref_name }}" != "staging" && "${{ github.ref_name }}" != "master" ]]; then
+            echo "Invalid reusable CI caller branch: ${{ github.ref_name }}"
+            exit 1
+          fi
+
   quality:
     name: Quality
     runs-on: ubuntu-latest
@@ -250,7 +265,7 @@ jobs:
     needs: governance
     timeout-minutes: 15
     env:
-      OPENAPI_SCHEMA_URL: https://raw.githubusercontent.com/sandicts/nodejs-sandicts-api/${{ github.head_ref }}/openapi/sandicts-api.json
+      OPENAPI_SCHEMA_URL: https://raw.githubusercontent.com/sandicts/nodejs-sandicts-api/${{ github.head_ref || github.ref_name }}/openapi/sandicts-api.json
 
     steps:
       - name: Checkout
