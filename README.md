@@ -81,7 +81,11 @@ http://localhost:3000
 Configure the API URL with:
 
 ```env
+NEXT_PUBLIC_APP_ENV=local
 NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
+NEXT_PUBLIC_AUTH_ENABLED=true
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=
+NEXT_PUBLIC_GOOGLE_ONE_TAP_ENABLED=false
 ```
 
 Configure the absolute web origin used by canonical URLs, social metadata,
@@ -95,6 +99,11 @@ SEO_INDEXING_ENABLED=false
 Indexing is disabled by default. Enable it only for the public production
 deployment, together with a non-local HTTPS `WEB_ORIGIN`. Preview, test, and
 local environments should keep `SEO_INDEXING_ENABLED=false`.
+
+`NEXT_PUBLIC_APP_ENV` accepts `local`, `pr-preview`, `preview`, or
+`production`. Browser authentication is intentionally disabled in
+`pr-preview`; complete magic-link, Google, refresh-cookie, and logout validation
+runs against local or the stable preview environment.
 
 ## Scripts
 
@@ -174,6 +183,9 @@ Prefer accessible roles, names, labels, and observable behavior over CSS
 selectors, implementation details, or snapshots. Async Server Component flows
 belong in E2E coverage rather than jsdom component tests.
 
+Set `PLAYWRIGHT_BASE_URL` to run the same suite against an existing stable
+preview or production deployment without starting the local Next.js server.
+
 ## API Client
 
 API types and TanStack Query hooks are generated from the Nest API OpenAPI
@@ -251,6 +263,29 @@ Pull requests use:
 ```text
 .github/pull_request_template.md
 ```
+
+## Deployment
+
+Vercel is the selected MVP frontend provider.
+
+- feature pull requests receive ephemeral Vercel previews with browser
+  authentication disabled and search indexing off
+- `staging` receives the stable preview custom domain and full-stack
+  authentication configuration
+- `master` is the Vercel Production branch
+- GitHub Actions remains the quality and API-contract gate
+- Vercel is the deployability and served-commit gate
+
+The complete URL, CORS, cookie, variable, authentication, validation, and
+rollback contract lives in:
+
+```text
+docs/frontend/sandicts-deployment-environments.md
+```
+
+The current application does not require `vercel.json`. Keep platform
+configuration in Vercel project settings unless a reviewed requirement needs a
+versioned provider-specific file.
 
 ## Documentation
 

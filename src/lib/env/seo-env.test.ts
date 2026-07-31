@@ -53,6 +53,7 @@ describe("createSeoEnvironment", () => {
     (webOrigin) => {
       expect(() =>
         createSeoEnvironment({
+          appEnvironment: "production",
           indexingEnabled: "true",
           nodeEnvironment: "production",
           webOrigin,
@@ -64,6 +65,7 @@ describe("createSeoEnvironment", () => {
   it("accepts a public HTTPS origin for production indexing", () => {
     expect(
       createSeoEnvironment({
+        appEnvironment: "production",
         indexingEnabled: "true",
         nodeEnvironment: "production",
         webOrigin: "https://sandicts.com.br",
@@ -73,6 +75,20 @@ describe("createSeoEnvironment", () => {
       webOrigin: new URL("https://sandicts.com.br"),
     });
   });
+
+  it.each(["local", "pr-preview", "preview"])(
+    "rejects indexing in a non-production deployment build: %s",
+    (appEnvironment) => {
+      expect(() =>
+        createSeoEnvironment({
+          appEnvironment,
+          indexingEnabled: "true",
+          nodeEnvironment: "production",
+          webOrigin: "https://preview.sandicts.com.br",
+        }),
+      ).toThrow(/outside the production deployment/);
+    },
+  );
 });
 
 describe("isLocalHostname", () => {

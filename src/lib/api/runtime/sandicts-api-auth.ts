@@ -7,6 +7,7 @@ import { publicEnv } from "@/lib/env/public-env";
 import { parseSandictsApiError } from "./sandicts-api-error";
 
 const refreshAuthSessionPath = "/auth/refresh";
+const authPathPrefix = "/auth/";
 
 let inFlightRefreshAuthSession: Promise<boolean> | null = null;
 
@@ -14,7 +15,17 @@ function isRefreshAuthSessionUrl(url: string) {
   return readUrlPath(url) === refreshAuthSessionPath;
 }
 
+function isSandictsAuthUrl(url: string) {
+  return readUrlPath(url).startsWith(authPathPrefix);
+}
+
 async function refreshSandictsAuthSession() {
+  if (!publicEnv.authEnabled) {
+    clearAuthSession();
+
+    return false;
+  }
+
   inFlightRefreshAuthSession ??= executeRefreshAuthSession().finally(() => {
     inFlightRefreshAuthSession = null;
   });
@@ -106,6 +117,7 @@ function readUrlPath(url: string) {
 }
 
 export {
+  isSandictsAuthUrl,
   isRefreshAuthSessionUrl,
   refreshAuthSessionPath,
   refreshSandictsAuthSession,
