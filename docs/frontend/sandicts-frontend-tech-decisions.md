@@ -9,6 +9,7 @@ related:
   - docs/frontend/sandicts-frontend-planning.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-mvp-visual-system.md
+  - docs/frontend/sandicts-deployment-environments.md
   - docs/frontend/sandicts-expired-session-experience.md
   - docs/frontend/sandicts-post-login-routing.md
   - docs/frontend/sandicts-google-one-tap-experience.md
@@ -67,10 +68,11 @@ Decided:
   contract adapter under `lib/api`, not the frontend application API
 - hydrate auth sessions on the client through the backend refresh cookie,
   in-memory access token storage, `GET /auth/me`, and TanStack Query
+- deploy the MVP Next.js frontend on Vercel with ephemeral pull request
+  previews, a stable `staging` preview origin, and `master` production
 
 Still open:
 
-- deployment target
 - final route map
 - final navigation details for Player, Organization, Academy, and Admin App
   areas
@@ -101,8 +103,8 @@ Consequences:
 - local development runs the API and web app as separate processes
 - the API should keep using port `3000`; the frontend should use port `3001`
   locally
-- CORS, cookie/session behavior, and deployment URLs remain explicit follow-up
-  decisions
+- CORS, cookie/session behavior, and deployment URLs follow the environment
+  contract in `docs/frontend/sandicts-deployment-environments.md`
 - shared code packages should not be introduced until repeated cross-repo
   duplication creates a real maintenance cost
 
@@ -1320,13 +1322,10 @@ Suggested task titles:
 Resolve before completing the frontend foundation and first real API
 integration:
 
-- environment variable naming
 - E2E CI execution and the browser/device matrix beyond local Chromium
-- deployment target and preview environment strategy
 
 Resolve before first integrated auth implementation:
 
-- CORS and credentialed browser behavior in each environment
 - sign-out behavior
 
 Resolve before each page implementation:
@@ -1344,6 +1343,5 @@ This document does not decide:
 
 - exact Figma layouts
 - exact route map
-- deployment provider
 - final API endpoint names
 - business rules already owned by `sandicts/sandicts-docs`

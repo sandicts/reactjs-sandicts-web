@@ -1,6 +1,7 @@
 import { getAuthAccessToken } from "@/lib/auth/auth-session-store";
 import { publicEnv } from "@/lib/env/public-env";
 import {
+  isSandictsAuthUrl,
   isRefreshAuthSessionUrl,
   refreshSandictsAuthSession,
 } from "./sandicts-api-auth";
@@ -13,6 +14,12 @@ async function sandictsApiRequest<T>(
   url: string,
   options: RequestInit = {},
 ): Promise<T> {
+  if (!publicEnv.authEnabled && isSandictsAuthUrl(url)) {
+    throw new Error(
+      "Browser authentication is disabled for this deployment environment.",
+    );
+  }
+
   const targetUrl = buildSandictsApiUrl(url);
   const requestOptions = buildRequestOptions(options);
 

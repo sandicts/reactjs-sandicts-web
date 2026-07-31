@@ -1,6 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const localWebAppUrl = "http://localhost:3001";
+const configuredWebAppUrl = process.env.PLAYWRIGHT_BASE_URL?.trim();
+const webAppUrl = configuredWebAppUrl || localWebAppUrl;
 const localWebServerTimeoutMilliseconds = 120_000;
 const browserChannel = process.env.PLAYWRIGHT_BROWSER_CHANNEL;
 
@@ -12,7 +14,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: [["list"], ["html", { open: "never" }]],
   use: {
-    baseURL: localWebAppUrl,
+    baseURL: webAppUrl,
     trace: "on-first-retry",
   },
   projects: [
@@ -24,14 +26,19 @@ export default defineConfig({
       },
     },
   ],
-  webServer: {
-    command: "npm run dev",
-    env: {
-      SEO_INDEXING_ENABLED: "true",
-      WEB_ORIGIN: localWebAppUrl,
-    },
-    reuseExistingServer: !process.env.CI,
-    timeout: localWebServerTimeoutMilliseconds,
-    url: localWebAppUrl,
-  },
+  webServer: configuredWebAppUrl
+    ? undefined
+    : {
+        command: "npm run dev",
+        env: {
+          NEXT_PUBLIC_APP_ENV: "local",
+          NEXT_PUBLIC_AUTH_ENABLED: "true",
+          NEXT_PUBLIC_GOOGLE_ONE_TAP_ENABLED: "false",
+          SEO_INDEXING_ENABLED: "true",
+          WEB_ORIGIN: localWebAppUrl,
+        },
+        reuseExistingServer: !process.env.CI,
+        timeout: localWebServerTimeoutMilliseconds,
+        url: localWebAppUrl,
+      },
 });

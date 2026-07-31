@@ -1,3 +1,5 @@
+import { parseAppEnvironment } from "./app-environment";
+
 const DEFAULT_WEB_ORIGIN = "http://localhost:3001";
 
 type SeoEnvironment = Readonly<{
@@ -6,6 +8,7 @@ type SeoEnvironment = Readonly<{
 }>;
 
 type SeoEnvironmentInput = Readonly<{
+  appEnvironment?: string;
   indexingEnabled?: string;
   nodeEnvironment?: string;
   webOrigin?: string;
@@ -13,13 +16,25 @@ type SeoEnvironmentInput = Readonly<{
 
 function createSeoEnvironment(
   input: SeoEnvironmentInput = {
+    appEnvironment: process.env.NEXT_PUBLIC_APP_ENV,
     indexingEnabled: process.env.SEO_INDEXING_ENABLED,
     nodeEnvironment: process.env.NODE_ENV,
     webOrigin: process.env.WEB_ORIGIN,
   },
 ): SeoEnvironment {
+  const appEnvironment = parseAppEnvironment(input.appEnvironment);
   const indexingEnabled = parseIndexingEnabled(input.indexingEnabled);
   const webOrigin = parseWebOrigin(input.webOrigin);
+
+  if (
+    indexingEnabled &&
+    input.nodeEnvironment === "production" &&
+    appEnvironment !== "production"
+  ) {
+    throw new Error(
+      "SEO_INDEXING_ENABLED must be false in production builds outside the production deployment.",
+    );
+  }
 
   if (
     indexingEnabled &&

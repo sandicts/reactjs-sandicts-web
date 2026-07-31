@@ -52,6 +52,7 @@ repository.
 | --- | --- |
 | `docs/frontend/sandicts-frontend-context.md` | Product feel, UX direction, and frontend positioning |
 | `docs/frontend/sandicts-frontend-tech-decisions.md` | Frontend stack and architecture decisions |
+| `docs/frontend/sandicts-deployment-environments.md` | Vercel environment tiers, preview policy, CORS, cookies, and deployed authentication |
 | `docs/frontend/sandicts-expired-session-experience.md` | Expired-session classification, safe return route, draft, and forbidden behavior |
 | `docs/frontend/sandicts-post-login-routing.md` | Provider-independent routing after authentication, context fallback, and Player profile completion |
 | `docs/frontend/sandicts-google-one-tap-experience.md` | Google One Tap placement, suppression, fallback, browser, and privacy behavior |
@@ -89,6 +90,12 @@ For frontend setup or architecture work, read:
 1. `docs/ai/project-context.md`
 2. `docs/frontend/sandicts-frontend-tech-decisions.md`
 3. `docs/frontend/sandicts-frontend-planning.md`
+
+For deployment, environment, CORS, or cookie work, read:
+
+1. `docs/frontend/sandicts-deployment-environments.md`
+2. `docs/frontend/sandicts-frontend-tech-decisions.md`
+3. `sandicts/sandicts-docs:docs/decisions/frontend-deployment-target.md`
 
 For local UI state or Zustand work, read:
 
