@@ -163,7 +163,7 @@ Current Sandicts MVP emphasis:
 - basic player profile
 - main sport
 - simple player level by sport
-- partner onboarding
+- Organization onboarding
 - court management
 - availability calendar
 - court discovery
@@ -200,7 +200,7 @@ Recommended Sandicts navigation areas:
 
 - public auth entry
 - player area
-- partner area
+- Organization area
 
 Recommended player-first routes to draft:
 
@@ -214,20 +214,20 @@ Recommended player-first routes to draft:
 - `/app/open-matches/[matchId]`
 - `/app/open-matches/new`
 
-Recommended partner routes to draft:
+Recommended Organization routes to draft:
 
-- `/partner`
-- `/partner/profile`
-- `/partner/courts`
-- `/partner/courts/new`
-- `/partner/availability`
-- `/partner/agenda`
-- `/partner/reservations/[reservationId]`
-- `/partner/payments`
+- `/organizations/:organizationSlug`
+- `/organizations/:organizationSlug/profile`
+- `/organizations/:organizationSlug/courts`
+- `/organizations/:organizationSlug/courts/new`
+- `/organizations/:organizationSlug/calendar/configuration`
+- `/organizations/:organizationSlug/calendar`
+- `/organizations/:organizationSlug/reservations/[reservationId]`
+- `/organizations/:organizationSlug/payments`
 
 Open decision:
 
-- whether player and partner areas live in one web app with role-aware routes or
+- whether player and Organization areas live in one web app with role-aware routes or
   in separate apps/layouts.
 
 ## API Integration Implications
@@ -242,11 +242,11 @@ Needed frontend-facing contracts:
 - sign-out behavior
 - current session/current account endpoint
 - player profile read/update
-- partner profile read/update
+- Organization profile read/update
 - court CRUD
 - availability slot CRUD
 - discovery query
-- reservation request and partner decision
+- reservation request and Organization decision
 - manual payment status update
 - open match CRUD and join/leave actions
 
@@ -279,7 +279,7 @@ Change for Sandicts MVP:
 - make marketplace and booking the primary product loop
 - make Google auth the default low-friction path
 - make player progression lightweight
-- introduce partner-facing operational screens early
+- introduce Organization-facing operational screens early
 - separate V2 progression mechanics from MVP profile and matching needs
 
 ## Open Questions
@@ -288,7 +288,7 @@ Change for Sandicts MVP:
 - Will the frontend live in the same monorepo or a separate repository?
 - Which styling/component strategy will be used?
 - Should public discovery be available before sign-in?
-- Should the app be player-first, partner-first, or balanced in the first
+- Should the app be player-first, Organization-first, or balanced in the first
   release?
 - What is the session storage strategy agreed with the backend?
 - Which endpoint will hydrate the authenticated user after refresh?

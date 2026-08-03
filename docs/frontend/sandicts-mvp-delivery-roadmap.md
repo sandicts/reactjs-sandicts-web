@@ -7,10 +7,14 @@ canonical: docs/frontend/sandicts-mvp-delivery-roadmap.md
 related:
   - docs/frontend/sandicts-frontend-tech-decisions.md
   - docs/frontend/sandicts-frontend-planning.md
+  - docs/frontend/sandicts-expired-session-experience.md
+  - docs/frontend/sandicts-post-login-routing.md
+  - docs/frontend/sandicts-google-one-tap-experience.md
+  - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-page-functional-spec.md
   - docs/frontend/sandicts-mvp-screens-spec.md
-  - sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-mvp-functional-spec.md
-  - sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-jira-planning-workflow.md
+  - sandicts/sandicts-docs:docs/product/sandicts-mvp-functional-spec.md
+  - sandicts/sandicts-docs:docs/product/sandicts-jira-planning-workflow.md
 scope: roadmap, frontend, fullstack, docs, ux, figma, mvp, jira
 read-when:
   - planning the final Sandicts MVP delivery roadmap
@@ -59,7 +63,7 @@ Use when the product, UX, architecture, or API shape is not decided.
 Title examples:
 
 - `[Spike] Decide frontend repository location`
-- `[UX] Decide player and partner navigation model`
+- `[UX] Decide player, organization, academy, and Admin App navigation model`
 - `[Spike] Decide reservation cancellation window`
 - `[Frontend] Decide OpenAPI client generator`
 
@@ -76,7 +80,7 @@ Title examples:
 
 - `[UX] Prototype player profile onboarding`
 - `[UX] Prototype court discovery mobile flow`
-- `[UX] Prototype partner agenda day and week views`
+- `[UX] Prototype organization agenda day and week views`
 - `[UX] Prototype reservation request and status flow`
 
 Output:
@@ -129,7 +133,7 @@ Use when the issue delivers visible user value.
 Title examples:
 
 - `[Players] Player manages a basic profile`
-- `[Courts] Partner creates a court`
+- `[Courts] Organization creates a court`
 - `[Reservations] Player requests a court reservation`
 - `[Open Matches] Player joins an open match`
 
@@ -161,12 +165,12 @@ This rule applies to:
 - reservation request
 - reservation history/detail
 - open match list/detail/create
-- partner setup
-- partner dashboard
+- organization setup
+- organization dashboard
 - court management
 - availability calendar
 - agenda day/week
-- partner reservation detail
+- organization reservation detail
 - manual payments
 
 ## Phase 0: Documentation And Roadmap Foundation
@@ -204,12 +208,12 @@ Decision tasks:
 - `[Frontend] Decide package manager and Node.js version`
 - `[Frontend] Decide OpenAPI client generator`
 - `[DevOps] Decide frontend deployment target`
-- `[UX] Decide player and partner navigation model`
+- `[UX] Decide player, organization, academy, and Admin App navigation model`
 - `[UX] Decide mobile navigation model`
 
 Prototype tasks:
 
-- `[UX] Prototype public, player, and partner app shells`
+- `[UX] Prototype public, player, organization, academy, and Admin App shells`
 - `[Design] Prototype Sandicts visual tokens and base components`
 - `[UX] Prototype global loading, empty, error, forbidden, and not-found states`
 
@@ -218,14 +222,14 @@ Implementation tasks:
 - `[Frontend] Create Next.js App Router project`
 - `[Frontend] Configure TypeScript, lint, format, and path aliases`
 - `[Frontend] Configure Tailwind CSS and shadcn/ui`
-- `[Frontend] Configure lucide-react icon usage`
+- `[Frontend] Configure Phosphor icon usage`
 - `[Frontend] Configure TanStack Query`
 - `[Frontend] Configure generated OpenAPI client workflow`
 - `[Frontend] Configure React Hook Form and Zod patterns`
 - `[Frontend] Configure Zustand local UI state boundary`
 - `[Frontend] Configure Playwright`
 - `[Frontend] Configure Vitest and Testing Library`
-- `[Frontend] Build public, player, and partner layout shells`
+- `[Frontend] Build public, player, organization, academy, and Admin App layout shells`
 - `[Frontend] Build reusable base states and status badges`
 
 Exit criteria:
@@ -249,6 +253,48 @@ Decision tasks:
 - `[UX] Decide expired session experience`
 - `[UX] Decide post-login routing`
 - `[UX] Decide Google One Tap placement and fallback behavior`
+
+Selected auth session hydration flow:
+
+- client bootstrap attempts `POST /auth/refresh` with `credentials: 'include'`
+  to recover an access token from the backend-owned refresh cookie
+- successful Google sign-in, refresh, and future magic-link consume responses
+  hydrate the same in-memory snapshot: `{ account, session, accessToken,
+  accessTokenExpiresAt }`
+- the current-session TanStack Query uses `GET /auth/me` when an access token
+  exists and stores only the public `{ account, session }` projection
+- protected-route behavior is implemented by client auth boundaries or layouts,
+  not by Next.js middleware as the MVP source of auth truth
+
+Selected post-login routing:
+
+- explicit Google Sign-In, Google One Tap, future magic-link consumption, and
+  reauthentication use one provider-independent resolver
+- a safe authorized `returnTo` wins; otherwise use the last active usable
+  context, the only usable context, the context picker, or the no-context state
+- Player `missing` or `incomplete` completion routes to `/app/onboarding`;
+  Organization, Academy, and Admin App destinations do not require Player
+  onboarding
+- passive refresh stays on regular public routes, verifies the same protected
+  route, and runs the resolver on `/sign-in`
+- invalid `returnTo` is discarded; a safe internal but unauthorized target
+  uses authorized fallback with neutral, non-disclosing feedback
+- the implementation contract lives in
+  `docs/frontend/sandicts-post-login-routing.md`
+
+Selected Google One Tap placement and fallback:
+
+- `/`, `/discovery`, and `/sign-in` are eligible, with one attempt on the first
+  eligible route visited per browser tab
+- public detail pages remain ineligible until explicitly added to the central
+  route policy
+- protected layouts never initialize One Tap
+- desktop Chromium/Edge and Android Chromium use One Tap; iOS, Safari/ITP,
+  Firefox, and webviews use the explicit fallback
+- skipped, cancelled, and failed credential exchanges suppress automatic
+  prompting for 24 hours while `/sign-in` keeps the explicit Google button
+- the implementation contract lives in
+  `docs/frontend/sandicts-google-one-tap-experience.md`
 
 Prototype tasks:
 
@@ -307,42 +353,44 @@ Exit criteria:
 - main sport and simple level are saved and reloaded
 - incomplete profile behavior is clear
 
-## Phase 4: Partner Foundation
+## Phase 4: Organization Foundation
 
 Purpose:
 
-- let the supply side create a partner profile and enter the operational area
+- let the supply side create an organization profile and enter the operational
+  area
 
 Decision tasks:
 
-- `[Partners] Decide exact MVP partner profile fields`
-- `[UX] Decide partner setup and dashboard first-run flow`
-- `[API] Decide partner profile contract`
+- `[Organizations] Decide exact MVP organization profile fields`
+- `[UX] Decide organization setup and dashboard first-run flow`
+- `[API] Decide organization profile contract`
 
 Prototype tasks:
 
-- `[UX] Prototype partner setup`
-- `[UX] Prototype partner dashboard shell`
+- `[UX] Prototype organization setup`
+- `[UX] Prototype organization dashboard shell`
 - `[Design] Prototype operational dashboard density`
 
 Implementation tasks:
 
-- `[Backend] Expose partner profile contract`
-- `[Frontend] Build partner setup flow`
-- `[Frontend] Build partner dashboard shell`
-- `[Frontend] Build partner access boundary states`
-- `[E2E] Validate partner profile setup`
+- `[Backend] Expose organization profile contract`
+- `[Frontend] Build organization setup flow`
+- `[Frontend] Build organization dashboard shell`
+- `[Frontend] Build organization access boundary states`
+- `[E2E] Validate organization profile setup`
 
 Exit criteria:
 
-- authenticated user can create or update partner profile
-- partner area handles missing profile, forbidden, loading, and error states
+- authenticated user can create or update organization profile
+- organization area handles missing profile, forbidden, loading, and error
+  states
 
 ## Phase 5: Court Management
 
 Purpose:
 
-- let partners create and manage reservable courts
+- let organizations create and manage reservable courts
 
 Decision tasks:
 
@@ -363,18 +411,18 @@ Implementation tasks:
 - `[Frontend] Build court list`
 - `[Frontend] Build create and edit court flow`
 - `[Frontend] Build active/inactive controls`
-- `[E2E] Validate partner court setup`
+- `[E2E] Validate organization court setup`
 
 Exit criteria:
 
-- partner can create, edit, activate, and deactivate courts
+- organization operator can create, edit, activate, and deactivate courts
 - inactive court state is visible and blocks reservation paths
 
 ## Phase 6: Availability And Agenda
 
 Purpose:
 
-- let partners publish availability and operate the daily/weekly schedule
+- let organizations publish availability and operate the daily/weekly schedule
 
 Decision tasks:
 
@@ -388,8 +436,8 @@ Prototype tasks:
 
 - `[UX] Prototype availability calendar`
 - `[UX] Prototype slot editor`
-- `[UX] Prototype partner agenda day view`
-- `[UX] Prototype partner agenda week view`
+- `[UX] Prototype organization agenda day view`
+- `[UX] Prototype organization agenda week view`
 
 Implementation tasks:
 
@@ -402,7 +450,7 @@ Implementation tasks:
 
 Exit criteria:
 
-- partner can publish available slots
+- organization operator can publish available slots
 - invalid or overlapping slots are handled clearly
 - agenda views are usable on target devices
 
@@ -451,7 +499,7 @@ Decision tasks:
 
 - `[Reservations] Decide cancellation window`
 - `[Reservations] Decide initial reservation status`
-- `[Reservations] Decide partner confirmation behavior`
+- `[Reservations] Decide organization confirmation behavior`
 - `[UX] Decide reservation request review flow`
 - `[API] Decide reservation contracts`
 
@@ -460,7 +508,7 @@ Prototype tasks:
 - `[UX] Prototype reservation request flow`
 - `[UX] Prototype player reservation history`
 - `[UX] Prototype player reservation detail`
-- `[UX] Prototype partner reservation detail`
+- `[UX] Prototype organization reservation detail`
 - `[Design] Prototype reservation status badges and blocked actions`
 
 Implementation tasks:
@@ -469,7 +517,7 @@ Implementation tasks:
 - `[Frontend] Build reservation request flow`
 - `[Frontend] Build player reservation history`
 - `[Frontend] Build player reservation detail`
-- `[Frontend] Build partner reservation detail`
+- `[Frontend] Build organization reservation detail`
 - `[Frontend] Build confirm and cancel actions`
 - `[E2E] Validate reservation happy path`
 - `[E2E] Validate duplicate reservation prevention`
@@ -477,7 +525,7 @@ Implementation tasks:
 Exit criteria:
 
 - player can request a reservation
-- partner can confirm or cancel
+- organization operator can confirm or cancel
 - player can cancel when allowed
 - duplicate confirmed reservations are blocked and understandable
 
@@ -509,8 +557,8 @@ Implementation tasks:
 
 Exit criteria:
 
-- partner can see pending, failed, paid, and overdue payments
-- partner can update payment status when allowed
+- organization operator can see pending, failed, paid, and overdue payments
+- organization operator can update payment status when allowed
 - reservation views reflect payment state
 
 ## Phase 10: Open Matches
@@ -563,7 +611,7 @@ Decision tasks:
 
 Implementation and validation tasks:
 
-- `[Security] Review cross-partner access boundaries`
+- `[Security] Review cross-organization and cross-academy access boundaries`
 - `[Frontend] Review responsive behavior for MVP flows`
 - `[API] Review Swagger contracts for MVP flows`
 - `[E2E] Run MVP critical path smoke suite`
@@ -586,41 +634,59 @@ Resolved foundation decisions:
 - local frontend path: `apps/reactjs-sandicts-web`
 - frontend runtime: Node.js 24 LTS with npm 11
 - local ports: API on `3000`, frontend on `3001`
+- OpenAPI generator: Orval as the initial MVP generator
+- API/OpenAPI integration architecture: generated OpenAPI code is a contract
+  adapter under `lib/api`, with a semantic Sandicts API runtime, feature hooks,
+  in-memory access token storage, backend-owned refresh cookies, normalized
+  backend errors, and TanStack Query server-state ownership
+- auth session hydration flow: browser bootstrap uses `POST /auth/refresh`,
+  current session reads use `GET /auth/me`, access tokens stay in memory, and
+  refresh tokens stay backend-owned in `HttpOnly` cookies
+- expired session experience: confirmed expiry uses sign-in with a validated
+  internal return route, while temporary verification failures remain
+  recoverable and do not claim expiry
+- post-login routing: authorized `returnTo`, last active usable context, only
+  usable context, picker, and no-context state in that order, with Player-only
+  profile completion gating
+- KAN-65 navigation model: single login, one user identity, multiple contexts,
+  context switcher, first-class Player/Organization/Academy/Admin App areas,
+  and slug-based routes from the start
+- KAN-66 mobile navigation model: compact public header, five-destination
+  Player bottom navigation, operational navigation sheets, grouped mobile
+  context switcher, medium rails, expanded sidebars, and URL-owned selection
+- Organization and Academy model: Organization owns venue/unit/court operations;
+  Academy owns training/class/coach/student operations; they are independent
+  contexts that can belong to the same signed-in user
 
 Frontend foundation:
 
-- OpenAPI generator
+- generated API client implementation from the documented architecture
 - deployment target
 - CI checks and commands
 
 UX and app shell:
 
-- player-first, partner-first, or balanced first experience
-- player and partner navigation model
-- mobile navigation model
-- route map
-- breakpoint strategy
 - global state templates
 
 Auth:
 
-- cookie/session behavior with backend
-- session hydration endpoint
-- expired session UX
+- CORS and credentialed browser behavior with backend
 - sign-out behavior
-- post-login routing
 
 Product and page decisions:
 
-- public discovery before login
+- exact public discovery depth before login
 - visitor visibility for exact available slots
 - exact MVP profile fields
-- exact MVP partner profile fields
+- exact MVP organization profile fields
+- exact Academy V2 scope and sequencing
+- public-facing Portuguese labels for Organization and Academy
+- billing model for organizations and academies
 - pricing model for court/availability
 - availability by court or by court and sport
 - slot duration rules
 - reservation cancellation window
-- initial reservation status and partner confirmation flow
+- initial reservation status and organization confirmation flow
 - open match place representation
 - whether creator joins an open match automatically
 - minimal admin need before launch
@@ -657,11 +723,11 @@ Recommended first batch:
 - `[Spike] Decide frontend repository location`
 - `[Frontend] Decide package manager and Node.js version`
 - `[Frontend] Decide OpenAPI client generator`
-- `[UX] Decide player and partner navigation model`
+- `[UX] Decide player, organization, academy, and Admin App navigation model`
 - `[Design] Define MVP visual tokens and component direction`
-- `[UX] Prototype public, player, and partner app shells`
+- `[UX] Prototype public, player, organization, academy, and Admin App shells`
 - `[Frontend] Create Next.js app foundation`
-- `[Frontend] Configure shadcn/ui, Tailwind CSS, and lucide-react`
+- `[Frontend] Configure shadcn/ui, Tailwind CSS, and Phosphor Icons`
 - `[Frontend] Configure TanStack Query and API client foundation`
 - `[Frontend] Configure Playwright, Vitest, and Testing Library`
 

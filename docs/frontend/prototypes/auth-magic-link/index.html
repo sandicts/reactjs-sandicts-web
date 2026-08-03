@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="pt-BR" class="dark" data-brand-variant="default">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Protótipo dos estados de solicitação, reenvio e consumo de magic link do Sandicts."
+    />
+    <title>Sandicts — Protótipo de magic link</title>
+    <link rel="stylesheet" href="../auth-sign-in/styles.css" />
+    <link rel="stylesheet" href="../auth-sign-in/prototype-toolbar.css" />
+    <link rel="stylesheet" href="../auth-sign-in/prototype-shell.css" />
+    <link rel="stylesheet" href="../auth-sign-in/prototype-auth.css" />
+    <link rel="stylesheet" href="./prototype-magic-link.css" />
+    <script src="./prototype.catalog.js" defer></script>
+    <script src="./prototype.renderers.js" defer></script>
+    <script src="./prototype.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#auth-main">Pular para o exemplo</a>
+
+
+    <!-- visual-system:icons:start -->
+    <svg class="icon-sprite" aria-hidden="true">
+      <symbol id="icon-arrow-left" viewBox="0 0 256 256">
+        <path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z">
+        </path>
+      </symbol>
+      <symbol id="icon-check" viewBox="0 0 256 256">
+        <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z">
+        </path>
+      </symbol>
+      <symbol id="icon-clock" viewBox="0 0 256 256">
+        <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z">
+        </path>
+      </symbol>
+      <symbol id="icon-compass" viewBox="0 0 256 256">
+        <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216ZM172.42,72.84l-64,32a8.05,8.05,0,0,0-3.58,3.58l-32,64A8,8,0,0,0,80,184a8.1,8.1,0,0,0,3.58-.84l64-32a8.05,8.05,0,0,0,3.58-3.58l32-64a8,8,0,0,0-10.74-10.74ZM138,138,97.89,158.11,118,118l40.15-20.07Z">
+        </path>
+      </symbol>
+      <symbol id="icon-info" viewBox="0 0 256 256">
+        <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z">
+        </path>
+      </symbol>
+      <symbol id="icon-loader" viewBox="0 0 256 256">
+        <path d="M232,128a104,104,0,0,1-208,0c0-41,23.81-78.36,60.66-95.27a8,8,0,0,1,6.68,14.54C60.15,61.59,40,93.27,40,128a88,88,0,0,0,176,0c0-34.73-20.15-66.41-51.34-80.73a8,8,0,0,1,6.68-14.54C208.19,49.64,232,87,232,128Z">
+        </path>
+      </symbol>
+      <symbol id="icon-log-in" viewBox="0 0 256 256">
+        <path d="M141.66,133.66l-40,40a8,8,0,0,1-11.32-11.32L116.69,136H24a8,8,0,0,1,0-16h92.69L90.34,93.66a8,8,0,0,1,11.32-11.32l40,40A8,8,0,0,1,141.66,133.66ZM200,32H136a8,8,0,0,0,0,16h56V208H136a8,8,0,0,0,0,16h64a8,8,0,0,0,8-8V40A8,8,0,0,0,200,32Z">
+        </path>
+      </symbol>
+      <symbol id="icon-refresh" viewBox="0 0 256 256">
+        <path d="M240,56v48a8,8,0,0,1-8,8H184a8,8,0,0,1,0-16H211.4L184.81,71.64l-.25-.24a80,80,0,1,0-1.67,114.78,8,8,0,0,1,11,11.63A95.44,95.44,0,0,1,128,224h-1.32A96,96,0,1,1,195.75,60L224,85.8V56a8,8,0,1,1,16,0Z">
+        </path>
+      </symbol>
+      <symbol id="icon-route" viewBox="0 0 256 256">
+        <path d="M200,168a32.06,32.06,0,0,0-31,24H72a32,32,0,0,1,0-64h96a40,40,0,0,0,0-80H72a8,8,0,0,0,0,16h96a24,24,0,0,1,0,48H72a48,48,0,0,0,0,96h97a32,32,0,1,0,31-40Zm0,48a16,16,0,1,1,16-16A16,16,0,0,1,200,216Z">
+        </path>
+      </symbol>
+      <symbol id="icon-shield-x" viewBox="0 0 256 256">
+        <path d="M53.92,34.62A8,8,0,0,0,40.26,42,16,16,0,0,0,32,56v56c0,52.72,25.52,84.67,46.93,102.19,23.06,18.86,46,25.27,47,25.53a8,8,0,0,0,4.2,0c1.36-.37,31.27-8.78,57.09-34.72l14.89,16.38a8,8,0,1,0,11.84-10.76Zm74.07,189a128.48,128.48,0,0,1-38.92-21.81C61.82,179.51,48,149.3,48,112l0-56h3.71L176.41,193.15A129.26,129.26,0,0,1,128,223.62ZM224,56v56c0,20.58-3.89,39.61-11.56,56.59A8,8,0,1,1,197.86,162c6.73-14.89,10.14-31.71,10.14-50V56L98.52,56a8,8,0,1,1,0-16H208A16,16,0,0,1,224,56Z">
+        </path>
+      </symbol>
+      <symbol id="icon-wifi-off" viewBox="0 0 256 256">
+        <path d="M213.92,210.62a8,8,0,1,1-11.84,10.76l-52-57.15a60,60,0,0,0-57.41,7.24,8,8,0,1,1-9.42-12.93A75.43,75.43,0,0,1,128,144c1.28,0,2.55,0,3.82.1L104.9,114.49A108,108,0,0,0,61,135.31,8,8,0,0,1,49.73,134,8,8,0,0,1,51,122.77a124.27,124.27,0,0,1,41.71-21.66L69.37,75.4a155.43,155.43,0,0,0-40.29,24A8,8,0,0,1,18.92,87,171.87,171.87,0,0,1,58,62.86L42.08,45.38A8,8,0,1,1,53.92,34.62ZM128,192a12,12,0,1,0,12,12A12,12,0,0,0,128,192ZM237.08,87A172.3,172.3,0,0,0,106,49.4a8,8,0,1,0,2,15.87A158.33,158.33,0,0,1,128,64a156.25,156.25,0,0,1,98.92,35.37A8,8,0,0,0,237.08,87ZM195,135.31a8,8,0,0,0,11.24-1.3,8,8,0,0,0-1.3-11.24,124.25,124.25,0,0,0-51.73-24.2A8,8,0,1,0,150,114.24,108.12,108.12,0,0,1,195,135.31Z">
+        </path>
+      </symbol>
+    </svg>
+    <!-- visual-system:icons:end -->
+
+    <header class="prototype-toolbar">
+      <div class="prototype-toolbar__intro">
+        <p class="prototype-kicker">KAN-104 · UX prototype</p>
+        <h1>Magic link do Sandicts</h1>
+        <p>
+          Compare entrada por e-mail, envio, reenvio, limites, verificação e
+          recuperação antes da implementação.
+        </p>
+      </div>
+
+      <form class="prototype-controls" id="prototype-controls">
+        <label class="prototype-control">
+          <span>Estado</span>
+          <select id="state-selector" name="state"></select>
+        </label>
+
+        <label class="prototype-checkbox">
+          <input id="long-copy-toggle" name="long" type="checkbox" />
+          <span>Testar cópia longa em português</span>
+        </label>
+      </form>
+
+      <output class="prototype-status" id="prototype-status" for="state-selector">
+        Solicitação · Entrada por e-mail
+      </output>
+    </header>
+
+    <p
+      class="sr-only"
+      id="prototype-announcement"
+      aria-live="polite"
+      aria-atomic="true"
+    ></p>
+
+    <div class="prototype-canvas">
+      <section
+        class="demo-shell"
+        id="demo-shell"
+        aria-label="Exemplo interativo do estado de magic link selecionado"
+      >
+        <header class="public-header">
+          <a class="brand-link" href="#auth-main" aria-label="Sandicts — início">
+            <img
+              src="../../../../public/sandicts-mark.svg"
+              width="36"
+              height="36"
+              alt=""
+            />
+            <span class="brand-name">SANDICTS</span>
+          </a>
+
+          <nav class="public-navigation" aria-label="Navegação pública">
+            <a class="button button--ghost" href="#auth-main">
+              <svg class="icon" aria-hidden="true">
+                <use href="#icon-compass"></use>
+              </svg>
+              <span class="explore-label">Explorar</span>
+              <span class="sr-only explore-label-compact">Explorar quadras</span>
+            </a>
+            <a
+              class="button button--primary button--compact"
+              id="header-sign-in-link"
+              href="#auth-card-title"
+              aria-current="page"
+            >
+              Entrar
+            </a>
+          </nav>
+        </header>
+
+        <main class="auth-main" id="auth-main">
+          <section class="auth-introduction">
+            <p class="auth-eyebrow" id="hero-eyebrow">Acesso Sandicts</p>
+            <h2 id="hero-title">Entre para continuar</h2>
+            <p id="hero-description">
+              Use Google ou receba um link seguro no seu e-mail.
+            </p>
+
+            <ul
+              class="auth-benefits"
+              id="auth-benefits"
+              aria-label="O que acontece depois do acesso"
+            >
+              <li>
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-check"></use>
+                </svg>
+                <span>Entre sem criar ou lembrar uma senha.</span>
+              </li>
+              <li>
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-check"></use>
+                </svg>
+                <span>Retome somente um destino autorizado.</span>
+              </li>
+            </ul>
+          </section>
+
+          <section class="auth-surface">
+            <div
+              class="auth-alert"
+              id="auth-alert"
+              data-tone="info"
+              tabindex="-1"
+              hidden
+            >
+              <svg class="icon" aria-hidden="true">
+                <use id="alert-icon-use" href="#icon-info"></use>
+              </svg>
+              <div>
+                <h3 id="alert-title">Informação de acesso</h3>
+                <p id="alert-description"></p>
+              </div>
+            </div>
+
+            <article class="auth-card" id="auth-card" tabindex="-1">
+              <p class="auth-card__eyebrow" id="auth-card-eyebrow">
+                Acesso seguro
+              </p>
+              <h3 id="auth-card-title">Entre na sua conta</h3>
+              <p class="auth-card__description" id="auth-card-description">
+                Escolha como deseja continuar.
+              </p>
+
+              <div class="method-stack" id="method-stack">
+                <div class="provider-region">
+                  <button
+                    class="google-button"
+                    id="google-button"
+                    type="button"
+                    data-demo-state="routing"
+                  >
+                    <span class="google-mark" aria-hidden="true">G</span>
+                    <span>Continuar com Google</span>
+                    <span aria-hidden="true"></span>
+                  </button>
+                </div>
+
+                <div class="auth-divider" aria-label="Outra opção de acesso">
+                  <span></span>
+                  <p>ou continue por e-mail</p>
+                  <span></span>
+                </div>
+
+                <form class="email-form" id="email-form" novalidate>
+                  <label for="email-input">E-mail</label>
+                  <input
+                    id="email-input"
+                    name="email"
+                    type="email"
+                    inputmode="email"
+                    autocomplete="email"
+                    spellcheck="false"
+                    required
+                    placeholder="voce@exemplo.com"
+                    aria-describedby="email-hint email-error"
+                  />
+                  <p class="field-hint" id="email-hint">
+                    Enviaremos um link de uso único para o endereço informado.
+                  </p>
+                  <p class="field-error" id="email-error" hidden>
+                    Informe um endereço de e-mail válido.
+                  </p>
+                  <button
+                    class="button button--primary email-submit"
+                    id="email-submit"
+                    type="submit"
+                  >
+                    <span id="email-submit-label">Enviar link</span>
+                    <svg
+                      class="icon action-loader"
+                      id="email-submit-loader"
+                      aria-hidden="true"
+                      hidden
+                    >
+                      <use href="#icon-loader"></use>
+                    </svg>
+                  </button>
+                </form>
+              </div>
+
+              <section class="sent-panel" id="sent-panel" hidden>
+                <div class="sent-panel__icon" aria-hidden="true">
+                  <svg class="icon">
+                    <use href="#icon-check"></use>
+                  </svg>
+                </div>
+                <p class="sent-panel__status" id="sent-status"></p>
+                <div class="sent-panel__actions">
+                  <button
+                    class="button button--primary"
+                    id="resend-action"
+                    type="button"
+                    data-demo-action="resend"
+                  >
+                    <span id="resend-action-label">Reenviar link</span>
+                    <svg
+                      class="icon action-loader"
+                      id="resend-action-loader"
+                      aria-hidden="true"
+                      hidden
+                    >
+                      <use href="#icon-loader"></use>
+                    </svg>
+                  </button>
+                  <button
+                    class="button button--secondary"
+                    id="change-email-action"
+                    type="button"
+                    data-demo-state="email-entry"
+                  >
+                    Usar outro e-mail
+                  </button>
+                </div>
+              </section>
+            </article>
+
+            <section
+              class="boundary-state"
+              id="boundary-state"
+              tabindex="-1"
+              hidden
+            >
+              <div class="boundary-state__icon">
+                <svg class="icon" aria-hidden="true">
+                  <use id="boundary-icon-use" href="#icon-info"></use>
+                </svg>
+              </div>
+              <p class="boundary-state__eyebrow" id="boundary-eyebrow">
+                Acesso por e-mail
+              </p>
+              <h3 id="boundary-title">Verificando seu link</h3>
+              <p id="boundary-description"></p>
+              <p
+                class="boundary-state__status"
+                id="boundary-status"
+                role="status"
+              ></p>
+              <div class="boundary-state__actions" id="boundary-actions">
+                <button
+                  class="button button--primary"
+                  id="boundary-primary"
+                  type="button"
+                >
+                  <span id="boundary-primary-label">Solicitar novo link</span>
+                </button>
+                <button
+                  class="button button--secondary"
+                  id="boundary-secondary"
+                  type="button"
+                  hidden
+                >
+                  <span id="boundary-secondary-label">Voltar ao início</span>
+                </button>
+              </div>
+            </section>
+          </section>
+        </main>
+
+        <footer class="demo-footer">
+          <span>Protótipo de UX — nenhum e-mail ou token real é usado.</span>
+          <a href="./README.md">Decisões de magic link</a>
+        </footer>
+      </section>
+    </div>
+  </body>
+</html>

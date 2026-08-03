@@ -7,12 +7,16 @@ canonical: docs/frontend/sandicts-page-functional-spec.md
 related:
   - docs/frontend/sandicts-frontend-context.md
   - docs/frontend/sandicts-frontend-tech-decisions.md
+  - docs/frontend/sandicts-expired-session-experience.md
+  - docs/frontend/sandicts-post-login-routing.md
+  - docs/frontend/sandicts-google-one-tap-experience.md
+  - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-frontend-planning.md
-  - sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-product-context.md
-  - sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-mvp-scope.md
-  - sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-v2-backlog.md
-  - sandicts/nodejs-sandicts-api:docs/ai/business/sandicts-business-rules.md
+  - sandicts/sandicts-docs:docs/product/sandicts-product-context.md
+  - sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
+  - sandicts/sandicts-docs:docs/product/sandicts-v2-backlog.md
+  - sandicts/sandicts-docs:docs/business-rules/sandicts-business-rules.md
 scope: frontend, pages, product-rules, user-flows, mvp, v2, backlog
 read-when:
   - defining Sandicts pages or routes
@@ -65,7 +69,7 @@ Planning order:
 6. create Jira issues only after the user approves the batch
 
 This document is a working draft. When a rule becomes a backend invariant, copy
-or reconcile it into `sandicts/nodejs-sandicts-api:docs/ai/business/sandicts-business-rules.md` or the MVP
+or reconcile it into `sandicts/sandicts-docs:docs/business-rules/sandicts-business-rules.md` or the MVP
 scope docs as appropriate.
 
 ## Scope Classification
@@ -82,8 +86,8 @@ Important current MVP constraints:
 
 - geolocation is not MVP
 - tournaments are not MVP
-- full school ERP is not MVP
-- students, memberships, teachers, and classes are V2
+- full academy/class management is not MVP
+- students, memberships, coaches, and classes are V2
 - payment gateway, split, and payout automation are not MVP
 - player evolution, card, overall, rankings, and achievements are not MVP
 - manual reservation payment status is MVP
@@ -104,8 +108,9 @@ Definition:
 Can:
 
 - view public court discovery
-- view public partner or venue information
-- view public school information if school discovery is enabled
+- view public organization or venue information
+- view public academy information if academy discovery is enabled
+- view public player profiles when the profile visibility allows it
 - view available time slots
 - filter public discovery by basic filters
 - open detail pages
@@ -117,8 +122,8 @@ Cannot:
 - create an open match
 - schedule a class
 - express operational intent that requires follow-up
-- access profile pages
-- access partner, school, or admin areas
+- access private profile pages
+- access player, organization, academy, or admin operational areas
 
 Rules:
 
@@ -130,9 +135,63 @@ Rules:
 
 Open decisions:
 
-- whether public discovery includes only courts or also schools
+- whether public discovery includes only courts or also academies
 - whether public users can see all available slots or only summary availability
 - whether contact actions are MVP and whether they require login
+
+### Authenticated Account
+
+Phase:
+
+- MVP
+
+Definition:
+
+- A signed-in Sandicts user identity.
+
+Can:
+
+- complete or use a player profile
+- create or access one or more organizations when authorized
+- create or access one or more academies when authorized
+- access Admin App only when the internal admin permission exists
+- switch between accessible contexts through the app shell
+
+Rules:
+
+- Login is unified at `/sign-in`; Sandicts does not create separate login pages
+  by user type.
+- Account type is not permanent. The onboarding choice only creates or opens
+  the first context.
+- A user may have Player, Organization, Academy, and Admin App contexts at
+  the same time.
+- After explicit authentication, the app uses a safe authorized `returnTo`,
+  then the last active usable context, then the only usable context, then a
+  context picker. It renders an explicit no-context state when none exists.
+- `missing` or `incomplete` Player completion gates only Player destinations;
+  Organization, Academy, and Admin App destinations do not require Player
+  onboarding.
+- Context routes use stable IDs internally and slugs in user-facing URLs from
+  the start.
+
+Context switcher:
+
+- Player
+- each Organization by display name and slug
+- each Academy by display name and slug
+- Admin App when authorized
+- create Organization or create Academy entry points when allowed
+
+On compact viewports, multiple contexts are presented in a grouped modal bottom
+sheet or equivalent dialog. Selecting a context closes the switcher and
+navigates to that context home. The complete responsive and accessible behavior
+lives in `docs/frontend/sandicts-mobile-navigation.md`.
+
+Open decisions:
+
+- exact onboarding copy for "start as Player, Organization, or Academy"
+- whether personal player profile creation is automatic for every signed-in
+  account or explicit after login
 
 ### Player
 
@@ -157,6 +216,8 @@ Can:
 - create open matches
 - join open matches
 - leave open matches
+- view public player profiles
+- view friends-only player profiles when friendship rules allow it
 - view own activity history when implemented
 
 MVP profile fields:
@@ -168,10 +229,11 @@ MVP profile fields:
 
 Candidate or V2 profile fields:
 
-- school where the player trains
+- academy where the player trains
 - preferred court side: left, right, both
 - dominant foot: right, left, both
 - public profile
+- visibility: public, friends-only, or private
 - player photo
 - bio
 - nationality
@@ -185,15 +247,17 @@ Rules:
 - Simple level is self-declared.
 - Simple level is a filter and expectation, not an official ranking.
 - The player can only see their own private reservation history.
-- The player cannot access partner, school, or admin operational areas unless
-  granted a separate role.
+- The player cannot access organization, academy, or admin operational areas
+  unless granted that context.
+- Public player profile URLs use `/players/:playerSlug`.
+- Player profile visibility can start with public/private and expand to
+  friends-only rules later.
 
 Open decisions:
 
 - whether court side belongs in MVP or V2
 - whether dominant foot belongs in MVP or V2
 - whether player city is required or optional in MVP
-- whether a player can also be a partner admin in the same account
 
 ### Student
 
@@ -203,7 +267,7 @@ Phase:
 
 Definition:
 
-- A player linked to a school plan or class operation.
+- A player linked to an academy plan or class operation.
 
 Can:
 
@@ -215,17 +279,17 @@ Can:
 
 Rules:
 
-- Student behavior depends on school, plan, payment, and class modules.
-- Current MVP docs place students, memberships, teachers, and classes in V2.
+- Student behavior depends on academy, plan, payment, and class modules.
+- Current MVP docs place students, memberships, coaches, and classes in V2.
 - Student pages should not block MVP reservation or open match delivery.
 
 Open decisions:
 
-- whether any lightweight school affiliation belongs in MVP profile
+- whether any lightweight academy affiliation belongs in MVP profile
 - whether class selection is V2 or should be pulled earlier
 - whether unpaid students are automatically blocked or only flagged
 
-### Partner Or Venue Operator
+### Organization Owner Or Admin
 
 Phase:
 
@@ -233,11 +297,12 @@ Phase:
 
 Definition:
 
-- A user or organization profile that manages courts and reservations.
+- A user with permission to manage one Organization context.
 
 Can:
 
-- create or edit partner profile
+- create or edit organization profile
+- create or edit organization units
 - create courts
 - define sports accepted by court
 - define court rules
@@ -248,6 +313,7 @@ Can:
 - update manual payment status
 - view operational agenda
 - configure simple services or amenities
+- invite or manage organization staff if permission is enabled
 
 Cannot in MVP:
 
@@ -257,26 +323,57 @@ Cannot in MVP:
 - run advanced financial reports
 - manage full inventory
 - run automated maintenance alerts
-- manage full school ERP unless school scope is explicitly pulled forward
+- manage academy class operations unless academy scope is explicitly pulled
+  forward
 
 Rules:
 
-- Partners are the source of truth for court availability.
-- A partner can manage only its own data.
-- Cross-partner access is forbidden.
+- Organizations are the source of truth for court availability.
+- An organization owner/admin can see all units and courts in that
+  organization.
+- An organization can own multiple units across cities.
+- Cross-organization access is forbidden.
 - Manual payment state changes should be auditable.
-- A partner may be an arena, school, club, or organizer at the product level,
-  but school-specific class operations are V2 unless scope changes.
+- Organization management routes use `/organizations/:organizationSlug`.
 
 Open decisions:
 
-- whether partner reservation confirmation is always manual in MVP
+- whether organization reservation confirmation is always manual in MVP
 - whether any reservation can be automatically confirmed
-- whether partner and school are one profile with modules or separate profiles
 - whether availability is defined by court only or by court and sport
 - whether price is fixed by court or varies by period
+- exact MVP organization profile fields
 
-### School Operator
+### Organization Staff
+
+Phase:
+
+- MVP candidate
+
+Definition:
+
+- A user who works for an Organization but should only access assigned units or
+  courts.
+
+Can:
+
+- view assigned unit agenda
+- view or update assigned court reservations when permitted
+- update payment status when permitted
+- see only the operational data needed for their assignment
+
+Rules:
+
+- Staff access is scoped by Organization and by assigned unit/court.
+- Staff must not see all Organization data unless promoted to owner/admin.
+- Staff actions should remain auditable.
+
+Open decisions:
+
+- exact staff permission levels
+- whether staff invitation/management is MVP or immediately after MVP
+
+### Academy Owner Or Admin
 
 Phase:
 
@@ -284,14 +381,13 @@ Phase:
 
 Definition:
 
-- A user or organization profile that manages teachers, classes, students, and
-  weekly plans.
+- A user with permission to manage one Academy context.
 
 Can:
 
-- create school profile
-- create teachers
-- organize calendar by teacher
+- create academy profile
+- create coaches
+- organize calendar by coach
 - create classes
 - set class theme
 - set minimum and maximum level
@@ -304,54 +400,56 @@ Can:
 
 Rules:
 
-- A school is not only a court.
-- School logic includes students, teachers, plans, and class operations.
-- An organization can be only a venue, only a school, or both.
-- The current MVP excludes full school management.
+- An Academy is independent from an Organization.
+- A user who owns an Academy can later also create or access an Organization
+  under the same account.
+- Academy logic includes students, coaches, plans, classes, and payment blocks.
+- Academy management routes use `/academies/:academySlug/manage`.
+- Full academy/class management remains V2 unless product scope changes.
+- Cross-academy access is forbidden.
 
 Open decisions:
 
-- whether teachers have their own login in V2
+- whether coaches have their own login in V2
 - whether extra classes are V2 or future
-- whether teacher approval alone can allow an extra class
-- whether school approval is required for every exception
+- whether coach approval alone can allow an extra class
+- whether academy approval is required for every exception
 
-### Partner Or School Admin
+### Coach
 
 Phase:
 
-- MVP candidate for partner admin, V2 for school admin details
+- V2
 
 Definition:
 
-- A user with permission to manage a partner or school account.
+- A user who teaches for an Academy.
 
 Can:
 
-- edit organization data
-- configure courts or classes depending on module
-- manage reservations or classes depending on module
-- add other admins if permission is enabled
-- transfer ownership if permission is enabled
-- view relevant audit logs
+- view academy classes
+- manage only assigned classes
+- accept students into assigned classes when academy rules allow it
+- request or record class-level changes when permitted
 
 Rules:
 
-- Sensitive administrative actions should record who acted and when.
-- Cross-organization access must be forbidden.
-- Ownership transfer must be explicit.
+- Coaches are not Academy owners by default.
+- Coach permissions are scoped to assigned classes.
+- Student acceptance must follow Academy rules.
 
 Open decisions:
 
-- permission model between owner and admins
-- whether admin management belongs in MVP
-- whether detailed audit log UI belongs in MVP or starts as backend records only
+- exact coach permission levels
+- whether coaches can see all student details or only class-level details
+- whether coach-facing screens are V2 or later
 
-### Sandicts Admin
+### Admin App
 
 Phase:
 
-- MVP candidate for sports catalog and support operations; full admin is future
+- MVP candidate for sports catalog, metrics, billing state, and support
+  operations; full admin is future
 
 Definition:
 
@@ -360,7 +458,10 @@ Definition:
 Can:
 
 - manage global data if admin tooling exists
+- view marketplace metrics
 - manage sports catalog
+- review organizations and academies
+- inspect billing or subscription status
 - inspect support context
 - review audit logs
 - resolve operational issues
@@ -375,6 +476,8 @@ Open decisions:
 
 - whether the MVP needs a full admin area
 - whether sports are seeded/configured manually or managed through UI
+- whether supply-side billing is fixed subscription, commission/percentage, or
+  hybrid
 - which support actions need UI versus database/script/manual operation
 
 ## Public Pages
@@ -392,7 +495,7 @@ Phase:
 
 Purpose:
 
-- Let visitors and authenticated users discover courts and possibly schools
+- Let visitors and authenticated users discover courts and possibly academies
   before committing to an action.
 
 Users:
@@ -403,7 +506,8 @@ Users:
 Content:
 
 - court list
-- school list if enabled
+- academy list if enabled
+- public player profile entry points when visibility/search rules allow it
 - sports available
 - available slots
 - basic filters
@@ -412,8 +516,9 @@ Content:
 Allowed without login:
 
 - view courts
-- view partner or venue details
-- view schools if public school discovery is enabled
+- view organization or venue details
+- view academies if public academy discovery is enabled
+- view player profiles when visibility allows it
 - view available slots
 - filter by basic filters
 - open details
@@ -432,13 +537,14 @@ Rules:
 - Discovery helps acquisition.
 - Login should be required only at the point of practical action.
 - MVP discovery uses simple filters, not geolocation.
-- Public school discovery is allowed only as a display concept unless school
+- Public academy discovery is allowed only as a display concept unless academy
   operations are pulled into MVP.
+- Public player profile pages use slugs and must respect player visibility.
 
 Open decisions:
 
 - whether the root page is a marketing page, discovery page, or hybrid
-- whether school cards appear in MVP discovery
+- whether academy cards appear in MVP discovery
 - whether visitors can see exact time slots
 
 ### Sign In
@@ -464,29 +570,112 @@ Actions:
 
 - sign in with Google
 - use Google One Tap
+- request or consume a magic link
 - sign out from an authenticated state
 - refresh or preserve session
 
 Post-auth routing:
 
-- incomplete profile goes to onboarding
-- complete player profile goes to player home
+- wait for the common session snapshot and usable context inventory
+- if a structurally safe `returnTo` exists and the account is authorized,
+  resume that route
+- otherwise restore the last active context only when it remains usable
+- otherwise enter the only usable context
+- otherwise show the context picker when multiple contexts remain
+- otherwise show the no-context state
+- `missing` or `incomplete` Player completion goes to `/app/onboarding` before
+  entering a Player destination and retains only a safe authorized Player
+  continuation
+- Player completion never blocks an Organization, Academy, or Admin App
+  destination
 - user attempting reservation returns to reservation flow
-- user attempting class scheduling returns to class flow if class module exists
-- partner admin may route to partner dashboard if that context is active
+- user attempting class scheduling returns to class flow if academy module exists
 
 States:
 
-- loading
-- authentication error
-- expired session
-- already signed in
+- session checking and provider loading
+- explicit Google Sign-In ready and pending
+- Google One Tap prompted, fallback, suppressed, or unsupported
+- cancelled explicit sign-in
+- invalid Google credential
+- provider or Sandicts service unavailable
+- external identity conflict and rate limit
+- expired session and temporary verification failure
+- authentication-level forbidden
+- already signed in and post-login routing
+- unauthorized intended destination
+- Player onboarding handoff
+- context picker and no available context
+- magic-link email entry, request pending, sent confirmation, and resend
+- invalid, expired, used, superseded, rate-limited, or temporarily unavailable
+  magic link
+- magic-link verification pending and successful session handoff
 
 Rules:
 
 - Auth should preserve the user's intended action when possible.
-- Expired session behavior must be predictable.
+- Explicit Google Sign-In, Google One Tap, magic-link consumption, and
+  reauthentication use the same provider-independent post-login resolver.
+- Passive refresh keeps a regular public page in place, verifies and unlocks
+  the current protected route, and runs the post-login resolver on
+  `/sign-in`.
+- An invalid or external `returnTo` is discarded. A safe internal but
+  unauthorized `returnTo` uses the normal authorized fallback with neutral,
+  non-disclosing feedback.
+- Google One Tap is eligible only on `/`, `/discovery`, and `/sign-in`, and may
+  attempt only on the first eligible route visited in a browser tab.
+- Public detail pages do not inherit One Tap eligibility from public access.
+- Protected layouts never mount provider prompts; they reach `/sign-in` through
+  the approved unauthenticated or expired-session flow first.
+- The explicit Google Sign-In button remains available on `/sign-in` when One
+  Tap is skipped, cancelled, suppressed, unavailable, or fails.
+- Exact route policy, 24-hour suppression, platform, fallback, storage, and
+  privacy behavior live in
+  `docs/frontend/sandicts-google-one-tap-experience.md`.
+- A rejected initial bootstrap without a previously established in-memory
+  session is unauthenticated, not expired.
+- A confirmed expired session redirects to sign-in with a validated internal
+  `returnTo`; a temporary verification failure provides retry without claiming
+  that the session expired.
+- Expired-session feedback is persistent inline sign-in content, not a toast or
+  a dedicated screen.
+- MVP form drafts are discarded during expiry navigation and are not persisted
+  in the return URL or browser storage.
+- Forbidden access preserves the authenticated shell and never silently signs
+  the user out or switches context.
 - Auth errors should be understandable without exposing provider internals.
+- The sign-in page is shared by Player, Organization, Academy, and Sandicts
+  Admin users.
+- Exact responsive composition, copy, action hierarchy, Google fallback,
+  loading, failure, forbidden, and post-login handoff states live in
+  `docs/frontend/prototypes/auth-sign-in/README.md`.
+- Magic-link-specific email entry, sent confirmation, resend, request recovery,
+  token cleanup, verification, expired, invalid, already-used, superseded, and
+  rate-limited states live in
+  `docs/frontend/prototypes/auth-magic-link/README.md`.
+- The shared sign-in surface keeps Google first, then
+  `ou continue por e-mail`, with both methods visible.
+- Magic-link request success remains generic and never reveals whether an
+  account existed.
+- The `/sign-in/magic-link` callback removes the token from the URL before
+  consume, never mounts One Tap, and uses the common post-login resolver after
+  success.
+
+Implementation ownership:
+
+- session hydration uses the frontend auth decision: browser bootstrap attempts
+  `POST /auth/refresh`, current-session reads use `GET /auth/me`, and access
+  tokens stay in memory
+- exact state classification, expired-session copy, safe `returnTo`, draft,
+  redirect, and E2E behavior live in
+  `docs/frontend/sandicts-expired-session-experience.md`
+- exact trigger classification, destination precedence, context fallback,
+  Player completion gate, and unauthorized `returnTo` behavior live in
+  `docs/frontend/sandicts-post-login-routing.md`
+- exact sign-in and auth-state visual handoff lives in
+  `docs/frontend/prototypes/auth-sign-in/README.md`
+- exact magic-link request, resend, consume, recovery, privacy, and callback
+  behavior lives in `docs/frontend/prototypes/auth-magic-link/README.md`
 
 ## Player Pages
 
@@ -510,21 +699,19 @@ Content:
 - open match suggestions
 - shortcuts to court discovery
 - shortcut to create open match
-- profile completion prompt
 - reservation history shortcut
-- classes only if school module is enabled
+- classes only if academy module is enabled
 
 Rules:
 
-- If the profile is incomplete, the home should block or strongly guide profile
-  completion before practical actions.
+- The regular Player home renders only after `GET /players/me` reports
+  `complete`. `missing` and `incomplete` route to `/app/onboarding` first.
 - The MVP home should not become a social feed.
 - Tournament, ranking, and progression widgets are not MVP.
 
 Open decisions:
 
-- whether profile completion blocks all actions or only selected actions
-- whether upcoming classes appear before school module is implemented
+- whether upcoming classes appear before academy module is implemented
 
 ### Profile Onboarding
 
@@ -543,7 +730,6 @@ Purpose:
 MVP fields:
 
 - display name
-- city if confirmed
 - main sport
 - simple level
 
@@ -551,7 +737,8 @@ Candidate fields:
 
 - preferred court side
 - dominant foot
-- school where the player trains
+- academy where the player trains
+- profile visibility if public profile is pulled into MVP
 
 Actions:
 
@@ -561,20 +748,27 @@ Actions:
 Rules:
 
 - Onboarding should not ask for too much.
+- `GET /players/me` is the completion authority. The frontend must use its
+  `missing`, `incomplete`, or `complete` state instead of duplicating required
+  field logic.
+- On successful completion, re-check any retained safe authorized Player
+  continuation before navigating.
 - No photo, bio, ranking, achievements, or athlete card in MVP.
 - The goal is to enable reservation, open match, and later class flows.
 
 Open decisions:
 
-- exact required fields
+- whether city is collected as an optional MVP field
 - whether side and dominant foot are MVP
-- whether school affiliation is MVP
+- whether academy affiliation is MVP
+- whether profile visibility is MVP or V2
 
 ### Player Profile
 
 Suggested route:
 
 - `/app/profile`
+- public profile route reserved as `/players/:playerSlug`
 
 Phase:
 
@@ -590,7 +784,8 @@ Content:
 - city
 - main sport
 - levels by sport
-- school link if enabled
+- academy link if enabled
+- profile visibility if enabled
 - preferred court side if enabled
 - dominant foot if enabled
 - summary history if useful
@@ -600,11 +795,12 @@ Actions:
 - edit profile
 - update main sport
 - update level
-- update school link if enabled
+- update academy link if enabled
+- update public visibility if enabled
 
 Out of MVP:
 
-- public profile
+- full public athlete card
 - ranking
 - overall
 - detailed fundamentals
@@ -616,6 +812,8 @@ Rules:
 
 - Level is self-declared in MVP.
 - Profile changes should not create official ranking claims.
+- Public player profile pages must respect visibility: public now in the route
+  model, with friends-only and private rules available later.
 
 ### Discover Courts
 
@@ -635,7 +833,7 @@ Purpose:
 Filters:
 
 - sport
-- partner or venue
+- organization or venue
 - date
 - time
 - price
@@ -643,7 +841,7 @@ Filters:
 
 List should show:
 
-- partner or venue name
+- organization or venue name
 - court name
 - accepted sports
 - price
@@ -673,8 +871,8 @@ Open decisions:
 
 Suggested route:
 
-- `/app/courts/:id`
-- `/courts/:id`
+- `/app/courts/:courtSlug`
+- `/courts/:courtSlug`
 
 Phase:
 
@@ -714,7 +912,7 @@ Rules:
 Suggested route:
 
 - `/app/reservations/new`
-- `/app/courts/:id/reserve`
+- `/app/courts/:courtSlug/reserve`
 
 Phase:
 
@@ -726,7 +924,7 @@ Purpose:
 
 Screen should show:
 
-- partner or venue
+- organization or venue
 - court
 - sport
 - date
@@ -755,12 +953,12 @@ Rules:
 - Reservation cannot be created for unavailable slot.
 - Reservation cannot duplicate an active confirmed reservation.
 - Payment is not online in MVP.
-- Payment status is controlled manually by partner or authorized operator.
+- Payment status is controlled manually by organization or authorized operator.
 
 Open decisions:
 
 - whether reservation status starts as `pending_payment` or another pending state
-- whether partner confirmation is always required
+- whether organization confirmation is always required
 - whether any automatic confirmation exists in MVP
 
 ### My Reservations
@@ -768,7 +966,7 @@ Open decisions:
 Suggested route:
 
 - `/app/reservations`
-- `/app/reservations/:id`
+- `/app/reservations/:reservationId`
 
 Phase:
 
@@ -811,7 +1009,7 @@ Open decisions:
 
 Suggested route:
 
-- `/app/reservations/:id/change-request`
+- `/app/reservations/:reservationId/change-request`
 
 Phase:
 
@@ -826,13 +1024,13 @@ Flow:
 1. player opens reservation
 2. player chooses a new available slot
 3. player submits request
-4. partner accepts or rejects
+4. organization operator accepts or rejects
 5. calendar changes only if accepted
 
 Rules:
 
 - Cannot request a move to an unavailable slot.
-- Partner approval is required.
+- Organization approval is required.
 - The request should record who requested and who approved or rejected.
 - Moving a confirmed reservation must validate conflicts.
 
@@ -847,7 +1045,7 @@ Open decisions:
 Suggested route:
 
 - `/app/open-matches`
-- `/app/open-matches/:id`
+- `/app/open-matches/:openMatchId`
 
 Phase:
 
@@ -895,7 +1093,7 @@ Rules:
 - Player cannot join a full match.
 - Player cannot join a canceled or completed match.
 - Level is an expectation, not necessarily a hard block.
-- Partner-created open matches are V2 unless scope changes.
+- Organization-created open matches are V2 unless scope changes.
 
 Open decisions:
 
@@ -936,7 +1134,7 @@ Rules:
 
 - An open match does not replace a court reservation unless the flows are
   explicitly connected.
-- Match place may start as a partner/court reference or simple text.
+- Match place may start as an organization/court reference or simple text.
 
 Open decisions:
 
@@ -956,16 +1154,16 @@ Phase:
 
 Purpose:
 
-- Let a student choose classes according to their school plan.
+- Let a student choose classes according to their academy plan.
 
 Users:
 
-- student linked to a school
+- student linked to an academy
 
 Content:
 
 - available classes for the week
-- teacher
+- coach
 - class theme
 - min and max level
 - available spots
@@ -982,7 +1180,7 @@ Actions:
 Rules:
 
 - Student can choose only within plan limits.
-- School may block scheduling if payment is not valid.
+- Academy may block scheduling if payment is not valid.
 - Class may be canceled if minimum students is not reached.
 - Canceled class should let the student choose another time.
 
@@ -1004,7 +1202,7 @@ Content:
 
 - upcoming classes
 - canceled classes
-- teacher
+- coach
 - theme
 - time
 - location
@@ -1022,13 +1220,13 @@ Rules:
 - Class can depend on minimum student count.
 - Canceled classes should clearly tell the student to choose another time.
 
-## Partner Or Venue Pages
+## Organization Pages
 
-### Partner Dashboard
+### Organization Dashboard
 
 Suggested route:
 
-- `/partner`
+- `/organizations/:organizationSlug`
 
 Phase:
 
@@ -1042,6 +1240,7 @@ Content:
 
 - today's reservations
 - pending payments
+- active units
 - active courts
 - available slots
 - basic alerts
@@ -1063,14 +1262,16 @@ Future:
 
 Rules:
 
-- Dashboard shows only the partner's own operational data.
-- Cross-partner visibility is forbidden.
+- Dashboard shows only the active organization's operational data.
+- Organization owners/admins can see all units and courts.
+- Staff can see only assigned units and courts.
+- Cross-organization visibility is forbidden.
 
-### Partner Profile
+### Organization Profile
 
 Suggested route:
 
-- `/partner/profile`
+- `/organizations/:organizationSlug/profile`
 
 Phase:
 
@@ -1078,7 +1279,7 @@ Phase:
 
 Purpose:
 
-- Configure public and operational partner information.
+- Configure public and operational organization information.
 
 Fields:
 
@@ -1097,25 +1298,62 @@ Actions:
 
 - edit profile
 - activate or deactivate visibility
-- switch context if the organization also has school module enabled
+- switch to another accessible context
 
 Rules:
 
-- Partner profile should exist before court registration.
+- Organization profile should exist before court registration.
 - Private data must not appear publicly.
 - Public data appears in discovery.
+- Public organization pages use `/organizations/:organizationSlug` or a later
+  dedicated public route if product chooses to separate public and operational
+  URLs.
 
 Open decisions:
 
 - required fields for MVP
-- whether partner profile approval is manual
+- whether organization profile approval is manual
 - whether visibility can be disabled independently from court activation
+
+### Organization Units
+
+Suggested route:
+
+- `/organizations/:organizationSlug/units`
+- `/organizations/:organizationSlug/units/:unitSlug`
+
+Phase:
+
+- MVP candidate
+
+Purpose:
+
+- Represent multiple physical locations under one Organization.
+
+Content:
+
+- unit name
+- city
+- address
+- active courts
+- assigned staff
+
+Rules:
+
+- One Organization can have multiple units, including units in different cities.
+- Owners/admins can see all units.
+- Staff access may be scoped to assigned units.
+
+Open decisions:
+
+- whether a single-location organization creates an implicit default unit in MVP
+- whether unit management UI is MVP or immediately after MVP
 
 ### Court Management
 
 Suggested route:
 
-- `/partner/courts`
+- `/organizations/:organizationSlug/courts`
 
 Phase:
 
@@ -1123,7 +1361,7 @@ Phase:
 
 Purpose:
 
-- List and control the partner's courts.
+- List and control the organization's courts.
 
 List should show:
 
@@ -1145,15 +1383,16 @@ Actions:
 Rules:
 
 - Inactive court cannot receive reservations.
-- Inactive court can remain visible to partner admin.
+- Inactive court can remain visible to organization admin.
 - Each court must have at least one sport.
+- Court routes use court slugs in user-facing URLs.
 
 ### Create Or Edit Court
 
 Suggested route:
 
-- `/partner/courts/new`
-- `/partner/courts/:id/edit`
+- `/organizations/:organizationSlug/courts/new`
+- `/organizations/:organizationSlug/courts/:courtSlug/edit`
 
 Phase:
 
@@ -1187,8 +1426,8 @@ Open decisions:
 
 Suggested route:
 
-- `/partner/courts/:id/availability`
-- `/partner/calendar/configuration`
+- `/organizations/:organizationSlug/courts/:courtSlug/availability`
+- `/organizations/:organizationSlug/calendar/configuration`
 
 Phase:
 
@@ -1224,7 +1463,7 @@ Open decisions:
 
 Suggested route:
 
-- `/partner/calendar`
+- `/organizations/:organizationSlug/calendar`
 
 Phase:
 
@@ -1256,7 +1495,8 @@ Rules:
 
 - Moving a reservation must validate conflicts.
 - Moved reservation should record who moved it.
-- Player may request a move, but partner approves if change request flow exists.
+- Player may request a move, but organization approves if change request flow
+  exists.
 - Confirmed reservation blocks the slot.
 
 Open decisions:
@@ -1265,11 +1505,11 @@ Open decisions:
 - whether move can happen directly from calendar
 - whether move requires a reason
 
-### Partner Reservation Detail
+### Organization Reservation Detail
 
 Suggested route:
 
-- `/partner/reservations/:id`
+- `/organizations/:organizationSlug/reservations/:reservationId`
 
 Phase:
 
@@ -1277,7 +1517,7 @@ Phase:
 
 Purpose:
 
-- Let partner manage a reservation.
+- Let an organization operator manage a reservation.
 
 Content:
 
@@ -1302,7 +1542,7 @@ Actions:
 
 Rules:
 
-- Partner manages only its own reservations.
+- Organization operator manages only reservations for accessible units/courts.
 - Status changes must respect valid transitions.
 - Payment is manual in MVP.
 - Sensitive changes should be auditable.
@@ -1311,7 +1551,7 @@ Rules:
 
 Suggested route:
 
-- `/partner/payments`
+- `/organizations/:organizationSlug/payments`
 
 Phase:
 
@@ -1355,7 +1595,7 @@ Rules:
 
 Suggested route:
 
-- part of `/partner/profile`
+- part of `/organizations/:organizationSlug/profile`
 - part of court or venue detail pages
 
 Phase:
@@ -1390,11 +1630,11 @@ Open decisions:
 - exact MVP amenity list
 - whether amenities are searchable filters or display-only
 
-### Partner Admin Management
+### Organization Member Management
 
 Suggested route:
 
-- `/partner/admins`
+- `/organizations/:organizationSlug/settings/members`
 
 Phase:
 
@@ -1402,19 +1642,19 @@ Phase:
 
 Purpose:
 
-- Control who can manage a partner account.
+- Control who can manage an organization account.
 
 Content:
 
-- current admins
+- current owners, admins, and staff
 - permissions
 - history
 - primary owner
 
 Actions:
 
-- add admin
-- remove admin
+- add member
+- remove member
 - transfer ownership
 - view logs
 
@@ -1422,24 +1662,24 @@ Rules:
 
 - Every sensitive action should have an audit record.
 - Ownership transfer must be explicit.
-- Cross-partner access is forbidden.
+- Cross-organization access is forbidden.
 
 Open decisions:
 
-- whether admin management UI is MVP
+- whether member management UI is MVP
 - permission levels
 - whether logs are visible in the UI
 
-## School Pages
+## Academy Pages
 
-School pages are V2 unless product scope changes. They are documented here so
+Academy pages are V2 unless product scope changes. They are documented here so
 the frontend and domain model can avoid decisions that block them later.
 
-### School Dashboard
+### Academy Dashboard
 
 Suggested route:
 
-- `/school`
+- `/academies/:academySlug/manage`
 
 Phase:
 
@@ -1452,23 +1692,25 @@ Purpose:
 Content:
 
 - today's classes
-- active teachers
+- active coaches
 - classes below minimum students
 - students with pending payment
 - upcoming classes
-- shortcuts to calendar, teachers, students, classes, and payments
+- shortcuts to calendar, coaches, students, classes, and payments
 
 Rules:
 
-- School dashboard is different from court dashboard.
-- If the same organization has venue and school modules, the UI should support
-  context switching.
+- Academy dashboard is different from organization court dashboard.
+- If the same user has Player, Organization, and Academy contexts, the UI should
+  support context switching.
+- Public Academy profile pages can use `/academies/:academySlug`; operational
+  Academy pages use `/academies/:academySlug/manage`.
 
-### School Profile
+### Academy Profile
 
 Suggested route:
 
-- `/school/profile`
+- `/academies/:academySlug/manage/profile`
 
 Phase:
 
@@ -1476,11 +1718,11 @@ Phase:
 
 Purpose:
 
-- Configure school data.
+- Configure academy data.
 
 Fields:
 
-- school name
+- academy name
 - description
 - sports taught
 - city and address
@@ -1492,14 +1734,14 @@ Fields:
 Actions:
 
 - edit data
-- activate or deactivate school
+- activate or deactivate academy
 - configure plans
 
-### Teachers
+### Coaches
 
 Suggested route:
 
-- `/school/teachers`
+- `/academies/:academySlug/manage/coaches`
 
 Phase:
 
@@ -1507,7 +1749,7 @@ Phase:
 
 Purpose:
 
-- Manage school teachers.
+- Manage academy coaches.
 
 List should show:
 
@@ -1519,21 +1761,21 @@ List should show:
 
 Actions:
 
-- create teacher
-- edit teacher
-- deactivate teacher
-- view teacher agenda
+- create coach
+- edit coach
+- deactivate coach
+- view coach agenda
 
 Rules:
 
-- Teacher can start as an operational entity.
-- Teacher login is an open decision.
+- Coach can start as an operational entity.
+- Coach login is a V2 decision.
 
-### School Calendar
+### Academy Calendar
 
 Suggested route:
 
-- `/school/calendar`
+- `/academies/:academySlug/manage/calendar`
 
 Phase:
 
@@ -1541,11 +1783,11 @@ Phase:
 
 Purpose:
 
-- Organize classes by teacher.
+- Organize classes by coach.
 
 Layout:
 
-- columns represent teachers
+- columns represent coaches
 - rows represent times
 - blocks represent classes
 - clicking a block opens allocated students
@@ -1575,7 +1817,7 @@ Actions:
 - cancel class
 - view students
 - move class
-- change teacher
+- change coach
 - change theme
 
 Rules:
@@ -1583,14 +1825,16 @@ Rules:
 - Class can require a minimum number of students.
 - Class can be canceled if minimum is not reached.
 - Students need a way to choose another class when canceled.
-- School can limit classes by level.
+- Academy can limit classes by level.
+- Academy owners/admins can manage all classes.
+- Coaches can view classes but manage only assigned classes.
 
 ### Create Or Edit Class
 
 Suggested route:
 
-- `/school/classes/new`
-- `/school/classes/:id/edit`
+- `/academies/:academySlug/manage/classes/new`
+- `/academies/:academySlug/manage/classes/:classSlug/edit`
 
 Phase:
 
@@ -1602,7 +1846,7 @@ Purpose:
 
 Fields:
 
-- teacher
+- coach
 - sport
 - date
 - time
@@ -1635,7 +1879,7 @@ Rules:
 
 Suggested route:
 
-- `/school/classes/:id`
+- `/academies/:academySlug/manage/classes/:classSlug`
 
 Phase:
 
@@ -1647,7 +1891,7 @@ Purpose:
 
 Content:
 
-- teacher
+- coach
 - time
 - theme
 - level
@@ -1669,13 +1913,15 @@ Rules:
 
 - Class may be canceled if minimum is not reached.
 - Student should be able to reallocate after cancellation.
-- School controls manual exceptions.
+- Academy controls manual exceptions.
+- Coaches can accept students only for classes assigned to them and only when
+  academy rules allow it.
 
 ### Students
 
 Suggested route:
 
-- `/school/students`
+- `/academies/:academySlug/manage/students`
 
 Phase:
 
@@ -1683,7 +1929,7 @@ Phase:
 
 Purpose:
 
-- Manage students linked to a school.
+- Manage students linked to an academy.
 
 List should show:
 
@@ -1705,14 +1951,14 @@ Actions:
 Rules:
 
 - Student can be a normal app user.
-- School can block scheduling if payment is pending.
+- Academy can block scheduling if payment is pending.
 - Plan defines how many classes the student can choose.
 
 ### Plans And Weekly Classes
 
 Suggested route:
 
-- `/school/plans`
+- `/academies/:academySlug/manage/plans`
 
 Phase:
 
@@ -1753,22 +1999,22 @@ Purpose:
 Possible flow:
 
 1. student requests extra class
-2. teacher or school approves
+2. coach or academy approves
 3. class appears in calendar
 4. extra charge may or may not be generated
 
 Open decisions:
 
 - whether extra class belongs in V2
-- whether teacher alone can approve
-- whether school approval is required
+- whether coach alone can approve
+- whether academy approval is required
 - whether extra class creates separate payment
 
-### School Payments
+### Academy Payments
 
 Suggested route:
 
-- `/school/payments`
+- `/academies/:academySlug/manage/payments`
 
 Phase:
 
@@ -1797,10 +2043,10 @@ Statuses:
 Rules:
 
 - No payment integration in MVP.
-- School payment control is manual.
-- School may prevent scheduling if student has not paid.
+- Academy payment control is manual.
+- Academy may prevent scheduling if student has not paid.
 
-## Sandicts Admin Pages
+## Admin App Pages
 
 ### Admin Dashboard
 
@@ -1819,9 +2065,11 @@ Purpose:
 Possible content:
 
 - users
-- partners
-- schools
+- organizations
+- academies
 - sports
+- billing or subscriptions
+- metrics
 - reservations
 - audit logs
 - operational issues
@@ -1876,7 +2124,7 @@ Open decisions:
 Suggested route:
 
 - `/admin/audit`
-- partner or school scoped logs where appropriate
+- organization or academy scoped logs where appropriate
 
 Phase:
 
@@ -1916,15 +2164,26 @@ Rules:
 
 ## Navigation Draft
 
-This route map is a planning draft, not an implementation decision.
+This route map records the KAN-65 navigation decision. Public and operational
+entity pages use slugs from the start. Backend APIs can still use stable IDs
+internally. KAN-66 presentation, responsive behavior, context switching, and
+route-selection rules live in `docs/frontend/sandicts-mobile-navigation.md`.
 
 Public:
 
 - `/`
 - `/sign-in`
 - `/discovery`
-- `/courts/:id`
-- `/schools/:id`
+- `/courts/:courtSlug`
+- `/organizations/:organizationSlug`
+- `/academies/:academySlug`
+- `/players/:playerSlug`
+
+This product route inventory includes planned surfaces. Current runtime access
+and Google One Tap eligibility are classified separately in
+`src/lib/routes/route-access-policy.ts`. A new public detail page must receive
+an explicit route policy; public status does not make it One Tap eligible or
+indexable.
 
 Player:
 
@@ -1932,51 +2191,55 @@ Player:
 - `/app/onboarding`
 - `/app/profile`
 - `/app/courts`
-- `/app/courts/:id`
+- `/app/courts/:courtSlug`
 - `/app/reservations`
-- `/app/reservations/:id`
-- `/app/reservations/:id/change-request`
+- `/app/reservations/:reservationId`
+- `/app/reservations/:reservationId/change-request`
 - `/app/open-matches`
-- `/app/open-matches/:id`
+- `/app/open-matches/:openMatchId`
 - `/app/open-matches/new`
 - `/app/classes`
 - `/app/classes/my`
 
-Partner:
+Organization:
 
-- `/partner`
-- `/partner/profile`
-- `/partner/courts`
-- `/partner/courts/new`
-- `/partner/courts/:id/edit`
-- `/partner/courts/:id/availability`
-- `/partner/calendar`
-- `/partner/reservations`
-- `/partner/reservations/:id`
-- `/partner/payments`
-- `/partner/admins`
+- `/organizations/:organizationSlug`
+- `/organizations/:organizationSlug/profile`
+- `/organizations/:organizationSlug/units`
+- `/organizations/:organizationSlug/units/:unitSlug`
+- `/organizations/:organizationSlug/courts`
+- `/organizations/:organizationSlug/courts/new`
+- `/organizations/:organizationSlug/courts/:courtSlug/edit`
+- `/organizations/:organizationSlug/courts/:courtSlug/availability`
+- `/organizations/:organizationSlug/calendar`
+- `/organizations/:organizationSlug/reservations`
+- `/organizations/:organizationSlug/reservations/:reservationId`
+- `/organizations/:organizationSlug/payments`
+- `/organizations/:organizationSlug/settings/members`
 
-School:
+Academy:
 
-- `/school`
-- `/school/profile`
-- `/school/teachers`
-- `/school/calendar`
-- `/school/classes`
-- `/school/classes/new`
-- `/school/classes/:id`
-- `/school/classes/:id/edit`
-- `/school/students`
-- `/school/plans`
-- `/school/payments`
+- `/academies/:academySlug/manage`
+- `/academies/:academySlug/manage/profile`
+- `/academies/:academySlug/manage/coaches`
+- `/academies/:academySlug/manage/calendar`
+- `/academies/:academySlug/manage/classes`
+- `/academies/:academySlug/manage/classes/new`
+- `/academies/:academySlug/manage/classes/:classSlug`
+- `/academies/:academySlug/manage/classes/:classSlug/edit`
+- `/academies/:academySlug/manage/students`
+- `/academies/:academySlug/manage/plans`
+- `/academies/:academySlug/manage/payments`
 
-Sandicts Admin:
+Admin App:
 
 - `/admin`
+- `/admin/metrics`
 - `/admin/sports`
 - `/admin/users`
-- `/admin/partners`
-- `/admin/schools`
+- `/admin/organizations`
+- `/admin/academies`
+- `/admin/billing`
 - `/admin/audit`
 
 ## MVP Page Map
@@ -1988,6 +2251,8 @@ Confirmed or likely MVP pages:
 | Public | Public home and discovery | MVP |
 | Public | Sign in | MVP |
 | Public | Court or venue detail | MVP |
+| Public | Public academy detail | V2 or MVP candidate |
+| Public | Public player profile | V2, route reserved |
 | Player | Player home | MVP |
 | Player | Profile onboarding | MVP basic |
 | Player | Player profile | MVP basic |
@@ -1996,17 +2261,20 @@ Confirmed or likely MVP pages:
 | Player | My reservations | MVP |
 | Player | Open matches | MVP |
 | Player | Create open match | MVP |
-| Partner | Partner dashboard | MVP |
-| Partner | Partner profile | MVP |
-| Partner | Court management | MVP |
-| Partner | Create or edit court | MVP |
-| Partner | Availability configuration | MVP |
-| Partner | Court calendar | MVP |
-| Partner | Reservation detail | MVP |
-| Partner | Manual payments | MVP |
-| Partner | Amenities | MVP candidate |
-| Admin | Sports catalog | MVP candidate |
-| Admin | Audit records | MVP candidate backend, UI later |
+| Organization | Organization dashboard | MVP |
+| Organization | Organization profile | MVP |
+| Organization | Organization units | MVP candidate |
+| Organization | Court management | MVP |
+| Organization | Create or edit court | MVP |
+| Organization | Availability configuration | MVP |
+| Organization | Court calendar | MVP |
+| Organization | Reservation detail | MVP |
+| Organization | Manual payments | MVP |
+| Organization | Amenities | MVP candidate |
+| Admin App | Sports catalog | MVP candidate |
+| Admin App | Audit records | MVP candidate backend, UI later |
+| Admin App | Organizations and academies | MVP candidate |
+| Admin App | Billing status | MVP candidate |
 
 V2 or later pages:
 
@@ -2014,17 +2282,17 @@ V2 or later pages:
 | --- | --- | --- |
 | Player | Choose classes for week | V2 |
 | Player | My classes | V2 |
-| School | School dashboard | V2 |
-| School | School profile | V2 |
-| School | Teachers | V2 |
-| School | School calendar | V2 |
-| School | Create or edit class | V2 |
-| School | Class detail | V2 |
-| School | Students | V2 |
-| School | Plans | V2 |
-| School | Extra classes | V2 or future |
-| School | School payments | V2 |
-| Admin | Full admin dashboard | MVP candidate or future |
+| Academy | Academy dashboard | V2 |
+| Academy | Academy profile | V2 |
+| Academy | Coaches | V2 |
+| Academy | Academy calendar | V2 |
+| Academy | Create or edit class | V2 |
+| Academy | Class detail | V2 |
+| Academy | Students | V2 |
+| Academy | Plans | V2 |
+| Academy | Extra classes | V2 or future |
+| Academy | Academy payments | V2 |
+| Admin App | Full admin dashboard | MVP candidate or future |
 
 ## Business Rules Extracted From Page Descriptions
 
@@ -2033,6 +2301,11 @@ Authentication and access:
 - Public discovery is allowed.
 - Practical actions require login.
 - After login, the app should resume the attempted action when possible.
+- A single account may have Player, Organization, Academy, and Admin App
+  contexts.
+- Context switching is required when the user has more than one accessible
+  context.
+- Slugs are used in user-facing entity routes from the start.
 - Profile completion may block practical actions.
 
 Player profile:
@@ -2040,14 +2313,18 @@ Player profile:
 - Simple level is self-declared.
 - Simple level is used for filtering and expectations, not ranking.
 - Athlete card, overall, and technical evolution are not MVP.
+- Public player profiles use `/players/:playerSlug` and must respect public,
+  friends-only, or private visibility rules.
 
 Courts and availability:
 
-- Partner controls court availability.
+- Organization controls court availability.
 - Inactive courts cannot be reserved.
 - Unavailable slots cannot be reserved.
 - Court rules must be visible before reservation.
 - Price must be visible before reservation.
+- Organization owners/admins can see all units and courts.
+- Organization staff can be scoped to assigned units/courts.
 
 Reservations:
 
@@ -2055,9 +2332,9 @@ Reservations:
 - Confirmed reservation blocks the slot.
 - Duplicate active confirmed reservation for the same court and time is
   forbidden.
-- Partner manages reservation confirmation or cancellation.
+- Organization manages reservation confirmation or cancellation.
 - Payment is manual in MVP.
-- Time change request requires partner approval if the feature exists.
+- Time change request requires organization approval if the feature exists.
 
 Payments:
 
@@ -2074,44 +2351,51 @@ Open matches:
 - Player cannot join canceled or completed match.
 - Level is expectation, not verified ranking.
 
-School and classes:
+Academy and classes:
 
-- School logic is different from court reservation logic.
-- School module includes teachers, students, plans, classes, and payment blocks.
+- Academy logic is different from court reservation logic.
+- Academy module includes coaches, students, plans, classes, and payment blocks.
 - Class can require minimum and maximum students.
 - Student plan can limit weekly class choices.
-- School can block scheduling if payment is not valid.
-- School module is V2 unless product scope changes.
+- Academy can block scheduling if payment is not valid.
+- Academy owners/admins can manage all classes.
+- Coaches can view classes but manage only assigned classes.
+- Coaches can accept students into assigned classes only when academy rules
+  allow it.
+- Academy module is V2 unless product scope changes.
 
-Admin and audit:
+Admin App and audit:
 
 - Sensitive administrative and operational actions should be auditable.
-- Cross-partner and cross-school access is forbidden.
+- Cross-organization and cross-academy access is forbidden.
 - Full admin UI should exist only if operationally necessary.
+- Billing model for organizations and academies remains flexible: fixed
+  subscription, commission/percentage, or hybrid.
 
 ## Open Decisions
 
 Product scope:
 
-- Should visitors see only courts or also schools?
+- Should visitors see only courts or also academies?
 - Should public users see exact available slots?
-- Should school discovery exist in MVP as display-only?
+- Should academy discovery exist in MVP as display-only?
 - Should class scheduling remain V2?
 - Should reservation time-change request be MVP?
 - Should amenities be searchable filters or display-only?
 - Should admin management UI be MVP?
 - Should sports catalog have admin UI or be seeded/configured manually?
+- Should public player profile visibility controls ship in MVP or V2?
 
 Profile:
 
 - Is city required in MVP?
 - Does preferred court side belong in MVP?
 - Does dominant foot belong in MVP?
-- Does school affiliation belong in MVP profile?
+- Does academy affiliation belong in MVP profile?
 
 Reservations:
 
-- Does partner always confirm reservations manually?
+- Does organization always confirm reservations manually?
 - Is automatic confirmation allowed in MVP?
 - What is the cancellation window?
 - Can players cancel confirmed reservations directly?
@@ -2131,18 +2415,24 @@ Open matches:
 - Can open match reserve a court in the same flow?
 - Is level mismatch a hard block or only a warning?
 
-School:
+Academy:
 
-- Does teacher have login in V2?
+- Does coach have login in V2?
 - Are extra classes V2 or future?
-- Can teacher approve extra classes alone?
+- Can coach approve extra classes alone?
 - Does extra class create a separate payment?
 
 Permissions and audit:
 
 - What permission levels exist between owner and admins?
-- Can the same account be player, partner admin, and school admin?
+- What staff permission levels exist inside an Organization?
+- What coach permission levels exist inside an Academy?
 - Which audit logs need UI versus backend records only?
+
+Billing:
+
+- Do Organizations and Academies pay fixed subscriptions, a commission or
+  percentage, or a hybrid model?
 
 ## Next Step Before Jira
 

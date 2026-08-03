@@ -1,5 +1,5 @@
-<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="96" height="96" rx="20" fill="#071211"/>
-  <path d="M25 58c8 10 31 11 43 0 6-5 5-14-2-18-10-6-29 5-38-3-5-4-1-12 8-14 8-2 19 0 27 6" stroke="#F59E0B" stroke-width="8" stroke-linecap="round"/>
-  <path d="M69 29l7-13M74 38l14-5M25 59l-13 8M31 66l-6 14" stroke="#34D399" stroke-width="6" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" style="color: #f59e0b">
+  <title>SANDICTS</title>
+  <metadata>Sandicts brand variant: default</metadata>
+  <path fill="currentColor" d="M8 90V74H57 C65 74 69 72 69 68 C69 63 64 60 54 58 L40 55 C19 50 8 41 8 26 C8 13 19 6 38 6 H88 C83 20 72 31 58 36 C64 29 68 22 69 18 H41 C31 18 26 21 26 27 C26 33 31 36 40 38 L57 42 C78 47 88 56 88 69 C88 83 77 90 57 90 H8Z"/>
 </svg>
