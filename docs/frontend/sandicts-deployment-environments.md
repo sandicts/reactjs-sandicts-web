@@ -76,10 +76,42 @@ locally linked Vercel project for merges to deploy. The workflow and its trigger
 become active for a branch only after the workflow file has been merged into
 that branch.
 
-## Proposed Origins
+## Promotion And Recovery Standard
 
-The values below become final only after domain ownership and DNS are
-confirmed:
+Protected branches accept only this forward path:
+
+```text
+temporary task branch -> developer -> staging -> master
+```
+
+- feature, fix, security, and recovery code enters through a Jira-scoped
+  temporary branch targeting `developer`
+- `staging` accepts only a PR whose source is `developer`
+- `master` accepts only a PR whose source is `staging`
+- promotion PRs use
+  `.github/PULL_REQUEST_TEMPLATE/release-promotion.md` and record the release
+  type, exact source SHA, target environment, Jira scope, and rollback plan
+- every promotion runs the complete PR CI; the target deployment starts only
+  after merge, when the reusable CI validates the exact post-merge SHA
+- Production promotion also records the stable Preview deployment and its
+  validation evidence
+
+Use release type `standard` for normal batches and `security` when the release
+contains an isolated vulnerability remediation. A failed release is corrected
+on a task branch targeting `developer` and promoted forward again; never patch
+`staging` or `master` directly.
+
+For an active production incident, restore service by promoting the last
+healthy Vercel Production deployment. Then create the Jira-tracked revert or
+fix against `developer` and run the normal Preview and Production promotion
+path so repository history and deployed state converge. DNS is rolled back only
+when the failed change modified the provider or custom-domain target.
+
+## Deployed Origins
+
+Frontend ownership, Vercel domain verification, TLS, DNS at Hostinger, and the
+canonical redirects are confirmed. API origins remain reserved until KAN-30
+deploys the Render services:
 
 | Tier | Frontend | API |
 | --- | --- | --- |
@@ -184,7 +216,9 @@ Runtime validation enforces:
 - let Vercel detect Next.js without a provider-specific application adapter
 - set project root to `.` and Node.js to `24.x`
 - configure Preview and Production environment variables in Vercel
-- add `preview.sandicts.com.br` and all production or redirect domains to the project
+- keep `preview.sandicts.com.br` assigned to the Preview environment for
+  `staging`, while the workflow moves its alias to the approved deployment
+- keep all production and redirect domains on the Production project
 - create GitHub Environments `preview` and `production`
 - store `VERCEL_TOKEN` as an environment secret
 - store `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` as GitHub variables

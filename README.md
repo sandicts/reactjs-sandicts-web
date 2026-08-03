@@ -285,6 +285,13 @@ Pull requests use:
 .github/pull_request_template.md
 ```
 
+Environment promotions use
+`.github/PULL_REQUEST_TEMPLATE/release-promotion.md`; dependency-security
+remediations use
+`.github/PULL_REQUEST_TEMPLATE/vulnerability-remediation.md`. Governance
+enforces `developer -> staging -> master`, the exact promotion title, the
+source commit, rollback evidence, and Preview evidence before Production.
+
 ## Deployment
 
 Vercel is the selected MVP frontend provider.
@@ -305,6 +312,11 @@ The deployment workflows are:
 .github/workflows/cd-vercel-preview.yml
 .github/workflows/cd-vercel-production.yml
 ```
+
+Normal releases, security corrections, and recovery changes all enter through
+`developer` and follow the same protected-branch promotion order. A merge to
+`staging` deploys Preview; Production is promoted only after that exact release
+is validated and merged from `staging` to `master`.
 
 Create GitHub Environments named `preview` and `production`. Store
 `VERCEL_TOKEN` as an environment secret, and configure `VERCEL_ORG_ID` and
