@@ -9,6 +9,10 @@ PR description required by CI Governance:
 - Keep the template headings and order unchanged.
 - Replace raw placeholders before opening or updating the PR.
 - Set Primary Jira to the same Jira key used in the PR title.
+
+Specialized templates:
+- Environment promotion: .github/PULL_REQUEST_TEMPLATE/release-promotion.md
+- Dependency vulnerability: .github/PULL_REQUEST_TEMPLATE/vulnerability-remediation.md
 -->
 
 ## Summary

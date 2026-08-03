@@ -11,6 +11,7 @@ on:
       - synchronize
       - reopened
       - edited
+  workflow_call:
 
 permissions:
   contents: read
@@ -19,7 +20,7 @@ env:
   NEXT_TELEMETRY_DISABLED: "1"
 
 concurrency:
-  group: ci-pr-${{ github.event.pull_request.number }}
+  group: ci-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -30,6 +31,7 @@ jobs:
 
     steps:
       - name: Validate branch naming, PR title, PR description, and PR target
+        if: github.event_name == 'pull_request'
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_BODY: ${{ github.event.pull_request.body }}
@@ -154,6 +156,87 @@ jobs:
             exit 1
           fi
 
+          if grep -Fq "REPLACE_WITH_" <<< "$BODY"; then
+            echo "Invalid pull request description: unresolved specialized-template placeholder remains"
+            exit 1
+          fi
+
+          if [[ "$BASE" == "developer" && "$is_valid_protected_branch" == "true" ]]; then
+            echo "Invalid promotion direction: protected branches cannot merge back into developer"
+            exit 1
+          fi
+
+          if [[ "$BASE" == "staging" && "$HEAD" != "developer" ]]; then
+            echo "Invalid staging source: staging accepts promotions only from developer"
+            exit 1
+          fi
+
+          if [[ "$BASE" == "master" && "$HEAD" != "staging" ]]; then
+            echo "Invalid production source: master accepts promotions only from staging"
+            exit 1
+          fi
+
+          if [[ "$BASE" == "staging" || "$BASE" == "master" ]]; then
+            if [[ "$BASE" == "staging" ]]; then
+              EXPECTED_PROMOTION_TITLE="[$TITLE_JIRA] chore(release): Promote developer to staging"
+            else
+              EXPECTED_PROMOTION_TITLE="[$TITLE_JIRA] chore(release): Promote staging to master"
+            fi
+
+            if [[ "$TITLE" != "$EXPECTED_PROMOTION_TITLE" ]]; then
+              echo "Invalid promotion title: $TITLE"
+              echo "Expected: $EXPECTED_PROMOTION_TITLE"
+              exit 1
+            fi
+
+            promotion_fields=(
+              "Release type:"
+              "Promotion path:"
+              "Source commit:"
+              "Target environment:"
+              "Rollback:"
+            )
+
+            for field in "${promotion_fields[@]}"; do
+              if ! grep -Fq -- "$field" <<< "$BODY"; then
+                echo "Invalid promotion description: missing '$field'"
+                echo "Use .github/PULL_REQUEST_TEMPLATE/release-promotion.md."
+                exit 1
+              fi
+            done
+
+            if [[ "$BASE" == "master" ]]; then
+              production_fields=("Preview deployment:" "Preview validation:")
+              for field in "${production_fields[@]}"; do
+                if ! grep -Fq -- "$field" <<< "$BODY"; then
+                  echo "Invalid production promotion description: missing '$field'"
+                  exit 1
+                fi
+              done
+            fi
+          fi
+
+          if [[ "$TITLE" =~ \((dependencies|deps|security)\): ]]; then
+            security_fields=(
+              "Advisory:"
+              "Severity:"
+              "Affected package:"
+              "Affected versions:"
+              "Patched version:"
+              "Dependency path:"
+              "Audit result:"
+              "Merge order:"
+            )
+
+            for field in "${security_fields[@]}"; do
+              if ! grep -Fq -- "$field" <<< "$BODY"; then
+                echo "Invalid vulnerability description: missing '$field'"
+                echo "Use .github/PULL_REQUEST_TEMPLATE/vulnerability-remediation.md."
+                exit 1
+              fi
+            done
+          fi
+
           if [[ "$is_valid_temp_branch" == "false" && "$is_valid_protected_branch" == "false" ]]; then
             echo "Invalid source branch name: $HEAD"
             echo "Allowed examples:"
@@ -170,6 +253,19 @@ jobs:
             echo "  developer"
             echo "  staging"
             echo "  master"
+            exit 1
+          fi
+
+      - name: Validate reusable CI caller
+        if: github.event_name != 'pull_request'
+        run: |
+          if [[ "${{ github.event_name }}" != "push" ]]; then
+            echo "Reusable CI accepts only staging or master push callers."
+            exit 1
+          fi
+
+          if [[ "${{ github.ref_name }}" != "staging" && "${{ github.ref_name }}" != "master" ]]; then
+            echo "Invalid reusable CI caller branch: ${{ github.ref_name }}"
             exit 1
           fi
 
@@ -194,7 +290,7 @@ jobs:
         run: |
           node --version
           npm --version
-          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error(`Expected Node.js 24, received ${process.version}`); }"
+          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error('Expected Node.js 24, received ' + process.version); }"
           npm_major="$(npm --version | cut -d. -f1)"
           if [ "$npm_major" != "11" ]; then
             echo "Expected npm 11.x, received $(npm --version)"
@@ -231,7 +327,7 @@ jobs:
         run: |
           node --version
           npm --version
-          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error(`Expected Node.js 24, received ${process.version}`); }"
+          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error('Expected Node.js 24, received ' + process.version); }"
           npm_major="$(npm --version | cut -d. -f1)"
           if [ "$npm_major" != "11" ]; then
             echo "Expected npm 11.x, received $(npm --version)"
@@ -250,7 +346,7 @@ jobs:
     needs: governance
     timeout-minutes: 15
     env:
-      OPENAPI_SCHEMA_URL: https://raw.githubusercontent.com/sandicts/nodejs-sandicts-api/${{ github.head_ref }}/openapi/sandicts-api.json
+      OPENAPI_SCHEMA_URL: https://raw.githubusercontent.com/sandicts/nodejs-sandicts-api/${{ github.head_ref || github.ref_name }}/openapi/sandicts-api.json
 
     steps:
       - name: Checkout
@@ -267,7 +363,7 @@ jobs:
         run: |
           node --version
           npm --version
-          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error(`Expected Node.js 24, received ${process.version}`); }"
+          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error('Expected Node.js 24, received ' + process.version); }"
           npm_major="$(npm --version | cut -d. -f1)"
           if [ "$npm_major" != "11" ]; then
             echo "Expected npm 11.x, received $(npm --version)"
@@ -301,7 +397,7 @@ jobs:
         run: |
           node --version
           npm --version
-          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error(`Expected Node.js 24, received ${process.version}`); }"
+          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error('Expected Node.js 24, received ' + process.version); }"
           npm_major="$(npm --version | cut -d. -f1)"
           if [ "$npm_major" != "11" ]; then
             echo "Expected npm 11.x, received $(npm --version)"
@@ -335,7 +431,7 @@ jobs:
         run: |
           node --version
           npm --version
-          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error(`Expected Node.js 24, received ${process.version}`); }"
+          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error('Expected Node.js 24, received ' + process.version); }"
           npm_major="$(npm --version | cut -d. -f1)"
           if [ "$npm_major" != "11" ]; then
             echo "Expected npm 11.x, received $(npm --version)"

@@ -15,7 +15,7 @@ read-when:
   - configuring a frontend deployment
   - adding or changing frontend environment variables
   - integrating browser authentication with a deployed API
-  - reviewing pull request previews, indexing, CORS, or cookies
+  - reviewing stable preview, indexing, CORS, or cookies
 do-not-read-when:
   - changing only local presentation with no environment or API impact
 ---
@@ -26,48 +26,102 @@ do-not-read-when:
 
 Use Vercel as the Next.js deployment provider for the MVP.
 
-The environment model has four runtime tiers:
+The environment model has three deployed runtime tiers:
 
 1. local development
-2. ephemeral pull request preview
-3. stable preview integration
-4. production
+2. stable preview integration
+3. production
 
-Ephemeral pull request previews and stable preview integration have different
-responsibilities. A pull request URL is suitable for build, UI, responsive,
-public API, and `noindex` validation. Full cookie-based authentication runs
-only on local, stable preview, and production origins.
+Feature, fix, and `developer` pushes do not deploy. Stable preview and
+production are deployed only by GitHub Actions after the repository CI validates
+the exact post-merge SHA. Vercel's Git integration and automatic Git
+deployments are not used.
 
 This preserves host-only refresh cookies with `SameSite=Lax` and avoids
-depending on third-party cookies or registering arbitrary Vercel URLs with
+depending on third-party cookies or registering generated Vercel URLs with
 Google Identity Services.
 
 ## Branch And Promotion Model
 
 | Branch or source | Vercel environment | Purpose |
 | --- | --- | --- |
-| feature pull request | Preview | Ephemeral UI and public-integration validation |
+| feature, fix, or `developer` | none | Code review, integration, and local execution only |
 | `staging` | Preview with a fixed custom domain | Stable full-stack integration |
 | `master` | Production | Public production release |
 
-GitHub Actions remains the code quality and contract gate. The Vercel deployment
-check proves that the exact pull request commit can be built and served.
+GitHub Actions remains the code quality and contract gate. `staging` and
+`master` deployment workflows call the existing CI as a reusable workflow, then
+check out and deploy the same `github.sha` only when all CI jobs succeed.
 
-The stable preview custom domain is assigned to the `staging` branch. A custom
-Vercel environment is optional; branch-specific Preview variables are
-sufficient when the account plan does not include custom environments.
+CD uses pinned Vercel CLI `58.4.4` with `vercel pull`, `vercel build`, and
+`vercel deploy --prebuilt`. Preview assigns its stable domain with
+`vercel alias set`; Production uses `vercel deploy --prebuilt --prod` and the
+project's configured production domains.
 
-## Proposed Origins
+### Deployment Trigger Behavior
 
-The values below become final only after domain ownership and DNS are
-confirmed:
+Deployment is automatic after the CD workflow files exist on the receiving
+branch:
+
+- a merge or direct push to `staging` starts `CD Vercel Preview`
+- a merge or direct push to `master` starts `CD Vercel Production`
+- the deployment job runs only after every reusable CI job succeeds
+- a failed or cancelled CI run creates no deployment
+- GitHub Environment branch policies allow `preview` only from `staging` and
+  `production` only from `master`
+- there is no `workflow_dispatch` trigger and no routine manual deploy step
+
+The workflows execute on GitHub-hosted runners. A developer does not need a
+locally linked Vercel project for merges to deploy. The workflow and its trigger
+become active for a branch only after the workflow file has been merged into
+that branch.
+
+## Promotion And Recovery Standard
+
+Protected branches accept only this forward path:
+
+```text
+temporary task branch -> developer -> staging -> master
+```
+
+- feature, fix, security, and recovery code enters through a Jira-scoped
+  temporary branch targeting `developer`
+- `staging` accepts only a PR whose source is `developer`
+- `master` accepts only a PR whose source is `staging`
+- promotion PRs use
+  `.github/PULL_REQUEST_TEMPLATE/release-promotion.md` and record the release
+  type, exact source SHA, target environment, Jira scope, and rollback plan
+- every promotion runs the complete PR CI; the target deployment starts only
+  after merge, when the reusable CI validates the exact post-merge SHA
+- Production promotion also records the stable Preview deployment and its
+  validation evidence
+
+Use release type `standard` for normal batches and `security` when the release
+contains an isolated vulnerability remediation. A failed release is corrected
+on a task branch targeting `developer` and promoted forward again; never patch
+`staging` or `master` directly.
+
+For an active production incident, restore service by promoting the last
+healthy Vercel Production deployment. Then create the Jira-tracked revert or
+fix against `developer` and run the normal Preview and Production promotion
+path so repository history and deployed state converge. DNS is rolled back only
+when the failed change modified the provider or custom-domain target.
+
+## Deployed Origins
+
+Frontend ownership, Vercel domain verification, TLS, DNS at Hostinger, and the
+canonical redirects are confirmed. API origins remain reserved until KAN-30
+deploys the Render services:
 
 | Tier | Frontend | API |
 | --- | --- | --- |
 | local | `http://localhost:3001` | `http://localhost:3000` |
-| pull request preview | Vercel-generated HTTPS URL | staging API for public endpoints only |
 | stable preview | `https://preview.sandicts.com.br` | `https://api.preview.sandicts.com.br` |
 | production | `https://sandicts.com.br` | `https://api.sandicts.com.br` |
+
+`sandicts.com`, `www.sandicts.com`, and `www.sandicts.com.br` point to Vercel
+and redirect to the canonical production origin `https://sandicts.com.br`.
+Hostinger remains the authoritative DNS provider.
 
 If product later separates a marketing site from the application, moving the
 authenticated frontend to `app.sandicts.com.br` requires a coordinated
@@ -78,13 +132,11 @@ canonical URL, Google origin, email, CORS, and redirect migration.
 | Tier | CORS origin | Credentials | Refresh cookie | Auth providers |
 | --- | --- | --- | --- | --- |
 | local | exact localhost frontend origin | `include` | `HttpOnly`, host-only, `SameSite=Lax`, `Secure=false`, `Path=/auth/refresh` | magic link and configured Google flows |
-| pull request preview | exact validated Sandicts Vercel project origin | runtime keeps `include`, but no refresh session is expected | not supported as a complete browser session | disabled |
 | stable preview | exact stable preview frontend origin | `include` | `HttpOnly`, host-only, `SameSite=Lax`, `Secure=true`, `Path=/auth/refresh` | magic link, Google Sign-In, and One Tap |
 | production | exact production frontend origin | `include` | `HttpOnly`, host-only, `SameSite=Lax`, `Secure=true`, `Path=/auth/refresh` | magic link, Google Sign-In, and One Tap |
 
-The API never uses a wildcard origin with credentials. Vercel pull request
-origins are accepted only when both the project and team slugs match the
-backend's explicit staging configuration.
+The API never uses a wildcard origin with credentials. Generated Vercel origins
+are not part of the deployed CORS allowlist.
 
 Do not add `Domain=.sandicts.com.br` to the refresh cookie. The backend owns the
 cookie and the frontend does not need to read it.
@@ -100,7 +152,7 @@ cookie and the frontend does not need to read it.
 ```
 
 The callback removes the token from browser history before consuming it through
-`POST`. Ephemeral pull request previews do not request or consume magic links.
+`POST`.
 
 ### Google Sign-In And One Tap
 
@@ -110,9 +162,9 @@ Authorized JavaScript origins are limited to:
 - the stable preview origin
 - the production origin
 
-Vercel-generated pull request origins are not registered. Both explicit Google
-Sign-In and One Tap send the Google credential to the same backend endpoint and
-produce the same internal Sandicts session.
+Vercel-generated origins are not registered. Both explicit Google Sign-In and
+One Tap send the Google credential to the same backend endpoint and produce the
+same internal Sandicts session.
 
 One Tap additionally requires:
 
@@ -137,9 +189,9 @@ One Tap additionally requires:
 
 | Variable | Exposure | Purpose |
 | --- | --- | --- |
-| `NEXT_PUBLIC_APP_ENV` | public | `local`, `pr-preview`, `preview`, or `production` |
+| `NEXT_PUBLIC_APP_ENV` | public | deployed values are `local`, `preview`, or `production`; `pr-preview` remains accepted for compatibility but has no CD trigger |
 | `NEXT_PUBLIC_API_BASE_URL` | public | absolute Sandicts API base URL |
-| `NEXT_PUBLIC_AUTH_ENABLED` | public | disables browser auth in ephemeral previews |
+| `NEXT_PUBLIC_AUTH_ENABLED` | public | enables browser auth in stable preview and production |
 | `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | public | Google web OAuth client ID |
 | `NEXT_PUBLIC_GOOGLE_ONE_TAP_ENABLED` | public | independently enables One Tap |
 | `WEB_ORIGIN` | server/build | canonical frontend origin |
@@ -159,16 +211,24 @@ Runtime validation enforces:
 
 ## Vercel Configuration Checklist
 
-- import `sandicts/reactjs-sandicts-web`
+- create or link the project manually with Vercel CLI
+- keep the GitHub repository disconnected from Vercel Git integration
 - let Vercel detect Next.js without a provider-specific application adapter
-- use the Node and npm versions declared by the repository at deployment time
-- configure `master` as the Production branch
-- assign the stable preview domain to `staging`
-- set environment variables by Production, Preview, and staging branch override
-- expose no production secrets to pull request previews
+- set project root to `.` and Node.js to `24.x`
+- configure Preview and Production environment variables in Vercel
+- keep `preview.sandicts.com.br` assigned to the Preview environment for
+  `staging`, while the workflow moves its alias to the approved deployment
+- keep all production and redirect domains on the Production project
+- create GitHub Environments `preview` and `production`
+- store `VERCEL_TOKEN` as an environment secret
+- store `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID` as GitHub variables
+- expose no production secrets to Preview
 - enable deployment protection where preview data or unfinished screens require it
 - keep automatic Vercel rollback available
-- require both GitHub CI and Vercel deployment checks before merge
+- restrict the GitHub `preview` environment to `staging`
+- restrict the GitHub `production` environment to `master`
+- add required reviewers only when a team access and production approval model
+  is intentionally introduced
 
 No `vercel.json` is required by the current application. Add it only when a
 reviewed requirement cannot be expressed through the Vercel project settings or
@@ -176,14 +236,15 @@ reviewed requirement cannot be expressed through the Vercel project settings or
 
 ## Validation
 
-Every pull request preview must:
+Every `staging` deployment must:
 
-- serve the exact commit under review
-- build without production-only values
+- run only after all reusable CI jobs pass
+- check out and serve the exact post-merge SHA
+- use only Vercel Preview variables
 - emit `noindex`
-- keep browser auth disabled
 - avoid production data and secrets
-- expose a URL through the pull request checks
+- assign `preview.sandicts.com.br` to the created deployment
+- leave feature, fix, and `developer` pushes without deployments
 
 Stable preview must validate:
 
@@ -202,6 +263,7 @@ observability, and rollback to the previous healthy deployment.
 ## Rollback
 
 - promote the last healthy Vercel deployment
+- reassign `preview.sandicts.com.br` to the last healthy Preview deployment
 - restore the previous environment-variable version
 - revert DNS only when the provider or custom-domain target changed
 - preserve cookie name and path across emergency rollback
