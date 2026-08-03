@@ -58,11 +58,99 @@ The expected local baseline is:
 - npm `11.x`
 - package manager `npm`
 
-## Setup
+## New Workstation Setup
+
+Use the access profile that matches the work being performed:
+
+| Profile               | Required access                                                      | Local Vercel setup                                      |
+| --------------------- | -------------------------------------------------------------------- | ------------------------------------------------------- |
+| Contributor           | GitHub repository access                                             | Not required                                            |
+| Deployment maintainer | GitHub repository access and membership in the Sandicts Vercel scope | Required only for deployment or platform administration |
+
+Access assignment is currently manual. Contributors do not need a Vercel token,
+the Vercel CLI, or a local project link to develop, review, or merge application
+code.
+
+Install Git, GitHub CLI, a Node.js version manager, Node.js `24.16.0`, and npm
+`11.13.0`. Then create the recommended sibling workspace:
 
 ```bash
-npm install
+gh auth login
+
+mkdir sandicts
+cd sandicts
+mkdir apps
+cd apps
+
+gh repo clone sandicts/sandicts-docs
+gh repo clone sandicts/nodejs-sandicts-api
+gh repo clone sandicts/reactjs-sandicts-web
+```
+
+Set up the frontend from its integration branch:
+
+```bash
+cd reactjs-sandicts-web
+git switch developer
+
+nvm install 24.16.0
+nvm use 24.16.0
+npm install --global npm@11.13.0
+npm ci
+```
+
+Copy `.env.example` to `.env.local`, keeping only local values. In PowerShell:
+
+```powershell
+Copy-Item .env.example .env.local
+```
+
+In a POSIX-compatible shell:
+
+```bash
 cp .env.example .env.local
+```
+
+Resume an existing remote task branch without creating a different branch:
+
+```bash
+git fetch origin
+git switch --track origin/<branch-name>
+```
+
+Deployment maintainers additionally install the pinned Vercel CLI and link the
+local checkout to the existing project:
+
+```bash
+npm install --global vercel@58.4.4
+vercel login
+vercel link --project sandicts-web --scope developerlucaslimas-projects
+vercel whoami
+```
+
+Select the existing `sandicts-web` project. Do not create another project, use
+`vercel link --repo`, connect Vercel Git Integration, or copy `.vercel`, local
+environment files, access tokens, or credential stores between machines. Local
+Vercel linking is not used by GitHub Actions; CI/CD reads its own scoped GitHub
+configuration.
+
+Verify the workstation before starting work:
+
+```bash
+gh auth status
+node --version
+npm --version
+git status
+```
+
+The backend repository README owns its PostgreSQL, Mailpit, Prisma, and local API
+setup. The shared documentation repository has no runtime dependencies.
+
+## Local Frontend Setup
+
+Start the application after installing dependencies and creating `.env.local`:
+
+```bash
 npm run dev
 ```
 

@@ -58,6 +58,24 @@ CD uses pinned Vercel CLI `58.4.4` with `vercel pull`, `vercel build`, and
 `vercel alias set`; Production uses `vercel deploy --prebuilt --prod` and the
 project's configured production domains.
 
+### Deployment Trigger Behavior
+
+Deployment is automatic after the CD workflow files exist on the receiving
+branch:
+
+- a merge or direct push to `staging` starts `CD Vercel Preview`
+- a merge or direct push to `master` starts `CD Vercel Production`
+- the deployment job runs only after every reusable CI job succeeds
+- a failed or cancelled CI run creates no deployment
+- GitHub Environment branch policies allow `preview` only from `staging` and
+  `production` only from `master`
+- there is no `workflow_dispatch` trigger and no routine manual deploy step
+
+The workflows execute on GitHub-hosted runners. A developer does not need a
+locally linked Vercel project for merges to deploy. The workflow and its trigger
+become active for a branch only after the workflow file has been merged into
+that branch.
+
 ## Proposed Origins
 
 The values below become final only after domain ownership and DNS are
@@ -174,7 +192,9 @@ Runtime validation enforces:
 - enable deployment protection where preview data or unfinished screens require it
 - keep automatic Vercel rollback available
 - restrict the GitHub `preview` environment to `staging`
-- restrict the GitHub `production` environment to `master` and require approval
+- restrict the GitHub `production` environment to `master`
+- add required reviewers only when a team access and production approval model
+  is intentionally introduced
 
 No `vercel.json` is required by the current application. Add it only when a
 reviewed requirement cannot be expressed through the Vercel project settings or
