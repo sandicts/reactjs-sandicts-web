@@ -67,5 +67,6 @@ target branch does not contain that release yet.
 - Rollback: `REPLACE_WITH_LAST_HEALTHY_DEPLOYMENT_OR_REVERT_PLAN`
 - Preview deployment: `REPLACE_WITH_URL_OR_NOT_APPLICABLE_FOR_STAGING`
 - Preview validation: `REPLACE_WITH_EVIDENCE_OR_NOT_APPLICABLE_FOR_STAGING`
+- Merge method: merge commit; never squash a protected-branch promotion
 - Branch cleanup: protected promotion branches are retained
 - Known gaps or skipped validation: `REPLACE_WITH_GAPS_OR_NONE`

@@ -88,6 +88,9 @@ temporary task branch -> developer -> staging -> master
   temporary branch targeting `developer`
 - `staging` accepts only a PR whose source is `developer`
 - `master` accepts only a PR whose source is `staging`
+- task branches are squashed into `developer`; protected-branch promotions use
+  merge commits so later releases keep the previous source commit as their
+  merge base and do not repeat already promoted changes
 - promotion PRs use
   `.github/PULL_REQUEST_TEMPLATE/release-promotion.md` and record the release
   type, exact source SHA, target environment, Jira scope, and rollback plan
