@@ -209,7 +209,7 @@ jobs:
         run: |
           node --version
           npm --version
-          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error(`Expected Node.js 24, received ${process.version}`); }"
+          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error('Expected Node.js 24, received ' + process.version); }"
           npm_major="$(npm --version | cut -d. -f1)"
           if [ "$npm_major" != "11" ]; then
             echo "Expected npm 11.x, received $(npm --version)"
@@ -246,7 +246,7 @@ jobs:
         run: |
           node --version
           npm --version
-          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error(`Expected Node.js 24, received ${process.version}`); }"
+          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error('Expected Node.js 24, received ' + process.version); }"
           npm_major="$(npm --version | cut -d. -f1)"
           if [ "$npm_major" != "11" ]; then
             echo "Expected npm 11.x, received $(npm --version)"
@@ -282,7 +282,7 @@ jobs:
         run: |
           node --version
           npm --version
-          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error(`Expected Node.js 24, received ${process.version}`); }"
+          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error('Expected Node.js 24, received ' + process.version); }"
           npm_major="$(npm --version | cut -d. -f1)"
           if [ "$npm_major" != "11" ]; then
             echo "Expected npm 11.x, received $(npm --version)"
@@ -316,7 +316,7 @@ jobs:
         run: |
           node --version
           npm --version
-          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error(`Expected Node.js 24, received ${process.version}`); }"
+          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error('Expected Node.js 24, received ' + process.version); }"
           npm_major="$(npm --version | cut -d. -f1)"
           if [ "$npm_major" != "11" ]; then
             echo "Expected npm 11.x, received $(npm --version)"
@@ -350,7 +350,7 @@ jobs:
         run: |
           node --version
           npm --version
-          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error(`Expected Node.js 24, received ${process.version}`); }"
+          node -e "const major = Number(process.versions.node.split('.')[0]); if (major !== 24) { throw new Error('Expected Node.js 24, received ' + process.version); }"
           npm_major="$(npm --version | cut -d. -f1)"
           if [ "$npm_major" != "11" ]; then
             echo "Expected npm 11.x, received $(npm --version)"
