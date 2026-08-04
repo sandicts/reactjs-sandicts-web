@@ -1,8 +1,8 @@
 import { getAuthAccessToken } from "@/lib/auth/auth-session-store";
 import { publicEnv } from "@/lib/env/public-env";
 import {
-  isSandictsAuthUrl,
   isRefreshAuthSessionUrl,
+  isSandictsAuthUrl,
   refreshSandictsAuthSession,
 } from "./sandicts-api-auth";
 import { SandictsApiError, parseSandictsApiError } from "./sandicts-api-error";
@@ -91,7 +91,9 @@ async function shouldRetryAfterRefresh(
     return false;
   }
 
-  return refreshSandictsAuthSession();
+  const refreshResult = await refreshSandictsAuthSession();
+
+  return refreshResult.kind === "refreshed";
 }
 
 function hasBearerAccessToken(options: RequestInit) {

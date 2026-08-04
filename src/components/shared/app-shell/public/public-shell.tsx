@@ -7,6 +7,7 @@ import { APP_ROUTES } from "@/lib/routes/app-routes";
 import { SkipLink } from "../chrome/skip-link";
 import { publicShellStyles } from "./public-shell.styles";
 import type { PublicShellProps } from "./public-shell.types";
+import { PublicAuthAction } from "./public-auth-action";
 
 function PublicShell({ children }: PublicShellProps) {
   const t = useTranslations("PublicShell");
@@ -32,9 +33,7 @@ function PublicShell({ children }: PublicShellProps) {
                 </span>
               </Link>
             </Button>
-            <Button asChild size="sm">
-              <Link href={APP_ROUTES.public.signIn}>{t("signIn")}</Link>
-            </Button>
+            <PublicAuthAction />
           </nav>
         </div>
       </header>

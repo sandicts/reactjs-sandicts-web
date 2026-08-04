@@ -8,8 +8,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   clearAuthSession,
   getAuthSession,
+  getAuthSessionLifecycle,
   setAuthSession,
 } from "@/lib/auth/auth-session-store";
+import { queryKeys } from "@/lib/query/query-keys";
 import {
   authSession,
   createAuthQueryClient,
@@ -50,10 +52,15 @@ describe("useRefreshAuthSession", () => {
     });
 
     expect(getAuthSession()).toEqual(authSession);
+    expect(result.current.data).toMatchObject({ kind: "refreshed" });
+    expect(queryClient.getQueryData(queryKeys.auth.session())).toEqual({
+      account: authSession.account,
+      session: authSession.session,
+    });
     expect(fetchMock).toHaveBeenCalledOnce();
   });
 
-  it("clears a previous session when refresh fails", async () => {
+  it("classifies a terminal refresh rejection as expired after authentication", async () => {
     setAuthSession(authSession);
     fetchMock.mockResolvedValueOnce(
       createJsonResponse(401, {
@@ -73,10 +80,15 @@ describe("useRefreshAuthSession", () => {
     });
 
     await waitFor(() => {
-      expect(result.current.isError).toBe(true);
+      expect(result.current.isSuccess).toBe(true);
     });
 
     expect(getAuthSession()).toBeNull();
+    expect(getAuthSessionLifecycle()).toEqual({ status: "expired" });
+    expect(result.current.data).toEqual({
+      kind: "rejected",
+      reason: "invalid",
+    });
     expect(fetchMock).toHaveBeenCalledOnce();
   });
 });

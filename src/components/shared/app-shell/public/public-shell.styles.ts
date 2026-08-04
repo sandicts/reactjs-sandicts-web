@@ -12,6 +12,8 @@ const publicShellStyles = {
   navigation: "ml-auto flex items-center gap-1 sm:gap-2",
   exploreText: "hidden sm:inline",
   exploreTextMobile: "sr-only sm:hidden",
+  authActionSkeleton: "h-8 w-16",
+  sessionBadge: "max-w-44 truncate",
 } as const;
 
 export { publicShellStyles };

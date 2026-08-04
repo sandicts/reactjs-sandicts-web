@@ -1,30 +1,16 @@
-"use client";
+import type { QueryClient } from "@tanstack/react-query";
+import { adaptAuthSessionSnapshot } from "@/lib/auth/auth-session.adapters";
+import { synchronizeAuthSessionCache } from "@/lib/auth/auth-session-cache";
+import { setAuthSession } from "@/lib/auth/auth-session-store";
 
-import type {
-  GoogleSignInResponseOutput,
-  RefreshAuthSessionResponseOutput,
-} from "@/lib/api/generated/sandicts-api/model";
-import {
-  clearAuthSession,
-  setAuthSession,
-} from "@/lib/auth/auth-session-store";
+function persistAuthSession(queryClient: QueryClient, value: unknown) {
+  const authSession = adaptAuthSessionSnapshot(value);
 
-function clearPersistedAuthSession() {
-  clearAuthSession();
-}
-
-function persistGoogleSignInSession(authSession: GoogleSignInResponseOutput) {
+  synchronizeAuthSessionCache(queryClient, {
+    account: authSession.account,
+    session: authSession.session,
+  });
   setAuthSession(authSession);
 }
 
-function persistRefreshAuthSession(
-  authSession: RefreshAuthSessionResponseOutput,
-) {
-  setAuthSession(authSession);
-}
-
-export {
-  clearPersistedAuthSession,
-  persistGoogleSignInSession,
-  persistRefreshAuthSession,
-};
+export { persistAuthSession };

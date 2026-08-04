@@ -453,6 +453,61 @@
     },
     "title": "Encontre quadras, partidas e gente para jogar."
   },
+  "SignIn": {
+    "benefits": {
+      "contexts": "Acesse somente os contextos autorizados para sua conta.",
+      "session": "Sua sessão permanece protegida e pode ser retomada com segurança."
+    },
+    "description": "Use sua conta para acessar seu perfil e os contextos disponíveis no Sandicts.",
+    "eyebrow": "Sua conta Sandicts",
+    "methods": {
+      "divider": "ou continue por e-mail",
+      "googlePreparing": "Preparando acesso com Google…",
+      "privacy": "A autenticação acontece com o provedor. O Sandicts não recebe sua senha."
+    },
+    "states": {
+      "authenticated": {
+        "action": "Voltar ao início",
+        "description": "Continue navegando pelo Sandicts. Seu próximo contexto será escolhido somente depois que as permissões forem verificadas.",
+        "title": "Sua sessão está ativa"
+      },
+      "checking": {
+        "label": "Verificando sua sessão…",
+        "pageLabel": "Carregando a página de entrada…"
+      },
+      "disabled": {
+        "description": "O acesso a contas não está disponível neste ambiente. Você ainda pode navegar pelas áreas públicas."
+      },
+      "expired": {
+        "description": "Entre novamente para continuar. Alterações não salvas não foram mantidas.",
+        "title": "Sua sessão expirou"
+      },
+      "forbidden": {
+        "description": "Use outra conta ou volte para uma área pública do Sandicts.",
+        "title": "Você não tem acesso a esta área"
+      },
+      "publicAction": "Voltar ao início",
+      "rateLimited": {
+        "description": "Você fez muitas tentativas. Aguarde um pouco antes de verificar novamente."
+      },
+      "unavailable": {
+        "action": "Tentar novamente",
+        "description": "O serviço de acesso está temporariamente indisponível. Tente novamente em alguns instantes.",
+        "title": "Não foi possível entrar agora"
+      },
+      "verificationFailed": {
+        "action": "Verificar novamente",
+        "description": "Confira sua conexão e tente novamente.",
+        "title": "Não foi possível verificar sua sessão"
+      }
+    },
+    "surface": {
+      "description": "Escolha uma forma segura de acessar sua conta.",
+      "eyebrow": "Acesso seguro",
+      "title": "Entre na sua conta"
+    },
+    "title": "Entre para continuar"
+  },
   "PublicShell": {
     "ariaLabel": "Navegação pública",
     "explore": "Explorar",

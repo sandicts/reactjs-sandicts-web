@@ -1,0 +1,41 @@
+import { cn } from "@/lib/utils";
+
+const signInScreenStyles = {
+  root: "min-h-[calc(100vh-4.5rem)]",
+  container: cn(
+    "mx-auto grid min-h-[calc(100vh-4.5rem)] w-full max-w-7xl items-center",
+    "gap-10 px-4 py-10 sm:px-8 sm:py-14",
+    "md:max-w-2xl lg:max-w-7xl lg:grid-cols-[minmax(0,1fr)_26rem]",
+  ),
+  introduction: "max-w-2xl",
+  eyebrow: "text-sm font-medium text-primary",
+  title:
+    "mt-3 text-4xl leading-tight font-semibold text-balance sm:text-5xl",
+  description: "mt-5 max-w-xl text-base leading-7 text-muted-foreground",
+  benefits: "mt-7 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-1",
+  benefit: "flex items-start gap-3 text-muted-foreground",
+  benefitIcon: "mt-0.5 size-5 shrink-0 text-primary",
+  surface: "w-full self-center",
+  card: "gap-0",
+  cardHeader: "border-b border-border/70",
+  cardEyebrow: "text-sm font-medium text-primary",
+  cardTitle: "mt-2 text-2xl font-semibold text-balance",
+  cardDescription: "mt-2 text-sm leading-6 text-muted-foreground",
+  cardContent: "space-y-5",
+  sessionSurface: "space-y-5",
+  sessionAlert: "items-start",
+  methodStack: "space-y-5",
+  divider: "flex items-center gap-3",
+  dividerLabel: "shrink-0 text-xs text-muted-foreground",
+  googleHost: "space-y-3",
+  googleSkeleton: "h-11 w-full",
+  privacy: "text-xs leading-5 text-muted-foreground",
+  loadingSkeletons: "space-y-3",
+  loadingTitle: "h-6 w-3/5",
+  loadingDescription: "h-4 w-full",
+  loadingDescriptionShort: "h-4 w-4/5",
+  loadingSurface: "h-80 w-full",
+  pageState: "px-0 py-3",
+} as const;
+
+export { signInScreenStyles };
