@@ -8,8 +8,18 @@ related:
   - docs/frontend/sandicts-frontend-context.md
   - docs/frontend/sandicts-frontend-planning.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
+  - docs/frontend/sandicts-mvp-visual-system.md
+  - docs/frontend/sandicts-deployment-environments.md
+  - docs/frontend/sandicts-expired-session-experience.md
+  - docs/frontend/sandicts-post-login-routing.md
+  - docs/frontend/sandicts-google-one-tap-experience.md
+  - docs/frontend/sandicts-localization.md
+  - docs/frontend/sandicts-local-ui-state.md
   - docs/frontend/sandicts-page-functional-spec.md
-  - sandicts/nodejs-sandicts-api:docs/ai/product/sandicts-mvp-scope.md
+  - sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
+  - sandicts/sandicts-docs:docs/decisions/api-contract-governance.md
+  - sandicts/sandicts-docs:docs/decisions/shared-documentation-strategy.md
+  - sandicts/nodejs-sandicts-api:docs/ai/api/semantic-api-contracts.md
 scope: frontend, architecture, stack, mvp, delivery
 read-when:
   - creating the Sandicts frontend app
@@ -39,23 +49,34 @@ Decided:
   repository
 - local frontend path is `apps/reactjs-sandicts-web`, sibling to the backend
   repository
-- use Node.js 24 LTS and npm 11 for the initial frontend foundation
+- use npm as the package manager, with Node.js 24 LTS and npm 11
 - use Next.js App Router with TypeScript
-- use shadcn/ui with Tailwind CSS and lucide-react
+- use shadcn/ui Radix Nova with Tailwind CSS and Phosphor Icons
 - use TanStack Query for server state
 - use Zod with React Hook Form for forms
-- generate an OpenAPI client from the Nest Swagger contract
+- use `next-intl` with `pt-BR` as the only MVP locale and fallback locale
+- use Orval as the initial MVP OpenAPI generator for the Nest Swagger
+  contract
 - use Zustand only for local UI state, not API data
 - use Playwright for E2E tests
 - use Vitest with Testing Library for components and hooks
+- use GitHub Actions for PR validation with Node.js 24 and npm 11
+- use a feature-oriented frontend architecture with thin Next.js routes,
+  reusable UI primitives, domain feature modules, and `lib/*` infrastructure
+  boundaries
+- use a semantic API integration architecture where generated OpenAPI code is a
+  contract adapter under `lib/api`, not the frontend application API
+- hydrate auth sessions on the client through the backend refresh cookie,
+  in-memory access token storage, `GET /auth/me`, and TanStack Query
+- deploy the MVP Next.js frontend on Vercel exclusively through GitHub Actions
+  and pinned Vercel CLI, with no feature or `developer` deployments, a stable
+  `staging` preview origin, and `master` production
 
 Still open:
 
-- exact OpenAPI generator
-- deployment target
-- CI shape for frontend checks
 - final route map
-- final navigation model for player and partner areas
+- final navigation details for Player, Organization, Academy, and Admin App
+  areas
 
 ## Core Stack
 
@@ -83,10 +104,42 @@ Consequences:
 - local development runs the API and web app as separate processes
 - the API should keep using port `3000`; the frontend should use port `3001`
   locally
-- CORS, cookie/session behavior, and deployment URLs remain explicit follow-up
-  decisions
+- CORS, cookie/session behavior, and deployment URLs follow the environment
+  contract in `docs/frontend/sandicts-deployment-environments.md`
 - shared code packages should not be introduced until repeated cross-repo
   duplication creates a real maintenance cost
+
+### Runtime And Package Management
+
+Use:
+
+- npm as the package manager
+- Node.js 24 LTS
+- npm 11
+
+Rules:
+
+- keep `.nvmrc`, `package.json` `engines`, `packageManager`,
+  `package-lock.json`, README setup instructions, and CI validation aligned
+- install dependencies with `npm ci` in CI
+- use the npm lockfile as the source of truth for dependency resolution
+- do not introduce pnpm, Yarn, or another package manager without a new
+  documented decision
+
+Current alignment:
+
+- `.nvmrc` targets Node.js `24.16.0`
+- `package.json` declares Node.js `>=24 <25`, npm `>=11 <12`, and
+  `packageManager: npm@11.13.0`
+- CI reads Node.js from `.nvmrc`, caches npm dependencies by
+  `package-lock.json`, validates npm major version 11, and runs `npm ci`
+
+Reason:
+
+- this keeps the frontend aligned with the existing backend npm workflow while
+  preserving independent frontend dependency ownership
+- npm is sufficient for the single-repository MVP frontend and avoids early
+  package-manager complexity
 
 ### Framework
 
@@ -98,8 +151,9 @@ Use:
 
 Rules:
 
-- use App Router layouts for public, player, partner, and future admin areas
-- keep product and business rules in the Nest API
+- use App Router layouts for public, Player, Organization, Academy, and Admin App
+  areas
+- keep product and business rules in `sandicts/sandicts-docs`
 - do not treat Next.js as a second business backend
 - use server-side capabilities only when they improve routing, auth, metadata,
   initial reads, or user experience
@@ -108,12 +162,72 @@ Rules:
 
 Reason:
 
-- Sandicts has public discovery, authenticated player flows, partner operations,
+- Sandicts has public discovery, authenticated player flows, Organization operations,
   role-based shells, and future public pages
 - Next.js gives better room for route structure, metadata, images, and public
   acquisition surfaces than a pure SPA foundation
-- the Nest backend remains the system of record for rules, persistence, auth,
-  and API contracts
+- the Nest backend remains the system of record for persistence, auth, and API
+  contracts; shared docs remain the system of record for product rules
+
+### SEO And Social Metadata
+
+Use the Next.js Metadata API and file conventions as the single server-side
+metadata path.
+
+Rules:
+
+- configure the canonical origin with the server-only `WEB_ORIGIN` variable
+- keep indexing disabled by default through `SEO_INDEXING_ENABLED=false`
+- require an HTTPS, non-local origin when indexing is enabled in production
+- define shared title, description, Open Graph, Twitter, and locale defaults in
+  the root layout
+- keep reusable metadata composition, URL building, and social image rendering
+  in the focused `lib/seo` boundary
+- use static `metadata` when no locale-aware copy is needed; locale-aware
+  `generateMetadata` is acceptable when the route remains statically rendered
+- make indexability an explicit route decision; public home and discovery can
+  opt in, while sign-in, redirect, Player, and Organization routes stay
+  `noindex`
+- emit canonical URLs and sitemap entries from the same absolute URL helper
+- include only explicitly public URLs in `sitemap.xml`, and return an empty
+  sitemap when indexing is disabled
+- keep pages crawlable in `robots.txt` so crawlers can observe their `noindex`
+  directive; robots rules are not an authorization boundary
+- advertise the sitemap in `robots.txt` only when indexing is enabled
+- generate root Open Graph and Twitter images from local code and brand tokens;
+  do not depend on remote runtime assets or font downloads
+- when a route overrides nested Open Graph or Twitter metadata, return the
+  complete nested object because Next.js replaces rather than deep-merges those
+  fields
+- keep public entity pages out of the index until their route metadata and
+  sitemap inclusion are explicitly implemented
+
+The initial public sitemap contains only `/` and `/discovery`. Deployment task
+KAN-64 owns the real production origin; the metadata foundation remains
+provider-neutral.
+
+### Localization
+
+Use `next-intl` as the App Router localization and formatting boundary.
+
+MVP rules:
+
+- support only `pt-BR`
+- keep existing public, Player, and Organization URLs unprefixed
+- derive the root document language and Open Graph locale from the active
+  locale configuration
+- keep runtime copy in typed semantic namespaces
+- use Server Component translations by default and the client provider for
+  interactive components
+- keep API codes, routes, logs, and user-generated content language-neutral
+- centralize named date, time, number, percentage, and BRL formats
+- require an explicit domain time zone for real instants instead of treating
+  locale and time zone as the same decision
+- return a visible diagnostic fallback for a missing message
+
+Additional catalogs, localized public URLs, a locale switcher, persistence, and
+`hreflang` are V2 work. The complete ownership and extension contract lives in
+`docs/frontend/sandicts-localization.md`.
 
 ### UI And Styling
 
@@ -121,23 +235,72 @@ Use:
 
 - shadcn/ui
 - Tailwind CSS
-- lucide-react
+- `@phosphor-icons/react`
 
 Rules:
 
-- start with shadcn/ui primitives and customize tokens for Sandicts
+- use preset `b6pMnd9eSI`: Radix Nova, Stone, Amber, small radius, IBM Plex
+  Sans, Montserrat, Phosphor, translucent menus, subtle menu accents, and
+  Orange charts
 - keep components owned in the frontend codebase instead of depending on a
   closed external design system
-- use lucide-react for icons where an existing icon fits the control
-- define Sandicts tokens early: color, radius, typography, spacing, status
-  colors, focus rings, and surface styles
-- keep partner screens denser and more operational than player screens
+- use canonical Phosphor `*Icon` exports where an existing icon fits the control
+- keep the locally reconciled primitive behavior, types, accessibility, and
+  tests when comparing with a generated registry payload
+- use semantic shadcn/ui-compatible tokens for color, radius, typography,
+  status, focus, and surfaces
+- keep palette names out of shared component APIs
+- ship one dark theme for MVP and defer a user-selectable light theme
+- keep Organization screens denser and more operational than player screens
 
 Reason:
 
 - shadcn/ui is fast for MVP delivery and easy to customize
 - Sandicts needs a recognizable brand direction without spending the MVP on a
   full custom component system
+
+The canonical MVP token values, component variants, common states, icon rules,
+and post-MVP visual boundaries live in
+`docs/frontend/sandicts-mvp-visual-system.md`.
+
+### Global Feedback And Page States
+
+Use the KAN-69 global-states prototype as the behavior source of truth and the
+KAN-78 shared components as the production composition layer.
+
+Rules:
+
+- use `components/shared/page-state` for non-loading empty, no-results,
+  recoverable error, access, and not-found compositions when a shared layout is
+  useful
+- pass copy, actions, heading level, tone, and live-region intent from the
+  consuming route or feature
+- do not create a global catalog that decides retry, sign-in, create, reset,
+  or navigation behavior for feature-owned states
+- use `components/shared/loading-region` around pending content reads and keep
+  skeleton geometry near the feature or route that knows the expected content
+  shape
+- use `components/shared/pending-button` for user-triggered command loading
+  when duplicate submission must be prevented and button width should remain
+  stable
+- use `components/shared/status-badge` only for semantic presentation; feature
+  code maps API/domain status codes to labels and tones, with a neutral
+  fallback for unknown runtime values
+- keep `components/ui/skeleton` decorative and reduced-motion safe
+- keep `components/ui/alert` live-region semantics opt-in; use
+  `role="alert"` only for newly surfaced interactive failures, and `role="status"`
+  only for polite confirmations that should be announced
+- use `src/app/not-found.tsx` as the global privacy-safe 404 treatment for
+  unknown public URLs; add in-shell route states only inside the owning app
+  segment when the authenticated context exists
+
+Reason:
+
+- the frontend needs consistent state anatomy without hiding business decisions
+  inside generic components
+- accessibility semantics differ between initial page load, user-triggered
+  failure, and static informational UI
+- route boundaries should remain thin while features own safe recovery paths
 
 ### Server State
 
@@ -157,7 +320,7 @@ Examples of server state:
 
 - current auth session
 - player profile
-- partner profile
+- Organization profile
 - court list
 - availability slots
 - discovery results
@@ -167,44 +330,115 @@ Examples of server state:
 
 ### Local UI State
 
-Use:
+Decision:
 
-- Zustand only where local UI state needs cross-component coordination
+- keep state in the smallest owner that can coordinate the required UI
+- use React state for component-local behavior, the URL for shareable
+  navigation state, React Hook Form for forms, TanStack Query for server state,
+  and `lib/auth` for authentication runtime state
+- use Zustand only where concrete local UI state needs cross-component
+  coordination and a shared lifecycle
+- do not install Zustand or create an example store before a real consumer
+  exists
 
-Allowed examples:
+Potential examples:
 
 - active app area or context switcher state
 - sidebar and mobile navigation state
 - multi-step UI draft state that is not yet persisted
 - modal orchestration when local component state is insufficient
 
-Avoid:
+Never use Zustand for:
 
-- storing API collections in Zustand
+- API records, collections, pagination, or request status
 - duplicating TanStack Query cache
-- using Zustand as a persistence substitute
+- authentication credentials or session state
+- form state already owned by React Hook Form
+- state that should be represented in the URL
+- persistence without an explicit product requirement and hydration plan
+
+The canonical ownership matrix, store entry criteria, Next.js provider model,
+selector rules, persistence boundary, tests, and review checklist live in
+`docs/frontend/sandicts-local-ui-state.md`.
 
 ### Forms And Validation
 
 Use:
 
 - React Hook Form
-- Zod
+- Zod 4
 - `@hookform/resolvers`
 
 Rules:
 
+- keep form schemas in feature-local `*.schemas.ts` files and name exported
+  schemas with a `Schema` suffix
+- infer validated values from the schema with `z.input` and `z.output`; do not
+  maintain a second handwritten form-value type
+- provide complete `defaultValues` and never use `undefined` as a controlled
+  field default
+- use `register` for native and uncontrolled inputs; use `Controller` only when
+  a controlled component such as Select, Checkbox, or Radio cannot expose a
+  native registration contract
+- default to validation on submit and revalidate while the user corrects an
+  invalid field; features may choose a different mode only for a documented UX
+  reason
+- keep `shouldFocusError` enabled so failed submissions move focus to the first
+  invalid field
+- use `FormProvider` only when a form is deeply nested enough that explicit
+  form props become harder to understand
+- every product form that uses React Hook Form must separate orchestration from
+  presentation through a sibling `use-<form-name>.ts` hook
+- the form hook owns `useForm`, resolver and default-value configuration,
+  submission orchestration, API mutation coordination, and validation or
+  business-error mapping
+- the form component owns semantic markup, accessible IDs, labels, descriptions,
+  error placement, controls, and simple presentation state
+- schema-derived types stay in `*.schemas.ts`, while component props and the
+  public hook return contract stay in `*.types.ts`
+- plain HTML navigation or search forms that do not use React Hook Form do not
+  require a form hook
 - client validation should improve UX, not replace backend validation
 - form schemas should match backend contracts when practical
 - backend validation and business-rule errors must still be rendered clearly
 - field validation errors should appear inline when possible
 - business-rule failures should appear near the action or workflow state
+- map backend validation paths through an explicit field allowlist before
+  calling React Hook Form `setError`; unknown paths become `root.server`
+- do not introduce Server Actions as a second mutation boundary while the
+  product uses the Nest OpenAPI contract, Orval request functions, and feature
+  hooks for writes
+- use the native `<form>` element and preserve semantic `type`, `required`,
+  `inputMode`, and `autoComplete` attributes
+- `noValidate` is allowed only when the form provides and tests its own
+  accessible validation feedback
+- associate visible labels, helper text, and errors with stable IDs; invalid
+  controls use `aria-invalid`, `aria-describedby`, and the shared `Field`
+  invalid state
+- disable the submitting action, expose an accessible busy state, and preserve
+  its width to prevent duplicate submissions
+- component tests should use Testing Library and `user-event` to verify visible
+  behavior, focus, accessible state, parsed values, server error mapping, and
+  duplicate-submit protection
+
+Reference implementation:
+
+- `src/components/examples/form-pattern-example/form-pattern-example.tsx`
+- `src/components/examples/form-pattern-example/use-form-pattern-example.ts`
+- `src/lib/forms/apply-api-validation-issues.ts`
+
+The reference demonstrates the conventions without becoming a generic form
+framework. Feature forms should compose `Field`, `FieldLabel`, `FieldError`, and
+the relevant control directly instead of wrapping every React Hook Form API.
+Tailwind classes remain colocated with markup or shared UI primitives; create a
+`*.styles.ts` file only when class composition becomes dense enough to obscure
+the component structure.
 
 Primary form areas:
 
 - sign-in states
 - player profile onboarding
-- partner profile setup
+- Organization profile setup
 - court creation/editing
 - availability editor
 - reservation request confirmation
@@ -215,23 +449,275 @@ Primary form areas:
 
 Use:
 
-- generated OpenAPI client from the Nest Swagger contract
+- Orval as the initial MVP OpenAPI generator
+- generated TypeScript client and TanStack Query hooks from the Nest Swagger
+  contract
+- a custom Sandicts API request runtime for base URL, credentials, bearer access
+  tokens, refresh retry, and normalized backend errors
 
 Rules:
 
 - do not hand-write broad API clients when the OpenAPI contract can generate
   types and request functions
 - API contract stability is a start criterion for integrated frontend work
-- generated code should live in a predictable folder and be regenerated by a
-  script
-- frontend code should call a small domain wrapper where it improves error
-  mapping or keeps generated code away from UI components
-- requests must include credentials when auth depends on cookies
+- do not implement code generation as part of `KAN-63`
+- implement the generated-client workflow in `KAN-73` from the architecture
+  decided in `KAN-113`
+- keep generated OpenAPI code under `src/lib/api/generated/sandicts-api`
+- commit generated OpenAPI code after generation, but never edit generated
+  files manually
+- expose semantic feature hooks and service adapters to the rest of the app
+  instead of making generated operation names the UI language
+- use one Sandicts request runtime for generated calls so auth, credentials,
+  base URL, refresh retry, and error parsing stay consistent
+- use `npm run api:generate` to regenerate and `npm run api:check` to reject
+  stale committed output
 
-Open decision:
+Reason:
 
-- choose the exact generator before app foundation implementation
-- current candidates are Orval or openapi-typescript/openapi-fetch
+- Orval fits the current MVP direction because it can generate typed request
+  code and TanStack Query hooks from the backend OpenAPI contract
+- the Orval path keeps the frontend close to the backend Swagger source while
+  reducing hand-written client and hook boilerplate
+- a semantic API layer keeps the generated client as a contract adapter instead
+  of letting infrastructure vocabulary leak into product screens
+
+### API Integration Architecture
+
+Principle:
+
+- the generated OpenAPI client is a contract adapter, not the frontend
+  application API
+
+Target boundaries:
+
+```text
+src/lib/api/
+├── generated/
+│   └── sandicts-api/
+├── runtime/
+│   ├── sandicts-api-request.ts
+│   ├── sandicts-api-error.ts
+│   └── sandicts-api-auth.ts
+└── contracts/
+    └── sandicts-api-error.types.ts
+
+src/lib/auth/
+├── auth-session-refresh.ts
+├── auth-session-store.ts
+└── auth-session.types.ts
+
+src/lib/query/
+├── query-client.ts
+├── query-keys.ts
+└── query-provider.tsx
+```
+
+Rules:
+
+- `src/lib/api/generated/sandicts-api` is generated by Orval from the Nest
+  Swagger/OpenAPI document
+- generated files are committed so the frontend can build without the backend
+  running in CI
+- generated files are treated as disposable output and must not contain manual
+  edits
+- `src/lib/api/runtime/sandicts-api-request.ts` is the Orval custom request
+  mutator for the Sandicts API
+- `src/lib/api/runtime/sandicts-api-error.ts` parses normalized backend error
+  responses into `SandictsApiError`
+- `src/lib/api/runtime/sandicts-api-auth.ts` reads the current in-memory access
+  token and coordinates one refresh retry when an authenticated request returns
+  `401`
+- `src/lib/auth/auth-session-store.ts` stores the current access token and
+  authenticated account summary in memory only
+- `src/lib/auth` owns browser auth bootstrap, refresh coordination, and session
+  clearing helpers
+- refresh tokens remain backend-owned `HttpOnly` cookies and must not be stored
+  in `localStorage`, `sessionStorage`, Zustand, or React Query
+- API requests use `credentials: 'include'` so the browser can send and receive
+  the refresh-token cookie
+- authenticated API requests include `Authorization: Bearer <accessToken>` only
+  when an access token is present
+- a failed authenticated request may trigger exactly one refresh attempt before
+  the original request is retried
+- refresh retry limits must use semantic constants such as
+  `sessionRefreshRetryLimit`
+- if refresh is definitively rejected, the auth session is cleared and feature
+  UI renders the approved unauthenticated or expired-session state according to
+  whether this browser runtime had established a session
+- network, timeout, and `5xx` refresh failures render a recoverable session
+  verification state and must not be described as confirmed expiry
+- CORS must allow the frontend origin and credentials before real browser
+  integration can pass locally or in deployed environments
+
+### Auth Session Hydration
+
+Decision:
+
+- use a client-first auth session hydration flow for the MVP
+- keep the access token only in browser memory
+- keep the refresh token backend-owned in an `HttpOnly` cookie
+- use TanStack Query as the source of server-state truth for the current public
+  session projection
+
+Initial browser bootstrap:
+
+1. When the app starts in the browser, the auth bootstrap should call
+   `POST /auth/refresh` with `credentials: 'include'`.
+2. If refresh succeeds, persist `{ account, session, accessToken,
+   accessTokenExpiresAt }` in the in-memory auth session store.
+3. After a successful refresh or sign-in, seed or invalidate
+   `queryKeys.auth.session()` so the current-session query can load the public
+   session projection.
+4. If refresh fails because there is no valid refresh cookie, clear the
+   in-memory auth session and let protected-route boundaries decide whether to
+   render unauthenticated or expired-session UX.
+5. If refresh cannot be completed because of a network, timeout, or `5xx`
+   failure, protect private content and expose a recoverable verification state
+   without claiming that the session expired.
+
+Current session query:
+
+- `GET /auth/me` is the canonical current-session read when the frontend has an
+  access token.
+- `GET /auth/me` returns only `{ account, session }`; it does not rotate the
+  refresh cookie and does not return a new access token.
+- the `queryKeys.auth.session()` query should call `GET /auth/me` only when an
+  access token exists in memory
+- a `401` from `GET /auth/me` should use the shared request runtime's single
+  refresh retry; if the retry succeeds, the original request may run again
+- `auth_session_inactive`, `invalid_access_token`, and refresh-token failures
+  clear the in-memory auth session and private auth-dependent query data
+- `account_auth_forbidden` keeps the user out of protected areas and is handled
+  as forbidden UX, not as a silent retry loop
+
+Session-producing mutations:
+
+- `POST /auth/google/sign-in`, `POST /auth/refresh`, and future magic-link
+  consume success responses must all hydrate the same in-memory snapshot shape:
+  `{ account, session, accessToken, accessTokenExpiresAt }`
+- sign-in and refresh must not expect a refresh token in the response body
+- generated response types remain backend contracts; feature hooks expose
+  semantic auth behavior to UI code
+- explicit Google Sign-In, Google One Tap, future magic-link consumption, and
+  reauthentication hand the hydrated snapshot to one provider-independent
+  post-login resolver
+- passive refresh is navigation-neutral on regular public routes, verifies the
+  current protected route, and runs the resolver only when the current route
+  is `/sign-in`
+
+Route and rendering boundaries:
+
+- Next.js middleware is not the MVP source of auth truth because the access
+  token intentionally lives only in browser memory
+- Server Components may render public shell and route structure, but they must
+  not be responsible for proving the user's current auth session in the MVP
+- protected route behavior should be implemented as a client boundary or
+  protected layout that reads the auth session query and renders `checking`,
+  `authenticated`, `unauthenticated`, `expired`, `verification-failed`, or
+  `forbidden` states
+- exact classification, copy, safe `returnTo`, draft, redirect, and E2E
+  behavior for expiry live in
+  `docs/frontend/sandicts-expired-session-experience.md`
+- exact post-login trigger classification, destination precedence, context
+  fallback, Player completion gate, and unauthorized `returnTo` behavior live
+  in `docs/frontend/sandicts-post-login-routing.md`
+- route access and Google One Tap eligibility must be resolved through
+  `src/lib/routes/route-access-policy.ts`; page components, provider callbacks,
+  and layouts must not duplicate pathname checks
+- public access, One Tap eligibility, and search indexing remain independent
+  decisions; no one flag or route prefix may imply the other two
+- an unclassified route is One Tap ineligible and must be classified before a
+  route boundary or auth promotion consumes it
+- exact Google One Tap placement, suppression, fallback, platform, and privacy
+  behavior live in `docs/frontend/sandicts-google-one-tap-experience.md`
+
+Cache invalidation:
+
+- successful sign-in, refresh, and future magic-link consume should set the
+  in-memory auth session and refresh `queryKeys.auth.session()`
+- sign-out and sign-out-all should clear the in-memory auth session and remove
+  or invalidate private auth-dependent queries
+- definitively rejected refresh should clear the in-memory auth session and
+  private auth-dependent data while leaving public discovery cache intact
+- temporary refresh failure should keep private content unavailable until
+  verification succeeds, provide a safe retry, and avoid an expiry claim
+- feature modules should treat auth clearing as an infrastructure signal and
+  avoid duplicating auth/session state in Zustand
+
+Import rules:
+
+- `app` routes, screens, visual components, and forms must not import generated
+  OpenAPI modules directly
+- feature hooks or feature service adapters may compose generated hooks or
+  request functions when they expose semantic product behavior
+- feature hooks should expose names such as `usePlayerProfile`,
+  `useCreateReservation`, or `useJoinOpenMatch`, not raw generated operation
+  names
+- generated response types represent backend contracts; UI-facing view models
+  and component props remain in feature `.types.ts` or `view-models` files
+- create a feature wrapper when it adds auth behavior, request-variable
+  validation, cache invalidation, error mapping, or view-model normalization
+
+Error contract:
+
+- the API runtime maps normalized backend error responses to `SandictsApiError`
+- `SandictsApiError` preserves `statusCode`, `code`, `message`, `requestId`,
+  and optional `issues`
+- public error types and known-code values are derived from generated OpenAPI
+  models; the frontend does not maintain a second error-code catalog
+- unknown future codes are preserved for safe fallback behavior instead of
+  being discarded during parsing
+- validation issues from `validation_error` are mapped near the relevant form
+  fields when practical
+- `business_rule_violation`, `forbidden`, `conflict`, and
+  `resource_not_found` are rendered as workflow or action-level states
+- `internal_error` uses a generic user-facing message and preserves safe
+  diagnostic fields for logs or support surfaces
+- feature code branches on stable backend `code` values, not on message text
+
+TanStack Query rules:
+
+- TanStack Query owns server state and Zustand remains limited to local UI state
+- query client setup belongs in `src/lib/query/query-client.ts`
+- app-level query provider setup belongs in `src/lib/query/query-provider.tsx`
+- shared query keys belong in `src/lib/query/query-keys.ts`
+- query keys should be semantic, for example `queryKeys.auth.session()`,
+  `queryKeys.playerProfile.current()`, and
+  `queryKeys.courts.discovery(filters)`
+- feature hooks own cache invalidation and optimistic behavior for their
+  workflow
+- generated Orval query helpers may be wrapped when their key or mutation API is
+  too infrastructure-shaped for feature code
+
+Generation workflow:
+
+- `KAN-73` implemented the Orval dependency, `orval.config.ts`, and
+  `npm run api:generate`
+- generation first reads the sibling backend artifact at
+  `../nodejs-sandicts-api/openapi/sandicts-api.json`
+- CI falls back to the canonical backend `developer` artifact on GitHub
+- the command should support an explicit `OPENAPI_SCHEMA_URL` or equivalent
+  non-public environment override for local, CI, and future preview workflows
+- generation should use a tags-split style output so API areas can scale by
+  backend Swagger tags
+- generated output should stay under the `lib/api` boundary even when multiple
+  APIs are introduced
+- current generated output lives under `src/lib/api/generated/sandicts-api`
+- generated files are committed and must not be edited manually
+- generation cleans the output directory before writing
+- `npm run api:check` regenerates and fails when Git reports a generated diff
+
+Multiple API and BFF strategy:
+
+- each future upstream API gets a separate namespace under
+  `src/lib/api/generated/<api-name>`
+- each API owns its own runtime request helper, base URL setting, and error
+  mapping only when behavior differs from the Sandicts Nest API
+- a future Next.js BFF is treated as another API boundary, not as a silent
+  replacement for the Nest API contract
+- shared UI code depends on semantic feature hooks, not on a specific upstream
+  client shape
 
 ### Testing
 
@@ -244,47 +730,547 @@ Use:
 Rules:
 
 - each MVP module needs an integration gate
+- colocate unit, component, and hook tests with their source using
+  `*.test.ts` or `*.test.tsx`
+- keep Playwright specs under `e2e` using `*.spec.ts`
+- keep Node as the default Vitest environment and opt React behavior tests
+  into jsdom at the file level
+- query rendered UI by accessible role, name, or label and assert observable
+  behavior instead of implementation details
+- keep tests isolated; restore mocks, clear shared state, and create fresh
+  provider state for each test
 - E2E should cover the critical user flow, not every UI detail
+- use Playwright locators and web-first assertions; do not use fixed sleeps or
+  CSS selectors for user interactions
+- use Chromium as the initial local E2E baseline; expand the browser and device
+  matrix only through an explicit follow-up decision
+- prefer E2E coverage over jsdom unit tests for async Server Components
 - component tests should focus on behavior, state rendering, and form validation
 - visual/manual QA should be explicit when a flow is not yet stable enough for
   full automation
+- magic link E2E should use the backend-owned Mailpit capture strategy
+  documented in
+  `sandicts/nodejs-sandicts-api:docs/ai/architecture/transactional-email-provider-decision.md`
+  instead of reading tokens from application logs
 
 Initial E2E gates:
 
 - auth: sign in, preserve or refresh session, sign out
 - profile: create/update player profile
-- partner: create/update partner profile
-- courts: create and see court in partner list
+- Organization: create/update Organization profile
+- courts: create and see court in Organization list
 - availability: publish slot and expose it to discovery
 - discovery: filter courts by sport, availability, and price
 - reservations: request, confirm, cancel, and block duplicates
 - payments: update manual payment state
 - open matches: create, join, leave, and block invalid joins
 
+Commands:
+
+- `npm test`: run all Vitest tests once
+- `npm run test:watch`: run Vitest in watch mode
+- `npm run test:ci`: run Vitest in the pull request workflow
+- `npm run test:e2e`: start or reuse the local Next.js app and run Playwright
+- `npm run test:e2e:ui`: run Playwright in UI mode
+
+Playwright remains a local validation command until a separate task defines E2E
+CI execution, test data ownership, and the broader browser/device matrix.
+
+### TypeScript, Linting, And Formatting
+
+Use TypeScript strict mode as the compile-time baseline, ESLint for correctness
+rules, and Prettier for deterministic formatting.
+
+Rules:
+
+- keep `strict`, `noEmit`, and bundler module resolution enabled in
+  `tsconfig.json`
+- run `npm run typecheck` instead of emitting JavaScript with TypeScript
+- keep formatting rules out of ESLint; `eslint-config-prettier` disables
+  conflicting rules
+- use `npm run lint:fix` for ESLint fixes and `npm run format` for mechanical
+  formatting
+- run `npm run quality` as the aggregate lint, typecheck, and formatting gate
+- exclude generated Orval output from linting and formatting; regenerate it
+  with `npm run api:generate`
+- keep canonical prose and repository automation outside broad automatic
+  formatting to avoid unrelated churn
+- use LF line endings, UTF-8, two-space indentation, and a final newline
+
+### CI And Validation
+
+Use:
+
+- GitHub Actions for pull request validation
+- Node.js from `.nvmrc`
+- npm dependency caching keyed by `package-lock.json`
+
+Rules:
+
+- pull requests targeting `developer`, `staging`, or `master` run validation
+  automatically
+- temporary branches must follow the backend naming pattern:
+  `(feature|fix|hotfix|docs|refactor|test|ci|chore|rc|codex)/KAN-123-short-description`
+- install dependencies with `npm ci`
+- fail the workflow on lint, typecheck, tests, generated-contract drift, build,
+  or dependency audit failures
+
+Current jobs:
+
+- `Governance`: branch naming and pull request target validation
+- `Quality`: `npm run lint` and `npm run typecheck`
+- `Test`: `npm run test:ci`
+- `Contract`: `npm run api:check`
+- `Build`: `npm run build`
+- `Dependency audit`: `npm audit --audit-level=moderate`
+
 ## Frontend Architecture Rules
 
-The frontend should be organized around product areas and reusable primitives.
+Decision:
+
+- organize the frontend around product features and reusable primitives
+- keep Next.js route files thin
+- keep API integration, auth/session helpers, query setup, form helpers,
+  environment config, and local UI state in explicit `lib/*` boundaries
+- use file-level responsibility separation for components, hooks, schemas,
+  constants, styles, and local utilities
+
+Reason:
+
+- Sandicts has separate public, player, and Organization product areas, but MVP work
+  should still ship in thin vertical slices
+- feature modules make the user workflow easy to find without turning shared
+  UI or API infrastructure into feature-specific code
+- the architecture should preserve the useful discipline of layered frontend
+  systems while staying aligned with Next.js App Router, Orval, TanStack Query,
+  shadcn/ui, and the already configured `@/*` source alias
 
 Recommended app areas:
 
 - public
 - player
-- partner
+- Organization
 - admin later only if needed
 
 Recommended boundaries:
 
 - `app`: route groups, layouts, route-level loading and error states
-- `components`: shared UI composition and domain components
+- `components/ui`: shadcn/ui primitives and low-level reusable UI building
+  blocks owned by the frontend codebase
+- `components/shared`: reusable cross-feature composition with no product data
+  ownership
 - `features`: feature-specific screens, forms, hooks, and view models
-- `lib/api`: generated client and API helpers
+- `lib/api`: generated client, API runtime helpers, request configuration, and
+  backend error handling
 - `lib/auth`: session helpers and route/auth utilities
 - `lib/query`: query client setup and query key conventions
 - `lib/forms`: shared form helpers when repetition appears
-- `lib/ui-state`: Zustand stores for local UI state only
+- `lib/routes`: route builders and navigation constants that are reused across
+  app areas
+- `lib/env`: typed environment access and non-secret runtime config helpers
+- `lib/ui-state`: scoped Zustand stores for concrete local UI state only,
+  created when a real consumer justifies the dependency
+- `test/support`: shared test builders, fixtures, and render helpers when test
+  tooling exists and repetition justifies extraction
 
-Do not finalize folder names until the frontend repository exists, but preserve
-these boundaries in the first implementation.
+Target source layout:
+
+```text
+src/
+├── app/
+├── components/
+│   ├── ui/
+│   └── shared/
+├── features/
+│   ├── auth/
+│   ├── player-profile/
+│   ├── Organization-profile/
+│   ├── courts/
+│   ├── availability/
+│   ├── discovery/
+│   ├── reservations/
+│   ├── payments/
+│   └── open-matches/
+├── lib/
+│   ├── api/
+│   ├── auth/
+│   ├── query/
+│   ├── forms/
+│   ├── routes/
+│   ├── env/
+│   └── ui-state/
+└── test/
+    └── support/
+```
+
+Do not create every folder up front. Create a boundary when the first real
+implementation or documented foundation task needs it.
+
+### Layer Responsibilities
+
+Use this default flow for integrated screens:
+
+```text
+app route or layout
+  -> feature screen
+    -> feature components and forms
+      -> feature hook or view model
+        -> generated API hook or feature API wrapper
+          -> lib/api runtime, auth, query, and error helpers
+            -> Nest API
+```
+
+`app` owns:
+
+- route groups, pages, layouts, metadata, route-level `loading.tsx`,
+  `error.tsx`, `not-found.tsx`, and `forbidden` style boundaries when needed
+- high-level composition of providers and feature screens
+- server-side reads only when they improve routing, auth, metadata, initial
+  rendering, or user experience
+
+`app` should avoid:
+
+- feature business workflow logic
+- hand-written request code
+- large JSX screens that belong in `features`
+- UI constants or mapping logic that belongs near the feature
+
+`features` owns:
+
+- screens, section components, forms, feature hooks, schemas, local view
+  models, local constants, and local pure utilities for one product area
+- workflow-specific loading, empty, error, forbidden, and success states
+- orchestration of generated API hooks and mutations for that feature
+- mapping backend validation and business-rule errors into UI states
+
+`features` should avoid:
+
+- importing from another feature directly unless a temporary dependency is
+  explicitly documented during an active refactor
+- owning global app providers, generated API runtime, shared auth/session
+  primitives, or shared route constants
+- storing API data in Zustand
+
+`components/ui` owns:
+
+- shadcn/ui primitives and low-level reusable UI components such as buttons,
+  inputs, dialogs, badges, tabs, menus, and tooltips
+- styling variants that are product-agnostic enough to reuse
+
+`components/shared` owns:
+
+- cross-feature composition such as app shells, empty states, status badges,
+  navigation surfaces, page headers, and reusable layout pieces
+- UI that can depend on general product language but not on feature-specific
+  API calls or feature-only hooks
+
+`lib` owns:
+
+- framework setup and infrastructure helpers
+- generated API integration support
+- auth/session utilities
+- TanStack Query setup
+- reusable form adapters
+- route builders
+- environment config
+- Zustand stores for local UI state
+
+`lib` should avoid:
+
+- feature JSX and product screens
+- feature-specific branching that should live in `features`
+- imports from `features` or `app`
+
+### Feature Module Shape
+
+Start each feature small and add subfolders only when the feature needs them.
+
+Recommended shape for a mature feature:
+
+```text
+features/<feature>/
+├── screens/
+├── components/
+├── forms/
+├── hooks/
+├── schemas/
+├── view-models/
+├── <feature>.constants.ts
+├── <feature>.types.ts
+└── utils/
+```
+
+Rules:
+
+- route files in `app` import a route-level screen from `features/<feature>`
+  when the page grows beyond simple placeholder composition
+- local feature components stay under the feature instead of
+  `components/shared`
+- promote a component to `components/shared` only after at least two features
+  need it and it no longer depends on one feature's data model
+- keep pure transformations in `utils/` or named `*.utils.ts` files beside the
+  feature that owns them
+- keep user-flow text, option lists, local empty-state copy, and defaults in
+  `*.constants.ts` when they make JSX easier to scan
+
+### File Responsibility
+
+Keep one main responsibility per file.
+
+Rules:
+
+- `*.tsx` component files render and compose UI
+- components may own accessible IDs, event binding, and small derived values
+  used only to render their current state
+- move React state/effects, async workflow orchestration, API mutations, domain
+  decisions, and reusable data transformations out of presentational
+  components into feature hooks, view models, services, or pure utilities
+- do not create a custom hook for a synchronous presentation calculation that
+  does not use React state or lifecycle; keep it as a colocated pure function or
+  promote it to `*.utils.ts` only when it becomes reusable
+- `*.types.ts` files hold local component props, hook contracts, view models,
+  service option types, and helper option types
+- `*.constants.ts` files hold semantic constants, local copy catalogs, option
+  lists, and repeated defaults
+- `*.schemas.ts` files hold Zod schemas and schema-derived types when useful
+- `*.styles.ts` files are optional and should be introduced only when Tailwind
+  class composition becomes too dense for readable JSX
+- `*.utils.ts` files hold pure transformations and must not import React,
+  router, cookies, HTTP clients, or generated API code
+
+Simple components may use a flat pair such as:
+
+```text
+components/shared/page-heading.tsx
+components/shared/page-heading.types.ts
+```
+
+When a shared component owns a contract and tests, keep the artifacts in a
+focused folder:
+
+```text
+components/shared/area-placeholder/
+├── area-placeholder.tsx
+├── area-placeholder.types.ts
+└── area-placeholder.test.tsx
+```
+
+Complex components may use a folder:
+
+```text
+components/shared/status-card/
+├── status-card.tsx
+├── status-card.types.ts
+├── status-card.constants.ts
+└── status-card.styles.ts
+```
+
+Directory organization rules:
+
+- keep a directory flat while it owns one small, cohesive responsibility and
+  remains easy to scan
+- split a growing directory by product area or technical responsibility when
+  it starts mixing shell variants, shared composition, navigation, state,
+  tests, or unrelated helpers
+- prefer responsibility-based folders over broad file-type buckets or
+  dumping-ground names such as `misc`, `common`, or a second generic
+  `components` folder
+- colocate component contracts, constants, tests, and pure utilities with the
+  component or subdomain that owns them
+- keep cross-cutting pieces under an explicitly named `shared` folder only when
+  two or more sibling areas consume them
+- inspect and reorganize the target directory before adding another loose file
+  when ownership is already ambiguous
+
+For example, the app-shell implementation keeps technical responsibilities and
+the Public, Player, and Organization variants as direct, named boundaries:
+
+```text
+components/shared/app-shell/
+├── chrome/
+├── content/
+├── context/
+├── navigation/
+├── public/
+├── player/
+└── organization/
+```
+
+Avoid turning `index.tsx` into a blanket requirement. Prefer explicit file names
+when they make imports, search results, and diffs easier to understand.
+
+### Data Access And API Boundaries
+
+Orval and TanStack Query remain the default API integration direction.
+
+Rules:
+
+- generated API code belongs under `src/lib/api/generated/sandicts-api` and is
+  treated as a contract adapter
+- components should not call raw `fetch`, raw generated request functions, or
+  infrastructure helpers directly
+- feature hooks may compose generated TanStack Query hooks, map variables,
+  normalize feature-specific view models, and expose UI-friendly mutation
+  helpers
+- generated API response types represent backend contracts; component
+  `.types.ts` files represent UI contracts
+- create feature wrappers only when they add useful auth, error, variable,
+  invalidation, or view-model behavior
+- do not hand-write broad API clients when Orval can generate typed request
+  functions and query hooks from the Nest Swagger contract
+- keep backend error response parsing and cross-feature error helpers in
+  `lib/api`, while feature-specific display decisions stay in `features`
+- keep auth/session storage and refresh coordination in `lib/auth`, not inside
+  components or feature screens
+- use semantic query keys from `lib/query` for feature-level invalidation and
+  cache coordination
+
+Required defense pattern:
+
+- the component or form should avoid building invalid request variables
+- the feature hook should avoid firing a request when required identifiers or
+  filters are missing
+- shared docs remain the final source of truth for product and business rules
+- the backend remains the final source of truth for validation behavior exposed
+  through API contracts
+
+### Server And Client Component Boundaries
+
+Use Server Components by default, then opt into Client Components where
+interactivity requires it.
+
+Rules:
+
+- files that use React state, effects, browser APIs, TanStack Query hooks,
+  Zustand stores, or React Hook Form must be Client Components
+- server-only helpers should live in a `server/` folder or use a `.server.ts`
+  suffix
+- client-only helpers should live in a `client/` folder or use a `.client.ts`
+  suffix when ambiguity is likely
+- Client Components must not import helpers that use `next/headers`,
+  server-only cookies, filesystem APIs, or other server-only dependencies
+- route pages may pass server-resolved values into Client Components through
+  props when this improves routing or initial render behavior
+- auth/session helpers must make the server/client boundary obvious before
+  integrated auth work starts
+
+### Import Rules
+
+Use the existing `@/*` alias for stable imports from `src/*`.
+
+Allowed default direction:
+
+```text
+app -> features, components, lib
+features -> components, lib, same feature files
+components -> components, lib
+lib -> lib
+```
+
+Rules:
+
+- keep sibling implementation files and `.types.ts` imports relative
+- use `@/features/...`, `@/components/...`, and `@/lib/...` when crossing
+  source roots or distant folders
+- shared components must not import from `features`
+- `lib` must not import from `features` or `app`
+- avoid feature-to-feature imports; extract to `components/shared`, `lib`, or a
+  future shared domain helper only when reuse is real
+- do not introduce additional aliases until a specific repeated import problem
+  justifies another documented decision
+
+### Naming Conventions
+
+Use names that make ownership obvious.
+
+Rules:
+
+- files and folders use kebab-case: `player-profile`, `reservation-card.tsx`
+- React component symbols use PascalCase: `ReservationCard`
+- hooks use `use*`: `usePlayerProfileForm`
+- Zustand stores use `use*Store`: `useNavigationStore`
+- Zod schemas use `*Schema`: `playerProfileSchema`
+- constants use `UPPER_SNAKE_CASE` when exported and semantic camelCase when
+  local readability is better
+- generated API names follow the generator output and should not be manually
+  renamed unless wrapped by a feature-level helper
+- route groups should describe app areas, such as `(public)`, `(player)`, and
+  `(Organization)`, when the route map is finalized
+
+### Type Placement
+
+Keep executable implementation and component contracts separated.
+
+Rules:
+
+- component prop types, hook contracts, view models, service option types, and
+  helper option types belong in sibling `.types.ts` files
+- import sibling `.types.ts` files with relative `import type`
+- schema files, generated contract files, and type-first files may declare and
+  export types directly
+- avoid declaring component props in the same `.tsx` file as the component
+
+### Import Aliases
+
+Use the existing `@/*` alias for stable imports from `src/*`.
+
+Rules:
+
+- prefer `@/components/...`, `@/features/...`, `@/lib/...`, and similar stable
+  source-root imports when crossing folders
+- keep sibling implementation files and `.types.ts` imports relative
+- do not introduce additional aliases until a repeated import problem justifies
+  a separate documented decision
+- do not use aliases to hide imports across boundaries that should not exist
+
+### Test Helpers
+
+Shared Testing Library setup lives in `test/setup.ts`. Vitest keeps runtime and
+contract tests in Node while React component and hook tests opt into jsdom.
+Playwright owns browser-level setup separately through `playwright.config.ts`.
+
+Rules:
+
+- repeated builders, fixtures, and render helpers should live in `test/support`
+- prefer builders over exported mutable fixture objects
+- keep local setup inside a spec when it only supports that spec
+- do not add a shared helper before at least two specs need it
+
+### Semantic Constants
+
+Keep implementation values readable.
+
+Rules:
+
+- do not leave non-obvious numeric literals inline when the value represents a
+  domain rule, unit conversion, timeout, TTL, byte length, rate limit, status
+  threshold, layout implementation value, or validation boundary
+- prefer semantic constants or helpers such as `sandictsMarkSizePx`,
+  `millisecondsPerSecond`, or `minimumGoogleIdTokenLength`
+- keep Tailwind utility scale classes such as `px-4`, `gap-8`, and `text-5xl`
+  inline because they are design-system tokens
+- move repeated raw colors into CSS tokens instead of using arbitrary hex
+  classes in JSX
+- keep obvious `0` and `1` counters, package versions, generated code, and
+  literal fixture data inline when extraction would reduce readability
+
+### Review Enforcement
+
+Use architecture review as part of every frontend PR.
+
+Review questions:
+
+- does the file live in the layer that owns its responsibility?
+- did a route file stay thin enough, or should the screen move into `features`?
+- are API data and cache behavior handled by TanStack Query rather than Zustand?
+- does every Zustand store have a concrete shared UI consumer and the narrowest
+  valid provider boundary?
+- are generated API contracts separate from UI view models?
+- are server-only and client-only helpers separated clearly?
+- are sibling `.types.ts` imports relative and cross-root imports using `@/*`?
+- did a reusable component move to `components/shared` only after real reuse?
+- are missing required request inputs blocked before calling the backend?
+- are new architecture rules documented instead of left in review comments?
 
 ## Prototype Before Build Rule
 
@@ -306,6 +1292,13 @@ spec describes intent; the prototype decides the first shippable shape.
 ## Documentation Rules
 
 Frontend documentation work is real delivery work and should be tracked.
+
+Follow
+`sandicts/sandicts-docs:docs/decisions/shared-documentation-strategy.md`: keep
+small and stable rules in their overview document, and give a complex rule a
+dedicated canonical document when it has interacting states, lifecycle
+behavior, edge cases, or independent evolution. The overview must keep only the
+decision summary and link to the detailed document.
 
 Create docs tasks when:
 
@@ -330,20 +1323,11 @@ Suggested task titles:
 Resolve before completing the frontend foundation and first real API
 integration:
 
-- OpenAPI generator: Orval versus openapi-typescript/openapi-fetch
-- environment variable naming
-- frontend lint/typecheck/test commands
-- CI jobs for frontend
-- deployment target and preview environment strategy
+- E2E CI execution and the browser/device matrix beyond local Chromium
 
 Resolve before first integrated auth implementation:
 
-- cookie/session behavior with the backend
-- CORS and credentials behavior
-- session hydration endpoint and response shape
-- expired session UX
 - sign-out behavior
-- post-login routing
 
 Resolve before each page implementation:
 
@@ -360,6 +1344,5 @@ This document does not decide:
 
 - exact Figma layouts
 - exact route map
-- deployment provider
 - final API endpoint names
-- business rules already owned by backend/product docs
+- business rules already owned by `sandicts/sandicts-docs`

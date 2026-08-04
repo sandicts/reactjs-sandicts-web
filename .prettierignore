@@ -1,0 +1,21 @@
+# Dependency and framework output
+node_modules/
+.next/
+out/
+build/
+
+# Test artifacts
+coverage/
+blob-report/
+playwright-report/
+test-results/
+playwright/.cache/
+
+# Tool-owned files
+package-lock.json
+src/lib/api/generated/
+
+# Keep canonical prose and repository automation out of broad formatting.
+docs/
+.codex/
+.github/

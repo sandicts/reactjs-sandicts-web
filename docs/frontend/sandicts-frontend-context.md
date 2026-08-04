@@ -8,6 +8,7 @@ related:
   - docs/frontend/sandicts-frontend-tech-decisions.md
   - docs/frontend/sandicts-frontend-planning.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
+  - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-page-functional-spec.md
 scope: frontend, product-feel, brand, ux, stack, mvp
 read-when:
@@ -22,8 +23,9 @@ do-not-read-when:
 
 # Sandicts Frontend Context
 
-This file is canonical in the frontend repository. Backend-owned product,
-business-rule, and API context remains in `sandicts/nodejs-sandicts-api`.
+This file is canonical for frontend UX direction only. Shared product scope,
+entity names, and business rules remain in `sandicts/sandicts-docs`; backend
+API contracts remain in `sandicts/nodejs-sandicts-api`.
 
 For delivery timing, Jira structure, frontend start criteria, and fullstack
 integration planning, also read `docs/frontend/sandicts-frontend-planning.md`.
@@ -52,18 +54,23 @@ Core idea:
 
 Visual direction:
 
-- minimal scorpion logo
+- stylized `S` mark with transparent, scalable vector geometry
+- `SANDICTS` rendered as text in Roboto
 - dark background
-- primary color: `#F59E0B` (Sand Orange)
+- Stone neutral surfaces with Amber brand and action emphasis
 - energetic contrast
 - beach/lifestyle imagery when useful
+
+Brand geometry, the active variant, and brand-specific semantic colors are
+centralized by KAN-145. Feature screens consume shared brand primitives rather
+than importing or redrawing the mark.
 
 ## Frontend Stack Direction
 
 Decided stack:
 
 - Next.js App Router with TypeScript
-- shadcn/ui with Tailwind CSS and lucide-react
+- shadcn/ui Radix Nova with Tailwind CSS and Phosphor Icons
 - TanStack Query for server state
 - Zod with React Hook Form for forms
 - OpenAPI client generated from the Nest Swagger contract
@@ -71,8 +78,8 @@ Decided stack:
 - Playwright for E2E tests
 - Vitest with Testing Library for components and hooks
 
-The backend foundation in this repository is NestJS and remains the API and
-business-rule owner for the frontend.
+The Nest backend remains the API owner for the frontend. Shared product and
+business-rule decisions remain in `sandicts/sandicts-docs`.
 
 For detailed frontend architecture decisions, read
 `docs/frontend/sandicts-frontend-tech-decisions.md`.
@@ -95,9 +102,9 @@ After the MVP, player screens can add:
 - tournament discovery
 - profile progression status
 
-### Partner
+### Organization
 
-Partner screens should prioritize:
+Organization screens should prioritize:
 
 - daily agenda
 - court availability
@@ -105,11 +112,11 @@ Partner screens should prioritize:
 - pending and overdue payments
 - court setup and pricing
 
-After the MVP, partner or school screens can add:
+After the MVP, Organization or Academy screens can add:
 
 - students and memberships
 - tournament/event creation
-- delinquency reports for school memberships
+- delinquency reports for Academy memberships
 
 ## UX Principles
 
@@ -118,7 +125,11 @@ After the MVP, partner or school screens can add:
 - make prices and payment state clear
 - keep booking and joining flows short
 - show social proof without making the MVP depend on complex ranking
-- separate player and partner navigation clearly
+- separate player and Organization navigation clearly
+
+The canonical responsive navigation, context-switcher, route-selection, and
+navigation accessibility decisions live in
+`docs/frontend/sandicts-mobile-navigation.md`.
 
 ## MVP Screens
 
@@ -129,16 +140,16 @@ Recommended first frontend scope:
 - reservation flow
 - open match list/detail
 - player profile
-- partner dashboard
-- partner agenda
-- partner court management
-- partner manual payments view
+- Organization dashboard
+- Organization agenda
+- Organization court management
+- Organization manual payments view
 
 V2 or later frontend scope:
 
-- school teachers, classes, students, and plans
+- Academy coaches, classes, students, and plans
 - tournament list/detail
-- partner payments/delinquency for memberships
+- Organization payments/delinquency for memberships
 
 Avoid early complexity:
 

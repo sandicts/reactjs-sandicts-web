@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="pt-BR" class="dark" data-brand-variant="default">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Protótipo dos estados globais de interface do Sandicts."
+    />
+    <title>Sandicts — Protótipo de estados globais</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./prototype-toolbar.css" />
+    <link rel="stylesheet" href="./prototype-shell.css" />
+    <link rel="stylesheet" href="./prototype-states.css" />
+    <script src="./prototype.catalog.js" defer></script>
+    <script src="./prototype.renderers.js" defer></script>
+    <script src="./prototype.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#shell-main">Pular para o exemplo</a>
+
+
+    <!-- visual-system:icons:start -->
+    <svg class="icon-sprite" aria-hidden="true">
+      <symbol id="icon-calendar" viewBox="0 0 256 256">
+        <path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-96-88v64a8,8,0,0,1-16,0V132.94l-4.42,2.22a8,8,0,0,1-7.16-14.32l16-8A8,8,0,0,1,112,120Zm59.16,30.45L152,176h16a8,8,0,0,1,0,16H136a8,8,0,0,1-6.4-12.8l28.78-38.37A8,8,0,1,0,145.07,132a8,8,0,1,1-13.85-8A24,24,0,0,1,176,136,23.76,23.76,0,0,1,171.16,150.45Z">
+        </path>
+      </symbol>
+      <symbol id="icon-check" viewBox="0 0 256 256">
+        <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z">
+        </path>
+      </symbol>
+      <symbol id="icon-clock" viewBox="0 0 256 256">
+        <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z">
+        </path>
+      </symbol>
+      <symbol id="icon-file-question" viewBox="0 0 256 256">
+        <path d="M140,180a12,12,0,1,1-12-12A12,12,0,0,1,140,180ZM128,72c-22.06,0-40,16.15-40,36v4a8,8,0,0,0,16,0v-4c0-11,10.77-20,24-20s24,9,24,20-10.77,20-24,20a8,8,0,0,0-8,8v8a8,8,0,0,0,16,0v-.72c18.24-3.35,32-17.9,32-35.28C168,88.15,150.06,72,128,72Zm104,56A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z">
+        </path>
+      </symbol>
+      <symbol id="icon-house" viewBox="0 0 256 256">
+        <path d="M219.31,108.68l-80-80a16,16,0,0,0-22.62,0l-80,80A15.87,15.87,0,0,0,32,120v96a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V160h32v56a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V120A15.87,15.87,0,0,0,219.31,108.68ZM208,208H160V152a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8v56H48V120l80-80,80,80Z">
+        </path>
+      </symbol>
+      <symbol id="icon-inbox" viewBox="0 0 256 256">
+        <path d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32Zm0,16V152h-28.7A15.86,15.86,0,0,0,168,156.69L148.69,176H107.31L88,156.69A15.86,15.86,0,0,0,76.69,152H48V48Zm0,160H48V168H76.69L96,187.31A15.86,15.86,0,0,0,107.31,192h41.38A15.86,15.86,0,0,0,160,187.31L179.31,168H208v40Z">
+        </path>
+      </symbol>
+      <symbol id="icon-layout" viewBox="0 0 256 256">
+        <path d="M104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48v48Zm-96,32H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm0,64H56V152h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,200,136Zm0,64H152V152h48v48Z">
+        </path>
+      </symbol>
+      <symbol id="icon-loader" viewBox="0 0 256 256">
+        <path d="M232,128a104,104,0,0,1-208,0c0-41,23.81-78.36,60.66-95.27a8,8,0,0,1,6.68,14.54C60.15,61.59,40,93.27,40,128a88,88,0,0,0,176,0c0-34.73-20.15-66.41-51.34-80.73a8,8,0,0,1,6.68-14.54C208.19,49.64,232,87,232,128Z">
+        </path>
+      </symbol>
+      <symbol id="icon-lock" viewBox="0 0 256 256">
+        <path d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Zm-68-56a12,12,0,1,1-12-12A12,12,0,0,1,140,152Z">
+        </path>
+      </symbol>
+      <symbol id="icon-log-in" viewBox="0 0 256 256">
+        <path d="M141.66,133.66l-40,40a8,8,0,0,1-11.32-11.32L116.69,136H24a8,8,0,0,1,0-16h92.69L90.34,93.66a8,8,0,0,1,11.32-11.32l40,40A8,8,0,0,1,141.66,133.66ZM200,32H136a8,8,0,0,0,0,16h56V208H136a8,8,0,0,0,0,16h64a8,8,0,0,0,8-8V40A8,8,0,0,0,200,32Z">
+        </path>
+      </symbol>
+      <symbol id="icon-map-pin" viewBox="0 0 256 256">
+        <path d="M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z">
+        </path>
+      </symbol>
+      <symbol id="icon-menu" viewBox="0 0 256 256">
+        <path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z">
+        </path>
+      </symbol>
+      <symbol id="icon-refresh" viewBox="0 0 256 256">
+        <path d="M240,56v48a8,8,0,0,1-8,8H184a8,8,0,0,1,0-16H211.4L184.81,71.64l-.25-.24a80,80,0,1,0-1.67,114.78,8,8,0,0,1,11,11.63A95.44,95.44,0,0,1,128,224h-1.32A96,96,0,1,1,195.75,60L224,85.8V56a8,8,0,1,1,16,0Z">
+        </path>
+      </symbol>
+      <symbol id="icon-search" viewBox="0 0 256 256">
+        <path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z">
+        </path>
+      </symbol>
+      <symbol id="icon-shield-x" viewBox="0 0 256 256">
+        <path d="M53.92,34.62A8,8,0,0,0,40.26,42,16,16,0,0,0,32,56v56c0,52.72,25.52,84.67,46.93,102.19,23.06,18.86,46,25.27,47,25.53a8,8,0,0,0,4.2,0c1.36-.37,31.27-8.78,57.09-34.72l14.89,16.38a8,8,0,1,0,11.84-10.76Zm74.07,189a128.48,128.48,0,0,1-38.92-21.81C61.82,179.51,48,149.3,48,112l0-56h3.71L176.41,193.15A129.26,129.26,0,0,1,128,223.62ZM224,56v56c0,20.58-3.89,39.61-11.56,56.59A8,8,0,1,1,197.86,162c6.73-14.89,10.14-31.71,10.14-50V56L98.52,56a8,8,0,1,1,0-16H208A16,16,0,0,1,224,56Z">
+        </path>
+      </symbol>
+      <symbol id="icon-triangle-alert" viewBox="0 0 256 256">
+        <path d="M236.8,188.09,149.35,36.22h0a24.76,24.76,0,0,0-42.7,0L19.2,188.09a23.51,23.51,0,0,0,0,23.72A24.35,24.35,0,0,0,40.55,224h174.9a24.35,24.35,0,0,0,21.33-12.19A23.51,23.51,0,0,0,236.8,188.09ZM222.93,203.8a8.5,8.5,0,0,1-7.48,4.2H40.55a8.5,8.5,0,0,1-7.48-4.2,7.59,7.59,0,0,1,0-7.72L120.52,44.21a8.75,8.75,0,0,1,15,0l87.45,151.87A7.59,7.59,0,0,1,222.93,203.8ZM120,144V104a8,8,0,0,1,16,0v40a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,180Z">
+        </path>
+      </symbol>
+      <symbol id="icon-user" viewBox="0 0 256 256">
+        <path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z">
+        </path>
+      </symbol>
+      <symbol id="icon-users" viewBox="0 0 256 256">
+        <path d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z">
+        </path>
+      </symbol>
+      <symbol id="icon-x" viewBox="0 0 256 256">
+        <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z">
+        </path>
+      </symbol>
+    </svg>
+    <!-- visual-system:icons:end -->
+
+    <header class="prototype-toolbar">
+      <div class="prototype-toolbar__intro">
+        <p class="prototype-kicker">KAN-69 · UX prototype</p>
+        <h1>Estados globais do Sandicts</h1>
+        <p>
+          Alterne contexto, estado e forma de conteúdo para revisar o contrato
+          visual antes da implementação.
+        </p>
+      </div>
+
+      <form class="prototype-controls" id="prototype-controls">
+        <label class="prototype-control">
+          <span>Contexto</span>
+          <select id="context-selector" name="context">
+            <option value="public">Public</option>
+            <option value="player">Player</option>
+            <option value="organization">Organization</option>
+          </select>
+        </label>
+
+        <label class="prototype-control">
+          <span>Estado</span>
+          <select id="state-selector" name="state">
+            <option value="loading-page">Loading da página</option>
+            <option value="loading-action">Loading de ação</option>
+            <option value="empty-first-use">Empty de primeiro uso</option>
+            <option value="empty-no-results">Nenhum resultado</option>
+            <option value="empty-legitimate">Empty legítimo</option>
+            <option value="error-recoverable">Erro recuperável</option>
+            <option value="unauthenticated">Não autenticado</option>
+            <option value="forbidden">Sem permissão</option>
+            <option value="not-found">Não encontrado</option>
+          </select>
+        </label>
+
+        <label class="prototype-control">
+          <span>Forma do conteúdo</span>
+          <select id="shape-selector" name="shape">
+            <option value="cards">Cards/lista</option>
+            <option value="table">Tabela</option>
+            <option value="calendar">Calendário</option>
+            <option value="dashboard">Dashboard</option>
+          </select>
+        </label>
+
+        <label class="prototype-checkbox">
+          <input id="long-copy-toggle" name="long" type="checkbox" />
+          <span>Testar cópia longa em português</span>
+        </label>
+      </form>
+    </header>
+
+    <p
+      class="sr-only"
+      id="prototype-announcement"
+      aria-live="polite"
+      aria-atomic="true"
+    ></p>
+
+    <div class="prototype-canvas">
+      <section
+        class="shell"
+        id="demo-shell"
+        data-context="public"
+        aria-label="Exemplo interativo do estado selecionado"
+      >
+        <header class="public-header" data-public-region>
+          <a class="brand" href="#shell-main" aria-label="Sandicts — início">
+            <img
+              src="../../../../public/sandicts-mark.svg"
+              width="40"
+              height="40"
+              alt=""
+            />
+            <span class="brand-name">SANDICTS</span>
+          </a>
+          <nav class="public-navigation" aria-label="Navegação pública">
+            <a class="text-link" href="#shell-main">
+              <svg class="icon" aria-hidden="true">
+                <use href="#icon-search"></use>
+              </svg>
+              <span class="public-navigation__label">Explorar</span>
+            </a>
+            <a class="button button--primary button--compact" href="#shell-main">
+              Entrar
+            </a>
+          </nav>
+        </header>
+
+        <aside class="shell-sidebar" data-authenticated-region hidden>
+          <div class="shell-sidebar__brand">
+            <a class="brand" href="#shell-main" aria-label="Sandicts — início">
+              <img
+                src="../../../../public/sandicts-mark.svg"
+                width="40"
+                height="40"
+                alt=""
+              />
+              <span class="adaptive-label brand-name">SANDICTS</span>
+            </a>
+          </div>
+          <nav
+            class="adaptive-navigation"
+            id="adaptive-navigation"
+            aria-label="Navegação do contexto"
+          ></nav>
+        </aside>
+
+        <div class="shell-body">
+          <header class="authenticated-topbar" data-authenticated-region hidden>
+            <button
+              class="icon-button organization-menu-trigger"
+              id="organization-menu-trigger"
+              type="button"
+              aria-label="Abrir navegação da organização"
+              aria-haspopup="dialog"
+              hidden
+            >
+              <svg class="icon" aria-hidden="true">
+                <use href="#icon-menu"></use>
+              </svg>
+            </button>
+            <div class="authenticated-topbar__identity">
+              <p id="context-eyebrow">Player</p>
+              <strong id="context-title">Reservas</strong>
+            </div>
+            <span class="context-chip" id="context-chip">Player</span>
+          </header>
+
+          <main class="shell-main" id="shell-main" tabindex="-1">
+            <header class="page-heading">
+              <div>
+                <p class="eyebrow" id="page-eyebrow">Descoberta pública</p>
+                <h2 id="page-title">Encontre sua próxima quadra</h2>
+                <p id="page-description">
+                  Compare opções disponíveis e escolha onde jogar.
+                </p>
+              </div>
+              <button
+                class="button button--primary page-heading__action"
+                id="page-primary-action"
+                type="button"
+              >
+                Buscar quadras
+              </button>
+            </header>
+
+            <section
+              class="state-region"
+              id="state-region"
+              aria-labelledby="state-heading"
+            ></section>
+          </main>
+        </div>
+
+        <nav
+          class="bottom-navigation"
+          id="bottom-navigation"
+          aria-label="Navegação Player"
+          data-player-region
+          hidden
+        ></nav>
+      </section>
+    </div>
+
+    <dialog
+      class="navigation-drawer"
+      id="organization-drawer"
+      aria-labelledby="organization-drawer-title"
+    >
+      <div class="navigation-drawer__header">
+        <div>
+          <p>Organização</p>
+          <h2 id="organization-drawer-title">Arena Sul</h2>
+        </div>
+        <button
+          class="icon-button"
+          id="organization-menu-close"
+          type="button"
+          aria-label="Fechar navegação da organização"
+        >
+          <svg class="icon" aria-hidden="true">
+            <use href="#icon-x"></use>
+          </svg>
+        </button>
+      </div>
+      <nav
+        class="drawer-navigation"
+        id="drawer-navigation"
+        aria-label="Navegação da organização"
+      ></nav>
+    </dialog>
+  </body>
+</html>

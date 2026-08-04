@@ -1,0 +1,462 @@
+{
+  "Common": {
+    "backToSandicts": "Voltar para o Sandicts",
+    "brandHomeLabel": "Sandicts — início",
+    "close": "Fechar",
+    "skipToContent": "Pular para o conteúdo"
+  },
+  "ContextSwitcher": {
+    "academyGroup": "Academias",
+    "adminGroup": "Admin App",
+    "currentContext": "Contexto atual",
+    "description": "Escolha a área ou organização que deseja acessar.",
+    "organizationGroup": "Organizações",
+    "playerGroup": "Player",
+    "title": "Trocar contexto",
+    "triggerLabel": "Trocar contexto. Contexto atual: {context}"
+  },
+  "FormExample": {
+    "displayNameDescription": "Use o nome que as outras pessoas devem ver.",
+    "displayNameLabel": "Nome de exibição",
+    "displayNameMax": "Informe no máximo 80 caracteres.",
+    "displayNameMin": "Informe pelo menos 2 caracteres.",
+    "emailDescription": "Usamos este endereço para acessar sua conta.",
+    "emailInvalid": "Informe um endereço de e-mail válido.",
+    "emailLabel": "E-mail",
+    "rootServerError": "Não foi possível salvar suas informações. Tente novamente.",
+    "saving": "Salvando…",
+    "submit": "Salvar exemplo",
+    "submitErrorTitle": "Não foi possível enviar o formulário",
+    "unmatchedFieldsError": "Alguns campos não puderam ser associados. Revise suas informações e tente novamente."
+  },
+  "Metadata": {
+    "defaultDescription": "Encontre quadras, partidas e pessoas para praticar esportes de areia.",
+    "socialImageAlt": "Sandicts — encontre quadras, partidas e pessoas para jogar",
+    "socialImageEyebrow": "Sua próxima partida começa aqui",
+    "socialImageSymbolLabel": "Símbolo Sandicts",
+    "socialImageTitle": "Encontre quadras, partidas e pessoas para jogar."
+  },
+  "Navigation": {
+    "organization": {
+      "availability": "Disponibilidade",
+      "calendar": "Agenda",
+      "courts": "Quadras",
+      "dashboard": "Painel",
+      "managementGroup": "Gestão",
+      "members": "Membros",
+      "operationGroup": "Operação",
+      "overviewGroup": "Visão geral",
+      "payments": "Pagamentos",
+      "profile": "Perfil da organização",
+      "reservations": "Reservas",
+      "units": "Unidades"
+    },
+    "player": {
+      "courts": "Explorar",
+      "group": "Player",
+      "home": "Início",
+      "openMatches": "Partidas",
+      "profile": "Perfil",
+      "reservations": "Reservas"
+    }
+  },
+  "OrganizationShell": {
+    "ariaLabel": "Navegação da organização",
+    "contextDetail": "Operação de quadras",
+    "defaultContextLabel": "Organização",
+    "defaultTitle": "Operação",
+    "description": "Navegue pelas áreas operacionais autorizadas.",
+    "eyebrow": "Organização",
+    "menuLabel": "Abrir navegação da organização"
+  },
+  "Pages": {
+    "discovery": {
+      "description": "Busca, filtros, resultados e detalhes serão implementados nas tarefas de descoberta. Este shell preserva acesso direto e navegação do navegador.",
+      "eyebrow": "Descoberta pública",
+      "metadataDescription": "Descubra quadras e espaços para praticar esportes de areia perto de você.",
+      "metadataTitle": "Descobrir quadras",
+      "title": "Encontre sua próxima quadra."
+    },
+    "notFound": {
+      "description": "O endereço pode estar incorreto ou o conteúdo pode não estar mais disponível.",
+      "eyebrow": "Página indisponível",
+      "primaryAction": "Explorar quadras",
+      "secondaryAction": "Voltar ao início",
+      "title": "Não encontramos esta página."
+    },
+    "organization": {
+      "availability": {
+        "description": "Abertura recorrente, manutenção e períodos indisponíveis permanecem separados da Agenda.",
+        "eyebrow": "Disponibilidade",
+        "title": "Configure horários e bloqueios."
+      },
+      "calendar": {
+        "description": "A grade operacional por quadra e horário será implementada na tarefa dedicada de Agenda.",
+        "eyebrow": "Agenda",
+        "title": "Visualize quadras por horário."
+      },
+      "courts": {
+        "description": "Cadastro, edição e detalhes das quadras serão entregues na vertical operacional correspondente.",
+        "eyebrow": "Quadras",
+        "title": "Gerencie suas quadras."
+      },
+      "dashboard": {
+        "description": "Indicadores e atalhos operacionais serão adicionados pelas tarefas de Organization sem duplicar a Agenda.",
+        "eyebrow": "Painel",
+        "title": "Opere suas quadras com clareza."
+      },
+      "metadataDescription": "Gerencie sua organização no Sandicts.",
+      "metadataTitle": "Área da organização",
+      "payments": {
+        "description": "Somente os estados manuais aprovados serão implementados; conciliação e relatórios avançados continuam fora do escopo.",
+        "eyebrow": "Pagamentos",
+        "title": "Acompanhe pagamentos do MVP."
+      },
+      "profile": {
+        "description": "Campos e permissões finais serão definidos e implementados pelas tarefas de perfil.",
+        "eyebrow": "Perfil da organização",
+        "title": "Mantenha os dados da organização."
+      },
+      "reservations": {
+        "description": "Filtros, registros e operações de reserva serão implementados sem misturar configuração de disponibilidade.",
+        "eyebrow": "Reservas",
+        "title": "Consulte e opere reservas."
+      }
+    },
+    "player": {
+      "courts": {
+        "description": "Busca, filtros e detalhes de quadras serão adicionados na vertical de descoberta.",
+        "eyebrow": "Explorar",
+        "title": "Descubra quadras e horários."
+      },
+      "home": {
+        "description": "A home Player reunirá reservas, partidas abertas e atalhos para descoberta sem transformar métricas de jogo em escopo do MVP.",
+        "eyebrow": "Início",
+        "title": "Seu próximo jogo começa aqui."
+      },
+      "metadataDescription": "Gerencie sua experiência de jogador no Sandicts.",
+      "metadataTitle": "Área do jogador",
+      "openMatches": {
+        "description": "A lista, os detalhes e a criação de partidas permanecerão dentro deste destino.",
+        "eyebrow": "Partidas",
+        "title": "Encontre uma partida aberta."
+      },
+      "profile": {
+        "description": "Onboarding e edição de perfil serão conectados aqui sem alterar a navegação principal.",
+        "eyebrow": "Perfil",
+        "title": "Cuide do seu perfil Player."
+      },
+      "redirectMetadataDescription": "Acesse sua área de jogador no Sandicts.",
+      "reservations": {
+        "description": "Listas, detalhes e solicitações de alteração serão implementados nas tarefas de reservas.",
+        "eyebrow": "Reservas",
+        "title": "Acompanhe suas reservas."
+      }
+    },
+    "signIn": {
+      "description": "Google Sign-In, One Tap e magic link serão conectados aqui pelas tarefas de autenticação.",
+      "eyebrow": "Área pública",
+      "metadataDescription": "Entre na sua conta Sandicts.",
+      "metadataTitle": "Entrar",
+      "title": "Entre na sua conta."
+    }
+  },
+  "PlayerShell": {
+    "ariaLabel": "Navegação Player",
+    "contextDetail": "Sua experiência de jogo",
+    "defaultTitle": "Área Player",
+    "eyebrow": "Player"
+  },
+  "PlayerProfileOnboardingPrototype": {
+    "actions": {
+      "continue": "Continuar",
+      "exit": "Sair",
+      "reloadProfile": "Recarregar perfil",
+      "retry": "Tentar novamente",
+      "returnToForm": "Voltar ao formulário",
+      "saving": "Salvando perfil…",
+      "signInAgain": "Entrar novamente",
+      "verifyProfile": "Verificar perfil"
+    },
+    "catalogSearch": {
+      "clear": "Limpar busca",
+      "close": "Fechar seleção de esporte",
+      "description": "Busque pelo nome e escolha um esporte principal.",
+      "noResults": "Nenhum esporte encontrado para esta busca.",
+      "placeholder": "Buscar esporte",
+      "resultsLabel": "Esportes encontrados",
+      "searchLabel": "Buscar esporte",
+      "title": "Escolha seu esporte principal",
+      "triggerPlaceholder": "Selecione um esporte"
+    },
+    "common": {
+      "skipToContent": "Pular para o conteúdo"
+    },
+    "exitConfirmation": {
+      "description": "As informações preenchidas não serão salvas. Você poderá continuar depois.",
+      "discardAction": "Sair sem salvar",
+      "safeAction": "Continuar preenchendo",
+      "title": "Sair sem concluir o perfil?"
+    },
+    "feedback": {
+      "conflict": {
+        "description": "Seu perfil mudou em outro lugar. Recarregue os dados mais recentes antes de continuar.",
+        "title": "Há uma versão mais recente"
+      },
+      "info": {
+        "description": "Seus dados simulados foram mantidos e o formulário está pronto para uma nova ação.",
+        "title": "Pronto para continuar"
+      },
+      "knownFailure": {
+        "description": "Não foi possível salvar seu perfil. Revise os dados e tente novamente.",
+        "title": "Não foi possível salvar"
+      },
+      "rateLimit": {
+        "description": "Você fez muitas tentativas. Aguarde um pouco e tente novamente.",
+        "title": "Muitas tentativas"
+      },
+      "success": {
+        "description": "Perfil salvo.",
+        "title": "Tudo certo"
+      },
+      "unknownOutcome": {
+        "description": "Não foi possível confirmar se o perfil foi salvo. Verifique o perfil antes de tentar novamente.",
+        "title": "Confirme antes de tentar de novo"
+      }
+    },
+    "form": {
+      "title": "Formulário de onboarding do perfil Player"
+    },
+    "identification": {
+      "displayNameHelp": "É assim que seu nome aparecerá no Sandicts.",
+      "displayNameLabel": "Nome de exibição",
+      "displayNamePlaceholder": "Ex.: Lucas Lima",
+      "title": "Sobre você"
+    },
+    "metadata": {
+      "description": "Protótipo isolado do onboarding de perfil Player da KAN-94.",
+      "title": "Protótipo de onboarding Player"
+    },
+    "page": {
+      "description": "Conte como você quer ser chamado e qual é o seu momento no esporte.",
+      "eyebrow": "Primeiros passos",
+      "requiredNote": "Todos os campos são obrigatórios.",
+      "title": "Complete seu perfil"
+    },
+    "prototype": {
+      "controllerTitle": "Controlador do protótipo",
+      "groups": {
+        "catalogs": "Catálogos e seletores",
+        "commands": "Salvamento e respostas",
+        "form": "Formulário",
+        "loadingAndReads": "Carregamento e leitura",
+        "routing": "Destinos posteriores",
+        "sessionAndExit": "Sessão e abandono"
+      },
+      "scenarioChanged": "Cenário alterado para {scenario}.",
+      "scenarioLabel": "Cenário demonstrado"
+    },
+    "routing": {
+      "alternateContext": {
+        "compact": "Saída simulada para outro contexto autorizado.",
+        "description": "O Player incompleto saiu do onboarding para outro contexto que a conta pode usar.",
+        "title": "Contexto alternativo selecionado"
+      },
+      "authorizedContinuation": {
+        "compact": "A continuação Player foi revalidada e está autorizada.",
+        "description": "O perfil resolvido ficou completo e o destino Player continuou autorizado.",
+        "title": "Continuação autorizada"
+      },
+      "destinationLabel": "Destino simulado",
+      "eyebrow": "Resultado de roteamento",
+      "publicFallback": {
+        "compact": "Saída simulada para o início público, com a sessão mantida.",
+        "description": "Nenhum outro contexto autorizado estava disponível. A sessão foi mantida e o Player incompleto não entrou em /app.",
+        "title": "Retorno ao início público"
+      },
+      "rejectedContinuation": {
+        "compact": "Não foi possível abrir o destino solicitado. O fallback seguro foi usado.",
+        "description": "Não foi possível abrir o destino solicitado. A continuação perdeu autorização e o fallback seguro da KAN-82 foi aplicado.",
+        "title": "Destino solicitado indisponível"
+      },
+      "signIn": {
+        "compact": "A sessão expirou e o rascunho não foi mantido.",
+        "description": "Entre novamente para continuar. Alterações não salvas não foram mantidas.",
+        "title": "Sua sessão expirou"
+      }
+    },
+    "scenarios": {
+      "alternateContext": {
+        "description": "Mostra a saída para outro contexto autorizado sem admitir o Player incompleto em /app.",
+        "label": "Saída para contexto alternativo"
+      },
+      "authorizedContinuation": {
+        "description": "Mostra o sucesso seguido da revalidação de uma continuação Player autorizada.",
+        "label": "Continuação autorizada"
+      },
+      "conflict": {
+        "description": "Preserva o formulário e exige recarregar a versão mais recente, sem sobrescrever automaticamente.",
+        "label": "Conflito de versão"
+      },
+      "defaultEmpty": {
+        "description": "Estado inicial editável, sem esporte ou nível preselecionado.",
+        "label": "Formulário vazio"
+      },
+      "emptyLevelScale": {
+        "description": "Mantém o esporte selecionado e bloqueia a progressão porque sua escala está vazia.",
+        "label": "Escala de nível vazia"
+      },
+      "emptySportCatalog": {
+        "description": "Explica que nenhum esporte está disponível e impede a conclusão.",
+        "label": "Catálogo de esportes vazio"
+      },
+      "exitConfirmation": {
+        "description": "Abre a confirmação de descarte para um formulário com alterações locais.",
+        "label": "Confirmação de saída"
+      },
+      "expiredSession": {
+        "description": "Representa o descarte do rascunho e a navegação por substituição para entrar novamente.",
+        "label": "Sessão expirada"
+      },
+      "incompleteProfile": {
+        "description": "Carrega valores já salvos como autoridade e deixa apenas o nível pendente.",
+        "label": "Perfil incompleto salvo"
+      },
+      "initialLoading": {
+        "description": "Mantém shell, título e descrição estáveis enquanto perfil e catálogos carregam em paralelo.",
+        "label": "Carregamento inicial"
+      },
+      "knownSaveFailure": {
+        "description": "Mostra uma falha conhecida, preserva os valores e oferece nova tentativa explícita.",
+        "label": "Falha conhecida ao salvar"
+      },
+      "largeCatalog": {
+        "description": "Troca os cards por busca em Sheet no mobile e Popover no desktop.",
+        "label": "Catálogo com 7+ esportes"
+      },
+      "missingProfile": {
+        "description": "Sugere o nome da conta de forma editável e mantém esporte e nível sem seleção.",
+        "label": "Perfil ausente com nome sugerido"
+      },
+      "partialForm": {
+        "description": "Exibe nome e esporte preenchidos, com nível ainda obrigatório.",
+        "label": "Formulário parcial"
+      },
+      "profileReadFailure": {
+        "description": "Substitui somente a região dependente do perfil e permite repetir a leitura segura.",
+        "label": "Falha ao carregar perfil"
+      },
+      "publicFallback": {
+        "description": "Mostra o fallback para o início público mantendo a sessão.",
+        "label": "Fallback para início público"
+      },
+      "rateLimit": {
+        "description": "Preserva os dados, não mostra contagem regressiva e permite tentar mais tarde.",
+        "label": "Limite de tentativas"
+      },
+      "rejectedContinuation": {
+        "description": "Mostra feedback neutro e o fallback seguro quando a continuação perde autorização.",
+        "label": "Continuação rejeitada"
+      },
+      "saving": {
+        "description": "Mantém o formulário visível, bloqueia edições e preserva a largura do controle principal.",
+        "label": "Salvando perfil"
+      },
+      "searchNoResults": {
+        "description": "Abre o catálogo grande com uma busca sem correspondências e opção de limpar.",
+        "label": "Busca sem resultados"
+      },
+      "sportsReadFailure": {
+        "description": "Preserva a identificação e substitui somente o módulo de esportes por uma falha recuperável.",
+        "label": "Falha ao carregar esportes"
+      },
+      "success": {
+        "description": "Anuncia Perfil salvo. e apresenta o destino posterior simulado.",
+        "label": "Salvamento concluído"
+      },
+      "unknownOutcome": {
+        "description": "Impede o replay automático e oferece uma leitura de verificação antes de outra tentativa.",
+        "label": "Resultado de rede desconhecido"
+      },
+      "validForm": {
+        "description": "Exibe todos os valores válidos e permite demonstrar o salvamento atômico.",
+        "label": "Formulário válido"
+      },
+      "validationErrors": {
+        "description": "Mostra validação inline e a ordem de foco do primeiro campo ou grupo inválido.",
+        "label": "Erros de validação"
+      }
+    },
+    "selectors": {
+      "description": "Escolha seu esporte principal e conte como está seu jogo hoje.",
+      "eyebrow": "Seu perfil esportivo",
+      "levelDisabledHelp": "Escolha primeiro seu esporte para ver os níveis.",
+      "levelHelp": "É uma autoavaliação — escolha o momento que mais combina com você.",
+      "levelLegend": "Em que nível está seu jogo no {sport}?",
+      "levelLegendFallback": "Em que nível está seu jogo?",
+      "sportHelp": "Escolha o esporte que você mais pratica.",
+      "sportLegend": "Escolha seu esporte principal",
+      "title": "Qual é a sua praia?"
+    },
+    "states": {
+      "emptyLevelScale": "Ainda não há níveis disponíveis para este esporte.",
+      "emptySportCatalog": "Nenhum esporte está disponível no momento.",
+      "loadingProfile": "Carregando seu perfil…",
+      "profileReadFailure": "Não foi possível carregar seu perfil. Tente novamente.",
+      "profileReadFailureTitle": "Seu perfil não carregou",
+      "sportsReadFailure": "Não foi possível carregar os esportes. Tente novamente.",
+      "sportsReadFailureTitle": "Os esportes não carregaram"
+    },
+    "validation": {
+      "displayNameMax": "Use no máximo 80 caracteres.",
+      "displayNameMin": "Use pelo menos 2 caracteres.",
+      "displayNameRequired": "Informe seu nome de exibição.",
+      "levelRequired": "Escolha o nível que mais combina com seu momento.",
+      "sportRequired": "Escolha seu esporte principal.",
+      "summary": "Revise os campos indicados antes de continuar."
+    }
+  },
+  "PublicHome": {
+    "actions": {
+      "courts": {
+        "detail": "Busque por esporte, horário e localização.",
+        "label": "Encontrar uma quadra"
+      },
+      "openMatches": {
+        "detail": "Encontre partidas abertas para jogar.",
+        "label": "Entrar em uma partida"
+      },
+      "organization": {
+        "detail": "Acesse quadras, reservas e disponibilidade.",
+        "label": "Operar a agenda"
+      }
+    },
+    "badge": "Esportes de areia em um só lugar",
+    "cardDescription": "Navegação responsiva e componentes acessíveis para cada contexto.",
+    "cardEyebrow": "Fundação do aplicativo",
+    "cardStatus": "Experiência consistente",
+    "cardTitle": "Pronta para evoluir",
+    "description": "Descubra espaços, organize sua próxima partida e acompanhe suas reservas sem perder o ritmo.",
+    "signals": {
+      "backend": {
+        "label": "Backend",
+        "value": "A API Nest permanece como fonte de verdade"
+      },
+      "frontend": {
+        "label": "Frontend",
+        "value": "Next.js com shells adaptáveis por contexto"
+      },
+      "mvp": {
+        "label": "Foco do MVP",
+        "value": "Quadras, reservas e partidas abertas"
+      }
+    },
+    "title": "Encontre quadras, partidas e gente para jogar."
+  },
+  "PublicShell": {
+    "ariaLabel": "Navegação pública",
+    "explore": "Explorar",
+    "exploreCourts": "Explorar quadras",
+    "signIn": "Entrar"
+  }
+}

@@ -1,0 +1,227 @@
+.auth-alert {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid;
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.auth-alert[data-tone="info"] {
+  border-color: var(--info-border);
+  background: var(--info-subtle);
+  color: var(--info);
+}
+
+.auth-alert[data-tone="warning"] {
+  border-color: var(--warning-border);
+  background: var(--warning-subtle);
+  color: var(--warning);
+}
+
+.auth-alert[data-tone="destructive"] {
+  border-color: var(--destructive-border);
+  background: var(--destructive-subtle);
+  color: var(--destructive);
+}
+
+.auth-alert h3 {
+  margin: 0;
+  color: currentColor;
+  font-size: 0.92rem;
+}
+
+.auth-alert p {
+  margin: 0.35rem 0 0;
+  color: var(--foreground);
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.auth-card {
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 1.5);
+  background: color-mix(in oklch, var(--popover) 96%, transparent);
+}
+
+.auth-card h3,
+.boundary-state h3 {
+  margin: 0;
+  font-size: clamp(1.55rem, 6vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.auth-card__description {
+  margin: 0.75rem 0 0;
+  color: var(--muted-foreground);
+  line-height: 1.55;
+}
+
+.provider-region {
+  margin-top: 1.4rem;
+}
+
+.google-button {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  width: 100%;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid #747775;
+  border-radius: 0.25rem;
+  background: #fff;
+  color: #1f1f1f;
+  font-weight: 600;
+}
+
+.google-button:hover:not(:disabled) {
+  background: #f8faff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.18);
+}
+
+.google-button:focus-visible {
+  outline-color: var(--primary);
+}
+
+.google-mark {
+  display: inline-grid;
+  width: 1.25rem;
+  height: 1.25rem;
+  place-items: center;
+  color: #4285f4;
+  font-family: Arial, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.google-button__loader {
+  animation: spin 800ms linear infinite;
+}
+
+.provider-skeleton {
+  width: 100%;
+  min-height: 2.75rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  background: var(--muted);
+}
+
+.provider-skeleton span[aria-hidden="true"] {
+  display: block;
+  width: 45%;
+  height: 0.75rem;
+  margin: 1rem auto;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklch, var(--muted-foreground) 35%, transparent),
+    color-mix(in oklch, var(--muted-foreground) 80%, transparent),
+    color-mix(in oklch, var(--muted-foreground) 35%, transparent)
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.provider-note {
+  margin: 0.9rem 0 0;
+  color: var(--muted-foreground);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.auth-actions {
+  display: grid;
+  margin-top: 1.1rem;
+}
+
+.boundary-state {
+  display: flex;
+  min-height: 23rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 1.5);
+  background: color-mix(in oklch, var(--popover) 96%, transparent);
+  text-align: center;
+}
+
+.boundary-state__icon {
+  display: grid;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 1.25rem;
+  place-items: center;
+  border: 1px solid var(--info-border);
+  border-radius: calc(var(--radius) * 1.4);
+  background: var(--info-subtle);
+  color: var(--info);
+}
+
+.boundary-state[data-tone="warning"] .boundary-state__icon {
+  border-color: var(--warning-border);
+  background: var(--warning-subtle);
+  color: var(--warning);
+}
+
+.boundary-state[data-tone="destructive"] .boundary-state__icon {
+  border-color: var(--destructive-border);
+  background: var(--destructive-subtle);
+  color: var(--destructive);
+}
+
+.boundary-state > p:not(.boundary-state__eyebrow) {
+  max-width: 34rem;
+  margin: 0.9rem 0 0;
+  color: var(--muted-foreground);
+  line-height: 1.6;
+}
+
+.boundary-state__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.boundary-state__actions .button {
+  min-width: 9rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (min-width: 36rem) {
+  .auth-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 35.999rem) {
+  .boundary-state__actions {
+    flex-direction: column;
+  }
+
+  .boundary-state__actions .button {
+    width: 100%;
+  }
+}

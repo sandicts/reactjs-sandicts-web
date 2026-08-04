@@ -1,0 +1,1076 @@
+<!doctype html>
+<html
+  lang="pt-BR"
+  class="dark"
+  data-brand-variant="default"
+  data-demo-state="ready"
+  data-context-mode="multiple"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Protótipo navegável dos shells público, Player e Organization do Sandicts."
+    />
+    <title>Sandicts — Protótipos de app shell</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./prototype.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#prototype-main">Pular para o conteúdo</a>
+
+    <!-- visual-system:icons:start -->
+    <svg class="icon-sprite" aria-hidden="true">
+      <symbol id="icon-bell" viewBox="0 0 256 256">
+        <path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z">
+        </path>
+      </symbol>
+      <symbol id="icon-buildings" viewBox="0 0 256 256">
+        <path d="M240,208H224V96a16,16,0,0,0-16-16H144V32a16,16,0,0,0-24.88-13.32L39.12,72A16,16,0,0,0,32,85.34V208H16a8,8,0,0,0,0,16H240a8,8,0,0,0,0-16ZM208,96V208H144V96ZM48,85.34,128,32V208H48ZM112,112v16a8,8,0,0,1-16,0V112a8,8,0,1,1,16,0Zm-32,0v16a8,8,0,0,1-16,0V112a8,8,0,1,1,16,0Zm0,56v16a8,8,0,0,1-16,0V168a8,8,0,0,1,16,0Zm32,0v16a8,8,0,0,1-16,0V168a8,8,0,0,1,16,0Z">
+        </path>
+      </symbol>
+      <symbol id="icon-calendar" viewBox="0 0 256 256">
+        <path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-96-88v64a8,8,0,0,1-16,0V132.94l-4.42,2.22a8,8,0,0,1-7.16-14.32l16-8A8,8,0,0,1,112,120Zm59.16,30.45L152,176h16a8,8,0,0,1,0,16H136a8,8,0,0,1-6.4-12.8l28.78-38.37A8,8,0,1,0,145.07,132a8,8,0,1,1-13.85-8A24,24,0,0,1,176,136,23.76,23.76,0,0,1,171.16,150.45Z">
+        </path>
+      </symbol>
+      <symbol id="icon-calendar-check" viewBox="0 0 256 256">
+        <path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-38.34-85.66a8,8,0,0,1,0,11.32l-48,48a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L116,164.69l42.34-42.35A8,8,0,0,1,169.66,122.34Z">
+        </path>
+      </symbol>
+      <symbol id="icon-caret-right" viewBox="0 0 256 256">
+        <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z">
+        </path>
+      </symbol>
+      <symbol id="icon-caret-up-down" viewBox="0 0 256 256">
+        <path d="M181.66,170.34a8,8,0,0,1,0,11.32l-48,48a8,8,0,0,1-11.32,0l-48-48a8,8,0,0,1,11.32-11.32L128,212.69l42.34-42.35A8,8,0,0,1,181.66,170.34Zm-96-84.68L128,43.31l42.34,42.35a8,8,0,0,0,11.32-11.32l-48-48a8,8,0,0,0-11.32,0l-48,48A8,8,0,0,0,85.66,85.66Z">
+        </path>
+      </symbol>
+      <symbol id="icon-clock" viewBox="0 0 256 256">
+        <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z">
+        </path>
+      </symbol>
+      <symbol id="icon-credit-card" viewBox="0 0 256 256">
+        <path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,16V88H32V64Zm0,128H32V104H224v88Zm-16-24a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h32A8,8,0,0,1,208,168Zm-64,0a8,8,0,0,1-8,8H120a8,8,0,0,1,0-16h16A8,8,0,0,1,144,168Z">
+        </path>
+      </symbol>
+      <symbol id="icon-external-link" viewBox="0 0 256 256">
+        <path d="M224,104a8,8,0,0,1-16,0V59.32l-66.33,66.34a8,8,0,0,1-11.32-11.32L196.68,48H152a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8Zm-40,24a8,8,0,0,0-8,8v72H48V80h72a8,8,0,0,0,0-16H48A16,16,0,0,0,32,80V208a16,16,0,0,0,16,16H176a16,16,0,0,0,16-16V136A8,8,0,0,0,184,128Z">
+        </path>
+      </symbol>
+      <symbol id="icon-house" viewBox="0 0 256 256">
+        <path d="M219.31,108.68l-80-80a16,16,0,0,0-22.62,0l-80,80A15.87,15.87,0,0,0,32,120v96a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V160h32v56a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V120A15.87,15.87,0,0,0,219.31,108.68ZM208,208H160V152a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8v56H48V120l80-80,80,80Z">
+        </path>
+      </symbol>
+      <symbol id="icon-map-pin" viewBox="0 0 256 256">
+        <path d="M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z">
+        </path>
+      </symbol>
+      <symbol id="icon-menu" viewBox="0 0 256 256">
+        <path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z">
+        </path>
+      </symbol>
+      <symbol id="icon-plus" viewBox="0 0 256 256">
+        <path d="M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z">
+        </path>
+      </symbol>
+      <symbol id="icon-search" viewBox="0 0 256 256">
+        <path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z">
+        </path>
+      </symbol>
+      <symbol id="icon-triangle-alert" viewBox="0 0 256 256">
+        <path d="M236.8,188.09,149.35,36.22h0a24.76,24.76,0,0,0-42.7,0L19.2,188.09a23.51,23.51,0,0,0,0,23.72A24.35,24.35,0,0,0,40.55,224h174.9a24.35,24.35,0,0,0,21.33-12.19A23.51,23.51,0,0,0,236.8,188.09ZM222.93,203.8a8.5,8.5,0,0,1-7.48,4.2H40.55a8.5,8.5,0,0,1-7.48-4.2,7.59,7.59,0,0,1,0-7.72L120.52,44.21a8.75,8.75,0,0,1,15,0l87.45,151.87A7.59,7.59,0,0,1,222.93,203.8ZM120,144V104a8,8,0,0,1,16,0v40a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,180Z">
+        </path>
+      </symbol>
+      <symbol id="icon-user-round" viewBox="0 0 256 256">
+        <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z">
+        </path>
+      </symbol>
+      <symbol id="icon-users-three" viewBox="0 0 256 256">
+        <path d="M244.8,150.4a8,8,0,0,1-11.2-1.6A51.6,51.6,0,0,0,192,128a8,8,0,0,1-7.37-4.89,8,8,0,0,1,0-6.22A8,8,0,0,1,192,112a24,24,0,1,0-23.24-30,8,8,0,1,1-15.5-4A40,40,0,1,1,219,117.51a67.94,67.94,0,0,1,27.43,21.68A8,8,0,0,1,244.8,150.4ZM190.92,212a8,8,0,1,1-13.84,8,57,57,0,0,0-98.16,0,8,8,0,1,1-13.84-8,72.06,72.06,0,0,1,33.74-29.92,48,48,0,1,1,58.36,0A72.06,72.06,0,0,1,190.92,212ZM128,176a32,32,0,1,0-32-32A32,32,0,0,0,128,176ZM72,120a8,8,0,0,0-8-8A24,24,0,1,1,87.24,82a8,8,0,1,0,15.5-4A40,40,0,1,0,37,117.51,67.94,67.94,0,0,0,9.6,139.19a8,8,0,1,0,12.8,9.61A51.6,51.6,0,0,1,64,128,8,8,0,0,0,72,120Z">
+        </path>
+      </symbol>
+      <symbol id="icon-x" viewBox="0 0 256 256">
+        <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z">
+        </path>
+      </symbol>
+      <symbol id="icon-layout" viewBox="0 0 256 256">
+        <path d="M104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48v48Zm-96,32H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm0,64H56V152h48v48Zm96-64H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,200,136Zm0,64H152V152h48v48Z">
+        </path>
+      </symbol>
+    </svg>
+    <!-- visual-system:icons:end -->
+
+    <aside class="prototype-toolbar" aria-label="Controles do protótipo">
+      <div>
+        <strong>Protótipo KAN-68</strong>
+        <span>Use os controles para comparar shells e estados.</span>
+      </div>
+
+      <label>
+        Área
+        <select id="shell-selector">
+          <option value="public">Público</option>
+          <option value="player">Player</option>
+          <option value="organization">Organization</option>
+        </select>
+      </label>
+
+      <label>
+        Estado
+        <select id="state-selector">
+          <option value="ready">Com conteúdo</option>
+          <option value="empty">Vazio</option>
+          <option value="forbidden">Proibido</option>
+          <option value="suspended">Suspenso</option>
+        </select>
+      </label>
+
+      <label>
+        Contextos
+        <select id="context-selector">
+          <option value="multiple">Múltiplos</option>
+          <option value="single">Somente um</option>
+        </select>
+      </label>
+
+      <button class="button button--outline" id="focus-example" type="button">
+        Demonstrar foco
+      </button>
+    </aside>
+
+    <div id="prototype-main" tabindex="-1">
+      <section class="prototype-shell public-shell" data-shell="public">
+        <header class="public-header">
+          <a class="brand" href="#" aria-label="Sandicts — página inicial">
+            <img
+              src="../../../../public/sandicts-mark.svg"
+              width="32"
+              height="32"
+              alt=""
+            />
+            <span class="brand-name">SANDICTS</span>
+          </a>
+
+          <nav class="public-header__nav" aria-label="Navegação pública">
+            <a href="#" aria-current="page">Explorar</a>
+            <a href="#">Como funciona</a>
+          </nav>
+
+          <a class="button button--primary" href="#">Entrar</a>
+        </header>
+
+        <main class="public-main">
+          <div data-when-state="ready">
+            <header class="page-heading page-heading--spacious">
+              <div>
+                <p class="eyebrow">Descoberta pública</p>
+                <h1>Encontre sua próxima quadra</h1>
+                <p>
+                  Compare espaços, horários e modalidades antes de entrar ou
+                  criar uma conta.
+                </p>
+              </div>
+            </header>
+
+            <form class="discovery-search" role="search">
+              <label>
+                Buscar quadras
+                <input
+                  type="search"
+                  placeholder="Cidade, modalidade ou organização"
+                />
+              </label>
+              <button class="button button--primary" type="submit">
+                Pesquisar
+              </button>
+            </form>
+
+            <div class="filter-row" aria-label="Filtros ativos">
+              <button class="chip" type="button">Modalidade: todas</button>
+              <button class="chip" type="button">Cidade: São Paulo</button>
+              <button class="chip" type="button">Somente com horários</button>
+              <button class="button button--ghost" type="button">Limpar</button>
+            </div>
+
+            <section aria-labelledby="public-results-title">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Perto de você</p>
+                  <h2 id="public-results-title">Quadras disponíveis</h2>
+                </div>
+                <span class="result-count">4 resultados</span>
+              </div>
+
+              <div class="discovery-grid">
+                <article class="venue-card">
+                  <div class="venue-card__media venue-card__media--sand">
+                    <span>Foto da quadra</span>
+                  </div>
+                  <div class="venue-card__content">
+                    <div>
+                      <p class="eyebrow">Futevôlei · Sintético</p>
+                      <h3>Quadra Central Esportes</h3>
+                      <p>Vila Mariana, São Paulo · 1,2 km</p>
+                    </div>
+                    <div class="venue-card__footer">
+                      <span aria-label="Avaliação 4,8 de 5">★ 4,8</span>
+                      <a class="button button--secondary" href="#">
+                        Ver horários
+                      </a>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="venue-card">
+                  <div class="venue-card__media venue-card__media--water">
+                    <span>Foto da quadra</span>
+                  </div>
+                  <div class="venue-card__content">
+                    <div>
+                      <p class="eyebrow">Beach tennis · Areia</p>
+                      <h3>Arena Praia Sul</h3>
+                      <p>Moema, São Paulo · 2,4 km</p>
+                    </div>
+                    <div class="venue-card__footer">
+                      <span aria-label="Avaliação 4,6 de 5">★ 4,6</span>
+                      <a class="button button--secondary" href="#">
+                        Ver horários
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </section>
+          </div>
+
+          <article class="state-panel" data-when-state="empty" hidden>
+            <span class="state-panel__icon" aria-hidden="true">
+              <svg class="icon">
+                <use href="#icon-search"></use>
+              </svg>
+            </span>
+            <h1>Nenhuma quadra encontrada</h1>
+            <p>
+              Ajuste a cidade ou remova filtros para ampliar os resultados.
+            </p>
+            <button class="button button--primary" type="button">
+              Limpar filtros
+            </button>
+          </article>
+
+          <article class="state-panel" data-when-state="forbidden" hidden>
+            <span class="state-panel__icon" aria-hidden="true">
+              <svg class="icon">
+                <use href="#icon-external-link"></use>
+              </svg>
+            </span>
+            <h1>Entre para continuar</h1>
+            <p>
+              A descoberta é pública, mas reservar e participar exigem uma
+              conta autenticada.
+            </p>
+            <a class="button button--primary" href="#">Entrar</a>
+          </article>
+
+          <article class="state-panel" data-when-state="suspended" hidden>
+            <span class="state-panel__icon" aria-hidden="true">
+              <svg class="icon">
+                <use href="#icon-triangle-alert"></use>
+              </svg>
+            </span>
+            <h1>Organização temporariamente indisponível</h1>
+            <p>
+              Esta página pública não aceita novas reservas no momento. Você
+              ainda pode voltar à descoberta.
+            </p>
+            <a class="button button--secondary" href="#">Voltar à descoberta</a>
+          </article>
+        </main>
+      </section>
+
+      <section class="prototype-shell auth-shell player-shell" data-shell="player" hidden>
+        <header class="auth-topbar">
+          <a class="brand" href="#" aria-label="Sandicts Player — início">
+            <img
+              src="../../../../public/sandicts-mark.svg"
+              width="32"
+              height="32"
+              alt=""
+            />
+            <span class="brand-name">SANDICTS</span>
+          </a>
+
+          <div class="auth-topbar__actions">
+            <span class="single-context-label" data-single-context-label>
+              Player
+            </span>
+            <button
+              class="context-trigger"
+              type="button"
+              data-context-trigger
+              aria-haspopup="dialog"
+            >
+              Player · Lucas Lima
+              <svg class="icon" aria-hidden="true">
+                <use href="#icon-caret-up-down"></use>
+              </svg>
+            </button>
+            <button class="icon-button" type="button" aria-label="Notificações">
+              <svg class="icon" aria-hidden="true">
+                <use href="#icon-bell"></use>
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <div class="auth-body">
+          <aside class="desktop-sidebar" aria-label="Navegação Player">
+            <nav>
+              <a href="#" aria-current="page" data-destination="Início">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-house"></use>
+                </svg>
+                Início
+              </a>
+              <a href="#" data-destination="Explorar">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-search"></use>
+                </svg>
+                Explorar
+              </a>
+              <a href="#" data-destination="Reservas">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-calendar-check"></use>
+                </svg>
+                Reservas
+              </a>
+              <a href="#" data-destination="Partidas">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-users-three"></use>
+                </svg>
+                Partidas
+              </a>
+              <a href="#" data-destination="Perfil">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-user-round"></use>
+                </svg>
+                Perfil
+              </a>
+            </nav>
+          </aside>
+
+          <aside class="medium-rail" aria-label="Navegação Player">
+            <nav>
+              <a
+                href="#"
+                aria-current="page"
+                aria-label="Início"
+                data-destination="Início"
+              >
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-house"></use>
+                </svg>
+              </a>
+              <a href="#" aria-label="Explorar" data-destination="Explorar">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-search"></use>
+                </svg>
+              </a>
+              <a href="#" aria-label="Reservas" data-destination="Reservas">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-calendar-check"></use>
+                </svg>
+              </a>
+              <a href="#" aria-label="Partidas" data-destination="Partidas">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-users-three"></use>
+                </svg>
+              </a>
+              <a href="#" aria-label="Perfil" data-destination="Perfil">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-user-round"></use>
+                </svg>
+              </a>
+            </nav>
+          </aside>
+
+          <main class="auth-main">
+            <div data-when-state="ready">
+              <header class="page-heading">
+                <div>
+                  <p class="eyebrow">Quinta-feira, 2 de julho</p>
+                  <h1>Olá, Lucas</h1>
+                  <p>Veja o que merece sua atenção hoje.</p>
+                </div>
+                <button class="button button--primary" type="button">
+                  Encontrar quadra
+                </button>
+              </header>
+
+              <section class="player-hero" aria-labelledby="next-reservation-title">
+                <div>
+                  <p class="eyebrow">Próxima reserva</p>
+                  <h2 id="next-reservation-title">Arena Praia Sul</h2>
+                  <p>Hoje · 19:00–20:00 · Quadra 2</p>
+                  <span class="status status--success">Confirmada</span>
+                </div>
+                <div class="player-hero__actions">
+                  <button class="button button--secondary" type="button">
+                    Ver detalhes
+                  </button>
+                  <button class="button button--outline" type="button">
+                    Convidar
+                  </button>
+                </div>
+              </section>
+
+              <div class="dashboard-grid">
+                <section class="panel" aria-labelledby="player-invites-title">
+                  <div class="section-heading">
+                    <div>
+                      <p class="eyebrow">2 novas</p>
+                      <h2 id="player-invites-title">Convites</h2>
+                    </div>
+                    <a href="#">Ver todos</a>
+                  </div>
+                  <ul class="compact-list">
+                    <li>
+                      <div>
+                        <strong>Partida aberta no Parque Sul</strong>
+                        <span>Amanhã, 18:30 · Intermediário</span>
+                      </div>
+                      <button class="button button--secondary" type="button">
+                        Ver
+                      </button>
+                    </li>
+                    <li>
+                      <div>
+                        <strong>Time Areia FC</strong>
+                        <span>Sábado, 09:00 · Futevôlei</span>
+                      </div>
+                      <button class="button button--secondary" type="button">
+                        Ver
+                      </button>
+                    </li>
+                  </ul>
+                </section>
+
+                <section class="panel" aria-labelledby="recommendations-title">
+                  <div class="section-heading">
+                    <div>
+                      <p class="eyebrow">Perto de você</p>
+                      <h2 id="recommendations-title">Recomendações</h2>
+                    </div>
+                  </div>
+                  <ul class="compact-list">
+                    <li>
+                      <div>
+                        <strong>Treino aberto de beach tennis</strong>
+                        <span>Hoje, 20:00 · 2 vagas</span>
+                      </div>
+                      <button class="button button--secondary" type="button">
+                        Participar
+                      </button>
+                    </li>
+                    <li>
+                      <div>
+                        <strong>Quadra Central</strong>
+                        <span>Avaliação 4,8 · 1,2 km</span>
+                      </div>
+                      <button class="button button--outline" type="button">
+                        Explorar
+                      </button>
+                    </li>
+                  </ul>
+                </section>
+              </div>
+            </div>
+
+            <article class="state-panel" data-when-state="empty" hidden>
+              <span class="state-panel__icon" aria-hidden="true">
+                <svg class="icon">
+                  <use href="#icon-plus"></use>
+                </svg>
+              </span>
+              <h1>Sua agenda está livre</h1>
+              <p>
+                Você ainda não tem reservas ou convites próximos. Explore
+                quadras e partidas abertas.
+              </p>
+              <button class="button button--primary" type="button">
+                Explorar agora
+              </button>
+            </article>
+
+            <article class="state-panel" data-when-state="forbidden" hidden>
+              <span class="state-panel__icon" aria-hidden="true">
+                <svg class="icon">
+                  <use href="#icon-x"></use>
+                </svg>
+              </span>
+              <h1>Este contexto não está disponível</h1>
+              <p>
+                Sua conta não pode abrir esta área Player. Escolha um contexto
+                ao qual você tenha acesso.
+              </p>
+              <button
+                class="button button--primary"
+                type="button"
+                data-context-trigger
+              >
+                Trocar contexto
+              </button>
+            </article>
+
+            <article class="state-panel" data-when-state="suspended" hidden>
+              <span class="state-panel__icon" aria-hidden="true">
+                <svg class="icon">
+                  <use href="#icon-triangle-alert"></use>
+                </svg>
+              </span>
+              <h1>Perfil temporariamente limitado</h1>
+              <p>
+                Algumas ações estão indisponíveis. Consulte o motivo e os
+                próximos passos antes de tentar reservar.
+              </p>
+              <button class="button button--secondary" type="button">
+                Ver orientações
+              </button>
+            </article>
+          </main>
+        </div>
+
+        <nav class="compact-bottom-nav" aria-label="Navegação Player">
+          <a href="#" aria-current="page" data-destination="Início">
+            <svg class="icon" aria-hidden="true">
+              <use href="#icon-house"></use>
+            </svg>
+            <span>Início</span>
+          </a>
+          <a href="#" data-destination="Explorar">
+            <svg class="icon" aria-hidden="true">
+              <use href="#icon-search"></use>
+            </svg>
+            <span>Explorar</span>
+          </a>
+          <a href="#" data-destination="Reservas">
+            <svg class="icon" aria-hidden="true">
+              <use href="#icon-calendar-check"></use>
+            </svg>
+            <span>Reservas</span>
+          </a>
+          <a href="#" data-destination="Partidas">
+            <svg class="icon" aria-hidden="true">
+              <use href="#icon-users-three"></use>
+            </svg>
+            <span>Partidas</span>
+          </a>
+          <a href="#" data-destination="Perfil">
+            <svg class="icon" aria-hidden="true">
+              <use href="#icon-user-round"></use>
+            </svg>
+            <span>Perfil</span>
+          </a>
+        </nav>
+      </section>
+
+      <section
+        class="prototype-shell auth-shell organization-shell"
+        data-shell="organization"
+        hidden
+      >
+        <header class="auth-topbar organization-topbar">
+          <button
+            class="icon-button compact-menu-trigger"
+            id="organization-menu-trigger"
+            type="button"
+            aria-haspopup="dialog"
+            aria-label="Abrir menu da organização"
+          >
+            <svg class="icon" aria-hidden="true">
+              <use href="#icon-menu"></use>
+            </svg>
+          </button>
+
+          <a class="brand" href="#" aria-label="Sandicts Organization — painel">
+            <img
+              src="../../../../public/sandicts-mark.svg"
+              width="32"
+              height="32"
+              alt=""
+            />
+            <span class="brand-name">SANDICTS</span>
+          </a>
+
+          <div class="auth-topbar__actions">
+            <span class="single-context-label" data-single-context-label>
+              Arena Praia Sul
+            </span>
+            <button
+              class="context-trigger"
+              type="button"
+              data-context-trigger
+              aria-haspopup="dialog"
+            >
+              Arena Praia Sul
+              <svg class="icon" aria-hidden="true">
+                <use href="#icon-caret-up-down"></use>
+              </svg>
+            </button>
+            <button class="icon-button" type="button" aria-label="Notificações">
+              <svg class="icon" aria-hidden="true">
+                <use href="#icon-bell"></use>
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <div class="auth-body">
+          <aside class="desktop-sidebar" aria-label="Navegação da organização">
+            <nav class="grouped-navigation">
+              <div>
+                <p>Visão geral</p>
+                <a href="#" data-destination="Painel">
+                  <svg class="icon" aria-hidden="true">
+                    <use href="#icon-layout"></use>
+                  </svg>
+                  Painel
+                </a>
+                <a href="#" aria-current="page" data-destination="Agenda">
+                  <svg class="icon" aria-hidden="true">
+                    <use href="#icon-calendar"></use>
+                  </svg>
+                  Agenda
+                </a>
+                <a href="#" data-destination="Reservas">
+                  <svg class="icon" aria-hidden="true">
+                    <use href="#icon-calendar-check"></use>
+                  </svg>
+                  Reservas
+                </a>
+              </div>
+              <div>
+                <p>Operação</p>
+                <a href="#" data-destination="Quadras">
+                  <svg class="icon" aria-hidden="true">
+                    <use href="#icon-map-pin"></use>
+                  </svg>
+                  Quadras
+                </a>
+                <a href="#" data-destination="Disponibilidade">
+                  <svg class="icon" aria-hidden="true">
+                    <use href="#icon-clock"></use>
+                  </svg>
+                  Disponibilidade
+                </a>
+                <a href="#" data-destination="Pagamentos">
+                  <svg class="icon" aria-hidden="true">
+                    <use href="#icon-credit-card"></use>
+                  </svg>
+                  Pagamentos
+                </a>
+              </div>
+              <div>
+                <p>Gestão</p>
+                <a href="#" data-destination="Perfil da organização">
+                  <svg class="icon" aria-hidden="true">
+                    <use href="#icon-buildings"></use>
+                  </svg>
+                  Perfil da organização
+                </a>
+                <a href="#" data-destination="Membros">
+                  <svg class="icon" aria-hidden="true">
+                    <use href="#icon-users-three"></use>
+                  </svg>
+                  Membros
+                </a>
+              </div>
+            </nav>
+          </aside>
+
+          <aside class="medium-rail" aria-label="Navegação da organização">
+            <nav>
+              <a href="#" aria-label="Painel" data-destination="Painel">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-layout"></use>
+                </svg>
+              </a>
+              <a
+                href="#"
+                aria-current="page"
+                aria-label="Agenda"
+                data-destination="Agenda"
+              >
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-calendar"></use>
+                </svg>
+              </a>
+              <a href="#" aria-label="Reservas" data-destination="Reservas">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-calendar-check"></use>
+                </svg>
+              </a>
+              <a href="#" aria-label="Quadras" data-destination="Quadras">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-map-pin"></use>
+                </svg>
+              </a>
+              <a
+                href="#"
+                aria-label="Disponibilidade"
+                data-destination="Disponibilidade"
+              >
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-clock"></use>
+                </svg>
+              </a>
+              <a href="#" aria-label="Pagamentos" data-destination="Pagamentos">
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-credit-card"></use>
+                </svg>
+              </a>
+              <a
+                href="#"
+                aria-label="Perfil da organização"
+                data-destination="Perfil da organização"
+              >
+                <svg class="icon" aria-hidden="true">
+                  <use href="#icon-buildings"></use>
+                </svg>
+              </a>
+            </nav>
+          </aside>
+
+          <main class="auth-main organization-main">
+            <div data-when-state="ready">
+              <header class="page-heading organization-page-heading">
+                <div>
+                  <p class="eyebrow">Operação diária</p>
+                  <h1>Agenda</h1>
+                  <p>Quinta-feira, 2 de julho de 2026</p>
+                </div>
+                <button
+                  class="button button--primary"
+                  id="primary-focus-target"
+                  type="button"
+                >
+                  Nova reserva
+                </button>
+              </header>
+
+              <section class="agenda-toolbar" aria-label="Controles da agenda">
+                <div class="date-navigation">
+                  <button class="icon-button" type="button" aria-label="Dia anterior">
+                    ‹
+                  </button>
+                  <button class="button button--outline" type="button">Hoje</button>
+                  <button class="icon-button" type="button" aria-label="Próximo dia">
+                    ›
+                  </button>
+                </div>
+
+                <div class="segmented-control" aria-label="Visualização">
+                  <button type="button" aria-pressed="true">Dia</button>
+                  <button type="button" aria-pressed="false">Semana</button>
+                </div>
+
+                <label>
+                  Modalidade
+                  <select>
+                    <option>Todas</option>
+                  </select>
+                </label>
+                <label>
+                  Quadra
+                  <select>
+                    <option>Todas</option>
+                  </select>
+                </label>
+                <label>
+                  Status
+                  <select>
+                    <option>Todos</option>
+                  </select>
+                </label>
+              </section>
+
+              <section class="metric-row" aria-label="Resumo do dia">
+                <article>
+                  <span>Reservas confirmadas</span>
+                  <strong>4</strong>
+                </article>
+                <article>
+                  <span>Horários livres</span>
+                  <strong>60</strong>
+                </article>
+                <article>
+                  <span>Pagamentos pendentes</span>
+                  <strong>2</strong>
+                </article>
+                <article>
+                  <span>Ocupação do dia</span>
+                  <strong>12%</strong>
+                </article>
+              </section>
+
+              <div class="agenda-legend" aria-label="Legenda da agenda">
+                <span><i class="legend-dot legend-dot--confirmed"></i>Confirmada</span>
+                <span><i class="legend-dot legend-dot--pending"></i>Pendente</span>
+                <span><i class="legend-dot legend-dot--blocked"></i>Bloqueada</span>
+                <span><i class="legend-dot legend-dot--maintenance"></i>Manutenção</span>
+                <span><i class="legend-dot legend-dot--available"></i>Disponível</span>
+              </div>
+
+              <section aria-labelledby="agenda-grid-title">
+                <h2 class="visually-hidden" id="agenda-grid-title">
+                  Agenda das quadras por horário
+                </h2>
+                <div
+                  class="schedule-scroll"
+                  role="region"
+                  aria-label="Agenda. Role horizontalmente para ver todas as quadras."
+                  tabindex="0"
+                >
+                  <table class="schedule-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Horário</th>
+                        <th scope="col">Quadra 1</th>
+                        <th scope="col">Quadra 2</th>
+                        <th scope="col">Quadra 3</th>
+                        <th scope="col">Quadra 4</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">07:00</th>
+                        <td>
+                          <button class="schedule-event schedule-event--confirmed">
+                            <strong>Rafael Lima</strong>
+                            <span>Futevôlei · 07:00–08:30</span>
+                          </button>
+                        </td>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">08:00</th>
+                        <td><span class="continued-slot">continuação</span></td>
+                        <td>
+                          <button class="schedule-event schedule-event--pending">
+                            <strong>Marina Costa</strong>
+                            <span>Beach tennis · 08:00–09:00</span>
+                          </button>
+                        </td>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">09:00</th>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td>
+                          <span class="schedule-event schedule-event--maintenance">
+                            <strong>Manutenção</strong>
+                            <span>Rede e iluminação</span>
+                          </span>
+                        </td>
+                        <td><span class="available-slot">Disponível</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">10:00</th>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td>
+                          <button class="schedule-event schedule-event--confirmed">
+                            <strong>Prof. Daniel</strong>
+                            <span>Vôlei de praia · 10:00–11:30</span>
+                          </button>
+                        </td>
+                        <td><span class="available-slot">Disponível</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">11:00</th>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td>
+                          <span class="schedule-event schedule-event--blocked">
+                            <strong>Bloqueada</strong>
+                            <span>Uso interno</span>
+                          </span>
+                        </td>
+                        <td><span class="continued-slot">continuação</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">12:00</th>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                        <td><span class="available-slot">Disponível</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
+
+            <article class="state-panel" data-when-state="empty" hidden>
+              <span class="state-panel__icon" aria-hidden="true">
+                <svg class="icon">
+                  <use href="#icon-calendar"></use>
+                </svg>
+              </span>
+              <h1>Nenhuma reserva neste período</h1>
+              <p>
+                A agenda está livre para os filtros selecionados. Crie uma
+                reserva ou configure a disponibilidade.
+              </p>
+              <button class="button button--primary" type="button">
+                Nova reserva
+              </button>
+              <a href="#">Configurar disponibilidade</a>
+            </article>
+
+            <article class="state-panel" data-when-state="forbidden" hidden>
+              <span class="state-panel__icon" aria-hidden="true">
+                <svg class="icon">
+                  <use href="#icon-x"></use>
+                </svg>
+              </span>
+              <h1>Você não pode acessar esta agenda</h1>
+              <p>
+                Sua associação não permite visualizar esta unidade ou quadra.
+                Escolha um contexto autorizado.
+              </p>
+              <button
+                class="button button--primary"
+                type="button"
+                data-context-trigger
+              >
+                Trocar contexto
+              </button>
+            </article>
+
+            <article class="state-panel" data-when-state="suspended" hidden>
+              <span class="state-panel__icon" aria-hidden="true">
+                <svg class="icon">
+                  <use href="#icon-triangle-alert"></use>
+                </svg>
+              </span>
+              <h1>Organização suspensa</h1>
+              <p>
+                Novas reservas e alterações estão bloqueadas. Os dados
+                existentes permanecem disponíveis para consulta.
+              </p>
+              <button class="button button--secondary" type="button">
+                Entender a suspensão
+              </button>
+            </article>
+          </main>
+        </div>
+      </section>
+    </div>
+
+    <dialog class="context-dialog" id="context-dialog">
+      <form method="dialog">
+        <header>
+          <div>
+            <p class="eyebrow">Conta Sandicts</p>
+            <h2>Trocar contexto</h2>
+          </div>
+          <button class="icon-button" value="cancel" aria-label="Fechar">
+            ×
+          </button>
+        </header>
+
+        <div class="context-groups">
+          <section aria-labelledby="player-context-title">
+            <h3 id="player-context-title">Player</h3>
+            <button class="context-option" value="player">
+              <span class="context-option__mark">LL</span>
+              <span>
+                <strong>Lucas Lima</strong>
+                <small>Perfil de jogador</small>
+              </span>
+              <svg class="icon" aria-hidden="true">
+                <use href="#icon-caret-right"></use>
+              </svg>
+            </button>
+          </section>
+
+          <section aria-labelledby="organization-context-title">
+            <h3 id="organization-context-title">Organizações</h3>
+            <button class="context-option" value="organization-south">
+              <span class="context-option__mark">AP</span>
+              <span>
+                <strong>Arena Praia Sul</strong>
+                <small>Administrador</small>
+              </span>
+              <svg class="icon" aria-hidden="true">
+                <use href="#icon-caret-right"></use>
+              </svg>
+            </button>
+            <button class="context-option" value="organization-north">
+              <span class="context-option__mark">CT</span>
+              <span>
+                <strong>Centro de Treinamento Norte</strong>
+                <small>Operador · acesso limitado</small>
+              </span>
+              <svg class="icon" aria-hidden="true">
+                <use href="#icon-caret-right"></use>
+              </svg>
+            </button>
+          </section>
+        </div>
+
+        <footer>
+          <button class="button button--outline" value="cancel">Cancelar</button>
+          <a href="#">Criar organização</a>
+        </footer>
+      </form>
+    </dialog>
+
+    <dialog class="navigation-drawer" id="organization-drawer">
+      <div>
+        <header>
+          <div>
+            <p class="eyebrow">Arena Praia Sul</p>
+            <h2>Navegação</h2>
+          </div>
+          <button
+            class="icon-button"
+            id="organization-menu-close"
+            type="button"
+            aria-label="Fechar menu"
+          >
+            ×
+          </button>
+        </header>
+
+        <nav class="grouped-navigation" aria-label="Navegação da organização">
+          <div>
+            <p>Visão geral</p>
+            <a href="#" data-destination="Painel">Painel</a>
+            <a href="#" aria-current="page" data-destination="Agenda">Agenda</a>
+            <a href="#" data-destination="Reservas">Reservas</a>
+          </div>
+          <div>
+            <p>Operação</p>
+            <a href="#" data-destination="Quadras">Quadras</a>
+            <a href="#" data-destination="Disponibilidade">Disponibilidade</a>
+            <a href="#" data-destination="Pagamentos">Pagamentos</a>
+          </div>
+          <div>
+            <p>Gestão</p>
+            <a href="#" data-destination="Perfil da organização">
+              Perfil da organização
+            </a>
+            <a href="#" data-destination="Membros">Membros</a>
+          </div>
+        </nav>
+      </div>
+    </dialog>
+  </body>
+</html>
