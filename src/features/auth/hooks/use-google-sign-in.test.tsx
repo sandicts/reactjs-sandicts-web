@@ -9,6 +9,7 @@ import {
   getAuthSession,
   setAuthSession,
 } from "@/lib/auth/auth-session-store";
+import { queryKeys } from "@/lib/query/query-keys";
 import {
   authSession,
   createAuthQueryClient,
@@ -51,10 +52,14 @@ describe("useGoogleSignIn", () => {
     });
 
     expect(getAuthSession()).toEqual(authSession);
+    expect(queryClient.getQueryData(queryKeys.auth.session())).toEqual({
+      account: authSession.account,
+      session: authSession.session,
+    });
     expect(fetchMock).toHaveBeenCalledOnce();
   });
 
-  it("clears a previous session when sign-in fails", async () => {
+  it("preserves an established session when a new Google interaction fails", async () => {
     setAuthSession(authSession);
     fetchMock.mockResolvedValueOnce(
       createJsonResponse(400, {
@@ -79,7 +84,7 @@ describe("useGoogleSignIn", () => {
       expect(result.current.isError).toBe(true);
     });
 
-    expect(getAuthSession()).toBeNull();
+    expect(getAuthSession()).toEqual(authSession);
     expect(fetchMock).toHaveBeenCalledOnce();
   });
 });

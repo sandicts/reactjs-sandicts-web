@@ -1,9 +1,14 @@
-import { SignInIcon } from "@phosphor-icons/react/ssr";
-import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
-import { AreaPlaceholder } from "@/components/shared/area-placeholder/area-placeholder";
+import { parseSignInSearchParams } from "@/features/auth/sign-in/sign-in-search-params.schemas";
+import { SignInScreen } from "@/features/auth/sign-in/sign-in-screen";
 import { DEFAULT_LOCALE } from "@/i18n/config";
+import { seoEnv } from "@/lib/env/seo-env";
+import { readSafeReturnTo } from "@/lib/routes/safe-return-to";
 import { createPrivatePageMetadata } from "@/lib/seo/seo-metadata";
+
+type SignInPageProps = Readonly<{
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}>;
 
 export async function generateMetadata() {
   const t = await getTranslations({
@@ -18,15 +23,14 @@ export async function generateMetadata() {
   });
 }
 
-export default function SignInPage() {
-  const t = useTranslations("Pages.signIn");
+export default async function SignInPage({ searchParams }: SignInPageProps) {
+  const { reason, returnTo } = parseSignInSearchParams(await searchParams);
+  const safeReturnTo = readSafeReturnTo(returnTo, seoEnv.webOrigin);
 
   return (
-    <AreaPlaceholder
-      eyebrow={t("eyebrow")}
-      title={t("title")}
-      description={t("description")}
-      Icon={SignInIcon}
+    <SignInScreen
+      reason={reason}
+      returnTo={safeReturnTo ?? undefined}
     />
   );
 }

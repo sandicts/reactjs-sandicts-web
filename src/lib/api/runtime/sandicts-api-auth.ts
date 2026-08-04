@@ -1,15 +1,25 @@
 import {
-  clearAuthSession,
+  hasEstablishedAuthSession,
+  markAuthSessionApiUnavailable,
+  markAuthSessionExpired,
+  markAuthSessionForbidden,
+  markAuthSessionRecoverableError,
+  markAuthSessionUnauthenticated,
   setAuthSession,
 } from "@/lib/auth/auth-session-store";
-import type { AuthSessionSnapshot } from "@/lib/auth/auth-session.types";
+import {
+  adaptAuthSessionSnapshot,
+  AuthSessionContractError,
+  classifyAuthSessionFailure,
+} from "@/lib/auth/auth-session.adapters";
+import type { AuthSessionRefreshResult } from "@/lib/auth/auth-session.types";
 import { publicEnv } from "@/lib/env/public-env";
 import { parseSandictsApiError } from "./sandicts-api-error";
 
 const refreshAuthSessionPath = "/auth/refresh";
 const authPathPrefix = "/auth/";
 
-let inFlightRefreshAuthSession: Promise<boolean> | null = null;
+let inFlightRefreshAuthSession: Promise<AuthSessionRefreshResult> | null = null;
 
 function isRefreshAuthSessionUrl(url: string) {
   return readUrlPath(url) === refreshAuthSessionPath;
@@ -21,9 +31,10 @@ function isSandictsAuthUrl(url: string) {
 
 async function refreshSandictsAuthSession() {
   if (!publicEnv.authEnabled) {
-    clearAuthSession();
+    const result = { kind: "unavailable", cause: "disabled" } as const;
+    applyAuthSessionRefreshResult(result);
 
-    return false;
+    return result;
   }
 
   inFlightRefreshAuthSession ??= executeRefreshAuthSession().finally(() => {
@@ -52,60 +63,56 @@ async function executeRefreshAuthSession() {
 
     const responseBody = (await response.json()) as unknown;
 
-    if (!isAuthSessionSnapshot(responseBody)) {
-      clearAuthSession();
+    const snapshot = adaptAuthSessionSnapshot(responseBody);
+    const result = { kind: "refreshed", snapshot } as const;
 
-      return false;
-    }
+    applyAuthSessionRefreshResult(result);
 
-    setAuthSession(responseBody);
+    return result;
+  } catch (error) {
+    const result =
+      error instanceof AuthSessionContractError
+        ? ({ kind: "unavailable", cause: "invalid-response" } as const)
+        : classifyAuthSessionFailure(error);
 
-    return true;
-  } catch {
-    clearAuthSession();
+    applyAuthSessionRefreshResult(result);
 
-    return false;
+    return result;
   }
 }
 
-function isAuthSessionSnapshot(value: unknown): value is AuthSessionSnapshot {
-  if (!value || typeof value !== "object") {
-    return false;
+function applyAuthSessionRefreshResult(result: AuthSessionRefreshResult) {
+  switch (result.kind) {
+    case "refreshed":
+      setAuthSession(result.snapshot);
+      return;
+    case "rejected":
+      if (hasEstablishedAuthSession()) {
+        markAuthSessionExpired();
+      } else {
+        markAuthSessionUnauthenticated();
+      }
+      return;
+    case "forbidden":
+      markAuthSessionForbidden();
+      return;
+    case "rate-limited":
+      markAuthSessionRecoverableError("rate-limited");
+      return;
+    case "temporarily-unavailable":
+      markAuthSessionRecoverableError(result.cause);
+      return;
+    case "unavailable":
+      markAuthSessionApiUnavailable(result.cause);
   }
-
-  const candidate = value as Partial<AuthSessionSnapshot>;
-
-  return (
-    typeof candidate.accessToken === "string" &&
-    typeof candidate.accessTokenExpiresAt === "string" &&
-    isAccount(candidate.account) &&
-    isSession(candidate.session)
-  );
 }
 
-function isAccount(value: unknown) {
-  if (!value || typeof value !== "object") {
-    return false;
-  }
+function publishAuthSessionFailure(error: unknown) {
+  const result = classifyAuthSessionFailure(error);
 
-  const candidate = value as Partial<AuthSessionSnapshot["account"]>;
+  applyAuthSessionRefreshResult(result);
 
-  return (
-    typeof candidate.id === "string" &&
-    typeof candidate.email === "string" &&
-    (typeof candidate.displayName === "string" ||
-      candidate.displayName === null)
-  );
-}
-
-function isSession(value: unknown) {
-  if (!value || typeof value !== "object") {
-    return false;
-  }
-
-  const candidate = value as Partial<AuthSessionSnapshot["session"]>;
-
-  return typeof candidate.id === "string";
+  return result;
 }
 
 function readUrlPath(url: string) {
@@ -117,8 +124,9 @@ function readUrlPath(url: string) {
 }
 
 export {
-  isSandictsAuthUrl,
   isRefreshAuthSessionUrl,
+  isSandictsAuthUrl,
+  publishAuthSessionFailure,
   refreshAuthSessionPath,
   refreshSandictsAuthSession,
 };

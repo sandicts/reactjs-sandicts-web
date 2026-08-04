@@ -576,6 +576,32 @@ Initial browser bootstrap:
    failure, protect private content and expose a recoverable verification state
    without claiming that the session expired.
 
+Concrete KAN-85 implementation:
+
+- `AuthSessionProvider` mounts inside `SandictsQueryProvider` and owns the
+  browser bootstrap and semantic lifecycle exposed to client UI
+- the lifecycle distinguishes `checking`, `authenticated`, `unauthenticated`,
+  `expired`, `recoverable-error`, `api-unavailable`, and `forbidden`
+- a terminal refresh `401` is `unauthenticated` when the current browser
+  runtime never established a session and `expired` only after it did
+- refresh returns a discriminated result instead of a boolean so `403`, `429`,
+  network, timeout, malformed success, and `5xx` cannot become false expiry
+- refresh remains single-flight and has no automatic mutation retry because it
+  rotates the backend-owned cookie
+- a successful session-producing operation places only `{ account, session }`
+  in `queryKeys.auth.session()`; access-token fields remain in memory only
+- the auth session query uses a 30-second stale time, remains in cache while
+  the root provider is mounted, revalidates on focus and reconnect, and does
+  not poll
+- terminal rejection removes auth and private Player-profile queries while
+  preserving public discovery data; temporary verification failures block
+  private rendering without destructive public-cache invalidation
+- the sign-in route is a Server Component shell with a Client Component
+  session surface; middleware and Server Components remain outside the proof
+  of authentication
+- `returnTo` is stored only after structural same-origin validation and remains
+  a routing hint that later protected-route work must reauthorize
+
 Current session query:
 
 - `GET /auth/me` is the canonical current-session read when the frontend has an

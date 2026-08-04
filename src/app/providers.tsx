@@ -1,5 +1,6 @@
 "use client";
 
+import { AuthSessionProvider } from "@/lib/auth/auth-session-provider";
 import { SandictsQueryProvider } from "@/lib/query/query-provider";
 
 type AppProvidersProps = Readonly<{
@@ -7,5 +8,9 @@ type AppProvidersProps = Readonly<{
 }>;
 
 export function AppProviders({ children }: AppProvidersProps) {
-  return <SandictsQueryProvider>{children}</SandictsQueryProvider>;
+  return (
+    <SandictsQueryProvider>
+      <AuthSessionProvider>{children}</AuthSessionProvider>
+    </SandictsQueryProvider>
+  );
 }
