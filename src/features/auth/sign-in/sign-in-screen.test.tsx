@@ -12,15 +12,35 @@ const authSessionMock = vi.hoisted(() => ({
   lifecycle: { status: "unauthenticated" } as AuthSessionLifecycle,
   retrySessionVerification: vi.fn(),
 }));
+const googleSignInMock = vi.hoisted(() => ({
+  mutate: vi.fn(),
+  reset: vi.fn(),
+}));
 
 vi.mock("@/lib/auth/auth-session-provider", () => ({
   useAuthSession: () => authSessionMock,
+}));
+vi.mock("@/lib/env/public-env", () => ({
+  publicEnv: {
+    googleClientId: "local-client-id.apps.googleusercontent.com",
+  },
+}));
+vi.mock("@/features/auth/hooks/use-google-sign-in", () => ({
+  useGoogleSignIn: () => ({
+    error: null,
+    isError: false,
+    isPending: false,
+    mutate: googleSignInMock.mutate,
+    reset: googleSignInMock.reset,
+  }),
 }));
 
 describe("SignInScreen", () => {
   beforeEach(() => {
     authSessionMock.lifecycle = { status: "unauthenticated" };
     authSessionMock.retrySessionVerification.mockReset();
+    googleSignInMock.mutate.mockReset();
+    googleSignInMock.reset.mockReset();
   });
 
   it("renders the responsive sign-in hierarchy and provider-owned host", () => {
@@ -41,9 +61,10 @@ describe("SignInScreen", () => {
     expect(
       screen.queryByText("ou continue por e-mail"),
     ).not.toBeInTheDocument();
-    expect(
-      screen.getByTestId("sign-in-session-surface"),
-    ).toHaveAttribute("data-return-intent", "present");
+    expect(screen.getByTestId("sign-in-session-surface")).toHaveAttribute(
+      "data-return-intent",
+      "present",
+    );
   });
 
   it("shows the canonical expiry copy from the URL without requiring runtime history", () => {
@@ -89,10 +110,9 @@ describe("SignInScreen", () => {
     renderWithI18n(<SignInScreen returnTo="/organizations/arena" />);
 
     expect(screen.getByText("Sua sessão está ativa")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Voltar ao início" })).toHaveAttribute(
-      "href",
-      "/",
-    );
+    expect(
+      screen.getByRole("link", { name: "Voltar ao início" }),
+    ).toHaveAttribute("href", "/");
     expect(screen.queryByText("/organizations/arena")).not.toBeInTheDocument();
   });
 });

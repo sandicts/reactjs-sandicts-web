@@ -462,7 +462,22 @@
     "eyebrow": "Sua conta Sandicts",
     "methods": {
       "divider": "ou continue por e-mail",
+      "googleFailure": {
+        "forbidden": "Esta conta não pode acessar o Sandicts. Use outra conta Google ou volte para uma área pública.",
+        "generic": "Não foi possível concluir o acesso. Tente novamente pelo botão Google.",
+        "invalidCredential": "O Google não retornou uma credencial válida. Tente novamente.",
+        "rateLimited": "Você fez muitas tentativas. Aguarde um pouco antes de tentar novamente.",
+        "rejected": "Não foi possível confirmar esta conta Google. Tente novamente ou escolha outra conta.",
+        "title": "Não foi possível entrar com Google"
+      },
       "googlePreparing": "Preparando acesso com Google…",
+      "googleSigningIn": "Confirmando sua conta Google…",
+      "googleUnavailable": {
+        "loadFailure": "O serviço do Google não carregou. Confira sua conexão e tente novamente.",
+        "missingConfiguration": "O acesso com Google não está configurado neste ambiente.",
+        "retry": "Tentar carregar novamente",
+        "title": "Google Sign-In indisponível"
+      },
       "privacy": "A autenticação acontece com o provedor. O Sandicts não recebe sua senha."
     },
     "states": {
