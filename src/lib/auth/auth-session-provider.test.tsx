@@ -57,9 +57,9 @@ describe("AuthSessionProvider", () => {
       account: authSession.account,
       session: authSession.session,
     });
-    expect(queryClient.getQueryData(queryKeys.auth.session())).not.toHaveProperty(
-      "accessToken",
-    );
+    expect(
+      queryClient.getQueryData(queryKeys.auth.session()),
+    ).not.toHaveProperty("accessToken");
   });
 
   it("treats an initial terminal rejection as unauthenticated", async () => {

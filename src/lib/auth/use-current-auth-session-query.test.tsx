@@ -64,7 +64,9 @@ describe("useCurrentAuthSessionQuery", () => {
 });
 
 function createWrapper() {
-  return function QueryWrapper({ children }: Readonly<{ children: ReactNode }>) {
+  return function QueryWrapper({
+    children,
+  }: Readonly<{ children: ReactNode }>) {
     return (
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     );

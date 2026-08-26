@@ -9,8 +9,7 @@ function useGoogleSignIn() {
 
   return useGoogleSignInControllerSignIn({
     mutation: {
-      onSuccess: (authSession) =>
-        persistAuthSession(queryClient, authSession),
+      onSuccess: (authSession) => persistAuthSession(queryClient, authSession),
     },
   });
 }
