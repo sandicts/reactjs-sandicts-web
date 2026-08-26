@@ -62,9 +62,9 @@ describe("auth session adapters", () => {
   );
 
   it("distinguishes network and timeout failures", () => {
-    expect(classifyAuthSessionFailure(new TypeError("Failed to fetch"))).toEqual(
-      { kind: "temporarily-unavailable", cause: "network" },
-    );
+    expect(
+      classifyAuthSessionFailure(new TypeError("Failed to fetch")),
+    ).toEqual({ kind: "temporarily-unavailable", cause: "network" });
 
     const timeout = new Error("aborted");
     timeout.name = "AbortError";

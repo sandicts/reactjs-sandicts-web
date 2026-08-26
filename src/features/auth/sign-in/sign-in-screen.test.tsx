@@ -41,9 +41,10 @@ describe("SignInScreen", () => {
     expect(
       screen.queryByText("ou continue por e-mail"),
     ).not.toBeInTheDocument();
-    expect(
-      screen.getByTestId("sign-in-session-surface"),
-    ).toHaveAttribute("data-return-intent", "present");
+    expect(screen.getByTestId("sign-in-session-surface")).toHaveAttribute(
+      "data-return-intent",
+      "present",
+    );
   });
 
   it("shows the canonical expiry copy from the URL without requiring runtime history", () => {
@@ -89,10 +90,9 @@ describe("SignInScreen", () => {
     renderWithI18n(<SignInScreen returnTo="/organizations/arena" />);
 
     expect(screen.getByText("Sua sessão está ativa")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Voltar ao início" })).toHaveAttribute(
-      "href",
-      "/",
-    );
+    expect(
+      screen.getByRole("link", { name: "Voltar ao início" }),
+    ).toHaveAttribute("href", "/");
     expect(screen.queryByText("/organizations/arena")).not.toBeInTheDocument();
   });
 });

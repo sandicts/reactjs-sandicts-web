@@ -6,11 +6,17 @@ const webOrigin = new URL("https://sandicts.example");
 describe("readSafeReturnTo", () => {
   it.each([
     ["/app", "/app"],
-    ["/app/reservations?status=open#next", "/app/reservations?status=open#next"],
+    [
+      "/app/reservations?status=open#next",
+      "/app/reservations?status=open#next",
+    ],
     ["/organizations/arena/calendar", "/organizations/arena/calendar"],
-  ])("preserves a structurally safe internal destination", (value, expected) => {
-    expect(readSafeReturnTo(value, webOrigin)).toBe(expected);
-  });
+  ])(
+    "preserves a structurally safe internal destination",
+    (value, expected) => {
+      expect(readSafeReturnTo(value, webOrigin)).toBe(expected);
+    },
+  );
 
   it.each([
     "https://evil.example/app",
