@@ -27,10 +27,5 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
   const { reason, returnTo } = parseSignInSearchParams(await searchParams);
   const safeReturnTo = readSafeReturnTo(returnTo, seoEnv.webOrigin);
 
-  return (
-    <SignInScreen
-      reason={reason}
-      returnTo={safeReturnTo ?? undefined}
-    />
-  );
+  return <SignInScreen reason={reason} returnTo={safeReturnTo ?? undefined} />;
 }

@@ -11,10 +11,7 @@ import { AuthMethodStack } from "./auth-method-stack";
 import { AuthSessionState } from "./auth-session-state";
 import { GoogleSignInHost } from "./google-sign-in-host";
 
-function SignInSessionSurface({
-  reason,
-  returnTo,
-}: SignInSessionSurfaceProps) {
+function SignInSessionSurface({ reason, returnTo }: SignInSessionSurfaceProps) {
   const t = useTranslations("SignIn");
   const { lifecycle, retrySessionVerification } = useAuthSession();
 
@@ -57,9 +54,7 @@ function SignInSessionSurface({
       {showExpiredNotice && (
         <Alert className={signInScreenStyles.sessionAlert} variant="warning">
           <AlertTitle>{t("states.expired.title")}</AlertTitle>
-          <AlertDescription>
-            {t("states.expired.description")}
-          </AlertDescription>
+          <AlertDescription>{t("states.expired.description")}</AlertDescription>
         </Alert>
       )}
       {showForbiddenNotice && (

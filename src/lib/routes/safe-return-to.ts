@@ -2,10 +2,7 @@ const maximumReturnToLength = 2_048;
 const sensitiveParameterPattern =
   /(?:^|[_-])(authorization|code|credential|email|idtoken|id_token|magic|password|refresh|secret|token)(?:$|[_-])/i;
 
-function readSafeReturnTo(
-  value: string | null | undefined,
-  webOrigin: URL,
-) {
+function readSafeReturnTo(value: string | null | undefined, webOrigin: URL) {
   const candidate = value?.trim();
 
   if (

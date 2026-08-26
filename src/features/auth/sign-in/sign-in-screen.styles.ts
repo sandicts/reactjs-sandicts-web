@@ -9,8 +9,7 @@ const signInScreenStyles = {
   ),
   introduction: "max-w-2xl",
   eyebrow: "text-sm font-medium text-primary",
-  title:
-    "mt-3 text-4xl leading-tight font-semibold text-balance sm:text-5xl",
+  title: "mt-3 text-4xl leading-tight font-semibold text-balance sm:text-5xl",
   description: "mt-5 max-w-xl text-base leading-7 text-muted-foreground",
   benefits: "mt-7 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-1",
   benefit: "flex items-start gap-3 text-muted-foreground",

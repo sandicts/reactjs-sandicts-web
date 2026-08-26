@@ -51,9 +51,7 @@ function AuthSessionProvider({ children }: AuthSessionProviderProps) {
     () => serverAuthSessionLifecycle,
   );
   const initialData =
-    lifecycle.status === "authenticated"
-      ? toProjection(lifecycle)
-      : undefined;
+    lifecycle.status === "authenticated" ? toProjection(lifecycle) : undefined;
   const currentSessionQuery = useCurrentAuthSessionQuery({
     enabled: lifecycle.status === "authenticated",
     initialData,
@@ -91,13 +89,14 @@ function AuthSessionProvider({ children }: AuthSessionProviderProps) {
   }, [lifecycle, queryClient]);
 
   useEffect(() => {
-    if (
-      lifecycle.status === "authenticated" &&
-      currentSessionQuery.isError
-    ) {
+    if (lifecycle.status === "authenticated" && currentSessionQuery.isError) {
       publishAuthSessionFailure(currentSessionQuery.error);
     }
-  }, [currentSessionQuery.error, currentSessionQuery.isError, lifecycle.status]);
+  }, [
+    currentSessionQuery.error,
+    currentSessionQuery.isError,
+    lifecycle.status,
+  ]);
 
   const retrySessionVerification = useCallback(async () => {
     markAuthSessionChecking();

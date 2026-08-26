@@ -27,9 +27,7 @@ describe("AuthMethodStack", () => {
   });
 
   it("does not render a divider before KAN-105 supplies the magic-link slot", () => {
-    renderWithI18n(
-      <AuthMethodStack googleMethod={<div>Google method</div>} />,
-    );
+    renderWithI18n(<AuthMethodStack googleMethod={<div>Google method</div>} />);
 
     expect(
       screen.queryByText("ou continue por e-mail"),

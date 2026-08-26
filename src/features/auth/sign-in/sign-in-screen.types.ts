@@ -7,8 +7,4 @@ type SignInScreenProps = Readonly<{
 
 type SignInSessionSurfaceProps = SignInScreenProps;
 
-export type {
-  SignInReason,
-  SignInScreenProps,
-  SignInSessionSurfaceProps,
-};
+export type { SignInReason, SignInScreenProps, SignInSessionSurfaceProps };
