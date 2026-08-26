@@ -9,6 +9,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useGoogleSignIn } from "@/features/auth/hooks/use-google-sign-in";
 import { isSandictsApiError } from "@/lib/api/runtime/sandicts-api-error";
 import { publicEnv } from "@/lib/env/public-env";
+import {
+  activateGoogleCredentialFlow,
+  ensureGoogleIdentityInitialized,
+  registerGoogleCredentialHandler,
+} from "@/lib/google-identity/google-identity-client";
 import { loadGoogleIdentityScript } from "@/lib/google-identity/google-identity-script";
 import type { GoogleCredentialResponse } from "@/lib/google-identity/google-identity.types";
 import { cn } from "@/lib/utils";
@@ -59,6 +64,10 @@ function GoogleSignInHost() {
     }
 
     let active = true;
+    const unregisterCredentialHandler = registerGoogleCredentialHandler(
+      "button",
+      handleCredential,
+    );
 
     void loadGoogleIdentityScript()
       .then((googleIdentity) => {
@@ -72,16 +81,14 @@ function GoogleSignInHost() {
           throw new Error("Google Sign-In button host is unavailable.");
         }
 
-        googleIdentity.accounts.id.initialize({
-          auto_select: false,
-          callback: handleCredential,
-          client_id: clientId,
-          ux_mode: "popup",
-        });
+        ensureGoogleIdentityInitialized(googleIdentity, clientId);
 
         buttonHost.replaceChildren();
         googleIdentity.accounts.id.renderButton(buttonHost, {
-          click_listener: clearInteractionFailure,
+          click_listener: () => {
+            activateGoogleCredentialFlow("button");
+            clearInteractionFailure();
+          },
           locale: "pt_BR",
           logo_alignment: "left",
           shape: "rectangular",
@@ -101,6 +108,7 @@ function GoogleSignInHost() {
 
     return () => {
       active = false;
+      unregisterCredentialHandler();
     };
   }, [clearInteractionFailure, clientId, handleCredential, loadAttempt]);
 

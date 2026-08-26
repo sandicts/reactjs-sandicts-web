@@ -9,6 +9,13 @@ import {
   getAuthSession,
   setAuthSession,
 } from "@/lib/auth/auth-session-store";
+import {
+  hasGoogleOneTapAttempted,
+  hasGoogleOneTapSuppression,
+  markGoogleOneTapAttempted,
+  resetGoogleOneTapStorageForTests,
+  suppressGoogleOneTap,
+} from "@/features/auth/google-one-tap/google-one-tap-storage";
 import { queryKeys } from "@/lib/query/query-keys";
 import {
   authSession,
@@ -27,16 +34,20 @@ describe("useGoogleSignIn", () => {
     queryClient = createAuthQueryClient();
     fetchMock.mockReset();
     clearAuthSession();
+    resetGoogleOneTapStorageForTests();
     vi.stubGlobal("fetch", fetchMock);
   });
 
   afterEach(() => {
     queryClient.clear();
     clearAuthSession();
+    resetGoogleOneTapStorageForTests();
     vi.unstubAllGlobals();
   });
 
   it("persists the authenticated session after a successful sign-in", async () => {
+    markGoogleOneTapAttempted();
+    suppressGoogleOneTap("automatic-prompt-attempted");
     fetchMock.mockResolvedValueOnce(createJsonResponse(200, authSession));
 
     const { result } = renderUseGoogleSignIn();
@@ -52,6 +63,8 @@ describe("useGoogleSignIn", () => {
     });
 
     expect(getAuthSession()).toEqual(authSession);
+    expect(hasGoogleOneTapAttempted()).toBe(false);
+    expect(hasGoogleOneTapSuppression()).toBe(false);
     expect(queryClient.getQueryData(queryKeys.auth.session())).toEqual({
       account: authSession.account,
       session: authSession.session,

@@ -11,6 +11,7 @@ import type {
   GoogleIdentityConfiguration,
   GoogleIdentityServices,
 } from "@/lib/google-identity/google-identity.types";
+import { resetGoogleIdentityClientForTests } from "@/lib/google-identity/google-identity-client";
 import { GoogleSignInHost } from "./google-sign-in-host";
 
 const publicEnvMock = vi.hoisted(() => ({
@@ -24,7 +25,9 @@ const googleSignInMock = vi.hoisted(() => ({
   reset: vi.fn(),
 }));
 const googleIdentityMock = vi.hoisted(() => ({
+  cancel: vi.fn(),
   initialize: vi.fn(),
+  prompt: vi.fn(),
   renderButton: vi.fn(),
 }));
 const loadGoogleIdentityScriptMock = vi.hoisted(() => vi.fn());
@@ -40,7 +43,9 @@ vi.mock("@/lib/google-identity/google-identity-script", () => ({
 const googleIdentityServices = {
   accounts: {
     id: {
+      cancel: googleIdentityMock.cancel,
       initialize: googleIdentityMock.initialize,
+      prompt: googleIdentityMock.prompt,
       renderButton: googleIdentityMock.renderButton,
     },
   },
@@ -48,6 +53,7 @@ const googleIdentityServices = {
 
 describe("GoogleSignInHost", () => {
   beforeEach(() => {
+    resetGoogleIdentityClientForTests();
     publicEnvMock.googleClientId = "local-client-id.apps.googleusercontent.com";
     googleSignInMock.error = null;
     googleSignInMock.isError = false;
@@ -55,6 +61,8 @@ describe("GoogleSignInHost", () => {
     googleSignInMock.mutate.mockReset();
     googleSignInMock.reset.mockReset();
     googleIdentityMock.initialize.mockReset();
+    googleIdentityMock.cancel.mockReset();
+    googleIdentityMock.prompt.mockReset();
     googleIdentityMock.renderButton.mockReset();
     loadGoogleIdentityScriptMock.mockReset();
     loadGoogleIdentityScriptMock.mockResolvedValue(googleIdentityServices);

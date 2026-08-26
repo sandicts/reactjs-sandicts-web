@@ -15,7 +15,9 @@ import {
 const googleIdentityServices = {
   accounts: {
     id: {
+      cancel: vi.fn(),
       initialize: vi.fn(),
+      prompt: vi.fn(),
       renderButton: vi.fn(),
     },
   },
