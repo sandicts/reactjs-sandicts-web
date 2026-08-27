@@ -10,6 +10,7 @@ import type { SignInSessionSurfaceProps } from "../sign-in-screen.types";
 import { AuthMethodStack } from "./auth-method-stack";
 import { AuthSessionState } from "./auth-session-state";
 import { GoogleSignInHost } from "./google-sign-in-host";
+import { MagicLinkSignIn } from "./magic-link-sign-in";
 
 function SignInSessionSurface({ reason, returnTo }: SignInSessionSurfaceProps) {
   const t = useTranslations("SignIn");
@@ -69,7 +70,10 @@ function SignInSessionSurface({ reason, returnTo }: SignInSessionSurfaceProps) {
           </AlertDescription>
         </Alert>
       )}
-      <AuthMethodStack googleMethod={<GoogleSignInHost />} />
+      <AuthMethodStack
+        googleMethod={<GoogleSignInHost />}
+        magicLinkMethod={<MagicLinkSignIn />}
+      />
     </div>
   );
 }

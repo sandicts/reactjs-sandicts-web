@@ -3,6 +3,7 @@ const APP_ROUTES = {
     home: "/",
     discovery: "/discovery",
     signIn: "/sign-in",
+    magicLinkCallback: "/sign-in/magic-link",
   },
   player: {
     legacyHome: "/player",

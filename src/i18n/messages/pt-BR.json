@@ -478,7 +478,82 @@
         "retry": "Tentar carregar novamente",
         "title": "Google Sign-In indisponível"
       },
+      "magicLink": {
+        "cooldown": "Você poderá solicitar outro link em {seconds} s.",
+        "deliveryUnavailable": {
+          "description": "O envio por e-mail está temporariamente indisponível. Tente novamente em alguns instantes.",
+          "title": "Não foi possível enviar o link agora"
+        },
+        "emailDescription": "Enviaremos um link de uso único para o endereço informado.",
+        "emailInvalid": "Informe um endereço de e-mail válido.",
+        "emailLabel": "E-mail",
+        "requestFailed": {
+          "description": "Confira sua conexão e tente novamente.",
+          "title": "Não foi possível solicitar o link"
+        },
+        "rateLimited": {
+          "description": "Aguarde um pouco antes de solicitar outro link.",
+          "title": "Muitas tentativas"
+        },
+        "resend": "Reenviar link",
+        "resending": "Reenviando…",
+        "send": "Enviar link",
+        "sending": "Enviando…",
+        "sent": {
+          "description": "Se o endereço informado estiver correto, você receberá um link para entrar. Ele pode levar alguns instantes.",
+          "resendDescription": "Se solicitar outro link, use o e-mail mais recente que receber.",
+          "title": "Confira seu e-mail"
+        },
+        "tryAgain": "Tentar novamente"
+      },
       "privacy": "A autenticação acontece com o provedor. O Sandicts não recebe sua senha."
+    },
+    "magicLinkCallback": {
+      "actions": {
+        "newLink": "Solicitar novo link",
+        "otherEmail": "Usar outro e-mail",
+        "publicHome": "Voltar ao início",
+        "retry": "Tentar novamente",
+        "signIn": "Voltar para entrar"
+      },
+      "forbidden": {
+        "description": "Use outra conta ou volte para uma área pública do Sandicts.",
+        "title": "Você não tem acesso a esta área"
+      },
+      "invalid": {
+        "description": "Solicite um novo link para entrar com segurança.",
+        "title": "Este link não é válido"
+      },
+      "expired": {
+        "description": "Solicite um novo link para continuar.",
+        "title": "Este link expirou"
+      },
+      "rateLimited": {
+        "description": "Aguarde um pouco antes de tentar entrar novamente.",
+        "title": "Não foi possível verificar agora"
+      },
+      "routing": {
+        "description": "Seu acesso foi confirmado. Estamos verificando o destino disponível.",
+        "label": "Preparando sua área…",
+        "title": "Preparando sua área"
+      },
+      "superseded": {
+        "description": "Use o e-mail mais recente que recebeu ou solicite outro link.",
+        "title": "Há um link mais recente"
+      },
+      "used": {
+        "description": "Para entrar neste dispositivo, solicite um novo link.",
+        "title": "Este link já foi utilizado"
+      },
+      "verificationFailed": {
+        "description": "Confira sua conexão e tente novamente.",
+        "title": "Não foi possível confirmar seu acesso"
+      },
+      "verifying": {
+        "description": "Estamos confirmando o acesso solicitado.",
+        "label": "Verificando seu link…",
+        "title": "Verificando seu link"
+      }
     },
     "states": {
       "authenticated": {

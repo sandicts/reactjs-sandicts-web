@@ -31,6 +31,21 @@ describe("resolveRouteAccessPolicy", () => {
     });
   });
 
+  it("keeps the magic-link callback public and One Tap ineligible", () => {
+    expect(
+      resolveRouteAccessPolicy(
+        `${APP_ROUTES.public.magicLinkCallback}?token=transient`,
+      ),
+    ).toEqual({
+      access: "public",
+      googleOneTap: "ineligible",
+      id: "public-magic-link-callback",
+    });
+    expect(
+      isGoogleOneTapEligibleRoute(APP_ROUTES.public.magicLinkCallback),
+    ).toBe(false);
+  });
+
   it.each([
     [APP_ROUTES.player.legacyHome, "player-legacy-redirect"],
     [APP_ROUTES.player.home, "player-app"],

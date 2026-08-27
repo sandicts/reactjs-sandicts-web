@@ -16,6 +16,10 @@ const googleSignInMock = vi.hoisted(() => ({
   mutate: vi.fn(),
   reset: vi.fn(),
 }));
+const magicLinkMock = vi.hoisted(() => ({
+  isPending: false,
+  mutateAsync: vi.fn(),
+}));
 
 vi.mock("@/lib/auth/auth-session-provider", () => ({
   useAuthSession: () => authSessionMock,
@@ -34,6 +38,9 @@ vi.mock("@/features/auth/hooks/use-google-sign-in", () => ({
     reset: googleSignInMock.reset,
   }),
 }));
+vi.mock("@/lib/api/generated/sandicts-api/auth/auth", () => ({
+  useRequestMagicLinkControllerRequest: () => magicLinkMock,
+}));
 
 describe("SignInScreen", () => {
   beforeEach(() => {
@@ -41,6 +48,7 @@ describe("SignInScreen", () => {
     authSessionMock.retrySessionVerification.mockReset();
     googleSignInMock.mutate.mockReset();
     googleSignInMock.reset.mockReset();
+    magicLinkMock.mutateAsync.mockReset();
   });
 
   it("renders the responsive sign-in hierarchy and provider-owned host", () => {
@@ -58,9 +66,10 @@ describe("SignInScreen", () => {
     expect(
       screen.getByRole("region", { name: "Preparando acesso com Google…" }),
     ).toBeInTheDocument();
+    expect(screen.getByText("ou continue por e-mail")).toBeInTheDocument();
     expect(
-      screen.queryByText("ou continue por e-mail"),
-    ).not.toBeInTheDocument();
+      screen.getByRole("button", { name: "Enviar link" }),
+    ).toBeInTheDocument();
     expect(screen.getByTestId("sign-in-session-surface")).toHaveAttribute(
       "data-return-intent",
       "present",
