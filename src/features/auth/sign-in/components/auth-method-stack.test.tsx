@@ -26,7 +26,7 @@ describe("AuthMethodStack", () => {
     ).toBeTruthy();
   });
 
-  it("does not render a divider before KAN-105 supplies the magic-link slot", () => {
+  it("does not render a divider when the email method is unavailable", () => {
     renderWithI18n(<AuthMethodStack googleMethod={<div>Google method</div>} />);
 
     expect(

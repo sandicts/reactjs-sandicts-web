@@ -7,6 +7,10 @@ const signInScreenStyles = {
     "gap-10 px-4 py-10 sm:px-8 sm:py-14",
     "md:max-w-2xl lg:max-w-7xl lg:grid-cols-[minmax(0,1fr)_26rem]",
   ),
+  callbackContainer: cn(
+    "mx-auto flex min-h-[calc(100vh-4.5rem)] w-full max-w-lg items-center",
+    "px-4 py-10 sm:px-0 sm:py-14",
+  ),
   introduction: "max-w-2xl",
   eyebrow: "text-sm font-medium text-primary",
   title: "mt-3 text-4xl leading-tight font-semibold text-balance sm:text-5xl",
@@ -31,6 +35,10 @@ const signInScreenStyles = {
   googleButtonPending: "pointer-events-none opacity-60",
   googleSkeleton: "h-11 w-full",
   googleStatus: "text-center text-xs leading-5 text-muted-foreground",
+  magicLinkForm: "space-y-4",
+  magicLinkActions: "flex flex-col gap-2 sm:flex-row",
+  magicLinkAction: "w-full",
+  magicLinkStatus: "text-sm leading-6 text-muted-foreground",
   privacy: "text-xs leading-5 text-muted-foreground",
   loadingSkeletons: "space-y-3",
   loadingTitle: "h-6 w-3/5",
@@ -38,6 +46,7 @@ const signInScreenStyles = {
   loadingDescriptionShort: "h-4 w-4/5",
   loadingSurface: "h-80 w-full",
   pageState: "px-0 py-3",
+  callbackCard: "mx-auto w-full max-w-lg gap-0",
 } as const;
 
 export { signInScreenStyles };

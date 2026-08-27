@@ -51,6 +51,15 @@ const ROUTE_ACCESS_POLICIES = [
     },
   },
   {
+    access: "public",
+    googleOneTap: "ineligible",
+    id: "public-magic-link-callback",
+    matcher: {
+      includeDescendants: false,
+      pattern: APP_ROUTES.public.magicLinkCallback,
+    },
+  },
+  {
     access: "protected",
     googleOneTap: "ineligible",
     id: "player-legacy-redirect",
