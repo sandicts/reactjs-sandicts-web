@@ -27,6 +27,8 @@ type GoogleIdentityServices = Readonly<{
   accounts: Readonly<{
     id: Readonly<{
       initialize: (configuration: GoogleIdentityConfiguration) => void;
+      cancel: () => void;
+      prompt: () => void;
       renderButton: (
         parent: HTMLElement,
         configuration: GoogleButtonConfiguration,

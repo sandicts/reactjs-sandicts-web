@@ -80,7 +80,9 @@ function readGoogleIdentityServices() {
 
   if (
     typeof services?.accounts?.id?.initialize !== "function" ||
-    typeof services.accounts.id.renderButton !== "function"
+    typeof services.accounts.id.renderButton !== "function" ||
+    typeof services.accounts.id.prompt !== "function" ||
+    typeof services.accounts.id.cancel !== "function"
   ) {
     return null;
   }

@@ -59,8 +59,9 @@ without spreading pathname checks through components.
   independently of One Tap.
 - Desktop Chromium/Edge and Android Chromium top-level browsers receive One Tap.
   iOS, Safari/ITP, Firefox, and embedded webviews use the explicit fallback.
-- A skipped prompt, application cancellation, or failed credential exchange
-  suppresses automatic One Tap for 24 hours.
+- A prompt handed to the browser, application cancellation, or failed credential
+  exchange suppresses automatic One Tap for 24 hours. Successful authentication
+  clears that suppression.
 - Provider/script unavailability suppresses retry only for the current tab.
 - A successful Google sign-in through either entry point clears local
   suppression.
@@ -230,8 +231,8 @@ Official constraints:
 | `idle` | Eligibility not evaluated | Render no provider prompt |
 | `checking-auth` | Browser session bootstrap is pending | Preserve page geometry and wait |
 | `loading-provider` | Eligible route is loading GIS | Do not block public content |
-| `prompted` | GIS was asked to display One Tap | Mark the tab attempt before invoking the prompt |
-| `skipped` | Prompt ended without a credential | Write 24-hour suppression and leave the page usable |
+| `prompted` | GIS was asked to display One Tap | Mark the tab attempt and 24-hour automatic-prompt suppression before invoking the prompt |
+| `skipped` | Prompt ended without a credential | Keep the suppression written at prompt invocation and leave the page usable |
 | `cancelled` | The application cancelled the prompt | Write 24-hour suppression unless cancellation follows successful auth cleanup |
 | `credential-received` | Google returned a credential | Cancel competing UI and exchange it through the existing auth hook |
 | `signing-in` | Sandicts session creation is pending | Prevent duplicate exchanges |
@@ -240,10 +241,12 @@ Official constraints:
 | `unsupported` | Platform, privacy setting, or provider cannot support the prompt | Use explicit Google Sign-In or supported-browser guidance |
 | `succeeded` | Sandicts session was created | Clear suppression, hydrate auth state, and use post-login routing |
 
-FedCM does not provide reliable display-moment or detailed skipped-reason
-signals for every browser. The integration must not require
-`isNotDisplayed()`, `getNotDisplayedReason()`, or `getSkippedReason()` to make a
-user-visible fallback available.
+FedCM does not provide reliable display, skipped, or dismissed notifications for
+every browser-managed credential flow. The integration therefore writes the
+24-hour automatic-prompt suppression when the prompt is handed to the browser
+and clears it after successful authentication. It does not register a prompt
+status listener or require legacy moment methods to keep the explicit fallback
+available.
 
 ## Suppression And Persistence
 
@@ -267,7 +270,7 @@ Two independent records are required:
   - `reasonCategory`
   - `suppressedUntil`
 - allowed reason categories:
-  - `prompt-skipped`
+  - `automatic-prompt-attempted`
   - `application-cancelled`
   - `credential-exchange-failed`
 
@@ -332,6 +335,12 @@ MVP configuration:
 - request no Google Calendar or other authorization scopes during sign-in
 - keep app name, homepage, privacy policy, support contact, and optional terms
   accurate in Google OAuth branding
+
+The current GIS runtime mediates One Tap through FedCM where supported. The
+deprecated `use_fedcm_for_prompt` initialization field is ignored by Google and
+must not be used as an application feature gate; Sandicts continues to use
+`NEXT_PUBLIC_GOOGLE_ONE_TAP_ENABLED` for environment control and never enables
+automatic selection.
 
 If the applicable consent policy does not classify the identity script as
 functional authentication, the integration must gate loading behind the
