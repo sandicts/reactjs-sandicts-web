@@ -1,5 +1,5 @@
-import { OrganizationShell } from "@/components/shared/app-shell/organization/organization-shell";
 import { getTranslations } from "next-intl/server";
+import { OrganizationProtectedLayout } from "@/features/auth/protected-route/organization-protected-layout";
 import { DEFAULT_LOCALE } from "@/i18n/config";
 import { formatRouteSlugLabel } from "@/lib/routes/route-labels";
 import { createPrivatePageMetadata } from "@/lib/seo/seo-metadata";
@@ -26,11 +26,11 @@ export default async function OrganizationLayout({
   const { organizationSlug } = await params;
 
   return (
-    <OrganizationShell
+    <OrganizationProtectedLayout
       organizationSlug={organizationSlug}
       organizationLabel={formatRouteSlugLabel(organizationSlug)}
     >
       {children}
-    </OrganizationShell>
+    </OrganizationProtectedLayout>
   );
 }

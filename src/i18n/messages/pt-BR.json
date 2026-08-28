@@ -416,6 +416,14 @@
       "summary": "Revise os campos indicados antes de continuar."
     }
   },
+  "ProtectedRoute": {
+    "checkingAuthorizationLabel": "Verificando seu acesso…",
+    "checkingSessionLabel": "Verificando sua sessão…",
+    "forbidden": {
+      "description": "Use outro contexto ou volte para uma área disponível para sua conta.",
+      "title": "Você não tem acesso a esta área"
+    }
+  },
   "PublicHome": {
     "actions": {
       "courts": {

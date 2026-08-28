@@ -9,6 +9,7 @@ function readSafeReturnTo(value: string | null | undefined, webOrigin: URL) {
     !candidate ||
     candidate.length > maximumReturnToLength ||
     /[\u0000-\u001f\u007f]/.test(candidate) ||
+    fullyDecode(candidate) === null ||
     !candidate.startsWith("/") ||
     candidate.startsWith("//")
   ) {
@@ -20,6 +21,7 @@ function readSafeReturnTo(value: string | null | undefined, webOrigin: URL) {
     const decodedPathname = fullyDecode(resolvedUrl.pathname);
 
     if (
+      decodedPathname === null ||
       resolvedUrl.origin !== webOrigin.origin ||
       !decodedPathname.startsWith("/") ||
       decodedPathname.startsWith("//") ||
@@ -37,13 +39,19 @@ function readSafeReturnTo(value: string | null | undefined, webOrigin: URL) {
 }
 
 function isAuthenticationRoute(pathname: string) {
-  const decodedPathname = fullyDecode(pathname).replace(/\/+$/, "") || "/";
+  const decodedPathname = fullyDecode(pathname);
+
+  if (decodedPathname === null) {
+    return true;
+  }
+
+  const normalizedPathname = decodedPathname.replace(/\/+$/, "") || "/";
 
   return (
-    decodedPathname === "/sign-in" ||
-    decodedPathname.startsWith("/sign-in/") ||
-    decodedPathname === "/auth" ||
-    decodedPathname.startsWith("/auth/")
+    normalizedPathname === "/sign-in" ||
+    normalizedPathname.startsWith("/sign-in/") ||
+    normalizedPathname === "/auth" ||
+    normalizedPathname.startsWith("/auth/")
   );
 }
 
@@ -51,8 +59,14 @@ function containsSensitiveData(url: URL) {
   const hasSensitiveSearchParameter = Array.from(url.searchParams.keys()).some(
     (key) => sensitiveParameterPattern.test(key),
   );
-  const decodedHash = fullyDecode(url.hash).replace(/^#/, "");
-  const hasSensitiveHashParameter = decodedHash
+  const decodedHash = fullyDecode(url.hash);
+
+  if (decodedHash === null) {
+    return true;
+  }
+
+  const normalizedHash = decodedHash.replace(/^#/, "");
+  const hasSensitiveHashParameter = normalizedHash
     .split(/[&;]/)
     .map((part) => part.split("=", 1)[0] ?? "")
     .some((key) => sensitiveParameterPattern.test(key));
@@ -60,7 +74,7 @@ function containsSensitiveData(url: URL) {
   return hasSensitiveSearchParameter || hasSensitiveHashParameter;
 }
 
-function fullyDecode(value: string) {
+function fullyDecode(value: string): string | null {
   let decodedValue = value;
 
   for (let attempt = 0; attempt < 3; attempt += 1) {
@@ -73,7 +87,7 @@ function fullyDecode(value: string) {
 
       decodedValue = nextValue;
     } catch {
-      return decodedValue;
+      return null;
     }
   }
 

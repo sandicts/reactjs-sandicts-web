@@ -30,6 +30,8 @@ describe("readSafeReturnTo", () => {
     "/%73ign-in",
     "/%2573ign-in",
     "/auth/callback",
+    "/app/%",
+    "/app?next=%E0%A4%A",
     "/app?access_token=secret",
     "/app?email=player@example.com",
     "/app#refresh_token=secret",
