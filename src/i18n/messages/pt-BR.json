@@ -1,4 +1,14 @@
 {
+  "AccountMenu": {
+    "eyebrow": "Sua conta",
+    "failure": {
+      "rateLimited": "Muitas tentativas. Sua sessão continua ativa. Aguarde um pouco e tente novamente.",
+      "unavailable": "Não foi possível confirmar a saída. Sua conta permanece aberta nesta tela. Tente novamente."
+    },
+    "signOut": "Sair da conta",
+    "signingOut": "Saindo…",
+    "triggerLabel": "Abrir menu da conta de {account}"
+  },
   "Common": {
     "backToSandicts": "Voltar para o Sandicts",
     "brandHomeLabel": "Sandicts — início",
