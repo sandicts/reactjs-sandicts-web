@@ -1,5 +1,6 @@
 import { BrandLink } from "@/components/shared/brand";
 import type { AuthenticatedTopbarProps } from "./authenticated-topbar.types";
+import { AccountMenu } from "../account/account-menu";
 import { ContextSwitcher } from "../context/context-switcher";
 
 function AuthenticatedTopbar({
@@ -22,8 +23,11 @@ function AuthenticatedTopbar({
         </p>
         <p className="truncate text-base font-semibold">{title}</p>
       </div>
-      <div className="max-w-48 shrink-0 sm:max-w-xs">
-        <ContextSwitcher contexts={contexts} />
+      <div className="flex shrink-0 items-center gap-2">
+        <div className="max-w-36 sm:max-w-xs">
+          <ContextSwitcher contexts={contexts} />
+        </div>
+        <AccountMenu />
       </div>
     </header>
   );
