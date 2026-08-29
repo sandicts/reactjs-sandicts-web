@@ -6,6 +6,7 @@ import {
   CardDescription,
   CardHeader,
 } from "@/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { SignInSessionSurface } from "./components/sign-in-session-surface";
 import { signInScreenStyles } from "./sign-in-screen.styles";
 import type { SignInScreenProps } from "./sign-in-screen.types";
@@ -52,6 +53,19 @@ function SignInScreen(props: SignInScreenProps) {
               </CardDescription>
             </CardHeader>
             <CardContent className={signInScreenStyles.cardContent}>
+              <Alert
+                aria-labelledby="beta-notice-title"
+                className={signInScreenStyles.betaNotice}
+                role="note"
+                variant="info"
+              >
+                <AlertTitle id="beta-notice-title">
+                  {t("betaNotice.title")}
+                </AlertTitle>
+                <AlertDescription>
+                  {t("betaNotice.description")}
+                </AlertDescription>
+              </Alert>
               <SignInSessionSurface {...props} />
             </CardContent>
           </Card>

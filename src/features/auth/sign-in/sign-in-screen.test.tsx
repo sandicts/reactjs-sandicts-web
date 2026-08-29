@@ -70,6 +70,14 @@ describe("SignInScreen", () => {
     expect(
       screen.getByRole("button", { name: "Enviar link" }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole("note", { name: "Beta fechado para convidados" }),
+    ).toHaveTextContent(
+      "O acesso está disponível somente para testadores convidados.",
+    );
+    expect(
+      screen.getByRole("note", { name: "Beta fechado para convidados" }),
+    ).toHaveTextContent("você pode solicitar a exclusão dos seus dados");
     expect(screen.getByTestId("sign-in-session-surface")).toHaveAttribute(
       "data-return-intent",
       "present",
