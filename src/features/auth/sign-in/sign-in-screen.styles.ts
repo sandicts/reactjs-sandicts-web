@@ -25,6 +25,7 @@ const signInScreenStyles = {
   cardTitle: "mt-2 text-2xl font-semibold text-balance",
   cardDescription: "mt-2 text-sm leading-6 text-muted-foreground",
   cardContent: "space-y-5",
+  betaNotice: "items-start",
   sessionSurface: "space-y-5",
   sessionAlert: "items-start",
   methodStack: "space-y-5",

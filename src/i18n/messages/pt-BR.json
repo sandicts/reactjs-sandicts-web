@@ -472,6 +472,10 @@
     "title": "Encontre quadras, partidas e gente para jogar."
   },
   "SignIn": {
+    "betaNotice": {
+      "description": "O acesso está disponível somente para testadores convidados. Coletamos apenas os dados necessários para conta e sessão; não envie pagamentos, documentos ou dados sensíveis. Recursos podem mudar ou ficar indisponíveis durante os testes, e você pode solicitar a exclusão dos seus dados.",
+      "title": "Beta fechado para convidados"
+    },
     "benefits": {
       "contexts": "Acesse somente os contextos autorizados para sua conta.",
       "session": "Sua sessão permanece protegida e pode ser retomada com segurança."
