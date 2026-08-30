@@ -6,8 +6,8 @@ priority: high
 canonical: docs/ai/ci-cd/security-audit-remediation.md
 related:
   - docs/ai/task-finalization-workflow.md
-  - sandicts/sandicts-docs:docs/ai/dependency-security-remediation.md
-  - sandicts/nodejs-sandicts-api:docs/ai/ci-cd/security-audit-remediation.md
+  - fradelli/sandicts-docs:docs/ai/dependency-security-remediation.md
+  - fradelli/nodejs-sandicts-api:docs/ai/ci-cd/security-audit-remediation.md
 scope: frontend, npm-audit, dependency-security, dependency-overrides, pull-requests, jira
 read-when:
   - fixing a frontend npm audit failure
@@ -27,7 +27,7 @@ hiding risk, weakening CI, or mixing pre-existing vulnerabilities into an
 unrelated delivery.
 
 The cross-repository policy lives in
-`sandicts/sandicts-docs:docs/ai/dependency-security-remediation.md`. Backend
+`fradelli/sandicts-docs:docs/ai/dependency-security-remediation.md`. Backend
 repository commands and dependency paths remain backend-owned.
 
 ## Isolation Rule

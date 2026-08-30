@@ -8,8 +8,8 @@ related:
   - docs/frontend/sandicts-frontend-tech-decisions.md
   - docs/frontend/sandicts-google-one-tap-experience.md
   - docs/frontend/sandicts-post-login-routing.md
-  - sandicts/sandicts-docs:docs/decisions/frontend-deployment-target.md
-  - sandicts/nodejs-sandicts-api:docs/ai/config/configuration-foundation.md
+  - fradelli/sandicts-docs:docs/decisions/frontend-deployment-target.md
+  - fradelli/nodejs-sandicts-api:docs/ai/config/configuration-foundation.md
 scope: deployment, environments, vercel, cors, cookies, authentication, seo
 read-when:
   - configuring a frontend deployment

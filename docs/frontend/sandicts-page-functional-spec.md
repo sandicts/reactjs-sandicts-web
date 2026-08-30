@@ -13,10 +13,10 @@ related:
   - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-frontend-planning.md
-  - sandicts/sandicts-docs:docs/product/sandicts-product-context.md
-  - sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
-  - sandicts/sandicts-docs:docs/product/sandicts-v2-backlog.md
-  - sandicts/sandicts-docs:docs/business-rules/sandicts-business-rules.md
+  - fradelli/sandicts-docs:docs/product/sandicts-product-context.md
+  - fradelli/sandicts-docs:docs/product/sandicts-mvp-scope.md
+  - fradelli/sandicts-docs:docs/product/sandicts-v2-backlog.md
+  - fradelli/sandicts-docs:docs/business-rules/sandicts-business-rules.md
 scope: frontend, pages, product-rules, user-flows, mvp, v2, backlog
 read-when:
   - defining Sandicts pages or routes
@@ -69,7 +69,7 @@ Planning order:
 6. create Jira issues only after the user approves the batch
 
 This document is a working draft. When a rule becomes a backend invariant, copy
-or reconcile it into `sandicts/sandicts-docs:docs/business-rules/sandicts-business-rules.md` or the MVP
+or reconcile it into `fradelli/sandicts-docs:docs/business-rules/sandicts-business-rules.md` or the MVP
 scope docs as appropriate.
 
 ## Scope Classification

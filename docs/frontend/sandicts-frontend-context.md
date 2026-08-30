@@ -24,8 +24,8 @@ do-not-read-when:
 # Sandicts Frontend Context
 
 This file is canonical for frontend UX direction only. Shared product scope,
-entity names, and business rules remain in `sandicts/sandicts-docs`; backend
-API contracts remain in `sandicts/nodejs-sandicts-api`.
+entity names, and business rules remain in `fradelli/sandicts-docs`; backend
+API contracts remain in `fradelli/nodejs-sandicts-api`.
 
 For delivery timing, Jira structure, frontend start criteria, and fullstack
 integration planning, also read `docs/frontend/sandicts-frontend-planning.md`.
@@ -79,7 +79,7 @@ Decided stack:
 - Vitest with Testing Library for components and hooks
 
 The Nest backend remains the API owner for the frontend. Shared product and
-business-rule decisions remain in `sandicts/sandicts-docs`.
+business-rule decisions remain in `fradelli/sandicts-docs`.
 
 For detailed frontend architecture decisions, read
 `docs/frontend/sandicts-frontend-tech-decisions.md`.

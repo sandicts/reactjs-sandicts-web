@@ -39,7 +39,7 @@ This repository is the canonical home for Sandicts frontend documentation.
 
 ## Cross-Repo Sources
 
-The shared documentation repository `sandicts/sandicts-docs` is the source of
+The shared documentation repository `fradelli/sandicts-docs` is the source of
 truth for:
 
 - product scope and MVP boundaries
@@ -67,5 +67,5 @@ repository:path/to/file.md
 Example:
 
 ```text
-sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
+fradelli/sandicts-docs:docs/product/sandicts-mvp-scope.md
 ```

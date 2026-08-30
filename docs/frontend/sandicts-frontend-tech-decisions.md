@@ -16,10 +16,10 @@ related:
   - docs/frontend/sandicts-localization.md
   - docs/frontend/sandicts-local-ui-state.md
   - docs/frontend/sandicts-page-functional-spec.md
-  - sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
-  - sandicts/sandicts-docs:docs/decisions/api-contract-governance.md
-  - sandicts/sandicts-docs:docs/decisions/shared-documentation-strategy.md
-  - sandicts/nodejs-sandicts-api:docs/ai/api/semantic-api-contracts.md
+  - fradelli/sandicts-docs:docs/product/sandicts-mvp-scope.md
+  - fradelli/sandicts-docs:docs/decisions/api-contract-governance.md
+  - fradelli/sandicts-docs:docs/decisions/shared-documentation-strategy.md
+  - fradelli/nodejs-sandicts-api:docs/ai/api/semantic-api-contracts.md
 scope: frontend, architecture, stack, mvp, delivery
 read-when:
   - creating the Sandicts frontend app
@@ -45,7 +45,7 @@ tasks.
 
 Decided:
 
-- frontend application lives in the separate `sandicts/reactjs-sandicts-web`
+- frontend application lives in the separate `fradelli/reactjs-sandicts-web`
   repository
 - local frontend path is `apps/reactjs-sandicts-web`, sibling to the backend
   repository
@@ -84,8 +84,8 @@ Still open:
 
 Decision:
 
-- create and maintain the frontend in `sandicts/reactjs-sandicts-web`
-- keep it as a separate sibling repository from `sandicts/nodejs-sandicts-api`
+- create and maintain the frontend in `fradelli/reactjs-sandicts-web`
+- keep it as a separate sibling repository from `fradelli/nodejs-sandicts-api`
 - use local path `apps/reactjs-sandicts-web`
 
 Reason:
@@ -153,7 +153,7 @@ Rules:
 
 - use App Router layouts for public, Player, Organization, Academy, and Admin App
   areas
-- keep product and business rules in `sandicts/sandicts-docs`
+- keep product and business rules in `fradelli/sandicts-docs`
 - do not treat Next.js as a second business backend
 - use server-side capabilities only when they improve routing, auth, metadata,
   initial reads, or user experience
@@ -776,7 +776,7 @@ Rules:
   full automation
 - magic link E2E should use the backend-owned Mailpit capture strategy
   documented in
-  `sandicts/nodejs-sandicts-api:docs/ai/architecture/transactional-email-provider-decision.md`
+  `fradelli/nodejs-sandicts-api:docs/ai/architecture/transactional-email-provider-decision.md`
   instead of reading tokens from application logs
 
 Initial E2E gates:
@@ -1320,7 +1320,7 @@ spec describes intent; the prototype decides the first shippable shape.
 Frontend documentation work is real delivery work and should be tracked.
 
 Follow
-`sandicts/sandicts-docs:docs/decisions/shared-documentation-strategy.md`: keep
+`fradelli/sandicts-docs:docs/decisions/shared-documentation-strategy.md`: keep
 small and stable rules in their overview document, and give a complex rule a
 dedicated canonical document when it has interacting states, lifecycle
 behavior, edge cases, or independent evolution. The overview must keep only the
@@ -1371,4 +1371,4 @@ This document does not decide:
 - exact Figma layouts
 - exact route map
 - final API endpoint names
-- business rules already owned by `sandicts/sandicts-docs`
+- business rules already owned by `fradelli/sandicts-docs`

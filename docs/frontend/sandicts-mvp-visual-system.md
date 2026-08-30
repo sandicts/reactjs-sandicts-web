@@ -10,8 +10,8 @@ related:
   - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-mvp-screens-spec.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
-  - sandicts/sandicts-docs:docs/product/sandicts-product-context.md
-  - sandicts/sandicts-docs:docs/product/sandicts-mvp-functional-spec.md
+  - fradelli/sandicts-docs:docs/product/sandicts-product-context.md
+  - fradelli/sandicts-docs:docs/product/sandicts-mvp-functional-spec.md
 scope: frontend, design, tokens, components, states, accessibility, mvp
 read-when:
   - configuring shadcn/ui or Tailwind CSS

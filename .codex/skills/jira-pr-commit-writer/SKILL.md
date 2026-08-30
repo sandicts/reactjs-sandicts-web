@@ -16,13 +16,13 @@ under `docs/ai/` or `docs/frontend/`.
 
 When finishing a task, preparing commits, opening a PR, updating a PR title, or
 producing a delivery summary, read `docs/ai/task-finalization-workflow.md`
-and `sandicts/sandicts-docs:docs/ai/pull-request-standard.md` first.
+and `fradelli/sandicts-docs:docs/ai/pull-request-standard.md` first.
 
 For Jira roadmap, backlog, Epic, Story, Task, Subtask, Bug, or issue-planning
 requests, read `docs/ai/jira-operating-workflow.md` first. When product scope,
 entity names, business rules, or shared Jira planning matter, read
-`sandicts/sandicts-docs`; when API contracts matter, read
-`sandicts/nodejs-sandicts-api`.
+`fradelli/sandicts-docs`; when API contracts matter, read
+`fradelli/nodejs-sandicts-api`.
 
 ## Output Contract
 
@@ -32,7 +32,7 @@ Default language:
   commit messages, release notes, and delivery summaries unless the user
   explicitly requests another language.
 - Follow `docs/ai/task-finalization-workflow.md` and
-  `sandicts/sandicts-docs:docs/ai/pull-request-standard.md` for PR titles, PR
+  `fradelli/sandicts-docs:docs/ai/pull-request-standard.md` for PR titles, PR
   bodies, validation, and commit messages.
 
 ## PR Publishing Preflight
