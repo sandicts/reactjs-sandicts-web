@@ -7,7 +7,7 @@ canonical: docs/ai/task-finalization-workflow.md
 related:
   - docs/ai/ci-cd/security-audit-remediation.md
   - docs/ai/jira-operating-workflow.md
-  - sandicts/sandicts-docs:docs/ai/pull-request-standard.md
+  - fradelli/sandicts-docs:docs/ai/pull-request-standard.md
   - .codex/skills/jira-pr-commit-writer/SKILL.md
   - .github/pull_request_template.md
 scope: git, github, jira, commits, pull-requests, validation, frontend
@@ -94,7 +94,7 @@ the Jira key when the branch and PR title already carry it.
 
 ## Pull Request Title Standard
 
-Follow `sandicts/sandicts-docs:docs/ai/pull-request-standard.md`.
+Follow `fradelli/sandicts-docs:docs/ai/pull-request-standard.md`.
 
 Use:
 
@@ -124,7 +124,7 @@ Rules:
 
 ## Pull Request Body Standard
 
-Follow `sandicts/sandicts-docs:docs/ai/pull-request-standard.md` and always
+Follow `fradelli/sandicts-docs:docs/ai/pull-request-standard.md` and always
 use `.github/pull_request_template.md`.
 
 Rules:
@@ -168,7 +168,7 @@ from `developer`. Do not remove the audit job, lower its threshold, or mix
 dependency changes into the unrelated PR. The frontend workflow lives in
 `docs/ai/ci-cd/security-audit-remediation.md`; the cross-repository standard
 lives in
-`sandicts/sandicts-docs:docs/ai/dependency-security-remediation.md`.
+`fradelli/sandicts-docs:docs/ai/dependency-security-remediation.md`.
 
 Run tests when test tooling is present and the change touches behavior covered
 by tests. Frontend CI is expected to be configured by `KAN-111`; until then,
@@ -182,7 +182,7 @@ For shared docs repository changes:
   unless that repository has those commands configured and they actually ran
 
 For backend repository changes, follow
-`sandicts/nodejs-sandicts-api:docs/ai/task-finalization-workflow.md`.
+`fradelli/nodejs-sandicts-api:docs/ai/task-finalization-workflow.md`.
 
 ## Jira Status Rule
 

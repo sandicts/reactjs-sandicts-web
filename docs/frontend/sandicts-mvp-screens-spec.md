@@ -5,8 +5,8 @@ role: working-draft
 priority: high
 canonical: docs/frontend/sandicts-mvp-screens-spec.md
 related:
-  - sandicts/sandicts-docs:docs/product/sandicts-mvp-functional-spec.md
-  - sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
+  - fradelli/sandicts-docs:docs/product/sandicts-mvp-functional-spec.md
+  - fradelli/sandicts-docs:docs/product/sandicts-mvp-scope.md
   - docs/frontend/sandicts-frontend-context.md
   - docs/frontend/sandicts-frontend-planning.md
   - docs/frontend/sandicts-expired-session-experience.md
@@ -35,7 +35,7 @@ Este documento descreve as telas do MVP Sandicts em portugues para orientar:
 - validacao das dependencias com backend
 - conversa de produto antes da implementacao
 
-Ele se baseia em `sandicts/sandicts-docs:docs/product/sandicts-mvp-functional-spec.md`.
+Ele se baseia em `fradelli/sandicts-docs:docs/product/sandicts-mvp-functional-spec.md`.
 
 ## Como Usar Este Documento
 

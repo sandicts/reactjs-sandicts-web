@@ -71,7 +71,7 @@ optional Vercel operator access are documented once in the shared guide:
 The canonical GitHub location is:
 
 ```text
-https://github.com/sandicts/sandicts-docs/blob/main/docs/engineering/development-workstation-onboarding.md
+https://github.com/fradelli/sandicts-docs/blob/main/docs/engineering/development-workstation-onboarding.md
 ```
 
 Vercel is not required for frontend development or for CD to run after a merge.
@@ -241,7 +241,7 @@ The default schema sources are tried in order:
 
 ```text
 ../nodejs-sandicts-api/openapi/sandicts-api.json
-https://raw.githubusercontent.com/sandicts/nodejs-sandicts-api/developer/openapi/sandicts-api.json
+https://raw.githubusercontent.com/fradelli/nodejs-sandicts-api/developer/openapi/sandicts-api.json
 ```
 
 Generate the client with:
@@ -380,10 +380,10 @@ Start with `docs/README.md` when deciding which frontend document to read.
 
 ## Repository Decision
 
-The frontend lives in `sandicts/reactjs-sandicts-web`, separate from
-`sandicts/nodejs-sandicts-api`.
+The frontend lives in `fradelli/reactjs-sandicts-web`, separate from
+`fradelli/nodejs-sandicts-api`.
 
 This keeps frontend CI, deployment, package management, and preview environments
 independent. Shared product and business rules live in
-`sandicts/sandicts-docs`; backend API contracts live in
-`sandicts/nodejs-sandicts-api`.
+`fradelli/sandicts-docs`; backend API contracts live in
+`fradelli/nodejs-sandicts-api`.

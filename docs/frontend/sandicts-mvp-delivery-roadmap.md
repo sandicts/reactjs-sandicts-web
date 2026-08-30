@@ -13,8 +13,8 @@ related:
   - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-page-functional-spec.md
   - docs/frontend/sandicts-mvp-screens-spec.md
-  - sandicts/sandicts-docs:docs/product/sandicts-mvp-functional-spec.md
-  - sandicts/sandicts-docs:docs/product/sandicts-jira-planning-workflow.md
+  - fradelli/sandicts-docs:docs/product/sandicts-mvp-functional-spec.md
+  - fradelli/sandicts-docs:docs/product/sandicts-jira-planning-workflow.md
 scope: roadmap, frontend, fullstack, docs, ux, figma, mvp, jira
 read-when:
   - planning the final Sandicts MVP delivery roadmap
@@ -103,7 +103,7 @@ Title examples:
 Output:
 
 - updated docs in `docs/frontend` or
-  `sandicts/nodejs-sandicts-api:docs/ai`
+  `fradelli/nodejs-sandicts-api:docs/ai`
 - links added to index or related docs when needed
 - unresolved decisions kept visible
 
@@ -630,7 +630,7 @@ Exit criteria:
 
 Resolved foundation decisions:
 
-- frontend repository location: `sandicts/reactjs-sandicts-web`
+- frontend repository location: `fradelli/reactjs-sandicts-web`
 - local frontend path: `apps/reactjs-sandicts-web`
 - frontend runtime: Node.js 24 LTS with npm 11
 - local ports: API on `3000`, frontend on `3001`

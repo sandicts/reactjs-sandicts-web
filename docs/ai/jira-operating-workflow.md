@@ -22,7 +22,7 @@ do-not-read-when:
 
 ## Purpose
 
-Define the fast Jira path for frontend work in `sandicts/reactjs-sandicts-web`.
+Define the fast Jira path for frontend work in `fradelli/reactjs-sandicts-web`.
 
 ## Jira Project
 

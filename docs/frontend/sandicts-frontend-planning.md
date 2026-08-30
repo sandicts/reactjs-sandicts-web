@@ -13,9 +13,9 @@ related:
   - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - docs/frontend/sandicts-page-functional-spec.md
-  - sandicts/sandicts-docs:docs/product/sandicts-product-context.md
-  - sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
-  - sandicts/sandicts-docs:docs/product/sandicts-jira-planning-workflow.md
+  - fradelli/sandicts-docs:docs/product/sandicts-product-context.md
+  - fradelli/sandicts-docs:docs/product/sandicts-mvp-scope.md
+  - fradelli/sandicts-docs:docs/product/sandicts-jira-planning-workflow.md
 scope: frontend, ux, fullstack, mvp, jira, integration
 read-when:
   - planning the Sandicts frontend
@@ -39,8 +39,8 @@ It complements:
 - `docs/frontend/sandicts-frontend-tech-decisions.md`
 - `docs/frontend/sandicts-mvp-delivery-roadmap.md`
 - `docs/frontend/sandicts-page-functional-spec.md`
-- `sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md`
-- `sandicts/sandicts-docs:docs/product/sandicts-jira-planning-workflow.md`
+- `fradelli/sandicts-docs:docs/product/sandicts-mvp-scope.md`
+- `fradelli/sandicts-docs:docs/product/sandicts-jira-planning-workflow.md`
 
 The frontend should not wait until the entire backend MVP is done. It should
 start early enough to validate real flows, but late enough that it is not built
@@ -74,7 +74,7 @@ decisions outside the source-of-truth docs.
 
 Repository and runtime decision:
 
-- the frontend app lives in `sandicts/reactjs-sandicts-web`
+- the frontend app lives in `fradelli/reactjs-sandicts-web`
 - local path is `apps/reactjs-sandicts-web`, sibling to
   `apps/nodejs-sandicts-api`
 - use npm as the package manager, with Node.js 24 LTS and npm 11
@@ -160,7 +160,7 @@ Decided stack:
 
 Rules:
 
-- keep `sandicts/sandicts-docs` as the product and business-rule owner
+- keep `fradelli/sandicts-docs` as the product and business-rule owner
 - keep the Nest backend as the API contract and implementation owner
 - do not store API data in Zustand
 - use TanStack Query for server state and cache behavior
@@ -734,8 +734,8 @@ Exit criteria:
 
 Use this rhythm for each module:
 
-1. Product rule is confirmed in `sandicts/sandicts-docs:docs/product`
-   or `sandicts/sandicts-docs:docs/business-rules`
+1. Product rule is confirmed in `fradelli/sandicts-docs:docs/product`
+   or `fradelli/sandicts-docs:docs/business-rules`
 2. Backend drafts the API contract and business-rule behavior
 3. Frontend drafts the user flow and required states
 4. Backend implements the first usable endpoint set
@@ -813,7 +813,7 @@ Decided:
 - [x] Decide API client strategy: generated OpenAPI client from Nest Swagger.
 - [x] Decide local UI state strategy: Zustand only for local UI state.
 - [x] Decide frontend test strategy: Playwright, Vitest, and Testing Library.
-- [x] Decide frontend repository location: `sandicts/reactjs-sandicts-web`.
+- [x] Decide frontend repository location: `fradelli/reactjs-sandicts-web`.
 - [x] Decide package manager and Node.js version: npm, npm 11, and Node.js
   24 LTS.
 - [x] Decide exact OpenAPI generator: Orval as the initial MVP generator.

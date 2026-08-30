@@ -24,9 +24,9 @@ repository.
 - Prefer focused docs before long page, screen, or roadmap specs.
 - Treat `docs/frontend/discovery/` as historical input only.
 - Keep shared product scope, entity glossary, business rules, and Jira planning
-  in `sandicts/sandicts-docs`.
+  in `fradelli/sandicts-docs`.
 - Keep backend API contracts and backend architecture in
-  `sandicts/nodejs-sandicts-api`.
+  `fradelli/nodejs-sandicts-api`.
 - Use cross-repo references in `repository:path/to/file.md` format.
 
 ## Local Operating Docs
@@ -37,7 +37,7 @@ repository.
 | `docs/ai/jira-operating-workflow.md` | Direct Jira workflow for known `KAN-*` work |
 | `docs/ai/ci-cd/security-audit-remediation.md` | Isolated frontend dependency-security remediation workflow |
 | `docs/ai/task-finalization-workflow.md` | Commit, PR, validation, and Jira review workflow |
-| `sandicts/sandicts-docs:docs/ai/pull-request-standard.md` | Shared PR title, body, validation, and no-blank-body standard |
+| `fradelli/sandicts-docs:docs/ai/pull-request-standard.md` | Shared PR title, body, validation, and no-blank-body standard |
 
 ## Local Codex Skills
 
@@ -66,21 +66,21 @@ repository.
 
 ## Shared And Backend References
 
-Read shared docs from `sandicts/sandicts-docs` when a frontend task depends on
+Read shared docs from `fradelli/sandicts-docs` when a frontend task depends on
 product scope, business rules, entity names, or shared Jira planning:
 
-1. `sandicts/sandicts-docs:docs/product/sandicts-product-context.md`
-2. `sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md`
-3. `sandicts/sandicts-docs:docs/business-rules/sandicts-business-rules.md`
-4. `sandicts/sandicts-docs:docs/product/sandicts-jira-planning-workflow.md`
+1. `fradelli/sandicts-docs:docs/product/sandicts-product-context.md`
+2. `fradelli/sandicts-docs:docs/product/sandicts-mvp-scope.md`
+3. `fradelli/sandicts-docs:docs/business-rules/sandicts-business-rules.md`
+4. `fradelli/sandicts-docs:docs/product/sandicts-jira-planning-workflow.md`
 
-Read backend docs from `sandicts/nodejs-sandicts-api` only when API contracts,
+Read backend docs from `fradelli/nodejs-sandicts-api` only when API contracts,
 backend architecture, validation, errors, or implementation behavior matter.
 
 For API contract integration, also read:
 
-1. `sandicts/sandicts-docs:docs/decisions/api-contract-governance.md`
-2. `sandicts/nodejs-sandicts-api:docs/ai/api/semantic-api-contracts.md`
+1. `fradelli/sandicts-docs:docs/decisions/api-contract-governance.md`
+2. `fradelli/nodejs-sandicts-api:docs/ai/api/semantic-api-contracts.md`
 3. `docs/frontend/sandicts-frontend-tech-decisions.md`
 
 ## Common Reading Paths
@@ -95,7 +95,7 @@ For deployment, environment, CORS, or cookie work, read:
 
 1. `docs/frontend/sandicts-deployment-environments.md`
 2. `docs/frontend/sandicts-frontend-tech-decisions.md`
-3. `sandicts/sandicts-docs:docs/decisions/frontend-deployment-target.md`
+3. `fradelli/sandicts-docs:docs/decisions/frontend-deployment-target.md`
 
 For local UI state or Zustand work, read:
 
@@ -136,7 +136,7 @@ For finishing a Jira task, read:
 
 For a dependency audit failure, read:
 
-1. `sandicts/sandicts-docs:docs/ai/dependency-security-remediation.md`
+1. `fradelli/sandicts-docs:docs/ai/dependency-security-remediation.md`
 2. `docs/ai/ci-cd/security-audit-remediation.md`
 3. `docs/ai/task-finalization-workflow.md`
 

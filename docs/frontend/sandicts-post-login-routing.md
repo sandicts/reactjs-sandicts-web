@@ -12,7 +12,7 @@ related:
   - docs/frontend/sandicts-mobile-navigation.md
   - docs/frontend/sandicts-page-functional-spec.md
   - docs/frontend/prototypes/auth-sign-in/README.md
-  - sandicts/sandicts-docs:docs/product/sandicts-mvp-scope.md
+  - fradelli/sandicts-docs:docs/product/sandicts-mvp-scope.md
   - KAN-82
 scope: frontend, auth, post-login, return-to, contexts, player-profile, ux, security, e2e
 read-when:
