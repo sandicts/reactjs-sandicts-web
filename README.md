@@ -191,6 +191,33 @@ npm run test:e2e
 npm run test:e2e:ui
 ```
 
+Run the deterministic auth happy path by itself with:
+
+```bash
+npm run test:e2e -- e2e/auth-happy-path.spec.ts
+```
+
+The auth E2E fixture in `e2e/fixtures/auth.fixture.ts` replaces Google Identity
+Services and the browser auth API contract inside Playwright. It uses only
+clearly fake credentials, account data, access tokens, and session IDs. The
+test never requires a real Google account, OAuth client secret, refresh cookie,
+API process, or committed environment file. Keep real credentials and captured
+production tokens out of E2E fixtures and artifacts.
+
+For a CI-like run, install the managed browser and enable Playwright's CI
+retries and single-worker behavior before running the same spec:
+
+```bash
+npx playwright install --with-deps chromium
+CI=1 npm run test:e2e -- e2e/auth-happy-path.spec.ts
+```
+
+On Windows, if Application Control blocks the managed browser, use the
+installed Chrome fallback shown above. The fake public client ID configured by
+`playwright.config.ts` is only a local web-server placeholder that lets the
+intercepted provider UI initialize; it is not a credential or a deployable
+OAuth client ID.
+
 `npm run test:e2e` starts or reuses the Next.js app at
 `http://localhost:3001` and runs the local Chromium project. Unit, component,
 and hook files stay beside their source as `*.test.ts` or `*.test.tsx`. E2E

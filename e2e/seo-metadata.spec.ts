@@ -1,4 +1,5 @@
-import { expect, test, type Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { e2eAuthSession, expect, test } from "./fixtures/auth.fixture";
 
 async function expectRobotsContent(page: Page, expectedContent: string) {
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
@@ -76,12 +77,14 @@ test("publishes route-specific discovery metadata", async ({ page }) => {
 });
 
 test("keeps sign-in and operational routes out of the index", async ({
+  authApi,
   page,
 }) => {
   await page.goto("/sign-in");
   await expectRobotsContent(page, "noindex, follow");
   await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
 
+  authApi.setSession(e2eAuthSession);
   await page.goto("/app");
   await expectRobotsContent(page, "noindex, nofollow");
   await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);

@@ -33,6 +33,7 @@ export default defineConfig({
         env: {
           NEXT_PUBLIC_APP_ENV: "local",
           NEXT_PUBLIC_AUTH_ENABLED: "true",
+          NEXT_PUBLIC_GOOGLE_CLIENT_ID: "playwright.invalid",
           NEXT_PUBLIC_GOOGLE_ONE_TAP_ENABLED: "false",
           SEO_INDEXING_ENABLED: "true",
           WEB_ORIGIN: localWebAppUrl,

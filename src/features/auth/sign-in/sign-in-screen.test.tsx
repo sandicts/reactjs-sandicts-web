@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 
-import { fireEvent, screen } from "@testing-library/react";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { renderWithI18n } from "@test/render-with-i18n";
 import type { AuthSessionLifecycle } from "@/lib/auth/auth-session.types";
@@ -20,9 +20,15 @@ const magicLinkMock = vi.hoisted(() => ({
   isPending: false,
   mutateAsync: vi.fn(),
 }));
+const routerMock = vi.hoisted(() => ({
+  replace: vi.fn(),
+}));
 
 vi.mock("@/lib/auth/auth-session-provider", () => ({
   useAuthSession: () => authSessionMock,
+}));
+vi.mock("next/navigation", () => ({
+  useRouter: () => routerMock,
 }));
 vi.mock("@/lib/env/public-env", () => ({
   publicEnv: {
@@ -49,6 +55,7 @@ describe("SignInScreen", () => {
     googleSignInMock.mutate.mockReset();
     googleSignInMock.reset.mockReset();
     magicLinkMock.mutateAsync.mockReset();
+    routerMock.replace.mockReset();
   });
 
   it("renders the responsive sign-in hierarchy and provider-owned host", () => {
@@ -113,7 +120,7 @@ describe("SignInScreen", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("keeps an authenticated account on a safe public handoff", () => {
+  it("resumes a safe protected destination after authentication", async () => {
     authSessionMock.lifecycle = {
       status: "authenticated",
       account: {
@@ -124,12 +131,35 @@ describe("SignInScreen", () => {
       session: { id: "session-id" },
     };
 
-    renderWithI18n(<SignInScreen returnTo="/organizations/arena" />);
+    renderWithI18n(<SignInScreen returnTo="/app/reservations" />);
+
+    expect(
+      screen.getByRole("region", { name: "Preparando sua área…" }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("Sua sessão está ativa")).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(routerMock.replace).toHaveBeenCalledOnce();
+    });
+    expect(routerMock.replace).toHaveBeenCalledWith("/app/reservations");
+  });
+
+  it("does not invent a destination when the authenticated context is unresolved", () => {
+    authSessionMock.lifecycle = {
+      status: "authenticated",
+      account: {
+        displayName: "Player",
+        email: "player@example.com",
+        id: "account-id",
+      },
+      session: { id: "session-id" },
+    };
+
+    renderWithI18n(<SignInScreen />);
 
     expect(screen.getByText("Sua sessão está ativa")).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "Voltar ao início" }),
     ).toHaveAttribute("href", "/");
-    expect(screen.queryByText("/organizations/arena")).not.toBeInTheDocument();
+    expect(routerMock.replace).not.toHaveBeenCalled();
   });
 });

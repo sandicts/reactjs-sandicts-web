@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { e2eAuthSession, expect, test } from "./fixtures/auth.fixture";
 
 test("navigates from the public shell to sign-in", async ({ page }) => {
   await page.goto("/");
@@ -16,14 +16,16 @@ test("navigates from the public shell to sign-in", async ({ page }) => {
   await expect(
     page.getByRole("heading", {
       level: 1,
-      name: "Entre na sua conta.",
+      name: "Entre para continuar",
     }),
   ).toBeVisible();
 });
 
 test("uses the Player bottom navigation on compact viewports", async ({
+  authApi,
   page,
 }) => {
+  authApi.setSession(e2eAuthSession);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/app");
 
@@ -49,8 +51,10 @@ test("uses the Player bottom navigation on compact viewports", async ({
 });
 
 test("adapts Player navigation from rail to labeled sidebar", async ({
+  authApi,
   page,
 }) => {
+  authApi.setSession(e2eAuthSession);
   await page.setViewportSize({ width: 768, height: 900 });
   await page.goto("/app/open-matches");
 
@@ -85,8 +89,10 @@ test("adapts Player navigation from rail to labeled sidebar", async ({
 });
 
 test("opens and closes the Organization compact drawer with focus return", async ({
+  authApi,
   page,
 }) => {
+  authApi.setSession(e2eAuthSession);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/organizations/arena-sul");
 
@@ -110,8 +116,10 @@ test("opens and closes the Organization compact drawer with focus return", async
 });
 
 test("selects the most specific Organization route on expanded viewports", async ({
+  authApi,
   page,
 }) => {
+  authApi.setSession(e2eAuthSession);
   const consoleErrors: string[] = [];
   page.on("console", (message) => {
     if (message.type() === "error") {
