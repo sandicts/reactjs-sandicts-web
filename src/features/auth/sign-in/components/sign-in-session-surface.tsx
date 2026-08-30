@@ -1,6 +1,8 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useEffect, useRef } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { LoadingRegion } from "@/components/shared/loading-region/loading-region";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -14,7 +16,25 @@ import { MagicLinkSignIn } from "./magic-link-sign-in";
 
 function SignInSessionSurface({ reason, returnTo }: SignInSessionSurfaceProps) {
   const t = useTranslations("SignIn");
+  const router = useRouter();
+  const routedReturnToRef = useRef<string | null>(null);
   const { lifecycle, retrySessionVerification } = useAuthSession();
+  const isRoutingToProtectedDestination =
+    lifecycle.status === "authenticated" && Boolean(returnTo);
+
+  useEffect(() => {
+    if (!isRoutingToProtectedDestination || !returnTo) {
+      routedReturnToRef.current = null;
+      return;
+    }
+
+    if (routedReturnToRef.current === returnTo) {
+      return;
+    }
+
+    routedReturnToRef.current = returnTo;
+    router.replace(returnTo);
+  }, [isRoutingToProtectedDestination, returnTo, router]);
 
   if (lifecycle.status === "checking") {
     return (
@@ -34,6 +54,17 @@ function SignInSessionSurface({ reason, returnTo }: SignInSessionSurfaceProps) {
     lifecycle.status === "recoverable-error" ||
     lifecycle.status === "api-unavailable"
   ) {
+    if (isRoutingToProtectedDestination) {
+      return (
+        <LoadingRegion label={t("magicLinkCallback.routing.label")}>
+          <div className={signInScreenStyles.loadingSkeletons}>
+            <Skeleton className={signInScreenStyles.loadingTitle} />
+            <Skeleton className={signInScreenStyles.loadingDescription} />
+          </div>
+        </LoadingRegion>
+      );
+    }
+
     return (
       <AuthSessionState
         lifecycle={lifecycle}
