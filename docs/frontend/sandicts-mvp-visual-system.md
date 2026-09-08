@@ -12,6 +12,7 @@ related:
   - docs/frontend/sandicts-mvp-delivery-roadmap.md
   - fradelli/sandicts-docs:docs/product/sandicts-product-context.md
   - fradelli/sandicts-docs:docs/product/sandicts-mvp-functional-spec.md
+  - fradelli/design-system:docs/decisions/0001-shared-design-system-foundation.md
 scope: frontend, design, tokens, components, states, accessibility, mvp
 read-when:
   - configuring shadcn/ui or Tailwind CSS
@@ -34,19 +35,38 @@ This is a direction and decision document. It defines token roles, component
 defaults, interaction states, and visual boundaries. It does not initialize
 shadcn/ui, generate components, or replace feature-specific UX decisions.
 
+This document also records the migration boundary introduced by KAN-223. The
+[shared Design System ADR](https://github.com/fradelli/design-system/blob/main/docs/decisions/0001-shared-design-system-foundation.md)
+governs cross-product foundations and primitives. This document remains the
+source of truth for how Sandicts applies them and for the current implementation
+until the migration stories land.
+
 ## Decision Summary
 
-- Ship one dark Sandicts theme for the MVP.
-- Use semantic CSS variables as the public component styling API.
-- Use the Stone/Amber foundation from shadcn preset `b6pMnd9eSI`.
-- Use IBM Plex Sans for product UI, Montserrat for headings, and a system
-  monospace stack for technical values.
+Current implementation, preserved until KAN-224/KAN-225:
+
+- ships one dark Sandicts theme for the MVP
+- uses semantic CSS variables as the component styling API
+- uses the Stone/Amber foundation from shadcn preset `b6pMnd9eSI`
+- uses IBM Plex Sans for product UI, Montserrat for headings, Roboto for the
+  textual brand, and a system monospace stack for technical values
+- owns tokens and shadcn/ui primitive source code inside this repository
+
+Approved target direction:
+
+- consume shared foundations and primitives from `@fradelli/ui`
+- use Inter variable for product UI, headings, and textual wordmarks
+- remain dark-first, with near-black neutral surfaces, coral red identity,
+  solar yellow primary actions, and the shared pastel categorical palette
+- keep Sandicts brand, density, shells, pages, features, domain mappings,
+  integrations, and business behavior local
+
+Durable rules across both states:
+
 - Use the standard Tailwind spacing scale and a `0.45rem` base radius.
 - Keep player experiences energetic and comfortably spaced.
 - Keep Organization experiences denser and operational without creating a
   second component system.
-- Use shadcn/ui primitives as owned source code, not as an external visual
-  dependency.
 - Use Phosphor for interface icons and the Sandicts mark for brand identity.
 - Require an explicit loading, empty, error, forbidden, and not-found treatment
   for every data-driven screen.
@@ -71,10 +91,14 @@ The interface should not feel:
 
 ## Theme Model
 
-The MVP uses a dark theme and does not include a theme switcher. The preset's
-light values live in `:root`; dark values live in `.dark`; the document root
-activates `.dark` explicitly. Both maps use the same semantic contract so a
-future theme decision does not require component-specific colors.
+The current MVP uses a dark theme and does not include a theme switcher. The
+preset's light values live in `:root`; dark values live in `.dark`; the document
+root activates `.dark` explicitly. Both maps use the same semantic contract so
+a future theme decision does not require component-specific colors.
+
+The shared target remains dark-first. Dark-first defines release priority and
+does not prohibit a future light theme. KAN-224 will establish package
+consumption; KAN-225 will deliberately activate the new visual values.
 
 Components must consume semantic utilities such as `bg-background`,
 `text-foreground`, `bg-primary`, `border-border`, and `ring-ring`.
@@ -85,7 +109,9 @@ on palette names such as `sand`, `mint`, or `water`.
 
 ## Color Foundation
 
-The canonical foundation is the resolved OKLCH output of preset
+### Current implementation
+
+The current runtime foundation is the resolved OKLCH output of preset
 `b6pMnd9eSI`:
 
 - Nova component language on the Radix base
@@ -99,11 +125,25 @@ Exact light and dark values live in `src/app/globals.css`. Do not duplicate
 them in JSX or feature CSS. Renderers that cannot consume CSS variables may use
 the documented static serialization in `src/lib/visual-system`.
 
+### Approved target
+
+The target foundation uses near-black neutral surfaces, coral red identity,
+solar yellow primary actions, and eight pastel categorical colors: yellow,
+orange, red, pink, purple, blue, cyan, and green. Exact source values and their
+ownership live only in the
+[shared ADR](https://github.com/fradelli/design-system/blob/main/docs/decisions/0001-shared-design-system-foundation.md).
+
+The Design System owns appearance tokens. Sandicts owns the mapping from those
+categories to modalities, availability, event types, or any other domain
+meaning. Brand red and destructive red remain separate semantic tokens.
+
 ## Semantic Token Contract
 
 ### shadcn/ui Core Tokens
 
-These tokens form the public visual contract for shared components.
+These tokens form the current public visual contract for Sandicts components.
+After KAN-224, equivalent shared roles are owned by `@fradelli/ui`; local
+overrides must have an explicit compatibility reason and removal condition.
 
 | Token | Foundation | Meaning |
 | --- | --- | --- |
@@ -124,7 +164,7 @@ These tokens form the public visual contract for shared components.
 If a generated shadcn/ui component does not use one of these tokens by default,
 adapt the locally owned component once. Do not compensate at every call site.
 
-### Sandicts Status Tokens
+### Current Sandicts Status Tokens
 
 Status colors communicate system meaning and must be paired with text or an
 icon.
@@ -143,8 +183,8 @@ alone.
 
 ### Deferred Tokens
 
-- Add calendar-slot tokens with the availability feature, where domain statuses
-  are known.
+- Keep calendar/domain mappings in the owning Sandicts feature. Only generic
+  categorical appearance tokens belong to the shared package.
 - Do not create tokens for speculative Admin App, academy, tournament, or V2
   states.
 
@@ -152,12 +192,14 @@ alone.
 
 - Configure shadcn/ui to use CSS variables.
 - Expose semantic CSS variables to Tailwind through `@theme inline`.
-- Keep shadcn/ui primitives in `src/components/ui`.
+- Keep shadcn/ui primitives in `src/components/ui` until KAN-224 replaces each
+  import with a validated `@fradelli/ui` export.
 - Keep cross-feature compositions such as `EmptyState` or `StatusBadge` in
-  `src/components/shared`.
+  `src/components/shared` unless they later prove a domain-free use in both
+  products and pass the shared admission checklist.
 - Keep feature-only variants and state mapping inside the owning feature.
-- Treat generated component code as locally owned code that can be adapted to
-  this contract.
+- Treat current generated component code as locally owned during transition;
+  after migration, shared primitive changes belong in the Design System repo.
 - Do not create a wrapper component that only renames a shadcn/ui primitive.
 - Do not generate the entire component catalog in advance.
 - Keep `components.json` aligned to `radix-nova`, Stone, Phosphor,
@@ -165,12 +207,26 @@ alone.
 
 ## Typography
 
-Use the fonts loaded by the app:
+### Current implementation
+
+Use the fonts currently loaded by the app:
 
 - IBM Plex Sans for interface and body text
 - Montserrat for headings and component titles
 - the system monospace stack for identifiers, timestamps, or technical values
   where a monospace face materially improves scanning
+
+### Approved target
+
+KAN-225 will replace Roboto, IBM Plex Sans, and Montserrat with Inter variable
+for interface, headings, and textual wordmarks. The app will load Inter once at
+the root and expose `--font-inter`; `@fradelli/ui` will reference that variable
+with a system fallback. The system monospace stack remains available for
+technical values.
+
+Until that code migration passes build and visual review, the current font
+names and variables above remain accurate and must not be removed by a
+documentation-only change.
 
 Use semibold instead of bold for most headings and actions. Avoid extra-light
 text on dark surfaces.
@@ -407,8 +463,10 @@ sequences are outside the MVP.
 
 - Use the canonical stylized `S` through `BrandMark`, `BrandLockup`, or
   `BrandLink` in runtime surfaces.
-- Render `SANDICTS` as text in Roboto through `BrandName`; keep IBM Plex Sans
-  and Montserrat for interface content.
+- Currently render `SANDICTS` as text in Roboto through `BrandName`, with IBM
+  Plex Sans and Montserrat for interface content. KAN-225 migrates all three
+  proportional roles to Inter while preserving the Sandicts-owned brand
+  component and its tracking/weight decisions.
 - Keep the base mark flat, transparent, and driven by `currentColor`.
 - Restrict glow to large expressive surfaces and social imagery.
 - Change the active artwork and semantic colors through
@@ -422,7 +480,7 @@ sequences are outside the MVP.
 - Treat a complete corporate brand manual and marketing campaign as post-MVP
   work.
 
-## Implementation Contract From KAN-144
+## Current Implementation Contract From KAN-144
 
 KAN-144 establishes:
 
@@ -435,8 +493,17 @@ KAN-144 establishes:
 7. keyboard focus, contrast, loading, disabled, invalid, and semantic-state
    validation
 
-Later features must consume this contract rather than reintroducing palette
-names, legacy font stacks, or a second interface icon library.
+Until the package migration lands, later features must consume this current
+contract rather than reintroducing palette names, new font stacks, or a second
+interface icon library.
+
+## Target Contract From KAN-223
+
+KAN-223 establishes governance only; it does not claim the visual migration is
+already delivered. KAN-224 will move compatible foundations/primitives to the
+versioned package, and KAN-225 will activate Inter and the red/yellow/pastel
+direction. Feature components, brand, page composition, domain mapping, API,
+auth, i18n, and providers remain owned by Sandicts throughout the migration.
 
 ## Deferred Until After MVP
 
