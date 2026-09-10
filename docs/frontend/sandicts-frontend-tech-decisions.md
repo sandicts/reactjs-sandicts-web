@@ -231,33 +231,49 @@ Additional catalogs, localized public URLs, a locale switcher, persistence, and
 
 ### UI And Styling
 
-Use:
+Current implementation:
 
 - shadcn/ui
 - Tailwind CSS
 - `@phosphor-icons/react`
+- locally owned tokens and primitives based on preset `b6pMnd9eSI`
+
+Target architecture:
+
+- consume foundations and primitives from the versioned `@fradelli/ui` package
+- keep product brand, shells, pages, feature compositions, domain mapping, API,
+  auth, i18n, and providers in Sandicts
+- use the [shared Design System ADR](https://github.com/fradelli/design-system/blob/main/docs/decisions/0001-shared-design-system-foundation.md)
+  as the normative ownership contract
 
 Rules:
 
-- use preset `b6pMnd9eSI`: Radix Nova, Stone, Amber, small radius, IBM Plex
-  Sans, Montserrat, Phosphor, translucent menus, subtle menu accents, and
-  Orange charts
-- keep components owned in the frontend codebase instead of depending on a
-  closed external design system
+- keep the current preset and local source code active until the KAN-224 and
+  KAN-225 migration PRs replace them with a validated package version
+- migrate tokens and primitives incrementally; do not combine extraction,
+  import replacement, and visual redesign in one change
+- keep a component local when its props know Sandicts DTOs, statuses, routes,
+  permissions, copy, or feature behavior
+- admit composed patterns to the package only after real use in two products
+  and approval of the shared component-admission checklist
 - use canonical Phosphor `*Icon` exports where an existing icon fits the control
 - keep the locally reconciled primitive behavior, types, accessibility, and
-  tests when comparing with a generated registry payload
+  tests during migration to the shared package
 - use semantic shadcn/ui-compatible tokens for color, radius, typography,
   status, focus, and surfaces
-- keep palette names out of shared component APIs
+- keep palette names and domain meanings out of shared component APIs; map
+  categorical colors to Sandicts concepts inside the owning feature
 - ship one dark theme for MVP and defer a user-selectable light theme
 - keep Organization screens denser and more operational than player screens
+- pin an exact `@fradelli/ui` version in the app and upgrade it through an
+  independent PR
 
 Reason:
 
-- shadcn/ui is fast for MVP delivery and easy to customize
-- Sandicts needs a recognizable brand direction without spending the MVP on a
-  full custom component system
+- a shared package prevents Sandicts and Kaizen from copying and diverging on
+  visual foundations while preserving independent delivery cycles
+- local ownership of domain composition prevents the Design System from
+  becoming a generic business layer
 
 The canonical MVP token values, component variants, common states, icon rules,
 and post-MVP visual boundaries live in
